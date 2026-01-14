@@ -117,6 +117,75 @@ export const mockUpcomingWindows: UpcomingWindow[] = [
   },
 ]
 
+// Synastry mock data
+export const mockSynastry = {
+  id: 'synastry-1',
+  user_a_id: 'user-1',
+  user_b_id: 'partner-1',
+  overall_dynamic:
+    "This is a relationship built on deep emotional understanding with a strong pull toward growth. You challenge each other in ways that ultimately lead to personal evolution, though this can sometimes feel intense. There's natural chemistry here, but also important lessons about boundaries and independence.",
+  supportive_connections: [
+    {
+      title: 'Emotional Attunement',
+      explanation:
+        "Your Moon forms a harmonious aspect to their Venus, creating natural emotional rapport. You instinctively understand each other's need for affection and security.",
+      real_life_manifestation:
+        'You likely feel comfortable being vulnerable together. Domestic life and creating a cozy home environment comes naturally.',
+      contributing_aspects: ['moon-venus-trine'],
+    },
+    {
+      title: 'Intellectual Spark',
+      explanation:
+        'Mercury connections between your charts suggest easy communication and mental stimulation. Ideas flow naturally between you.',
+      real_life_manifestation:
+        "Long conversations that lose track of time. You probably finish each other's sentences and share similar humor.",
+      contributing_aspects: ['mercury-mercury-sextile'],
+    },
+    {
+      title: 'Shared Vision',
+      explanation:
+        "Jupiter's placement suggests you expand each other's worldview and support each other's growth and optimism.",
+      real_life_manifestation:
+        'Travel, learning, and exploring new philosophies together feels natural. You make each other more optimistic.',
+      contributing_aspects: ['jupiter-sun-trine'],
+    },
+  ],
+  friction_points: [
+    {
+      title: 'Power Dynamics',
+      explanation:
+        "Pluto's influence creates intensity that can manifest as control issues or jealousy if not consciously managed. This isn't inherently negative—it indicates deep transformation potential.",
+      real_life_manifestation:
+        'Occasional power struggles over decisions. Strong reactions to perceived threats to the relationship. Deep, sometimes uncomfortable conversations.',
+      contributing_aspects: ['pluto-venus-square'],
+    },
+    {
+      title: 'Independence vs. Togetherness',
+      explanation:
+        'Mars-Saturn aspects suggest tension between personal freedom and relationship commitments. One may feel restricted while the other feels abandoned.',
+      real_life_manifestation:
+        'Disagreements about time spent together vs. apart. Different paces when it comes to commitment milestones.',
+      contributing_aspects: ['mars-saturn-opposition'],
+    },
+  ],
+  growth_lesson: {
+    title: 'Balancing Depth with Lightness',
+    explanation:
+      'This relationship teaches both of you how to go deep while not drowning. The intensity you share is a gift, but learning when to surface for air is the lesson.',
+    real_life_manifestation:
+      "You're learning that profound connection doesn't require constant intensity. Sometimes the most loving thing is giving each other space.",
+    contributing_aspects: ['pluto-venus-square', 'mars-saturn-opposition'],
+  },
+  practical_guidance: [
+    'Schedule regular check-ins to discuss how you both feel about the relationship balance',
+    'Create individual rituals or hobbies that are yours alone',
+    "When conflicts arise, take space before responding—your intensity can escalate quickly",
+    'Celebrate your differences in pacing rather than fighting them',
+    'Use your natural communication gifts to address issues before they become power struggles',
+  ],
+  calculated_at: new Date(),
+}
+
 // Generate intensity curve data points for visualization
 export function generateIntensityCurve(
   startDate: Date,

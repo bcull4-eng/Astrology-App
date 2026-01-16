@@ -6,7 +6,8 @@
  * Visual curve showing rise, peak, and easing of intensity.
  */
 
-import { format, isToday, isBefore, isAfter } from 'date-fns'
+import { useState, useEffect } from 'react'
+import { format, isToday, isAfter } from 'date-fns'
 import type { SynthesisedTheme } from '@/types'
 import { generateIntensityCurve } from '@/lib/mock-data'
 
@@ -15,6 +16,12 @@ interface IntensityTimelineProps {
 }
 
 export function IntensityTimeline({ theme }: IntensityTimelineProps) {
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
   // Ensure dates are Date objects (API returns strings after JSON serialization)
   const startDate = new Date(theme.start_date)
   const peakStart = new Date(theme.peak_window.start)
@@ -28,7 +35,8 @@ export function IntensityTimeline({ theme }: IntensityTimelineProps) {
     endDate
   )
 
-  const today = new Date()
+  // Use a stable date for SSR, then update on client
+  const today = mounted ? new Date() : startDate
   const todayIndex = curveData.findIndex(
     (point) =>
       point.date.toDateString() === today.toDateString()
@@ -47,15 +55,17 @@ export function IntensityTimeline({ theme }: IntensityTimelineProps) {
     .map((point, index) => `${index === 0 ? 'M' : 'L'} ${point.x} ${point.y}`)
     .join(' ')
 
-  // Get phase
+  // Get phase - only calculate on client to avoid hydration mismatch
   let phase: 'rising' | 'peaking' | 'easing' = 'rising'
-  if (isAfter(today, peakEnd)) {
-    phase = 'easing'
-  } else if (
-    isAfter(today, peakStart) ||
-    isToday(peakStart)
-  ) {
-    phase = 'peaking'
+  if (mounted) {
+    if (isAfter(today, peakEnd)) {
+      phase = 'easing'
+    } else if (
+      isAfter(today, peakStart) ||
+      isToday(peakStart)
+    ) {
+      phase = 'peaking'
+    }
   }
 
   const phaseLabels = {

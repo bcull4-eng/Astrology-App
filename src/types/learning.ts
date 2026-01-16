@@ -6,7 +6,7 @@ export interface Course {
   id: string
   title: string
   description: string
-  difficulty: 'beginner' | 'advanced'
+  difficulty: 'beginner' | 'intermediate' | 'advanced'
   modules: Module[]
   estimatedMinutes: number
   icon: string

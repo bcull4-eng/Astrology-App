@@ -1270,6 +1270,398 @@ export const COURSES: Course[] = [
         ]
       }
     ]
+  },
+  {
+    id: 'history-context',
+    title: 'History & Context',
+    description: 'Understand where astrology comes from, its different traditions, and how it has evolved over 5,000 years.',
+    difficulty: 'intermediate',
+    estimatedMinutes: 35,
+    icon: '📜',
+    modules: [
+      {
+        id: 'origins',
+        title: 'Origins & Evolution',
+        description: 'The ancient roots and development of astrology.',
+        lessons: [
+          {
+            id: 'origins-of-astrology',
+            title: 'The Origins of Astrology',
+            description: '5,000 years of stargazing and celestial wisdom.',
+            estimatedMinutes: 8,
+            content: [
+              { type: 'heading', content: '5,000 Years of Stargazing', level: 2 },
+              {
+                type: 'text',
+                content: 'Astrology is one of humanity\'s oldest intellectual traditions, dating back at least 5,000 years. Understanding its history helps you appreciate its depth and evolution.'
+              },
+              {
+                type: 'concept',
+                title: 'Ancient Origins',
+                content: 'Astrology and astronomy were the same discipline until the 17th century. Ancient astrologers were the scientists of their day.',
+                icon: '🔭'
+              },
+              { type: 'heading', content: 'Timeline of Astrology', level: 3 },
+              {
+                type: 'list',
+                style: 'bullet',
+                items: [
+                  '~3000 BCE - Mesopotamia: First celestial omens recorded; birth of astrology',
+                  '~500 BCE - Babylon: Zodiac signs formalized; personal horoscopes begin',
+                  '~300 BCE - Greece: Hellenistic astrology develops; aspects and houses introduced',
+                  '~200 CE - Rome: Astrology spreads through Roman Empire',
+                  '~500-1200 CE - Islamic World: Golden age; Arabs preserve and advance knowledge',
+                  '~1200-1600 CE - Europe: Renaissance revival; astrology in universities',
+                  '1600s CE - Europe: Astronomy/astrology split; Enlightenment skepticism',
+                  '1900s CE - Global: Modern psychological astrology emerges',
+                  '2000s CE - Global: Internet age popularization; traditional revival'
+                ]
+              },
+              { type: 'heading', content: 'Mesopotamian Origins', level: 3 },
+              {
+                type: 'text',
+                content: 'Astrology began in ancient Mesopotamia (modern Iraq) around 3000 BCE. Priests observed celestial patterns to predict events affecting the state and king. Key developments included identification of planets as gods, recording of celestial omens, development of mathematical astronomy, and creation of the 12-sign zodiac.'
+              },
+              { type: 'heading', content: 'Greek Transformation', level: 3 },
+              {
+                type: 'text',
+                content: 'When Mesopotamian astrology met Greek philosophy (around 300 BCE), a transformation occurred. Individual birth charts became possible, the four elements were applied to signs, aspects were developed, and the house system was created. Astrology became more psychological and philosophical.'
+              },
+              {
+                type: 'callout',
+                content: 'The system you\'re learning — signs, planets, houses, aspects — is largely the Greek/Hellenistic system, developed over 2,000 years ago and refined ever since.',
+                variant: 'info'
+              },
+              { type: 'heading', content: 'The Medieval Period', level: 3 },
+              {
+                type: 'text',
+                content: 'After Rome fell, Islamic scholars preserved and advanced astrology during Europe\'s Dark Ages. Arab astrologers translated Greek texts into Arabic, developed new techniques, and eventually transmitted knowledge back to Europe. Many astrological terms like "zenith," "nadir," and star names come from Arabic.'
+              },
+              {
+                type: 'callout',
+                content: 'When someone says "astrology is just superstition," remember: it was studied in universities alongside medicine and law until the 1600s.',
+                variant: 'tip'
+              }
+            ],
+            quiz: [
+              {
+                id: 'q1-age',
+                question: 'Astrology originated approximately:',
+                options: ['500 years ago', '1,000 years ago', '3,000-5,000 years ago', '100 years ago'],
+                correctIndex: 2,
+                explanation: 'Astrology began in Mesopotamia around 3000 BCE, making it roughly 5,000 years old.'
+              },
+              {
+                id: 'q2-houses-aspects',
+                question: 'The house system and aspects were primarily developed by:',
+                options: ['Mesopotamian priests', 'Greek/Hellenistic astrologers', 'Medieval European monks', '20th century psychologists'],
+                correctIndex: 1,
+                explanation: 'The Greeks transformed Mesopotamian astrology into the system of signs, houses, and aspects we use today.'
+              },
+              {
+                id: 'q3-preservation',
+                question: 'During Europe\'s Dark Ages, astrological knowledge was preserved by:',
+                options: ['Roman emperors', 'Islamic scholars', 'Celtic druids', 'Chinese emperors'],
+                correctIndex: 1,
+                explanation: 'Arab scholars preserved, translated, and advanced astrological knowledge during the Islamic Golden Age.'
+              }
+            ]
+          }
+        ]
+      },
+      {
+        id: 'traditions',
+        title: 'Different Traditions',
+        description: 'Western, Vedic, and other astrological systems.',
+        lessons: [
+          {
+            id: 'western-vs-vedic',
+            title: 'Western vs. Vedic Astrology',
+            description: 'Two great traditions with different approaches.',
+            estimatedMinutes: 8,
+            content: [
+              { type: 'heading', content: 'Two Great Traditions', level: 2 },
+              {
+                type: 'text',
+                content: 'The two major living astrological traditions are Western (what you\'ve been learning) and Vedic/Jyotish (from India). Both are valid systems with different approaches.'
+              },
+              {
+                type: 'concept',
+                title: 'Key Difference',
+                content: 'Western and Vedic astrology share ancient roots but diverged over centuries into distinct systems, each with its own strengths.',
+                icon: '🌍'
+              },
+              { type: 'heading', content: 'Key Differences', level: 3 },
+              {
+                type: 'list',
+                style: 'bullet',
+                items: [
+                  'Zodiac: Western uses Tropical (seasons), Vedic uses Sidereal (fixed stars)',
+                  'Your Sun sign: In Vedic, often ~23° earlier (frequently one sign back)',
+                  'Orientation: Western is psychological/humanistic, Vedic focuses on karma and prediction',
+                  'Dasha system: Central to Vedic predictions, not used in Western',
+                  'Nakshatras: 27 lunar mansions used in Vedic, not in Western',
+                  'Nodes: Secondary in Western, Rahu/Ketu very important in Vedic'
+                ]
+              },
+              { type: 'heading', content: 'The Zodiac Difference', level: 3 },
+              {
+                type: 'text',
+                content: 'The biggest technical difference is the zodiac. Tropical (Western) defines signs by seasons — 0° Aries equals the spring equinox. Sidereal (Vedic) defines signs by fixed stars. Due to Earth\'s wobble (precession), the sidereal zodiac has drifted ~23° from the tropical.'
+              },
+              {
+                type: 'callout',
+                content: 'If you\'re a Taurus Sun in Western astrology, you\'re likely an Aries Sun in Vedic astrology. Both are "correct" within their systems — they\'re measuring different things.',
+                variant: 'info'
+              },
+              { type: 'heading', content: 'Philosophical Differences', level: 3 },
+              {
+                type: 'text',
+                content: 'Western astrology (especially modern) focuses on psychological patterns, self-understanding, free will within tendencies, and character over destiny. Vedic astrology focuses on karma and dharma, timing of events through dashas, prediction and remediation, and fate with possible adjustments through remedies.'
+              },
+              {
+                type: 'callout',
+                content: 'If you explore Vedic astrology, don\'t panic when your signs are different. The systems measure different things and both can offer valid insights.',
+                variant: 'tip'
+              }
+            ],
+            quiz: [
+              {
+                id: 'q1-difference',
+                question: 'The main technical difference between Western and Vedic astrology is:',
+                options: ['Number of planets used', 'Tropical vs. sidereal zodiac', 'Color of the charts', 'Language used'],
+                correctIndex: 1,
+                explanation: 'Western uses the tropical zodiac (based on seasons) while Vedic uses the sidereal zodiac (based on fixed stars).'
+              },
+              {
+                id: 'q2-vedic-emphasis',
+                question: 'Vedic astrology places special emphasis on:',
+                options: ['Psychological growth only', 'Karma, dharma, and predictive timing (dashas)', 'Only the Sun sign', 'Rejecting all tradition'],
+                correctIndex: 1,
+                explanation: 'Vedic astrology emphasizes karma, dharmic purpose, timing through dasha systems, and remedial measures.'
+              },
+              {
+                id: 'q3-validity',
+                question: 'When comparing Western and Vedic astrology:',
+                options: ['Western is always right', 'Vedic is always right', 'They are different but both valid systems', 'Neither has any validity'],
+                correctIndex: 2,
+                explanation: 'Both are valid traditions with different approaches and strengths — neither is "correct" over the other.'
+              }
+            ]
+          },
+          {
+            id: 'house-systems',
+            title: 'Why Different House Systems?',
+            description: 'Understanding the house system debate.',
+            estimatedMinutes: 7,
+            content: [
+              { type: 'heading', content: 'The House System Debate', level: 2 },
+              {
+                type: 'text',
+                content: 'If you\'ve used different astrology websites, you may have noticed your houses (and even some planet placements) change. That\'s because there are many house systems, and astrologers disagree on which is best.'
+              },
+              {
+                type: 'concept',
+                title: 'What Are House Systems?',
+                content: 'House systems are different methods of dividing the sky into 12 sections. The "right" one depends on who you ask.',
+                icon: '🏠'
+              },
+              { type: 'heading', content: 'Major House Systems', level: 3 },
+              {
+                type: 'list',
+                style: 'bullet',
+                items: [
+                  'Whole Sign: Each sign = one house (traditional astrologers, Vedic)',
+                  'Placidus: Time-based divisions (most popular in modern Western)',
+                  'Koch: Birthplace-based (popular in German tradition)',
+                  'Equal: 30° from Ascendant (some modern astrologers)',
+                  'Porphyry: Simple quadrant division (some traditional astrologers)'
+                ]
+              },
+              { type: 'heading', content: 'Why So Many?', level: 3 },
+              {
+                type: 'text',
+                content: 'The challenge: The sky is a sphere, but we\'re mapping it onto a flat circle. Different systems solve this problem differently. Additionally, Placidus breaks down at extreme latitudes, Whole Sign was original but fell out of use, each system has theoretical justifications, and astrologers get good results with different systems.'
+              },
+              { type: 'heading', content: 'Whole Sign vs. Placidus', level: 3 },
+              {
+                type: 'text',
+                content: 'Whole Sign (oldest): Your Rising sign = 1st house, next sign = 2nd house, etc. Every house is exactly one sign. Placidus (most popular): Houses vary in size based on birth latitude. A planet can be in a different sign than its house. Default on most modern software.'
+              },
+              {
+                type: 'callout',
+                content: 'If a planet falls near a house cusp, read both house meanings. The energy may blend both areas of life.',
+                variant: 'tip'
+              },
+              {
+                type: 'concept',
+                title: 'Practical Advice',
+                content: 'Pick one system and learn it well. Placidus is fine for beginners. Try Whole Sign if you want to explore traditional astrology. Test both — see which resonates with your experience.',
+                icon: '💡'
+              }
+            ],
+            quiz: [
+              {
+                id: 'q1-popular',
+                question: 'The most commonly used house system in modern Western astrology is:',
+                options: ['Whole Sign', 'Placidus', 'Koch', 'Campanus'],
+                correctIndex: 1,
+                explanation: 'Placidus is the default on most modern software and the most widely used today.'
+              },
+              {
+                id: 'q2-whole-sign',
+                question: 'In the Whole Sign house system:',
+                options: ['Houses vary dramatically in size', 'Each zodiac sign equals exactly one house', 'Only the Sun determines houses', 'There are 13 houses'],
+                correctIndex: 1,
+                explanation: 'In Whole Sign, your Rising sign is the entire 1st house, the next sign is entirely the 2nd house, and so on.'
+              }
+            ]
+          }
+        ]
+      },
+      {
+        id: 'approaches',
+        title: 'Modern Approaches',
+        description: 'Traditional vs. modern and astrology today.',
+        lessons: [
+          {
+            id: 'traditional-vs-modern',
+            title: 'Traditional vs. Modern Astrology',
+            description: 'Two approaches to the same art.',
+            estimatedMinutes: 7,
+            content: [
+              { type: 'heading', content: 'Two Approaches to the Same Art', level: 2 },
+              {
+                type: 'text',
+                content: 'Within Western astrology, there\'s a split between "traditional" (pre-1700s techniques revived) and "modern" (20th century psychological) approaches.'
+              },
+              {
+                type: 'concept',
+                title: 'Core Difference',
+                content: 'Traditional astrology focuses on prediction and concrete outcomes. Modern astrology focuses on psychology and self-development.',
+                icon: '⚖️'
+              },
+              { type: 'heading', content: 'Traditional Astrology', level: 3 },
+              {
+                type: 'text',
+                content: 'Traditional astrology (Hellenistic, Medieval, Renaissance) was more concerned with predicting concrete events, used only the 7 visible planets, had clear "benefic" (Jupiter, Venus) and "malefic" (Saturn, Mars) planets, and used techniques like sect, profections, and Arabic Parts. It was more fatalistic — events were expected to happen.'
+              },
+              {
+                type: 'callout',
+                content: 'Since the 1990s, traditional techniques have been recovered from ancient texts and are increasingly popular among modern astrologers.',
+                variant: 'info'
+              },
+              { type: 'heading', content: 'Modern Astrology', level: 3 },
+              {
+                type: 'text',
+                content: 'Modern astrology (20th century onward) was influenced by psychology (especially Jung), incorporated Uranus, Neptune, and Pluto, views all planets as having positive potential, focuses on self-understanding and growth, emphasizes free will over fate, and is less predictive and more therapeutic.'
+              },
+              { type: 'heading', content: 'Example: Saturn in the 7th House', level: 3 },
+              {
+                type: 'list',
+                style: 'bullet',
+                items: [
+                  'Traditional: "Delayed marriage, difficulties with partners, older spouse"',
+                  'Modern: "Learning about commitment, taking relationships seriously, maturing through partnership"',
+                  'Both can be true — they\'re different emphases'
+                ]
+              },
+              {
+                type: 'callout',
+                content: 'Learn modern astrology for self-understanding, then add traditional techniques for timing and specificity. They complement each other.',
+                variant: 'tip'
+              }
+            ],
+            quiz: [
+              {
+                id: 'q1-jung',
+                question: 'Modern psychological astrology was heavily influenced by:',
+                options: ['Ancient Babylonian priests', 'The psychologist Carl Jung', 'Medieval Arabic scholars', 'Isaac Newton'],
+                correctIndex: 1,
+                explanation: 'Modern astrology was transformed by 20th century psychology, particularly Jungian concepts.'
+              },
+              {
+                id: 'q2-traditional-planets',
+                question: 'Traditional astrology uses how many planets?',
+                options: ['7 (Sun through Saturn)', '10 (including outer planets)', '12 (one for each sign)', '5 (only inner planets)'],
+                correctIndex: 0,
+                explanation: 'Traditional astrology uses only the 7 classical planets visible to the naked eye: Sun, Moon, Mercury, Venus, Mars, Jupiter, Saturn.'
+              },
+              {
+                id: 'q3-best-approach',
+                question: 'When it comes to traditional vs. modern astrology, the best approach is often:',
+                options: ['Only use traditional', 'Only use modern', 'Learn both as complementary tools', 'Ignore both'],
+                correctIndex: 2,
+                explanation: 'Traditional and modern approaches offer different strengths and can complement each other effectively.'
+              }
+            ]
+          },
+          {
+            id: 'astrology-today',
+            title: 'Astrology in the Modern World',
+            description: 'The current landscape and revival.',
+            estimatedMinutes: 5,
+            content: [
+              { type: 'heading', content: 'Astrology Today', level: 2 },
+              {
+                type: 'text',
+                content: 'Astrology is experiencing a massive revival. Apps like Co-Star have millions of users, "Mercury retrograde" is mainstream vocabulary, and a new generation is discovering this ancient art.'
+              },
+              { type: 'heading', content: 'The Current Landscape', level: 3 },
+              {
+                type: 'list',
+                style: 'bullet',
+                items: [
+                  'App explosion: Co-Star, The Pattern, and others reach millions',
+                  'Social media astrology: Instagram, TikTok, Twitter astrologers',
+                  'Traditional revival: Ancient techniques being recovered and taught',
+                  'Academic study: Astrology history studied in universities',
+                  'Psychological integration: Therapists incorporating astrological frameworks',
+                  'Commercial growth: Rising market for readings, courses, content'
+                ]
+              },
+              { type: 'heading', content: 'Why the Revival?', level: 3 },
+              {
+                type: 'text',
+                content: 'Possible factors driving astrology\'s popularity include desire for meaning in uncertain times, rejection of purely materialist worldviews, internet enabling easy access, younger generations open to alternative frameworks, quality of modern psychological astrology, community and identity, and tools for self-reflection in a busy world.'
+              },
+              { type: 'heading', content: 'Criticism and Response', level: 3 },
+              {
+                type: 'text',
+                content: 'Common criticisms: "Astrology isn\'t scientific" (True; it\'s not claiming to be laboratory science), "Barnum effect explains it" (Valid concern; good astrology is specific), "Planets can\'t affect us" (Astrology may be correlational, not causal). Healthy response: Use astrology critically, test it against experience, and hold interpretations lightly.'
+              },
+              {
+                type: 'concept',
+                title: 'Your Place in This',
+                content: 'As you learn astrology, you\'re joining a tradition spanning 5,000 years, a global community of practitioners, an ongoing conversation between ancient and modern, and a tool that millions find meaningful.',
+                icon: '✨'
+              },
+              {
+                type: 'callout',
+                content: 'Stay humble about what astrology can prove, curious about what it can reveal, and ethical about how you use it.',
+                variant: 'tip'
+              }
+            ],
+            quiz: [
+              {
+                id: 'q1-revival',
+                question: 'Astrology is currently experiencing:',
+                options: ['Declining interest worldwide', 'A significant revival, especially among younger generations', 'No change from previous decades', 'Complete mainstream scientific acceptance'],
+                correctIndex: 1,
+                explanation: 'Astrology is experiencing major revival, driven by apps, social media, and renewed interest from younger generations.'
+              },
+              {
+                id: 'q2-approach',
+                question: 'A healthy approach to astrology\'s scientific status is:',
+                options: ['Claim it\'s proven science', 'Reject it entirely because it\'s not scientific', 'Use it critically, test against experience, hold interpretations lightly', 'Never question any astrological claim'],
+                correctIndex: 2,
+                explanation: 'Critical, experiential engagement with astrology is healthier than either blind faith or complete dismissal.'
+              }
+            ]
+          }
+        ]
+      }
+    ]
   }
 ]
 

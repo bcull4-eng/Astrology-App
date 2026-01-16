@@ -10,12 +10,39 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useOnboardingStore } from '@/store/onboarding'
-import type { BirthTimeConfidence } from '@/types'
+import type { BirthTimeConfidence, RelationshipStatus, LifePhase, PrimaryConcern } from '@/types'
 
 const timeConfidenceOptions: { value: BirthTimeConfidence; label: string; description: string }[] = [
   { value: 'exact', label: 'Exact', description: 'From birth certificate or reliable source' },
   { value: 'approximate', label: 'Approximate', description: 'Within an hour or two' },
   { value: 'unknown', label: 'Unknown', description: "I don't know my birth time" },
+]
+
+const relationshipOptions: { value: RelationshipStatus; label: string }[] = [
+  { value: 'single', label: 'Single' },
+  { value: 'dating', label: 'Dating' },
+  { value: 'committed', label: 'In a relationship' },
+  { value: 'married', label: 'Married' },
+  { value: 'prefer_not_to_say', label: 'Prefer not to say' },
+]
+
+const lifePhaseOptions: { value: LifePhase; label: string }[] = [
+  { value: 'student', label: 'Student' },
+  { value: 'early_career', label: 'Early career' },
+  { value: 'mid_career', label: 'Mid-career' },
+  { value: 'parent', label: 'Parent with young children' },
+  { value: 'empty_nest', label: 'Empty nester' },
+  { value: 'retired', label: 'Retired' },
+]
+
+const primaryConcernOptions: { value: PrimaryConcern; label: string; icon: string }[] = [
+  { value: 'career', label: 'Career', icon: '💼' },
+  { value: 'love', label: 'Love', icon: '💕' },
+  { value: 'health', label: 'Health', icon: '🌿' },
+  { value: 'finances', label: 'Finances', icon: '💰' },
+  { value: 'family', label: 'Family', icon: '👨‍👩‍👧‍👦' },
+  { value: 'self_growth', label: 'Self-growth', icon: '✨' },
+  { value: 'creativity', label: 'Creativity', icon: '🎨' },
 ]
 
 export default function BirthDetailsPage() {
@@ -25,10 +52,16 @@ export default function BirthDetailsPage() {
     birthTime,
     birthTimeConfidence,
     birthPlace,
+    relationshipStatus,
+    lifePhase,
+    primaryConcerns,
     setBirthDate,
     setBirthTime,
     setBirthTimeConfidence,
     setBirthPlace,
+    setRelationshipStatus,
+    setLifePhase,
+    togglePrimaryConcern,
   } = useOnboardingStore()
 
   const [citySearch, setCitySearch] = useState(birthPlace.city || '')
@@ -167,6 +200,93 @@ export default function BirthDetailsPage() {
           <p className="mt-2 text-slate-500 text-sm">
             Enter the city and country where you were born
           </p>
+        </div>
+
+        {/* Divider */}
+        <div className="relative py-4">
+          <div className="absolute inset-0 flex items-center">
+            <div className="w-full border-t border-slate-700" />
+          </div>
+          <div className="relative flex justify-center">
+            <span className="px-3 bg-slate-900 text-slate-500 text-sm">Personalize your experience</span>
+          </div>
+        </div>
+
+        {/* Relationship Status */}
+        <div>
+          <label className="block text-sm font-medium text-slate-300 mb-2">
+            Relationship status <span className="text-slate-500">(optional)</span>
+          </label>
+          <div className="flex flex-wrap gap-2">
+            {relationshipOptions.map((option) => (
+              <button
+                key={option.value}
+                type="button"
+                onClick={() => setRelationshipStatus(relationshipStatus === option.value ? null : option.value)}
+                className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                  relationshipStatus === option.value
+                    ? 'bg-indigo-600 text-white'
+                    : 'bg-slate-800/50 text-slate-400 hover:text-white border border-slate-700'
+                }`}
+              >
+                {option.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Life Phase */}
+        <div>
+          <label className="block text-sm font-medium text-slate-300 mb-2">
+            Life phase <span className="text-slate-500">(optional)</span>
+          </label>
+          <div className="flex flex-wrap gap-2">
+            {lifePhaseOptions.map((option) => (
+              <button
+                key={option.value}
+                type="button"
+                onClick={() => setLifePhase(lifePhase === option.value ? null : option.value)}
+                className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                  lifePhase === option.value
+                    ? 'bg-indigo-600 text-white'
+                    : 'bg-slate-800/50 text-slate-400 hover:text-white border border-slate-700'
+                }`}
+              >
+                {option.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Primary Concerns */}
+        <div>
+          <label className="block text-sm font-medium text-slate-300 mb-2">
+            What&apos;s on your mind? <span className="text-slate-500">(select up to 3)</span>
+          </label>
+          <div className="grid grid-cols-2 gap-2">
+            {primaryConcernOptions.map((option) => {
+              const isSelected = primaryConcerns.includes(option.value)
+              const isDisabled = !isSelected && primaryConcerns.length >= 3
+              return (
+                <button
+                  key={option.value}
+                  type="button"
+                  onClick={() => !isDisabled && togglePrimaryConcern(option.value)}
+                  disabled={isDisabled}
+                  className={`px-4 py-3 rounded-lg text-sm font-medium transition-colors flex items-center gap-2 ${
+                    isSelected
+                      ? 'bg-indigo-600 text-white'
+                      : isDisabled
+                      ? 'bg-slate-800/30 text-slate-600 cursor-not-allowed border border-slate-800'
+                      : 'bg-slate-800/50 text-slate-400 hover:text-white border border-slate-700'
+                  }`}
+                >
+                  <span>{option.icon}</span>
+                  <span>{option.label}</span>
+                </button>
+              )
+            })}
+          </div>
         </div>
 
         {/* Submit */}

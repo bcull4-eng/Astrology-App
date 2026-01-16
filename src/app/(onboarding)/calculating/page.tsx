@@ -4,12 +4,13 @@
  * Calculation Screen
  *
  * Displays: loading state with copy
- * Triggers: natal chart calculation, transit calculation, theme synthesis
+ * Triggers: natal chart calculation via API
  * Navigation: proceeds to Free Insight on completion
  */
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { useRouter } from 'next/navigation'
+import { useOnboardingStore } from '@/store/onboarding'
 
 const loadingMessages = [
   'Analyzing your birth chart...',
@@ -23,32 +24,94 @@ export default function CalculatingPage() {
   const router = useRouter()
   const [messageIndex, setMessageIndex] = useState(0)
   const [progress, setProgress] = useState(0)
+  const [error, setError] = useState<string | null>(null)
+  const hasStartedCalculation = useRef(false)
+
+  const { birthDate, birthTime, birthTimeConfidence, birthPlace } = useOnboardingStore()
 
   useEffect(() => {
+    // Prevent double calculation in strict mode
+    if (hasStartedCalculation.current) return
+    hasStartedCalculation.current = true
+
     // Cycle through messages
     const messageInterval = setInterval(() => {
       setMessageIndex((prev) => (prev + 1) % loadingMessages.length)
     }, 2000)
 
-    // Simulate progress
+    // Animate progress
     const progressInterval = setInterval(() => {
       setProgress((prev) => {
-        if (prev >= 100) return 100
-        return prev + Math.random() * 15
+        if (prev >= 90) return 90 // Cap at 90 until API completes
+        return prev + Math.random() * 10
       })
     }, 500)
 
-    // Navigate after "calculation" completes
-    const timeout = setTimeout(() => {
-      router.push('/free-insight')
-    }, 4000)
+    // Calculate natal chart
+    async function calculateChart() {
+      try {
+        const response = await fetch('/api/natal-chart', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            birthDate,
+            birthTime: birthTime || null,
+            birthTimeConfidence,
+            birthPlace: birthPlace.city, // Send city string for geocoding
+          }),
+        })
+
+        const data = await response.json()
+
+        if (!response.ok) {
+          throw new Error(data.error || 'Failed to calculate chart')
+        }
+
+        // Store the chart in session storage for the free-insight page
+        sessionStorage.setItem('natal-chart', JSON.stringify(data.chart))
+        sessionStorage.setItem('birth-location', JSON.stringify(data.location))
+
+        // Complete progress and navigate
+        setProgress(100)
+        setTimeout(() => {
+          router.push('/free-insight')
+        }, 500)
+      } catch (err) {
+        console.error('Chart calculation error:', err)
+        setError(err instanceof Error ? err.message : 'Something went wrong')
+        clearInterval(messageInterval)
+        clearInterval(progressInterval)
+      }
+    }
+
+    calculateChart()
 
     return () => {
       clearInterval(messageInterval)
       clearInterval(progressInterval)
-      clearTimeout(timeout)
     }
-  }, [router])
+  }, [router, birthDate, birthTime, birthTimeConfidence, birthPlace])
+
+  // Error state
+  if (error) {
+    return (
+      <div className="w-full max-w-md mx-auto text-center">
+        <div className="w-16 h-16 mx-auto mb-6 bg-red-500/20 rounded-full flex items-center justify-center">
+          <svg className="w-8 h-8 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+          </svg>
+        </div>
+        <h1 className="text-xl font-semibold text-white mb-3">Something went wrong</h1>
+        <p className="text-slate-400 mb-6">{error}</p>
+        <button
+          onClick={() => router.push('/birth-details')}
+          className="px-6 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg transition-colors"
+        >
+          Try again
+        </button>
+      </div>
+    )
+  }
 
   return (
     <div className="w-full max-w-md mx-auto text-center">

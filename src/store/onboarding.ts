@@ -9,7 +9,7 @@
 
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
-import type { BirthTimeConfidence, FocusArea } from '@/types'
+import type { BirthTimeConfidence, FocusArea, RelationshipStatus, LifePhase, PrimaryConcern } from '@/types'
 
 interface BirthPlaceInput {
   city: string
@@ -29,6 +29,11 @@ interface OnboardingState {
   // Focus areas
   focusAreas: FocusArea[]
 
+  // Personalization data
+  relationshipStatus: RelationshipStatus | null
+  lifePhase: LifePhase | null
+  primaryConcerns: PrimaryConcern[]
+
   // Actions
   setBirthDate: (date: string) => void
   setBirthTime: (time: string) => void
@@ -36,6 +41,10 @@ interface OnboardingState {
   setBirthPlace: (place: BirthPlaceInput) => void
   setFocusAreas: (areas: FocusArea[]) => void
   toggleFocusArea: (area: FocusArea) => void
+  setRelationshipStatus: (status: RelationshipStatus | null) => void
+  setLifePhase: (phase: LifePhase | null) => void
+  setPrimaryConcerns: (concerns: PrimaryConcern[]) => void
+  togglePrimaryConcern: (concern: PrimaryConcern) => void
   reset: () => void
 }
 
@@ -51,6 +60,9 @@ const initialState = {
     timezone: '',
   },
   focusAreas: [] as FocusArea[],
+  relationshipStatus: null as RelationshipStatus | null,
+  lifePhase: null as LifePhase | null,
+  primaryConcerns: [] as PrimaryConcern[],
 }
 
 export const useOnboardingStore = create<OnboardingState>()(
@@ -69,6 +81,15 @@ export const useOnboardingStore = create<OnboardingState>()(
           focusAreas: state.focusAreas.includes(area)
             ? state.focusAreas.filter((a) => a !== area)
             : [...state.focusAreas, area],
+        })),
+      setRelationshipStatus: (status) => set({ relationshipStatus: status }),
+      setLifePhase: (phase) => set({ lifePhase: phase }),
+      setPrimaryConcerns: (concerns) => set({ primaryConcerns: concerns }),
+      togglePrimaryConcern: (concern) =>
+        set((state) => ({
+          primaryConcerns: state.primaryConcerns.includes(concern)
+            ? state.primaryConcerns.filter((c) => c !== concern)
+            : [...state.primaryConcerns, concern],
         })),
       reset: () => set(initialState),
     }),

@@ -50,7 +50,7 @@ export function SecondaryInfluences({ themes }: SecondaryInfluencesProps) {
                   {theme.theme_name}
                 </div>
                 <div className="text-slate-400 text-sm">
-                  Until {format(theme.end_date, 'MMM d')}
+                  Until {format(new Date(theme.end_date), 'MMM d')}
                 </div>
               </div>
               <div className="flex items-center gap-2">
@@ -92,8 +92,8 @@ export function SecondaryInfluences({ themes }: SecondaryInfluencesProps) {
                 </p>
                 <div className="mt-3 flex items-center gap-4 text-xs text-slate-500">
                   <span>
-                    Peak: {format(theme.peak_window.start, 'MMM d')} –{' '}
-                    {format(theme.peak_window.end, 'MMM d')}
+                    Peak: {format(new Date(theme.peak_window.start), 'MMM d')} –{' '}
+                    {format(new Date(theme.peak_window.end), 'MMM d')}
                   </span>
                 </div>
               </div>

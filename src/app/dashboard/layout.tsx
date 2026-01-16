@@ -24,16 +24,34 @@ export default async function DashboardLayout({
               Dashboard
             </Link>
             <Link
+              href="/learn"
+              className="text-slate-300 hover:text-white transition-colors text-sm"
+            >
+              Learn
+            </Link>
+            <Link
+              href="/reports"
+              className="text-slate-300 hover:text-white transition-colors text-sm"
+            >
+              Reports
+            </Link>
+            <Link
               href="/synastry"
               className="text-slate-300 hover:text-white transition-colors text-sm"
             >
               Synastry
             </Link>
             <Link
+              href="/birth-details"
+              className="text-slate-300 hover:text-white transition-colors text-sm"
+            >
+              Birth Details
+            </Link>
+            <Link
               href="/settings"
               className="text-slate-300 hover:text-white transition-colors text-sm"
             >
-              Settings
+              Account
             </Link>
           </nav>
         </div>

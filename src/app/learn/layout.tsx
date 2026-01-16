@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { requireUser } from '@/lib/auth'
 
-export default async function SynastryLayout({
+export default async function LearnLayout({
   children,
 }: {
   children: React.ReactNode
@@ -25,7 +25,7 @@ export default async function SynastryLayout({
             </Link>
             <Link
               href="/learn"
-              className="text-slate-300 hover:text-white transition-colors text-sm"
+              className="text-white transition-colors text-sm"
             >
               Learn
             </Link>
@@ -37,7 +37,7 @@ export default async function SynastryLayout({
             </Link>
             <Link
               href="/synastry"
-              className="text-white transition-colors text-sm"
+              className="text-slate-300 hover:text-white transition-colors text-sm"
             >
               Synastry
             </Link>
@@ -52,7 +52,7 @@ export default async function SynastryLayout({
       </header>
 
       {/* Main content */}
-      <main className="max-w-4xl mx-auto px-4 py-8">{children}</main>
+      <main>{children}</main>
     </div>
   )
 }

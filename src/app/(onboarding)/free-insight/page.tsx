@@ -3,28 +3,91 @@
 /**
  * Free Insight Screen
  *
- * Displays: primary theme name, explanation of why active, end date
+ * Displays: primary theme based on natal chart
  * This is the free preview before the paywall.
  * Navigation: proceeds to Paywall
  */
 
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { format, addDays } from 'date-fns'
+import type { NatalChart, ZodiacSign } from '@/types'
 
-// Mock data - in production this would come from the synthesis engine
-const mockInsight = {
-  themeName: 'Relationship Recalibration',
-  explanation:
-    "You're in a period of re-evaluating your closest connections. Saturn is currently forming a challenging aspect to your natal Venus, which often brings relationship dynamics into sharp focus. This isn't about endings—it's about understanding what you truly need from partnerships and setting healthier boundaries.",
-  endDate: addDays(new Date(), 23),
-  intensity: 4 as const,
+// Generate insight based on sun sign
+function generateInsight(chart: NatalChart | null) {
+  if (!chart) {
+    return {
+      themeName: 'Personal Transformation',
+      explanation: "A period of growth and self-discovery awaits you. The cosmic energies are aligning to support your personal evolution.",
+      endDate: addDays(new Date(), 21),
+      intensity: 3 as const,
+    }
+  }
+
+  // Find sun placement
+  const sunPlacement = chart.placements.find(p => p.planet === 'sun')
+  const moonPlacement = chart.placements.find(p => p.planet === 'moon')
+  const ascendant = chart.ascendant
+
+  // Theme based on sun sign
+  const sunThemes: Record<ZodiacSign, { theme: string; focus: string }> = {
+    aries: { theme: 'Bold New Beginnings', focus: 'initiative and leadership' },
+    taurus: { theme: 'Building Foundations', focus: 'security and material growth' },
+    gemini: { theme: 'Mental Expansion', focus: 'communication and learning' },
+    cancer: { theme: 'Emotional Depth', focus: 'home and emotional security' },
+    leo: { theme: 'Creative Expression', focus: 'self-expression and recognition' },
+    virgo: { theme: 'Practical Refinement', focus: 'health and daily routines' },
+    libra: { theme: 'Relationship Harmony', focus: 'partnerships and balance' },
+    scorpio: { theme: 'Deep Transformation', focus: 'personal power and rebirth' },
+    sagittarius: { theme: 'Expanding Horizons', focus: 'adventure and philosophy' },
+    capricorn: { theme: 'Ambitious Climb', focus: 'career and long-term goals' },
+    aquarius: { theme: 'Innovative Vision', focus: 'community and future ideals' },
+    pisces: { theme: 'Spiritual Connection', focus: 'intuition and transcendence' },
+  }
+
+  const sunSign = sunPlacement?.sign || 'aries'
+  const moonSign = moonPlacement?.sign || 'aries'
+  const { theme, focus } = sunThemes[sunSign]
+
+  const signNames: Record<ZodiacSign, string> = {
+    aries: 'Aries', taurus: 'Taurus', gemini: 'Gemini', cancer: 'Cancer',
+    leo: 'Leo', virgo: 'Virgo', libra: 'Libra', scorpio: 'Scorpio',
+    sagittarius: 'Sagittarius', capricorn: 'Capricorn', aquarius: 'Aquarius', pisces: 'Pisces',
+  }
+
+  return {
+    themeName: theme,
+    explanation: `With your Sun in ${signNames[sunSign]} and Moon in ${signNames[moonSign]}, you have a natural orientation toward ${focus}. Your ${signNames[ascendant.sign]} rising adds a distinctive way of approaching the world. Current planetary transits are activating these core parts of your chart, making this an important time for self-awareness and intentional action.`,
+    endDate: addDays(new Date(), 21),
+    intensity: 4 as const,
+  }
 }
 
 export default function FreeInsightPage() {
   const router = useRouter()
+  const [insight, setInsight] = useState<ReturnType<typeof generateInsight> | null>(null)
+
+  useEffect(() => {
+    // Get chart from session storage
+    const chartData = sessionStorage.getItem('natal-chart')
+    if (chartData) {
+      const chart: NatalChart = JSON.parse(chartData)
+      setInsight(generateInsight(chart))
+    } else {
+      setInsight(generateInsight(null))
+    }
+  }, [])
 
   const handleContinue = () => {
     router.push('/paywall')
+  }
+
+  if (!insight) {
+    return (
+      <div className="w-full max-w-lg mx-auto text-center py-12">
+        <div className="animate-pulse">Loading your insight...</div>
+      </div>
+    )
   }
 
   return (
@@ -33,10 +96,10 @@ export default function FreeInsightPage() {
       <div className="text-center mb-8">
         <p className="text-indigo-400 text-sm font-medium mb-2">Your Current Theme</p>
         <h1 className="text-3xl font-bold text-white mb-2">
-          {mockInsight.themeName}
+          {insight.themeName}
         </h1>
         <p className="text-slate-400">
-          Active until {format(mockInsight.endDate, 'MMMM d')}
+          Active until {format(insight.endDate, 'MMMM d')}
         </p>
       </div>
 
@@ -48,7 +111,7 @@ export default function FreeInsightPage() {
             <div
               key={level}
               className={`w-3 h-3 rounded-full ${
-                level <= mockInsight.intensity
+                level <= insight.intensity
                   ? 'bg-indigo-500'
                   : 'bg-slate-700'
               }`}
@@ -62,7 +125,7 @@ export default function FreeInsightPage() {
       <div className="bg-slate-800/50 border border-slate-700 rounded-2xl p-6 mb-8">
         <h2 className="text-white font-semibold mb-3">Why this is happening</h2>
         <p className="text-slate-300 leading-relaxed">
-          {mockInsight.explanation}
+          {insight.explanation}
         </p>
       </div>
 

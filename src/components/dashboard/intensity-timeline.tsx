@@ -15,11 +15,17 @@ interface IntensityTimelineProps {
 }
 
 export function IntensityTimeline({ theme }: IntensityTimelineProps) {
+  // Ensure dates are Date objects (API returns strings after JSON serialization)
+  const startDate = new Date(theme.start_date)
+  const peakStart = new Date(theme.peak_window.start)
+  const peakEnd = new Date(theme.peak_window.end)
+  const endDate = new Date(theme.end_date)
+
   const curveData = generateIntensityCurve(
-    theme.start_date,
-    theme.peak_window.start,
-    theme.peak_window.end,
-    theme.end_date
+    startDate,
+    peakStart,
+    peakEnd,
+    endDate
   )
 
   const today = new Date()
@@ -43,11 +49,11 @@ export function IntensityTimeline({ theme }: IntensityTimelineProps) {
 
   // Get phase
   let phase: 'rising' | 'peaking' | 'easing' = 'rising'
-  if (isAfter(today, theme.peak_window.end)) {
+  if (isAfter(today, peakEnd)) {
     phase = 'easing'
   } else if (
-    isAfter(today, theme.peak_window.start) ||
-    isToday(theme.peak_window.start)
+    isAfter(today, peakStart) ||
+    isToday(peakStart)
   ) {
     phase = 'peaking'
   }
@@ -116,9 +122,9 @@ export function IntensityTimeline({ theme }: IntensityTimelineProps) {
 
       {/* Date labels */}
       <div className="flex justify-between text-slate-500 text-xs">
-        <span>{format(theme.start_date, 'MMM d')}</span>
+        <span>{format(startDate, 'MMM d')}</span>
         <span className="text-indigo-400">Today</span>
-        <span>{format(theme.end_date, 'MMM d')}</span>
+        <span>{format(endDate, 'MMM d')}</span>
       </div>
     </div>
   )

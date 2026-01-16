@@ -21,9 +21,20 @@ interface SynastryInsight {
   real_life_manifestation: string
 }
 
+interface SynastryData {
+  id: string
+  overall_dynamic: string
+  supportive_connections: SynastryInsight[]
+  friction_points: SynastryInsight[]
+  growth_lesson: SynastryInsight
+  practical_guidance: string[]
+}
+
 export default function SynastryResultsPage() {
   const [partnerName, setPartnerName] = useState('Your Partner')
   const [expandedSection, setExpandedSection] = useState<string | null>('supportive')
+  const [synastry, setSynastry] = useState<SynastryData>(mockSynastry)
+  const [dataSource, setDataSource] = useState<'mock' | 'calculated'>('mock')
 
   useEffect(() => {
     // Get partner name from session storage
@@ -32,12 +43,27 @@ export default function SynastryResultsPage() {
       const data = JSON.parse(stored)
       setPartnerName(data.name || 'Your Partner')
     }
-  }, [])
 
-  const synastry = mockSynastry
+    // Get synastry result from session storage
+    const synastryResult = sessionStorage.getItem('synastry-result')
+    if (synastryResult) {
+      const data = JSON.parse(synastryResult)
+      setSynastry(data)
+      setDataSource('calculated')
+    }
+  }, [])
 
   return (
     <div className="max-w-2xl mx-auto">
+      {/* Data source indicator */}
+      {dataSource === 'calculated' && (
+        <div className="mb-4 text-center">
+          <span className="px-3 py-1.5 bg-pink-500/10 border border-pink-500/30 rounded-lg text-pink-400 text-xs font-medium">
+            Calculated from your charts
+          </span>
+        </div>
+      )}
+
       {/* Header */}
       <div className="text-center mb-8">
         <p className="text-pink-400 text-sm font-medium mb-2">Relationship Analysis</p>

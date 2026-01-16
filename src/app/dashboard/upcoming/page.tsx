@@ -56,7 +56,7 @@ export default function UpcomingPage() {
               {/* Date and trend */}
               <div className="flex items-center justify-between mb-3">
                 <div className="text-white font-semibold">
-                  {format(window.start_date, 'MMM d')} – {format(window.end_date, 'MMM d')}
+                  {format(new Date(window.start_date), 'MMM d')} – {format(new Date(window.end_date), 'MMM d')}
                 </div>
                 <span className={`text-sm font-medium ${trend.color}`}>
                   {trend.label}

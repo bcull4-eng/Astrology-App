@@ -39,6 +39,18 @@ export interface UserPreferences {
 
 export type FocusArea = 'career' | 'relationships' | 'money' | 'growth'
 
+export type RelationshipStatus = 'single' | 'dating' | 'committed' | 'married' | 'prefer_not_to_say'
+
+export type LifePhase = 'student' | 'early_career' | 'mid_career' | 'parent' | 'empty_nest' | 'retired'
+
+export type PrimaryConcern = 'career' | 'love' | 'health' | 'finances' | 'family' | 'self_growth' | 'creativity'
+
+export interface PersonalizationData {
+  relationshipStatus: RelationshipStatus | null
+  lifePhase: LifePhase | null
+  primaryConcerns: PrimaryConcern[]
+}
+
 export interface Location {
   city: string
   country: string

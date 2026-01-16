@@ -27,7 +27,7 @@ export function PrimaryInsightCard({ theme, guidance }: PrimaryInsightCardProps)
           <span className="text-amber-400 text-sm font-medium">Peak Window</span>
         </div>
         <p className="text-white">
-          {format(theme.peak_window.start, 'MMM d')} – {format(theme.peak_window.end, 'MMM d')}
+          {format(new Date(theme.peak_window.start), 'MMM d')} – {format(new Date(theme.peak_window.end), 'MMM d')}
         </p>
         <p className="text-slate-400 text-sm mt-1">
           Expect the highest intensity during this period

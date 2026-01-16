@@ -54,8 +54,8 @@ export function UpcomingPreview({ windows }: UpcomingPreviewProps) {
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2 mb-1">
                 <span className="text-white text-sm font-medium">
-                  {format(window.start_date, 'MMM d')} –{' '}
-                  {format(window.end_date, 'MMM d')}
+                  {format(new Date(window.start_date), 'MMM d')} –{' '}
+                  {format(new Date(window.end_date), 'MMM d')}
                 </span>
                 <span className="text-slate-500 text-xs">
                   {trendIcons[window.intensity_trend]}

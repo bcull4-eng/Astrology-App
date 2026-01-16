@@ -27,7 +27,7 @@ export function ThemeHeader({ theme }: ThemeHeaderProps) {
       <div className="flex items-center gap-2 text-slate-400 text-sm mb-2">
         <span>Today</span>
         <span>•</span>
-        <span>Updated {format(theme.last_updated_at, 'MMM d')}</span>
+        <span>Updated {format(new Date(theme.last_updated_at), 'MMM d')}</span>
       </div>
 
       <h1 className="text-3xl font-bold text-white mb-3">{theme.theme_name}</h1>
@@ -52,7 +52,7 @@ export function ThemeHeader({ theme }: ThemeHeaderProps) {
 
         {/* Date range */}
         <div className="text-slate-400 text-sm">
-          Active until {format(theme.end_date, 'MMM d')}
+          Active until {format(new Date(theme.end_date), 'MMM d')}
         </div>
       </div>
     </div>

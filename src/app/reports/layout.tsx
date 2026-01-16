@@ -1,12 +1,12 @@
 import Link from 'next/link'
 import { requireUser } from '@/lib/auth'
 
-export default async function SynastryLayout({
+export default async function ReportsLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
-  await requireUser()
+  const user = await requireUser()
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-900 to-slate-950">
@@ -31,13 +31,13 @@ export default async function SynastryLayout({
             </Link>
             <Link
               href="/reports"
-              className="text-slate-300 hover:text-white transition-colors text-sm"
+              className="text-white transition-colors text-sm font-medium"
             >
               Reports
             </Link>
             <Link
               href="/synastry"
-              className="text-white transition-colors text-sm"
+              className="text-slate-300 hover:text-white transition-colors text-sm"
             >
               Synastry
             </Link>

@@ -13,6 +13,10 @@ export type {
   FocusArea,
   Location,
   NotificationPreferences,
+  RelationshipStatus,
+  LifePhase,
+  PrimaryConcern,
+  PersonalizationData,
 } from './user'
 
 // Astrology Entities
@@ -58,3 +62,23 @@ export type {
   UpdateDecision,
   DashboardElement,
 } from './dashboard'
+
+// Learning/Courses
+export type {
+  Course,
+  Module,
+  Lesson,
+  LessonBlock,
+  PersonalizedDataKey,
+  QuizQuestion,
+  LearningProgress,
+} from './learning'
+
+// Reports
+export type {
+  ReportSlug,
+  ReportDefinition,
+  ReportSection,
+  GeneratedReport,
+  ReportPurchase,
+} from './reports'

@@ -1,12 +1,12 @@
 import Link from 'next/link'
 import { requireUser } from '@/lib/auth'
 
-export default async function DashboardLayout({
+export default async function AstrologistLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
-  const user = await requireUser()
+  await requireUser()
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-900 to-slate-950">
@@ -43,15 +43,9 @@ export default async function DashboardLayout({
             </Link>
             <Link
               href="/astrologist"
-              className="text-slate-300 hover:text-white transition-colors text-sm"
+              className="text-white transition-colors text-sm"
             >
               Astrologist
-            </Link>
-            <Link
-              href="/birth-details"
-              className="text-slate-300 hover:text-white transition-colors text-sm"
-            >
-              Birth Details
             </Link>
             <Link
               href="/settings"
@@ -63,8 +57,8 @@ export default async function DashboardLayout({
         </div>
       </header>
 
-      {/* Main content */}
-      <main className="max-w-4xl mx-auto px-4 py-8">{children}</main>
+      {/* Main content - full height for chat */}
+      <main className="h-[calc(100vh-65px)]">{children}</main>
     </div>
   )
 }

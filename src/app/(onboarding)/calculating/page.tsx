@@ -71,6 +71,22 @@ export default function CalculatingPage() {
         sessionStorage.setItem('natal-chart', JSON.stringify(data.chart))
         sessionStorage.setItem('birth-location', JSON.stringify(data.location))
 
+        // Save to database for persistence (don't block on this)
+        fetch('/api/user/birth-data', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            birthDate,
+            birthTime: birthTime || null,
+            birthTimeConfidence,
+            birthPlace: data.location,
+            natalChart: data.chart,
+          }),
+        }).catch((err) => {
+          // Log but don't block - sessionStorage still works as fallback
+          console.error('Failed to persist birth data:', err)
+        })
+
         // Complete progress and navigate
         setProgress(100)
         setTimeout(() => {

@@ -72,6 +72,9 @@ export type {
   PersonalizedDataKey,
   QuizQuestion,
   LearningProgress,
+  ChatMessage,
+  ComparisonItem,
+  InteractiveOption,
 } from './learning'
 
 // Reports
@@ -82,3 +85,12 @@ export type {
   GeneratedReport,
   ReportPurchase,
 } from './reports'
+
+// AI Astrologist
+export type {
+  CharacterId,
+  Character,
+  AstrologistMessage,
+  AstrologistConversation,
+  AstrologistState,
+} from './astrologist'

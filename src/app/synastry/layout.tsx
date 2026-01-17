@@ -42,6 +42,12 @@ export default async function SynastryLayout({
               Synastry
             </Link>
             <Link
+              href="/astrologist"
+              className="text-slate-300 hover:text-white transition-colors text-sm"
+            >
+              Astrologist
+            </Link>
+            <Link
               href="/settings"
               className="text-slate-300 hover:text-white transition-colors text-sm"
             >

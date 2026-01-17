@@ -51,8 +51,22 @@ export default function DashboardPage() {
   useEffect(() => {
     async function fetchDashboardData() {
       try {
-        // Get natal chart from session storage (saved during onboarding)
-        const chartData = sessionStorage.getItem('natal-chart')
+        // First try to load from database (persisted data)
+        let chartData = sessionStorage.getItem('natal-chart')
+
+        try {
+          const birthDataResponse = await fetch('/api/user/birth-data')
+          if (birthDataResponse.ok) {
+            const { birthData } = await birthDataResponse.json()
+            if (birthData?.natalChart) {
+              // Use persisted data and update sessionStorage
+              chartData = JSON.stringify(birthData.natalChart)
+              sessionStorage.setItem('natal-chart', chartData)
+            }
+          }
+        } catch {
+          // Database fetch failed, fall back to sessionStorage
+        }
 
         if (chartData) {
           const chart = JSON.parse(chartData)

@@ -1,0 +1,5 @@
+export { AIAssistantProvider } from './ai-assistant-provider'
+export { FloatingAIButton } from './floating-button'
+export { AssistantModal } from './assistant-modal'
+export { SelectionPopup } from './selection-popup'
+export { UpgradePrompt } from './upgrade-prompt'

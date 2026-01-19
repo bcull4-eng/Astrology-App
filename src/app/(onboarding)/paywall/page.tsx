@@ -10,6 +10,9 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
+import { StatsBar } from '@/components/social-proof/stats-bar'
+import { TestimonialCard } from '@/components/social-proof/testimonial-card'
+import { getTestimonialsByFeature } from '@/components/social-proof/testimonials-data'
 
 type PlanType = 'monthly' | 'annual' | 'lifetime'
 
@@ -162,6 +165,11 @@ export default function PaywallPage() {
         <p className="text-indigo-200/60">
           Get personalized daily guidance, AI chat, and deep astrological insights
         </p>
+
+        {/* Social Proof Stats */}
+        <div className="mt-6">
+          <StatsBar variant="minimal" />
+        </div>
       </div>
 
       {/* Plan Cards */}
@@ -297,6 +305,14 @@ export default function PaywallPage() {
             </div>
           ))}
         </div>
+      </div>
+
+      {/* Featured Testimonial */}
+      <div className="mt-8">
+        <TestimonialCard
+          testimonial={getTestimonialsByFeature('dashboard')[0]}
+          variant="featured"
+        />
       </div>
 
       {/* Trust signals */}

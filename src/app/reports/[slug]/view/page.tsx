@@ -12,7 +12,7 @@ import { useParams, useRouter, notFound } from 'next/navigation'
 import Link from 'next/link'
 import { getReportBySlug } from '@/lib/reports'
 import { generateReportV2, type GeneratedReportV2 } from '@/lib/report-generator-v2'
-import type { NatalChart, ReportSlug } from '@/types'
+import type { NatalChart, ReportSlug, ZodiacSign } from '@/types'
 import {
   ElementBalance,
   ModalityBalance,
@@ -22,6 +22,65 @@ import {
   ReportTip,
   ReportSummaryCard,
 } from '@/components/reports/report-visuals'
+
+// Helper to create a demo partner chart from birth data
+// In production, this would call a proper chart calculation API
+function createPartnerChart(partnerData: { name: string; birthDate: string; birthTime?: string; birthPlace: string }): NatalChart {
+  // Extract month/day to estimate sun sign (simplified)
+  const date = new Date(partnerData.birthDate)
+  const month = date.getMonth() + 1
+  const day = date.getDate()
+
+  // Simple sun sign calculation
+  const getSunSign = (m: number, d: number): ZodiacSign => {
+    if ((m === 3 && d >= 21) || (m === 4 && d <= 19)) return 'aries'
+    if ((m === 4 && d >= 20) || (m === 5 && d <= 20)) return 'taurus'
+    if ((m === 5 && d >= 21) || (m === 6 && d <= 20)) return 'gemini'
+    if ((m === 6 && d >= 21) || (m === 7 && d <= 22)) return 'cancer'
+    if ((m === 7 && d >= 23) || (m === 8 && d <= 22)) return 'leo'
+    if ((m === 8 && d >= 23) || (m === 9 && d <= 22)) return 'virgo'
+    if ((m === 9 && d >= 23) || (m === 10 && d <= 22)) return 'libra'
+    if ((m === 10 && d >= 23) || (m === 11 && d <= 21)) return 'scorpio'
+    if ((m === 11 && d >= 22) || (m === 12 && d <= 21)) return 'sagittarius'
+    if ((m === 12 && d >= 22) || (m === 1 && d <= 19)) return 'capricorn'
+    if ((m === 1 && d >= 20) || (m === 2 && d <= 18)) return 'aquarius'
+    return 'pisces'
+  }
+
+  const sunSign = getSunSign(month, day)
+
+  // Generate other placements based on patterns (simplified demo)
+  const signs: ZodiacSign[] = ['aries', 'taurus', 'gemini', 'cancer', 'leo', 'virgo', 'libra', 'scorpio', 'sagittarius', 'capricorn', 'aquarius', 'pisces']
+  const sunIndex = signs.indexOf(sunSign)
+
+  return {
+    user_id: 'partner',
+    calculated_at: new Date(),
+    placements: [
+      { planet: 'sun', sign: sunSign, degree: day % 30, house: 1, is_retrograde: false },
+      { planet: 'moon', sign: signs[(sunIndex + 4) % 12], degree: 15, house: 4, is_retrograde: false },
+      { planet: 'mercury', sign: signs[(sunIndex + 1) % 12], degree: 8, house: 3, is_retrograde: false },
+      { planet: 'venus', sign: signs[(sunIndex + 2) % 12], degree: 20, house: 5, is_retrograde: false },
+      { planet: 'mars', sign: signs[(sunIndex + 3) % 12], degree: 5, house: 8, is_retrograde: false },
+      { planet: 'jupiter', sign: signs[(sunIndex + 5) % 12], degree: 12, house: 9, is_retrograde: false },
+      { planet: 'saturn', sign: signs[(sunIndex + 6) % 12], degree: 25, house: 10, is_retrograde: false },
+    ],
+    houses: [],
+    ascendant: { sign: signs[(sunIndex + 6) % 12], degree: 15 },
+    midheaven: { sign: signs[(sunIndex + 9) % 12], degree: 10 },
+  }
+}
+
+// Generation step messages for the loading screen
+const generationSteps = [
+  { message: 'Analyzing your birth chart...', icon: '🌟' },
+  { message: 'Calculating planetary positions...', icon: '🪐' },
+  { message: 'Mapping house placements...', icon: '🏠' },
+  { message: 'Interpreting cosmic alignments...', icon: '✨' },
+  { message: 'Generating personalized insights...', icon: '📜' },
+  { message: 'Weaving your celestial story...', icon: '🌙' },
+  { message: 'Finalizing your report...', icon: '💫' },
+]
 
 export default function ReportViewPage() {
   const params = useParams()
@@ -34,6 +93,26 @@ export default function ReportViewPage() {
   const [showTableOfContents, setShowTableOfContents] = useState(true)
   const [showGlossary, setShowGlossary] = useState(false)
   const [activeGlossaryTerm, setActiveGlossaryTerm] = useState<string | null>(null)
+  const [currentStep, setCurrentStep] = useState(0)
+  const [completedSteps, setCompletedSteps] = useState<number[]>([])
+
+  // Animate through generation steps
+  useEffect(() => {
+    if (!loading) return
+
+    const stepInterval = setInterval(() => {
+      setCurrentStep((prev) => {
+        const next = prev + 1
+        if (next < generationSteps.length) {
+          setCompletedSteps((completed) => [...completed, prev])
+          return next
+        }
+        return prev
+      })
+    }, 800)
+
+    return () => clearInterval(stepInterval)
+  }, [loading])
 
   useEffect(() => {
     const reportDef = getReportBySlug(slug)
@@ -52,44 +131,60 @@ export default function ReportViewPage() {
 
     const chart = JSON.parse(chartData) as NatalChart
 
-    // Generate the report
-    try {
-      let generatedReport: GeneratedReportV2
+    // Get user name from chart or session
+    const userData = sessionStorage.getItem('user-data')
+    const userName = userData ? JSON.parse(userData).name || 'You' : 'You'
 
-      if (reportDef.requiresPartner && pendingReport) {
-        const { partnerData } = JSON.parse(pendingReport)
-        // For demo, create a simple partner chart based on their birth date
-        const partnerChart: NatalChart = {
-          user_id: 'partner',
-          calculated_at: new Date(),
-          placements: [
-            { planet: 'sun', sign: 'libra', degree: 15, house: 7, is_retrograde: false },
-            { planet: 'moon', sign: 'pisces', degree: 22, house: 12, is_retrograde: false },
-            { planet: 'mercury', sign: 'virgo', degree: 8, house: 6, is_retrograde: false },
-            { planet: 'venus', sign: 'leo', degree: 20, house: 5, is_retrograde: false },
-            { planet: 'mars', sign: 'scorpio', degree: 5, house: 8, is_retrograde: false },
-          ],
-          houses: [],
-          ascendant: { sign: 'libra', degree: 15 },
-          midheaven: { sign: 'cancer', degree: 10 },
+    // Simulate generation time for better UX (minimum 5 seconds to show steps)
+    const generateReport = async () => {
+      // Wait for animation to complete
+      await new Promise((resolve) => setTimeout(resolve, 5600))
+
+      // Generate the report
+      try {
+        let generatedReport: GeneratedReportV2
+
+        // Handle reports that require partner data
+        if (reportDef.requiresPartner) {
+          if (!pendingReport) {
+            // No partner data provided - redirect back to purchase page
+            console.error('Partner report requested but no partner data found')
+            router.push(`/reports/${slug}`)
+            return
+          }
+
+          const { partnerData } = JSON.parse(pendingReport)
+
+          if (!partnerData || !partnerData.name) {
+            console.error('Partner data incomplete')
+            router.push(`/reports/${slug}`)
+            return
+          }
+
+          // Create partner chart based on their birth date (demo implementation)
+          // In production, this would be calculated from actual birth data
+          const partnerChart: NatalChart = createPartnerChart(partnerData)
+
+          generatedReport = generateReportV2(slug, chart, userName, partnerChart, partnerData.name)
+        } else {
+          generatedReport = generateReportV2(slug, chart, userName)
         }
-        generatedReport = generateReportV2(slug, chart, 'You', partnerChart, partnerData?.name || 'Your Partner')
-      } else {
-        generatedReport = generateReportV2(slug, chart, 'You')
+
+        setReport(generatedReport)
+        // Expand all sections by default
+        setExpandedSections(new Set(generatedReport.sections.map((s) => s.id)))
+
+        // Clear the pending report
+        sessionStorage.removeItem('pending-report')
+      } catch (error) {
+        console.error('Failed to generate report:', error)
+        router.push(`/reports/${slug}`)
+      } finally {
+        setLoading(false)
       }
-
-      setReport(generatedReport)
-      // Expand all sections by default
-      setExpandedSections(new Set(generatedReport.sections.map((s) => s.id)))
-
-      // Clear the pending report
-      sessionStorage.removeItem('pending-report')
-    } catch (error) {
-      console.error('Failed to generate report:', error)
-      router.push(`/reports/${slug}`)
-    } finally {
-      setLoading(false)
     }
+
+    generateReport()
   }, [slug, router])
 
   const toggleSection = (sectionId: string) => {
@@ -115,17 +210,154 @@ export default function ReportViewPage() {
   }
 
   if (loading) {
+    const reportDef = getReportBySlug(slug)
+    const progress = ((currentStep + 1) / generationSteps.length) * 100
+
     return (
-      <div className="flex items-center justify-center py-20">
-        <div className="text-center">
-          <div className="w-16 h-16 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin mx-auto mb-6" />
-          <h2 className="text-xl font-semibold text-white mb-2">Generating your report...</h2>
-          <p className="text-slate-400">Analyzing your birth chart and creating personalized insights</p>
-          <div className="mt-6 max-w-xs mx-auto">
-            <div className="h-2 bg-slate-700 rounded-full overflow-hidden">
-              <div className="h-full bg-indigo-500 rounded-full animate-pulse" style={{ width: '60%' }} />
+      <div className="min-h-[80vh] flex items-center justify-center py-12">
+        <div className="w-full max-w-lg">
+          {/* Animated cosmic background */}
+          <div className="relative mb-8">
+            {/* Outer glow ring */}
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="w-40 h-40 rounded-full bg-gradient-to-r from-indigo-500/20 via-purple-500/20 to-pink-500/20 animate-pulse" />
             </div>
-            <p className="text-xs text-slate-500 mt-2">This may take a moment...</p>
+
+            {/* Spinning constellation */}
+            <div className="relative w-32 h-32 mx-auto">
+              <div className="absolute inset-0 animate-spin" style={{ animationDuration: '20s' }}>
+                {[0, 45, 90, 135, 180, 225, 270, 315].map((angle, i) => (
+                  <div
+                    key={angle}
+                    className="absolute w-2 h-2 rounded-full bg-indigo-400"
+                    style={{
+                      top: '50%',
+                      left: '50%',
+                      transform: `rotate(${angle}deg) translateY(-50px)`,
+                      opacity: 0.3 + (i % 3) * 0.2,
+                    }}
+                  />
+                ))}
+              </div>
+
+              {/* Inner circle with icon */}
+              <div className="absolute inset-4 flex items-center justify-center">
+                <div
+                  className={`w-24 h-24 rounded-full bg-gradient-to-br ${reportDef?.gradient || 'from-indigo-500 to-purple-600'} flex items-center justify-center shadow-2xl`}
+                >
+                  <span className="text-4xl animate-bounce" style={{ animationDuration: '2s' }}>
+                    {generationSteps[currentStep]?.icon || '✨'}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Report title */}
+          <div className="text-center mb-8">
+            <h2 className="text-2xl font-bold text-white mb-2">
+              Crafting Your {reportDef?.title || 'Report'}
+            </h2>
+            <p className="text-slate-400 text-sm">
+              We're analyzing the stars to create your personalized insights
+            </p>
+          </div>
+
+          {/* Progress steps */}
+          <div className="bg-slate-800/50 border border-slate-700/50 rounded-2xl p-6 mb-6">
+            <div className="space-y-3">
+              {generationSteps.map((step, index) => {
+                const isCompleted = completedSteps.includes(index)
+                const isCurrent = index === currentStep
+                const isPending = index > currentStep
+
+                return (
+                  <div
+                    key={index}
+                    className={`flex items-center gap-3 transition-all duration-500 ${
+                      isPending ? 'opacity-40' : 'opacity-100'
+                    }`}
+                  >
+                    {/* Step indicator */}
+                    <div
+                      className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 transition-all duration-300 ${
+                        isCompleted
+                          ? 'bg-emerald-500/20 text-emerald-400'
+                          : isCurrent
+                            ? 'bg-indigo-500/20 text-indigo-400 ring-2 ring-indigo-500/50'
+                            : 'bg-slate-700/50 text-slate-500'
+                      }`}
+                    >
+                      {isCompleted ? (
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M5 13l4 4L19 7"
+                          />
+                        </svg>
+                      ) : (
+                        <span className="text-sm">{step.icon}</span>
+                      )}
+                    </div>
+
+                    {/* Step text */}
+                    <span
+                      className={`text-sm transition-colors duration-300 ${
+                        isCompleted
+                          ? 'text-emerald-400'
+                          : isCurrent
+                            ? 'text-white font-medium'
+                            : 'text-slate-500'
+                      }`}
+                    >
+                      {step.message}
+                    </span>
+
+                    {/* Loading dots for current step */}
+                    {isCurrent && (
+                      <div className="flex gap-1 ml-auto">
+                        <div
+                          className="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-bounce"
+                          style={{ animationDelay: '0ms' }}
+                        />
+                        <div
+                          className="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-bounce"
+                          style={{ animationDelay: '150ms' }}
+                        />
+                        <div
+                          className="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-bounce"
+                          style={{ animationDelay: '300ms' }}
+                        />
+                      </div>
+                    )}
+                  </div>
+                )
+              })}
+            </div>
+          </div>
+
+          {/* Progress bar */}
+          <div className="mb-4">
+            <div className="flex items-center justify-between text-xs text-slate-500 mb-2">
+              <span>Progress</span>
+              <span>{Math.round(progress)}%</span>
+            </div>
+            <div className="h-2 bg-slate-700 rounded-full overflow-hidden">
+              <div
+                className="h-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-full transition-all duration-500 ease-out"
+                style={{ width: `${progress}%` }}
+              />
+            </div>
+          </div>
+
+          {/* Fun fact while waiting */}
+          <div className="text-center">
+            <p className="text-xs text-slate-500 italic">
+              Did you know? Your birth chart contains over 40 unique planetary aspects that shape your
+              personality.
+            </p>
           </div>
         </div>
       </div>

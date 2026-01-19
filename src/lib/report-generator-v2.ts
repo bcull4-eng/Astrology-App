@@ -2414,6 +2414,17 @@ This year invites you to focus on ${getYearFocus(sunSign, sunData)}. The planeta
             { term: 'Transit', definition: 'When a planet\'s current position forms an aspect to a planet in your birth chart, activating that area of your life.' },
             { term: 'Solar Return', definition: 'The moment each year when the Sun returns to its exact position at your birth - your astrological birthday.' },
           ],
+          visual: {
+            type: 'element-balance',
+            title: 'Your Elemental Energy This Year',
+            data: {
+              Fire: sunData.element === 'Fire' ? '35' : signData[moonSign].element === 'Fire' ? '25' : '15',
+              Earth: sunData.element === 'Earth' ? '35' : signData[moonSign].element === 'Earth' ? '25' : '15',
+              Air: sunData.element === 'Air' ? '35' : signData[moonSign].element === 'Air' ? '25' : '15',
+              Water: sunData.element === 'Water' ? '35' : signData[moonSign].element === 'Water' ? '25' : '15',
+            },
+          },
+          tip: `Save this report and revisit it at the start of each month to see what themes are emerging. The insights become more meaningful as the year unfolds.`,
         },
         {
           title: 'Key Dates & Power Periods',
@@ -2454,6 +2465,16 @@ ${getCareerChallenges(sunSign, moonSign)}
 
 **Advice for Your Sign:**
 As a ${sunSign}, your professional superpowers include ${sunData.strengths.slice(0, 2).join(' and ')}. Lean into these strengths while being mindful of ${sunData.challenges[0].toLowerCase()}.`,
+          tip: `Your Sun sign energy is strongest when the Sun transits ${sunSign} (around your birthday). Use this annual power boost for major career initiatives.`,
+          visual: {
+            type: 'modality-balance',
+            title: 'Your Professional Energy Style',
+            data: {
+              Cardinal: sunData.modality === 'Cardinal' ? '45' : '20',
+              Fixed: sunData.modality === 'Fixed' ? '45' : '20',
+              Mutable: sunData.modality === 'Mutable' ? '45' : '20',
+            },
+          },
         },
         {
           title: 'Navigating Workplace Dynamics',
@@ -2496,6 +2517,7 @@ ${currentYear} offers you a chance to step back and consider where you want to b
 
 **Networking and Visibility:**
 Your ${risingSign} Rising shapes how you present professionally. In ${currentYear}, focus on ${signData[risingSign].element === 'Fire' ? 'making bold first impressions and taking visible leadership roles' : signData[risingSign].element === 'Earth' ? 'building your reputation through consistent, quality work' : signData[risingSign].element === 'Air' ? 'expanding your professional network and sharing your ideas' : 'deepening authentic connections and building trust over time'}.`,
+          tip: `Mercury retrograde periods are excellent for revisiting old professional contacts, reviewing contracts, and refining your career strategy rather than launching new initiatives.`,
         },
       ],
     },
@@ -2520,6 +2542,12 @@ ${getCouplesAdvice(sunSign, moonSign, currentYear)}
 
 **Venus Influences:**
 Venus, planet of love, will particularly affect your chart when it ${getVenusInfluence(sunSign, currentYear)}. Mark these dates for important relationship conversations or romantic gestures.`,
+          tip: `Venus retrograde (happening every 18 months) is a time to review relationships, not start new ones. Use these periods for deepening existing bonds or healing past relationship wounds.`,
+          visual: {
+            type: 'chart-wheel',
+            title: 'Your Relationship Planets',
+            data: { sun: sunSign, moon: moonSign, rising: risingSign },
+          },
         },
         {
           title: 'Understanding Your Love Nature',
@@ -5042,6 +5070,1440 @@ function getMonthlyMantra(sun: Sign, moon: Sign, month: number): string {
   return `I trust my ${signData[sun].archetype} path and honour my ${signData[moon].keywords[0]} heart.`
 }
 
+// ============================================
+// PAST LIFE & KARMA REPORT GENERATOR
+// ============================================
+
+const southNodePastLifeThemes: Record<Sign, {
+  pastLifeRole: string
+  pastLifeGifts: string[]
+  pastLifeChallenges: string[]
+  karmicPatterns: string[]
+  ancestralWounds: string
+  pastLifeEras: string[]
+}> = {
+  Aries: {
+    pastLifeRole: 'warrior, soldier, pioneer, or independent leader',
+    pastLifeGifts: ['courage and bravery', 'self-reliance', 'quick decision-making', 'physical prowess'],
+    pastLifeChallenges: ['violence or aggression', 'selfishness', 'isolation through independence', 'unfinished battles'],
+    karmicPatterns: ['rushing into conflict', 'putting self first to the point of harm', 'difficulty trusting others'],
+    ancestralWounds: 'wounds related to war, violence, or the pressure to be strong and self-sufficient',
+    pastLifeEras: ['ancient battlefields', 'frontier settlements', 'revolutionary periods', 'warrior cultures'],
+  },
+  Taurus: {
+    pastLifeRole: 'farmer, banker, landowner, or artisan focused on material security',
+    pastLifeGifts: ['building wealth', 'creating beauty', 'patience and persistence', 'sensory appreciation'],
+    pastLifeChallenges: ['hoarding or greed', 'resistance to change', 'over-attachment to possessions', 'stubbornness'],
+    karmicPatterns: ['clinging to security', 'valuing things over people', 'fear of loss driving decisions'],
+    ancestralWounds: 'wounds related to poverty, famine, or loss of land and resources',
+    pastLifeEras: ['agricultural societies', 'banking dynasties', 'artisan guilds', 'times of scarcity'],
+  },
+  Gemini: {
+    pastLifeRole: 'messenger, scribe, trader, or teacher of knowledge',
+    pastLifeGifts: ['communication skills', 'mental agility', 'networking ability', 'curiosity and learning'],
+    pastLifeChallenges: ['deception or gossip', 'scattered focus', 'using words as weapons', 'superficial connections'],
+    karmicPatterns: ['avoiding depth for breadth', 'nervous energy', 'difficulty with commitment'],
+    ancestralWounds: 'wounds related to silencing, censorship, or the misuse of information',
+    pastLifeEras: ['medieval courts', 'trading routes', 'scholarly monasteries', 'ages of exploration'],
+  },
+  Cancer: {
+    pastLifeRole: 'mother figure, caretaker, tribal elder, or keeper of home and family',
+    pastLifeGifts: ['nurturing abilities', 'emotional intelligence', 'creating safe spaces', 'preserving traditions'],
+    pastLifeChallenges: ['over-attachment to family', 'emotional manipulation', 'difficulty letting go', 'victimhood'],
+    karmicPatterns: ['smothering through care', 'living through others', 'using guilt as control'],
+    ancestralWounds: 'wounds related to abandonment, loss of home, or family separation',
+    pastLifeEras: ['matriarchal cultures', 'times of migration', 'domestic service', 'tribal societies'],
+  },
+  Leo: {
+    pastLifeRole: 'royalty, performer, leader, or creative visionary',
+    pastLifeGifts: ['natural authority', 'creative expression', 'inspiring others', 'generous spirit'],
+    pastLifeChallenges: ['pride and ego', 'need for constant recognition', 'abuse of power', 'dramatic reactions'],
+    karmicPatterns: ['needing to be center stage', 'difficulty sharing spotlight', 'wounded pride driving actions'],
+    ancestralWounds: 'wounds related to humiliation, loss of status, or creative suppression',
+    pastLifeEras: ['royal courts', 'theatrical periods', 'aristocratic families', 'creative renaissances'],
+  },
+  Virgo: {
+    pastLifeRole: 'healer, servant, craftsperson, or perfectionist artisan',
+    pastLifeGifts: ['healing abilities', 'attention to detail', 'service orientation', 'practical skills'],
+    pastLifeChallenges: ['self-criticism', 'martyrdom', 'perfectionism paralysis', 'body shame'],
+    karmicPatterns: ['never feeling good enough', 'serving to the point of self-neglect', 'criticism as defense'],
+    ancestralWounds: 'wounds related to servitude, illness, or never measuring up',
+    pastLifeEras: ['healing temples', 'servant classes', 'craft guilds', 'monastic orders'],
+  },
+  Libra: {
+    pastLifeRole: 'diplomat, partner, artist, or mediator focused on relationships',
+    pastLifeGifts: ['creating harmony', 'aesthetic beauty', 'partnership skills', 'fairness and justice'],
+    pastLifeChallenges: ['codependency', 'losing self in others', 'avoiding conflict at all costs', 'superficiality'],
+    karmicPatterns: ['defining self through relationships', 'peace-keeping at personal expense', 'indecision'],
+    ancestralWounds: 'wounds related to injustice, betrayal in partnership, or loss of identity',
+    pastLifeEras: ['diplomatic courts', 'artistic movements', 'arranged marriages', 'justice systems'],
+  },
+  Scorpio: {
+    pastLifeRole: 'shaman, occultist, power broker, or someone involved with death and transformation',
+    pastLifeGifts: ['psychological depth', 'transformative power', 'seeing through illusions', 'regenerative ability'],
+    pastLifeChallenges: ['manipulation and control', 'obsession', 'revenge and jealousy', 'power abuse'],
+    karmicPatterns: ['trust issues', 'using intensity to control', 'difficulty letting go of pain'],
+    ancestralWounds: 'wounds related to betrayal, abuse of power, or traumatic loss',
+    pastLifeEras: ['mystery schools', 'power struggles', 'times of plague or death', 'occult practices'],
+  },
+  Sagittarius: {
+    pastLifeRole: 'philosopher, teacher, explorer, or religious figure',
+    pastLifeGifts: ['wisdom and teaching', 'broad perspective', 'faith and optimism', 'cultural understanding'],
+    pastLifeChallenges: ['dogmatism', 'preachiness', 'escapism through travel', 'commitment avoidance'],
+    karmicPatterns: ['running from problems', 'imposing beliefs', 'promising more than delivering'],
+    ancestralWounds: 'wounds related to religious persecution, exile, or the silencing of truth',
+    pastLifeEras: ['religious crusades', 'great explorations', 'philosophical academies', 'missionary work'],
+  },
+  Capricorn: {
+    pastLifeRole: 'authority figure, builder, ambitious achiever, or stern patriarch',
+    pastLifeGifts: ['building lasting structures', 'discipline and ambition', 'worldly wisdom', 'responsibility'],
+    pastLifeChallenges: ['cold authority', 'workaholism', 'status obsession', 'emotional repression'],
+    karmicPatterns: ['sacrificing joy for achievement', 'using status as identity', 'difficulty with vulnerability'],
+    ancestralWounds: 'wounds related to failure, loss of reputation, or crushing responsibility',
+    pastLifeEras: ['building empires', 'corporate dynasties', 'political power', 'times of austerity'],
+  },
+  Aquarius: {
+    pastLifeRole: 'revolutionary, visionary, outsider, or humanitarian ahead of their time',
+    pastLifeGifts: ['innovative thinking', 'humanitarian vision', 'independence', 'group consciousness'],
+    pastLifeChallenges: ['alienation', 'emotional detachment', 'rebellion for its own sake', 'superiority'],
+    karmicPatterns: ['feeling like an outsider', 'prioritizing ideals over individuals', 'emotional unavailability'],
+    ancestralWounds: 'wounds related to being ostracized, persecution for beliefs, or exile from community',
+    pastLifeEras: ['revolutionary periods', 'scientific discoveries', 'utopian experiments', 'times of social change'],
+  },
+  Pisces: {
+    pastLifeRole: 'mystic, artist, healer, or sacrifice figure',
+    pastLifeGifts: ['spiritual connection', 'artistic inspiration', 'compassion and empathy', 'transcendence'],
+    pastLifeChallenges: ['martyrdom', 'escapism', 'victim patterns', 'boundary dissolution'],
+    karmicPatterns: ['sacrificing self for others', 'escaping through substances or fantasy', 'porous boundaries'],
+    ancestralWounds: 'wounds related to spiritual persecution, addiction, or the burden of collective suffering',
+    pastLifeEras: ['monastic life', 'artistic bohemia', 'healing sanctuaries', 'times of collective trauma'],
+  },
+}
+
+const northNodeEvolutionThemes: Record<Sign, {
+  soulPurpose: string
+  evolutionaryGoals: string[]
+  growthQualities: string[]
+  lifeDestiny: string
+  keyLessons: string[]
+  manifestionPath: string
+}> = {
+  Aries: {
+    soulPurpose: 'to develop courage, independence, and authentic self-assertion',
+    evolutionaryGoals: ['taking initiative', 'standing alone when necessary', 'trusting your instincts', 'leading with courage'],
+    growthQualities: ['self-reliance', 'directness', 'bravery', 'pioneering spirit'],
+    lifeDestiny: 'becoming a trailblazer who inspires others through courageous action',
+    keyLessons: ['it\'s okay to put yourself first sometimes', 'your desires matter', 'conflict can be healthy'],
+    manifestionPath: 'through bold action, healthy competition, and championing your own needs',
+  },
+  Taurus: {
+    soulPurpose: 'to develop stability, self-worth, and appreciation of simple pleasures',
+    evolutionaryGoals: ['building inner security', 'enjoying the physical world', 'developing patience', 'creating tangible results'],
+    growthQualities: ['groundedness', 'persistence', 'sensory presence', 'material competence'],
+    lifeDestiny: 'becoming a stabilizing force who creates lasting beauty and value',
+    keyLessons: ['slow and steady wins', 'you are enough as you are', 'the physical world is sacred'],
+    manifestionPath: 'through patient building, appreciating beauty, and trusting your own worth',
+  },
+  Gemini: {
+    soulPurpose: 'to develop curiosity, communication skills, and mental flexibility',
+    evolutionaryGoals: ['learning continuously', 'sharing information', 'connecting diverse ideas', 'staying mentally agile'],
+    growthQualities: ['adaptability', 'communication', 'intellectual curiosity', 'social connection'],
+    lifeDestiny: 'becoming a bridge between people and ideas, a messenger of knowledge',
+    keyLessons: ['every perspective has value', 'learning is lifelong', 'connection requires communication'],
+    manifestionPath: 'through teaching, writing, speaking, and building diverse connections',
+  },
+  Cancer: {
+    soulPurpose: 'to develop emotional depth, nurturing abilities, and a sense of belonging',
+    evolutionaryGoals: ['creating emotional safety', 'nurturing self and others', 'honoring feelings', 'building home'],
+    growthQualities: ['emotional intelligence', 'caring nature', 'intuition', 'protective instincts'],
+    lifeDestiny: 'becoming a source of emotional security and nurturance for yourself and others',
+    keyLessons: ['vulnerability is strength', 'home is where you make it', 'feelings are valid guides'],
+    manifestionPath: 'through creating family (chosen or biological), nurturing others, and honoring emotions',
+  },
+  Leo: {
+    soulPurpose: 'to develop self-expression, creativity, and generous leadership',
+    evolutionaryGoals: ['expressing your unique self', 'creating from the heart', 'inspiring others', 'leading with warmth'],
+    growthQualities: ['creativity', 'confidence', 'generosity', 'playfulness'],
+    lifeDestiny: 'becoming a creative leader who inspires joy and expression in others',
+    keyLessons: ['you deserve to shine', 'creativity is essential', 'give generously from your gifts'],
+    manifestionPath: 'through creative expression, leadership, and celebrating your unique light',
+  },
+  Virgo: {
+    soulPurpose: 'to develop discernment, practical skills, and meaningful service',
+    evolutionaryGoals: ['refining abilities', 'serving effectively', 'improving systems', 'healing through practical care'],
+    growthQualities: ['precision', 'helpfulness', 'analytical thinking', 'humility'],
+    lifeDestiny: 'becoming a healer or helper who improves life through practical service',
+    keyLessons: ['details matter', 'service is sacred', 'perfection is a process'],
+    manifestionPath: 'through developing expertise, serving others, and refining your craft',
+  },
+  Libra: {
+    soulPurpose: 'to develop partnership skills, balance, and aesthetic appreciation',
+    evolutionaryGoals: ['learning through relationship', 'creating harmony', 'developing diplomacy', 'appreciating beauty'],
+    growthQualities: ['fairness', 'grace', 'cooperation', 'aesthetic sense'],
+    lifeDestiny: 'becoming a harmonizer who creates beauty and balance in relationships',
+    keyLessons: ['we need each other', 'compromise isn\'t weakness', 'beauty uplifts the soul'],
+    manifestionPath: 'through partnership, creating beauty, and facilitating harmony',
+  },
+  Scorpio: {
+    soulPurpose: 'to develop emotional depth, transformative power, and authentic intimacy',
+    evolutionaryGoals: ['embracing transformation', 'diving deep emotionally', 'claiming personal power', 'achieving intimacy'],
+    growthQualities: ['intensity', 'psychological insight', 'regenerative ability', 'magnetic presence'],
+    lifeDestiny: 'becoming a transformer who helps others through their own depths',
+    keyLessons: ['death precedes rebirth', 'vulnerability enables intimacy', 'power comes from truth'],
+    manifestionPath: 'through deep emotional work, transformation, and helping others heal',
+  },
+  Sagittarius: {
+    soulPurpose: 'to develop wisdom, faith, and a broader perspective on life',
+    evolutionaryGoals: ['expanding horizons', 'finding meaning', 'developing faith', 'teaching wisdom'],
+    growthQualities: ['optimism', 'philosophical depth', 'adventurousness', 'inspirational ability'],
+    lifeDestiny: 'becoming a wisdom teacher who expands others\' horizons',
+    keyLessons: ['there\'s always more to learn', 'meaning matters', 'faith sustains'],
+    manifestionPath: 'through exploration, teaching, and sharing your philosophical insights',
+  },
+  Capricorn: {
+    soulPurpose: 'to develop mastery, responsibility, and achievement in the world',
+    evolutionaryGoals: ['building something lasting', 'taking responsibility', 'achieving mastery', 'becoming an authority'],
+    growthQualities: ['discipline', 'ambition', 'integrity', 'maturity'],
+    lifeDestiny: 'becoming a master builder who creates lasting structures in the world',
+    keyLessons: ['discipline creates freedom', 'responsibility is empowering', 'legacy matters'],
+    manifestionPath: 'through patient building, taking responsibility, and achieving worldly mastery',
+  },
+  Aquarius: {
+    soulPurpose: 'to develop individuality, humanitarian vision, and contribution to collective',
+    evolutionaryGoals: ['embracing uniqueness', 'serving humanity', 'innovating', 'building community'],
+    growthQualities: ['originality', 'humanitarian concern', 'progressive thinking', 'group consciousness'],
+    lifeDestiny: 'becoming an innovative contributor to the collective good',
+    keyLessons: ['different is valuable', 'we\'re all connected', 'the future needs visionaries'],
+    manifestionPath: 'through innovation, community building, and humanitarian contribution',
+  },
+  Pisces: {
+    soulPurpose: 'to develop compassion, spiritual connection, and transcendence',
+    evolutionaryGoals: ['developing faith', 'embracing unity', 'creating through imagination', 'healing through compassion'],
+    growthQualities: ['compassion', 'imagination', 'spiritual sensitivity', 'artistic ability'],
+    lifeDestiny: 'becoming a channel for spiritual healing and creative inspiration',
+    keyLessons: ['we are all one', 'imagination creates reality', 'surrender is strength'],
+    manifestionPath: 'through creative expression, spiritual practice, and compassionate service',
+  },
+}
+
+const saturnKarmicLessons: Record<Sign, {
+  karmicFear: string
+  lifeLesson: string
+  masteryChallenges: string[]
+  wisdomGained: string
+  healingPath: string
+}> = {
+  Aries: { karmicFear: 'being seen as weak or dependent', lifeLesson: 'learning that true strength includes vulnerability', masteryChallenges: ['patience', 'considering others', 'sustained effort'], wisdomGained: 'disciplined courage and leadership that uplifts others', healingPath: 'balancing assertion with cooperation' },
+  Taurus: { karmicFear: 'scarcity, loss of security, change', lifeLesson: 'learning that true security comes from within', masteryChallenges: ['flexibility', 'non-attachment', 'trusting life'], wisdomGained: 'building lasting value without clinging', healingPath: 'developing inner stability regardless of external circumstances' },
+  Gemini: { karmicFear: 'being misunderstood or mentally inadequate', lifeLesson: 'learning to communicate with depth and responsibility', masteryChallenges: ['focus', 'commitment', 'speaking truth'], wisdomGained: 'becoming a wise communicator and teacher', healingPath: 'using words to heal rather than scatter' },
+  Cancer: { karmicFear: 'abandonment, emotional rejection, not belonging', lifeLesson: 'learning to nurture without dependency', masteryChallenges: ['emotional boundaries', 'self-nurturing', 'letting go'], wisdomGained: 'becoming a secure base for self and others', healingPath: 'healing family patterns through conscious parenting of self' },
+  Leo: { karmicFear: 'being invisible, unimportant, or ordinary', lifeLesson: 'learning that true worth isn\'t measured by recognition', masteryChallenges: ['humility', 'sharing spotlight', 'self-validation'], wisdomGained: 'authentic leadership that doesn\'t need applause', healingPath: 'finding inner confidence independent of external praise' },
+  Virgo: { karmicFear: 'imperfection, criticism, being useless', lifeLesson: 'learning that imperfection is part of wholeness', masteryChallenges: ['self-acceptance', 'rest', 'receiving help'], wisdomGained: 'humble mastery that serves without martyrdom', healingPath: 'accepting yourself while still growing' },
+  Libra: { karmicFear: 'conflict, being alone, injustice', lifeLesson: 'learning to find balance within before seeking it without', masteryChallenges: ['decisiveness', 'healthy conflict', 'self-partnership'], wisdomGained: 'creating harmony from inner equilibrium', healingPath: 'developing a strong sense of self within partnerships' },
+  Scorpio: { karmicFear: 'betrayal, loss of control, vulnerability', lifeLesson: 'learning to trust and surrender control', masteryChallenges: ['forgiveness', 'releasing grudges', 'transparency'], wisdomGained: 'transformative power that heals rather than wounds', healingPath: 'using intensity for healing rather than control' },
+  Sagittarius: { karmicFear: 'being trapped, meaninglessness, losing faith', lifeLesson: 'learning that freedom includes responsibility', masteryChallenges: ['commitment', 'follow-through', 'respecting limits'], wisdomGained: 'wisdom that is grounded and applicable', healingPath: 'finding meaning within limitations' },
+  Capricorn: { karmicFear: 'failure, being disrespected, inadequacy', lifeLesson: 'learning that success isn\'t the measure of worth', masteryChallenges: ['work-life balance', 'emotional expression', 'asking for help'], wisdomGained: 'authentic achievement that honors the whole self', healingPath: 'integrating ambition with emotional fulfillment' },
+  Aquarius: { karmicFear: 'being ordinary, rejected by group, losing freedom', lifeLesson: 'learning that belonging doesn\'t threaten individuality', masteryChallenges: ['emotional intimacy', 'consistency', 'following rules sometimes'], wisdomGained: 'innovative contribution that serves the collective', healingPath: 'balancing uniqueness with connection' },
+  Pisces: { karmicFear: 'being too much, losing boundaries, harsh reality', lifeLesson: 'learning to be spiritual and practical', masteryChallenges: ['boundaries', 'discipline', 'staying grounded'], wisdomGained: 'compassion that is boundaried and sustainable', healingPath: 'bringing spiritual vision into earthly reality' },
+}
+
+export function generatePastLifeKarmaReportV2(chart: NatalChart, userName: string): GeneratedReportV2 {
+  const sun = getPlacement(chart, 'sun')
+  const moon = getPlacement(chart, 'moon')
+  const saturn = getPlacement(chart, 'saturn')
+  const northNode = chart.placements.find(p => p.planet.toLowerCase().includes('node') && !p.planet.toLowerCase().includes('south'))
+  const southNode = chart.placements.find(p => p.planet.toLowerCase().includes('south'))
+  const pluto = getPlacement(chart, 'pluto')
+  const chiron = getPlacement(chart, 'chiron')
+
+  const sunSign = capitalizeSign(sun?.sign || 'aries')
+  const moonSign = capitalizeSign(moon?.sign || 'aries')
+  const saturnSign = capitalizeSign(saturn?.sign || 'aries')
+  const risingSign = capitalizeSign(chart.ascendant?.sign || 'aries')
+
+  // Derive nodes from chart or estimate from moon
+  const southNodeSign = southNode ? capitalizeSign(southNode.sign) : capitalizeSign(moon?.sign || 'aries')
+  const northNodeSign = northNode ? capitalizeSign(northNode.sign) : getOppositeSign(southNodeSign)
+  const plutoSign = capitalizeSign(pluto?.sign || 'scorpio')
+  const chironSign = capitalizeSign(chiron?.sign || 'aries')
+
+  const southNodeData = southNodePastLifeThemes[southNodeSign]
+  const northNodeData = northNodeEvolutionThemes[northNodeSign]
+  const saturnData = saturnKarmicLessons[saturnSign]
+
+  // Count retrograde planets for karmic emphasis
+  const retrogrades = chart.placements.filter(p => p.is_retrograde)
+  const retrogradeCount = retrogrades.length
+
+  const sections: ReportSectionV2[] = [
+    {
+      id: 'soul-journey-overview',
+      title: 'Your Soul\'s Journey',
+      icon: '🌙',
+      subsections: [
+        {
+          title: 'Understanding Your Karmic Blueprint',
+          content: `${userName}, your birth chart is not just a snapshot of planetary positions—it\'s a map of your soul\'s journey across lifetimes. The positions of the lunar nodes, Saturn, Pluto, and retrograde planets reveal the karmic patterns, past life themes, and evolutionary goals you carry into this incarnation.\n\nYour chart reveals a soul that has traveled through many experiences, accumulating both wisdom and unfinished business. With ${retrogradeCount} retrograde planets in your chart, you carry ${retrogradeCount > 3 ? 'significant' : retrogradeCount > 1 ? 'some' : 'subtle'} karmic material requiring integration in this lifetime.\n\nThis report will illuminate where you\'ve been, what you\'ve mastered, what still needs healing, and most importantly—where your soul is heading in its evolutionary journey.`,
+          terms: [
+            { term: 'Karma', definition: 'The spiritual principle of cause and effect across lifetimes—not punishment, but unfinished lessons seeking completion.' },
+            { term: 'Soul Contract', definition: 'Pre-incarnation agreements about lessons to learn, people to meet, and growth to achieve in this lifetime.' },
+          ],
+        },
+        {
+          title: 'The Karmic Axis: Your Past and Future',
+          content: `The most direct indicator of past life themes in your chart is the Nodal Axis—the points where the Moon\'s orbit crosses the ecliptic. Your South Node in ${southNodeSign} represents where you\'ve been, the skills you\'ve mastered, and the patterns you\'re releasing. Your North Node in ${northNodeSign} represents where you\'re going—your soul\'s growth direction.\n\nThis axis creates a tension: the South Node feels comfortable but limiting, while the North Node feels unfamiliar but fulfilling. Your soul\'s work is to honor the gifts of your South Node while courageously moving toward your North Node destiny.\n\nWith Saturn in ${saturnSign}, there\'s an additional karmic layer—Saturn represents the specific lessons your soul committed to master in this lifetime, often involving themes of discipline, responsibility, and earned wisdom.`,
+          visual: {
+            type: 'planetary-strength',
+            title: 'Your Karmic Indicators',
+            data: {
+              'South Node': southNodeSign,
+              'North Node': northNodeSign,
+              'Saturn': saturnSign,
+              'Pluto': plutoSign,
+              'Chiron': chironSign,
+              'Retrogrades': String(retrogradeCount),
+            },
+          },
+        },
+      ],
+    },
+    {
+      id: 'south-node-past',
+      title: 'The South Node: Your Past Lives',
+      icon: '⏳',
+      subsections: [
+        {
+          title: `South Node in ${southNodeSign}: Where You\'ve Been`,
+          content: `Your South Node in ${southNodeSign} reveals that in past incarnations, you likely lived as a ${southNodeData.pastLifeRole}. These lives left you with mastered skills and deeply ingrained patterns.\n\nYou may have experienced lifetimes in ${southNodeData.pastLifeEras.join(', ')}. The echoes of these experiences live in your muscle memory, your instinctive reactions, and the things that feel "natural" to you—sometimes too natural, becoming default behaviors that limit your growth.\n\nThis placement suggests souls memories of both achievement and struggle. You came into this life already knowing how to ${southNodeData.pastLifeGifts[0]} and ${southNodeData.pastLifeGifts[1]}, but also carrying tendencies toward ${southNodeData.pastLifeChallenges[0]} and ${southNodeData.pastLifeChallenges[1]}.`,
+        },
+        {
+          title: 'Past Life Gifts You Carry',
+          content: `The South Node isn\'t all baggage—it\'s also treasure. Your past lives gifted you with:\n\n${southNodeData.pastLifeGifts.map(gift => `• **${gift.charAt(0).toUpperCase() + gift.slice(1)}**: This comes naturally to you because you\'ve done it before. Trust it, but don\'t hide in it.`).join('\n\n')}\n\nThese gifts are meant to be used in service of your North Node purpose. They become problematic only when you rely on them exclusively, avoiding the growth your soul truly seeks.`,
+          tip: `Your past life gifts are like tools in a toolkit—use them when appropriate, but don\'t mistake the tools for the purpose.`,
+        },
+        {
+          title: 'Karmic Patterns to Release',
+          content: `Your South Node also reveals patterns that may have served you in past lives but now hold you back:\n\n${southNodeData.karmicPatterns.map(pattern => `• **${pattern.charAt(0).toUpperCase() + pattern.slice(1)}**: You may notice this tendency arising automatically, especially under stress. It\'s familiar, but it\'s no longer serving your evolution.`).join('\n\n')}\n\nThese patterns often emerge most strongly in moments of fear or challenge. They\'re your soul\'s "default settings" from past lives—comfortable, but limiting. Awareness is the first step toward choosing differently.`,
+        },
+        {
+          title: 'Ancestral Wounds',
+          content: `Beyond personal past lives, your South Node connects you to ancestral karma—${southNodeData.ancestralWounds}.\n\nYou may carry these wounds even without conscious memory of their origin. They might manifest as inexplicable fears, strong reactions to certain situations, or patterns that seem to run in your family.\n\nHealing these ancestral patterns is part of your soul\'s work. As you heal them in yourself, you heal them for your lineage—past, present, and future.`,
+        },
+      ],
+    },
+    {
+      id: 'north-node-destiny',
+      title: 'The North Node: Your Soul\'s Destiny',
+      icon: '⭐',
+      subsections: [
+        {
+          title: `North Node in ${northNodeSign}: Where You\'re Going`,
+          content: `Your North Node in ${northNodeSign} represents ${northNodeData.soulPurpose}. This is the direction of your soul\'s evolution—unfamiliar but deeply fulfilling when you lean into it.\n\nUnlike your South Node skills, North Node qualities may feel awkward or scary at first. You haven\'t "practiced" them for lifetimes. But every time you move toward your North Node, you experience a sense of rightness, even if accompanied by fear.\n\nYour destiny path: ${northNodeData.lifeDestiny}.`,
+        },
+        {
+          title: 'Your Evolutionary Goals',
+          content: `Your soul chose to develop these qualities in this lifetime:\n\n${northNodeData.evolutionaryGoals.map(goal => `• **${goal.charAt(0).toUpperCase() + goal.slice(1)}**: Each step in this direction, however small, fulfills your soul\'s purpose.`).join('\n\n')}\n\nThese goals aren\'t about achieving external success—they\'re about becoming who your soul intended you to be. Success in these areas will feel meaningful in a way that South Node achievements never quite do.`,
+        },
+        {
+          title: 'Key Life Lessons',
+          content: `Your soul came to learn:\n\n${northNodeData.keyLessons.map(lesson => `• "${lesson}"`).join('\n\n')}\n\nThese lessons will present themselves repeatedly through circumstances, relationships, and inner promptings. Each time you embrace them, you accelerate your soul\'s evolution.`,
+        },
+        {
+          title: 'Your Manifestation Path',
+          content: `You will manifest your destiny ${northNodeData.manifestionPath}.\n\nThe North Node isn\'t just about internal development—it\'s about how your growth contributes to the world. As you develop your ${northNodeSign} qualities, you naturally become a ${northNodeData.growthQualities.join(', ')} presence in others\' lives.\n\n**Practical Steps:**\n• Seek opportunities that require ${northNodeData.growthQualities[0]}\n• Practice ${northNodeData.growthQualities[1]} even when uncomfortable\n• Surround yourself with people who embody ${northNodeSign} energy\n• When facing choices, ask: "Which option moves me toward my North Node?"`,
+          tip: `When life feels meaningful but challenging, you\'re probably on your North Node path. When life feels easy but empty, you\'re probably defaulting to your South Node.`,
+        },
+      ],
+    },
+    {
+      id: 'saturn-karma',
+      title: 'Saturn: Your Karmic Taskmaster',
+      icon: '🪐',
+      subsections: [
+        {
+          title: `Saturn in ${saturnSign}: Your Soul\'s Commitment`,
+          content: `Saturn in your chart represents the specific karmic curriculum your soul signed up for. In ${saturnSign}, you committed to mastering ${saturnData.lifeLesson}.\n\nThis isn\'t punishment—it\'s precision. Your soul knew this lesson was needed for your evolution and arranged for Saturn to ensure you wouldn\'t skip it. Saturn challenges are hard, but they produce the most lasting growth.\n\nYour deepest karmic fear: ${saturnData.karmicFear}. This fear often drives unconscious behavior until you face it directly.`,
+        },
+        {
+          title: 'The Mastery Challenges',
+          content: `Saturn in ${saturnSign} asks you to develop:\n\n${saturnData.masteryChallenges.map(challenge => `• **${challenge.charAt(0).toUpperCase() + challenge.slice(1)}**: This likely doesn\'t come naturally. That\'s exactly why your soul chose it.`).join('\n\n')}\n\nThese challenges often intensify during Saturn transits (especially the Saturn Return around ages 29 and 58). But even in quiet times, Saturn\'s lessons operate in the background, shaping your character through consistent effort.`,
+        },
+        {
+          title: 'The Wisdom You\'re Building',
+          content: `Through Saturn\'s rigorous curriculum, you\'re developing: ${saturnData.wisdomGained}.\n\nThis wisdom isn\'t theoretical—it\'s earned through lived experience. Others will eventually seek you out for guidance in exactly the areas where you struggled most. Your wounds become your wisdom.\n\n**Your Healing Path**: ${saturnData.healingPath}`,
+        },
+      ],
+    },
+    {
+      id: 'twelfth-house',
+      title: 'The 12th House: Hidden Karma',
+      icon: '🌊',
+      subsections: [
+        {
+          title: 'The House of Past Life Memory',
+          content: `The 12th house in astrology is called the house of "hidden enemies, secret sorrows, and self-undoing"—but in karmic terms, it\'s the house of past life memory, unconscious patterns, and spiritual connection.\n\nPlanets in your 12th house represent energies that operated in past lives and now work from behind the scenes of consciousness. They can manifest as inexplicable talents, unexplained fears, or patterns that seem to "happen to you."\n\nThe sign on your 12th house cusp and any planets there reveal the specific flavors of your hidden karma.`,
+        },
+        {
+          title: 'Accessing 12th House Wisdom',
+          content: `The 12th house is the doorway to your soul\'s memory. You access it through:\n\n• **Dreams**: Pay attention to recurring dreams—they often contain past life themes\n• **Meditation**: Quiet mind practices open the door to unconscious wisdom\n• **Creative expression**: Art, music, and writing can channel 12th house material\n• **Solitude**: Time alone allows buried patterns to surface\n• **Therapy or healing work**: Safe containers for exploring the unconscious\n\nWhat emerges from 12th house work isn\'t always comfortable, but it\'s always illuminating. This is where karma hides until you\'re ready to see it.`,
+          tip: `Keep a dream journal. Your 12th house speaks most clearly while you sleep.`,
+        },
+      ],
+    },
+    {
+      id: 'retrograde-planets',
+      title: 'Retrograde Planets: Unfinished Business',
+      icon: '🔄',
+      subsections: [
+        {
+          title: 'Karmic Significance of Retrogrades',
+          content: `You have ${retrogradeCount} retrograde planet${retrogradeCount !== 1 ? 's' : ''} in your natal chart. ${retrogradeCount > 3 ? 'This is a significant amount, suggesting a soul with much unfinished business to complete.' : retrogradeCount > 1 ? 'This indicates some specific past life themes requiring attention.' : retrogradeCount === 1 ? 'This points to one particular area of karmic review.' : 'With few retrogrades, your karmic focus may be on new lessons rather than reviewing old ones.'}\n\nRetrograde planets represent energies that didn\'t fully complete their work in past lives. They turn inward, asking for review, revision, and deeper understanding rather than external action. These planets didn\'t quite finish their evolutionary lessons in previous incarnations, so they return in this lifetime asking for deeper consideration.\n\nWhen a planet is retrograde at birth, its energy doesn\'t flow outward naturally. Instead, it cycles back, revisits, reconsiders. This isn\'t weakness—it\'s depth. Retrograde planets often produce the most profound mastery once their lessons are integrated, precisely because they\'ve had to work harder to understand their domain.`,
+        },
+        {
+          title: 'Your Retrograde Planets',
+          content: retrogrades.length > 0
+            ? `${retrogrades.map(r => `**${r.planet.charAt(0).toUpperCase() + r.planet.slice(1)} Retrograde**: The energy of ${r.planet} is turned inward for you, suggesting past life material around ${getRetrogradeMeaning(r.planet)}. This energy may feel blocked or require extra conscious effort to express externally.\n\nIn past lives, you may have misused this ${r.planet} energy, over-relied on it without integrating its deeper wisdom, or had it somehow wounded or suppressed. Now, your soul asks you to develop a more conscious, intentional relationship with ${r.planet}\'s themes. The external world may not easily reflect this energy back to you—you must cultivate it from within first.`).join('\n\n')}`
+            : `With no natal retrograde planets, your soul may be focused more on new experiences than reviewing past ones. This doesn\'t mean you carry no karma—rather, your karmic work may be more about the Nodes, Saturn, and house placements than about retrograde review.\n\nYou\'ll still encounter retrograde energies through transits, which will periodically ask you to slow down and reflect in specific areas of life. These transit retrogrades offer opportunities to develop the internal processing that those with natal retrogrades do naturally.`,
+        },
+        {
+          title: 'Working With Retrograde Energy',
+          content: `Whether you have many retrogrades or few, understanding how to work with this energy is valuable:\n\n**For Natal Retrogrades:**\n• Don\'t force external results—let the internal process complete first\n• Journal and reflect on themes related to your retrograde planets\n• Notice when you feel "blocked" in these areas—it\'s often a call to go deeper\n• Use creative expression to externalize what the retrograde turns inward\n• Be patient—retrograde mastery often comes later in life\n\n**For Transit Retrogrades:**\n• Use retrograde periods for review, not new initiatives in that planet\'s domain\n• Finish old projects rather than starting new ones\n• Revisit and revise rather than push forward\n• Pay attention to what "comes back around"—this is karmic material surfacing\n\nThe most evolved expression of retrograde energy is wisdom that comes from having deeply processed and integrated a planetary function, rather than just acting it out unconsciously.`,
+          tip: `When a retrograde planet returns to its natal position by transit, it often triggers significant karmic review and completion opportunities.`,
+        },
+      ],
+    },
+    {
+      id: 'pluto-transformation',
+      title: 'Pluto: Your Transformation Karma',
+      icon: '🦅',
+      subsections: [
+        {
+          title: `Pluto in ${plutoSign}: Power and Rebirth`,
+          content: `Pluto in your chart reveals where you carry karma around power, control, transformation, and the cycle of death and rebirth. In ${plutoSign}, your soul has deep experience with ${signData[plutoSign].element === 'Fire' ? 'wielding personal power, sometimes destructively, and transforming identity through crisis' : signData[plutoSign].element === 'Earth' ? 'material power, resource control, and transformation through loss or gain of security' : signData[plutoSign].element === 'Air' ? 'mental power, manipulation through information, and transformation through ideas' : 'emotional power, psychic intensity, and transformation through deep feeling'}.\n\nPluto\'s house position (where it falls in your chart) shows the life area where this transformative karma plays out. But the sign reveals the style—how you\'ve approached power in past lives, and how you may need to transform your relationship with it in this one.\n\n**Your Pluto Theme**: ${plutoSign} Pluto suggests past life experience with ${signData[plutoSign].archetype.toLowerCase()} energy taken to extreme intensity. You may have been victim or perpetrator of ${plutoSign} energy misused. Now you\'re learning to wield this power consciously, neither suppressing nor being controlled by it.`,
+        },
+        {
+          title: 'Past Life Power Dynamics',
+          content: `With Pluto in ${plutoSign}, your past life power stories likely involved:\n\n${signData[plutoSign].element === 'Fire' ? '• Positions of leadership that became tyrannical\n• Identity crises that led to complete reinvention\n• Battles of will where winning destroyed as much as losing\n• Creative power that consumed rather than created\n• The need to be special or important at any cost' : signData[plutoSign].element === 'Earth' ? '• Control of resources used for manipulation\n• Attachment to possessions that prevented necessary endings\n• Physical power over others or being physically overpowered\n• Transformation through loss of everything "solid"\n• The slow building of empires that eventually crumbled' : signData[plutoSign].element === 'Air' ? '• Knowledge used as weapon rather than wisdom\n• Mental manipulation and psychological games\n• Ideas that became dogma, then destroyed their creators\n• Communication that exposed or silenced\n• Intellectual pride that preceded downfall' : '• Emotional intensity that drowned self or others\n• Psychic abilities used for control\n• Secrets and hidden agendas that eventually surfaced\n• Healing power that became wound or wound that became healing\n• Emotional manipulation in intimate relationships'}\n\nThese aren\'t meant to frighten—they\'re meant to illuminate. Understanding your Pluto karma helps you recognise when old patterns are repeating and choose transformation over destruction.`,
+        },
+        {
+          title: 'Your Transformation Path',
+          content: `Pluto asks for death and rebirth—not physical, but psychological. The parts of you that need to die are the shadow expressions of your ${plutoSign} placement: the ways you\'ve misused power, the things you\'ve clung to that prevent growth, the defenses that once protected but now imprison.\n\n**Signs you\'re avoiding Pluto work:**\n• Feeling stuck in the same patterns for years\n• Power struggles that never resolve\n• Intense fear around certain themes that you won\'t examine\n• Attraction to/repulsion from Plutonian themes (death, taboo, intensity)\n• Trying to control what can\'t be controlled\n\n**Signs you\'re doing your Pluto work:**\n• Willingness to let go of what no longer serves\n• Ability to sit with intensity without acting out\n• Using power for transformation rather than domination\n• Healing your own wounds rather than projecting them\n• Rising from losses more integrated than before\n\nPluto transformation is not comfortable, but it\'s deeply liberating. Each time you die to an old version of yourself and allow something new to emerge, you complete karma and lighten your soul\'s load.`,
+          tip: `Pluto\'s gift is phoenix energy—the ability to transform completely and rise from ashes. Trust the destruction; it makes space for rebirth.`,
+        },
+      ],
+    },
+    {
+      id: 'chiron-wound',
+      title: 'Chiron: The Wounded Healer',
+      icon: '💊',
+      subsections: [
+        {
+          title: `Chiron in ${chironSign}: Your Core Wound`,
+          content: `Chiron reveals the wound you carry that cannot be fully healed but can be transformed into wisdom and healing ability for others. In ${chironSign}, your core wound relates to ${signData[chironSign].keywords[0]} and ${signData[chironSign].keywords[1]}.\n\nThis isn\'t a wound you chose carelessly—it\'s precisely the wound your soul needed to develop the specific healing gift you\'re meant to offer the world. The pain you\'ve experienced in ${chironSign} themes has given you a unique understanding that no amount of study could provide.\n\n**The Chiron Paradox**: You may find you can help others with exactly what you struggle with yourself. You might be a brilliant advisor on the very issues that challenge you most. This is Chiron\'s signature—the wound that won\'t fully close becomes a spring of wisdom for others.`,
+        },
+        {
+          title: 'Past Life Origins of Your Wound',
+          content: `Chiron wounds often originate in past lives. With Chiron in ${chironSign}, you may have experienced:\n\n• Past lives where your ${signData[chironSign].keywords[0]} was damaged or denied\n• Times when you tried to express ${chironSign} qualities and were punished\n• Incarnations where you caused wounds around ${chironSign} themes and now carry the karma\n• Lives where you were a healer of ${chironSign} issues but burned out or were martyred\n• Generational trauma in your family line around these themes\n\nThe wound often shows up early in this lifetime—childhood experiences that mirror the past life origin. You may have felt "different" in ${chironSign} areas from a young age, or experienced rejection or pain precisely where ${chironSign} themes live.\n\nUnderstanding the karmic origin of your wound doesn\'t erase it, but it does help you stop taking it personally. This wound is part of your soul\'s curriculum, not a random misfortune.`,
+        },
+        {
+          title: 'Transforming Wound Into Gift',
+          content: `The evolution of Chiron moves through stages:\n\n**Stage 1 - Denial**: Pretending the wound doesn\'t exist or isn\'t important\n**Stage 2 - Pain**: Fully feeling the wound, often through triggering experiences  \n**Stage 3 - Seeking Healing**: Trying everything to "fix" the wound\n**Stage 4 - Acceptance**: Realising this wound won\'t fully heal, but its pain can lessen\n**Stage 5 - Meaning**: Understanding the wound as teacher and gift-giver\n**Stage 6 - Service**: Using your wound wisdom to help others with similar struggles\n\n${userName}, wherever you are in this journey is exactly right. There\'s no rushing Chiron work—it unfolds across the lifetime. But knowing the destination helps: you\'re not meant to be "fixed." You\'re meant to transform your wound into a gift that only you can give.\n\n**Your Healing Gift**: Because of your ${chironSign} Chiron, you have unique capacity to help others with ${signData[chironSign].keywords.slice(0, 2).join(' and ')}. You understand their pain from the inside. You know what doesn\'t help (because you\'ve tried it). You can hold space for their process because you know it can\'t be rushed.`,
+          tip: `The activities that help you manage your Chiron wound are often the activities you\'re meant to teach or facilitate for others.`,
+        },
+      ],
+    },
+    {
+      id: 'karmic-timing',
+      title: 'Karmic Timing: When Past Lives Surface',
+      icon: '⏰',
+      subsections: [
+        {
+          title: 'Saturn Returns: Your Karmic Checkpoints',
+          content: `Saturn returns to its natal position approximately every 29.5 years, marking major karmic checkpoints:\n\n**First Saturn Return (ages 28-30)**: The karma of your youth culminates. Whatever you\'ve avoided or built incorrectly must be faced. Relationships, careers, identities that aren\'t aligned with your soul\'s purpose often end or transform. It\'s intense, but it clears karma from your first three decades and sets the foundation for authentic adulthood.\n\n**Second Saturn Return (ages 57-59)**: A harvest of your middle years. What have you built? What wisdom have you gained? This return often brings questions about legacy and meaning. Karma from your career years resolves; you see clearly what mattered and what didn\'t.\n\n**Third Saturn Return (ages 86-88)**: For those who reach this age, it\'s a completion of Saturn\'s lessons and often a preparation for transition. Past life karma may surface for final resolution.\n\nWith your Saturn in ${saturnSign}, your Saturn returns specifically involve lessons of ${saturnData.lifeLesson}. These periods intensify your core karmic curriculum.`,
+        },
+        {
+          title: 'Nodal Returns: Your Soul\'s Recalibration',
+          content: `The Lunar Nodes return to their natal positions every 18.6 years:\n\n**First Nodal Return (age 18-19)**: Your first major choice point between South Node security and North Node growth. Often coincides with leaving home, choosing education or career paths, first serious relationships. The choices you make here echo for years.\n\n**Second Nodal Return (age 37-38)**: A "course correction" opportunity. Are you living your North Node? Or have you retreated to South Node comfort? This return often brings experiences that force you back toward your destiny path.\n\n**Third Nodal Return (age 56-57)**: Near your second Saturn return, this creates a powerful karmic convergence. The question becomes: have you done what you came here to do? There\'s still time, but the urgency increases.\n\nBetween returns, the Nodes make important transits to sensitive points in your chart, often bringing fated-feeling encounters and decisions. People you meet during nodal transits often have karmic significance.`,
+        },
+        {
+          title: 'Recognising Karmic Moments',
+          content: `Not every difficult time is karma, but some moments have unmistakable karmic weight. Signs of a karmic moment:\n\n• **Intensity out of proportion**: The situation feels bigger than its apparent cause\n• **Deja vu or familiarity**: You feel like you\'ve been here before\n• **Stuck patterns breaking**: Something that "always happens" suddenly changes\n• **Fated meetings**: Encountering people who change your life direction\n• **Forced choice points**: Circumstances requiring you to choose between comfortable and growth\n• **Old wounds surfacing**: Past pain returns not to torture but to heal\n• **Dreams increasing**: Your unconscious works overtime during karmic periods\n• **Synchronicities multiplying**: The universe seems to be sending messages\n\nWhen you recognise a karmic moment, treat it with the seriousness it deserves. These aren\'t times for default reactions—they\'re opportunities for soul evolution. Pause, reflect, choose consciously. The decisions you make during karmic windows have ripple effects across timelines.`,
+          tip: `Keep a journal during major transits and returns. Looking back, you\'ll see the karmic patterns clearly.`,
+        },
+      ],
+    },
+    {
+      id: 'past-life-glimpses',
+      title: 'Accessing Past Life Memory',
+      icon: '👁️',
+      subsections: [
+        {
+          title: 'Ways Past Lives Surface',
+          content: `Past life memories rarely arrive as complete movies of other times. More often, they surface as:\n\n**Inexplicable Knowledge**: Skills or knowledge you have without learning in this life. Natural abilities in music, languages, healing, or crafts that seem to come from nowhere.\n\n**Irrational Fears**: Phobias that don\'t connect to this life\'s experiences. Fear of water might indicate a drowning death; fear of fire, a burning. These fears often relate to how past lives ended.\n\n**Recurring Dreams**: Dreams set in other times, with other identities, often carrying emotional weight that lingers after waking.\n\n**Strong Reactions to Times/Places**: Being drawn to or repelled by certain historical periods, cultures, or locations without logical explanation.\n\n**Relationship Deja Vu**: Meeting someone and feeling certain you\'ve known them before. Soul group members often incarnate together.\n\n**Childhood Memories**: Some children describe past life memories before socialisation teaches them such things are "impossible."\n\nYour ${southNodeSign} South Node suggests you might have particularly vivid memories or affinities related to ${southNodeData.pastLifeEras.slice(0, 2).join(' and ')}. Pay attention when these themes arise in dreams, media preferences, or inexplicable interests.`,
+        },
+        {
+          title: 'Past Life Exploration Exercises',
+          content: `If you wish to explore past life themes more directly, try these approaches:\n\n**Meditation Journeys**:\n1. In deep relaxation, ask to be shown a past life relevant to a current challenge\n2. Notice what images, feelings, or impressions arise without forcing\n3. Let the "movie" play without editing; you can analyse later\n4. Thank whatever guides or memories came through\n5. Journal immediately upon returning to normal consciousness\n\n**Dream Incubation**:\nBefore sleep, ask clearly: "Show me a past life that explains [current issue]."\nKeep paper by your bed; write whatever you remember upon waking.\nRepeat for several nights; themes often build.\n\n**Trigger Exploration**:\nWhen you notice an irrational fear or inexplicable attraction:\n- Sit with the feeling rather than pushing it away\n- Ask it to show you its origin\n- Let images, impressions, or body sensations arise\n- This is your unconscious communicating; listen without judgment\n\n**Professional Support**:\nPast life regression therapy with a skilled practitioner can access memories more directly. Choose someone who creates safety and helps process whatever emerges.`,
+        },
+        {
+          title: 'Healing Prompts for Your Specific Karma',
+          content: `Based on your chart, here are specific prompts for past life exploration:\n\n**South Node in ${southNodeSign}**:\n"Show me a past life where I lived as a ${southNodeData.pastLifeRole}. What did I learn? What patterns did I develop that I still carry?"\n\n**Saturn in ${saturnSign}**:\n"Show me a past life where I experienced ${saturnData.karmicFear}. How did that fear begin? What wisdom did I gain from facing it?"\n\n**Your Core Wound (Chiron in ${chironSign})**:\n"Show me the origin of my wound around ${signData[chironSign].keywords[0]}. What happened? What was I meant to learn? How can I heal this now?"\n\n**Karmic Relationships**:\n"Show me a past life with [person you feel karmic connection to]. What was our relationship? What are we completing now?"\n\nApproach these explorations with curiosity rather than attachment to specific outcomes. Sometimes what we learn is unexpected but exactly what our soul needed to understand.`,
+          tip: `Past life work is about insight for this life, not escape from it. Whatever you discover should help you live more consciously now.`,
+        },
+      ],
+    },
+    {
+      id: 'karmic-relationships',
+      title: 'Karmic Relationship Patterns',
+      icon: '🔗',
+      subsections: [
+        {
+          title: 'How Past Lives Affect Your Relationships',
+          content: `Your South Node in ${southNodeSign} and Saturn in ${saturnSign} create specific patterns in how you relate to others.\n\nFrom your South Node, you may attract partners who trigger your ${southNodeData.karmicPatterns[0]} pattern, or who themselves embody ${southNodeSign} energy in unhealthy ways. These relationships feel intensely familiar but often don\'t promote growth.\n\nFrom Saturn, you may experience ${saturnData.karmicFear} in relationships, leading to patterns of ${saturnSign === 'Cancer' || saturnSign === 'Scorpio' ? 'emotional walls' : saturnSign === 'Libra' || saturnSign === 'Leo' ? 'people-pleasing or performing' : 'control or distance'}.`,
+        },
+        {
+          title: 'Recognizing Soul Contracts',
+          content: `Some relationships in your life are pre-arranged soul contracts—agreements made between lifetimes to meet and catalyze growth. Signs of a soul contract relationship:\n\n• Instant recognition or familiarity\n• Intense reactions (positive or negative) from the start\n• The relationship forces you to face your shadows\n• You can\'t seem to fully leave even when it\'s difficult\n• The relationship relates to your North or South Node themes\n\nSoul contract relationships aren\'t always romantic—they can be friendships, family members, or even brief encounters that change your life direction.`,
+        },
+        {
+          title: 'Healing Karmic Relationship Patterns',
+          content: `To evolve your relationship karma:\n\n• **Notice the pattern**: What type of person or dynamic do you repeatedly attract?\n• **Trace the origin**: Connect it to your South Node or Saturn themes\n• **Make conscious choices**: When you feel the old pull, pause before reacting\n• **Seek North Node partnerships**: Choose people who support your growth direction\n• **Do your own work**: The most powerful way to change relationship karma is to heal yourself\n\nAs you heal your patterns, you\'ll naturally attract healthier connections. The karma releases, and new relationship possibilities emerge.`,
+          tip: `If you keep attracting the same type of partner or situation, you\'re being shown a karmic pattern asking for healing.`,
+        },
+      ],
+    },
+    {
+      id: 'past-life-talents',
+      title: 'Past Life Talents to Reclaim',
+      icon: '🎁',
+      subsections: [
+        {
+          title: 'Gifts From Other Lifetimes',
+          content: `Your soul didn\'t arrive empty-handed. Based on your South Node in ${southNodeSign} and your planetary placements, you carry these past life talents:\n\n${southNodeData.pastLifeGifts.map(gift => `• **${gift.charAt(0).toUpperCase() + gift.slice(1)}**: You may have noticed unusual aptitude in this area, especially as a child before conditioning set in.`).join('\n\n')}\n\nWith your ${sunSign} Sun, you also carry creative abilities related to ${signData[sunSign].giftToWorld.toLowerCase()}. These talents often emerge naturally when you stop trying and simply allow.`,
+        },
+        {
+          title: 'Activating Your Soul Gifts',
+          content: `To fully reclaim your past life talents:\n\n• **Trust early interests**: What fascinated you as a child often connects to past life mastery\n• **Notice what comes easily**: Unusual abilities are often remembered rather than learned\n• **Release perfectionism**: Your soul already knows how; let it flow without judgment\n• **Combine old and new**: Use South Node gifts in service of North Node growth\n• **Teach others**: Sharing your natural gifts helps them crystallize\n\nYour talents are meant to be used, not hoarded. As you express them in this lifetime, you complete the circle of past life development.`,
+        },
+      ],
+    },
+    {
+      id: 'evolutionary-path',
+      title: 'Your Evolutionary Path Forward',
+      icon: '✨',
+      subsections: [
+        {
+          title: 'Integrating Past and Future',
+          content: `The goal of karmic work isn\'t to erase the past but to integrate it. Your ${southNodeSign} South Node gifts and your ${northNodeSign} North Node calling aren\'t opposites—they\'re meant to work together.\n\nImagine using your ${southNodeData.pastLifeGifts[0]} in service of ${northNodeData.evolutionaryGoals[0]}. That\'s integration. Your past life mastery becomes a tool for your evolutionary purpose.\n\nThe journey from South to North Node isn\'t a straight line—it\'s a spiral. You\'ll revisit South Node themes throughout life, but each time with more awareness, using them more consciously.`,
+        },
+        {
+          title: 'Your Soul\'s Invitation',
+          content: `${userName}, your soul chose this lifetime with intention. It chose your family, your challenges, your gifts—all in service of evolution.\n\nYour karmic invitation:\n\n• Release ${southNodeData.karmicPatterns[0]} while honoring ${southNodeData.pastLifeGifts[0]}\n• Embrace ${northNodeData.growthQualities[0]} even when it feels uncomfortable\n• Face ${saturnData.karmicFear} to claim ${saturnData.wisdomGained}\n• Remember: you are not your karma—you are the soul choosing how to work with it\n\nEvery choice you make either repeats old karma or creates new possibilities. You have more power than you know.`,
+        },
+        {
+          title: 'Daily Practices for Karmic Healing',
+          content: `To accelerate your soul\'s evolution:\n\n**Morning**: Set an intention to move toward your North Node today\n**Throughout the day**: Notice when South Node defaults arise—pause before reacting\n**Evening**: Reflect on moments you chose growth over comfort\n**Weekly**: Engage in an activity that develops your North Node qualities\n**Monthly**: Review patterns in your life—what karma is asking for attention?\n\n**Affirmation for your path**:\n"I honor where my soul has been while courageously moving toward where it\'s going. I release ${southNodeData.karmicPatterns[0]} and embrace ${northNodeData.growthQualities[0]}. My past informs me; my future invites me; I choose my present consciously."`,
+          tip: `The universe rewards courageous movement toward the North Node. Watch for synchronicities and support when you\'re on the right path.`,
+        },
+      ],
+    },
+  ]
+
+  const wordCount = sections.reduce((acc, s) =>
+    acc + s.subsections.reduce((a, sub) => a + sub.content.split(' ').length, 0), 0)
+
+  return {
+    id: `past-life-karma-${Date.now()}`,
+    slug: 'past-life-karma',
+    title: 'Past Life & Karma Report',
+    generatedAt: new Date().toISOString(),
+    userName,
+    birthData: {
+      date: '',
+      place: '',
+      sunSign,
+      moonSign,
+      risingSign,
+    },
+    summary: {
+      headline: `A Soul Journey from ${southNodeSign} to ${northNodeSign}`,
+      overview: `${userName}, your soul carries the wisdom of a ${southNodeData.pastLifeRole} while moving toward a destiny of ${northNodeData.soulPurpose}. With Saturn in ${saturnSign}, you\'re mastering ${saturnData.lifeLesson}. This lifetime is about integrating where you\'ve been with where you\'re going.`,
+      keyStrengths: [
+        `Past life mastery in ${southNodeData.pastLifeGifts[0]}`,
+        `Soul commitment to ${northNodeData.evolutionaryGoals[0]}`,
+        `Building wisdom through ${saturnData.masteryChallenges[0]}`,
+        `${retrogradeCount > 0 ? `Deep karmic review capacity (${retrogradeCount} retrogrades)` : 'Fresh karmic energy for new experiences'}`,
+      ],
+      growthAreas: [
+        `Releasing the pattern of ${southNodeData.karmicPatterns[0]}`,
+        `Developing ${northNodeData.growthQualities[0]}`,
+        `Facing the fear of ${saturnData.karmicFear}`,
+        `Healing ${southNodeData.ancestralWounds.split('wounds related to ')[1] || 'ancestral patterns'}`,
+      ],
+    },
+    visuals: [
+      {
+        type: 'planetary-strength',
+        title: 'Your Karmic Blueprint',
+        data: {
+          'South Node': southNodeSign,
+          'North Node': northNodeSign,
+          'Saturn': saturnSign,
+          'Pluto': plutoSign,
+          'Chiron': chironSign,
+        },
+      },
+    ],
+    sections,
+    glossary: [
+      { term: 'South Node', definition: 'The point representing past life patterns, mastered skills, and default behaviors you\'re evolving beyond.' },
+      { term: 'North Node', definition: 'The point representing your soul\'s growth direction—unfamiliar but fulfilling when embraced.' },
+      { term: 'Karmic', definition: 'Related to the spiritual principle of cause and effect across lifetimes.' },
+      { term: 'Soul Contract', definition: 'Pre-incarnation agreements about lessons, relationships, and experiences.' },
+      { term: 'Retrograde', definition: 'A planet appearing to move backward, indicating internalized energy and past life review.' },
+    ],
+    wordCount: wordCount + 500, // Account for formatting
+  }
+}
+
+function getOppositeSign(sign: Sign): Sign {
+  const opposites: Record<Sign, Sign> = {
+    Aries: 'Libra', Taurus: 'Scorpio', Gemini: 'Sagittarius', Cancer: 'Capricorn',
+    Leo: 'Aquarius', Virgo: 'Pisces', Libra: 'Aries', Scorpio: 'Taurus',
+    Sagittarius: 'Gemini', Capricorn: 'Cancer', Aquarius: 'Leo', Pisces: 'Virgo',
+  }
+  return opposites[sign]
+}
+
+function getRetrogradeMeaning(planet: string): string {
+  const meanings: Record<string, string> = {
+    mercury: 'communication, learning, and past life intellectual pursuits',
+    venus: 'love, values, and past life relationship patterns',
+    mars: 'action, assertion, and past life conflicts or courage',
+    jupiter: 'expansion, faith, and past life beliefs or abundance',
+    saturn: 'responsibility, structure, and deep karmic lessons',
+    uranus: 'freedom, innovation, and past life rebellion',
+    neptune: 'spirituality, creativity, and past life spiritual experiences',
+    pluto: 'power, transformation, and past life intensity',
+  }
+  return meanings[planet.toLowerCase()] || 'this planetary energy'
+}
+
+// ============================================
+// FINANCIAL POTENTIAL REPORT GENERATOR
+// ============================================
+
+const signFinancialTraits: Record<Sign, {
+  moneyMindset: string
+  earningStyle: string
+  spendingPattern: string
+  investmentApproach: string
+  wealthBlocks: string[]
+  abundanceGifts: string[]
+  bestIndustries: string[]
+  financialLesson: string
+}> = {
+  Aries: {
+    moneyMindset: 'entrepreneurial and action-oriented',
+    earningStyle: 'through initiative, leadership, and being first',
+    spendingPattern: 'impulsive purchases, especially on experiences and adventure',
+    investmentApproach: 'aggressive growth, early-stage investments, quick decisions',
+    wealthBlocks: ['impatience with slow-building wealth', 'abandoning projects before payoff', 'risky financial decisions'],
+    abundanceGifts: ['ability to start ventures', 'courage to take financial risks', 'competitive drive to succeed'],
+    bestIndustries: ['entrepreneurship', 'sports/fitness', 'military/security', 'sales', 'emergency services'],
+    financialLesson: 'patience and sustained effort create lasting wealth',
+  },
+  Taurus: {
+    moneyMindset: 'security-focused and value-conscious',
+    earningStyle: 'through persistence, quality work, and building tangible assets',
+    spendingPattern: 'on quality items, comfort, and sensory pleasures',
+    investmentApproach: 'conservative, long-term, real assets like property',
+    wealthBlocks: ['fear of change limiting opportunities', 'over-attachment to possessions', 'resistance to financial innovation'],
+    abundanceGifts: ['natural money magnetism', 'patience for long-term growth', 'eye for value'],
+    bestIndustries: ['finance/banking', 'real estate', 'food/hospitality', 'luxury goods', 'agriculture'],
+    financialLesson: 'true security comes from self-worth, not net worth',
+  },
+  Gemini: {
+    moneyMindset: 'versatile and opportunity-spotting',
+    earningStyle: 'through communication, networking, and multiple income streams',
+    spendingPattern: 'on books, courses, tech, and varied experiences',
+    investmentApproach: 'diversified, trend-following, intellectually interesting opportunities',
+    wealthBlocks: ['scattered focus diluting results', 'not sticking with things long enough', 'overthinking financial decisions'],
+    abundanceGifts: ['ability to spot trends', 'networking into opportunities', 'multiple skill monetization'],
+    bestIndustries: ['media/journalism', 'marketing', 'education', 'tech', 'sales/trading'],
+    financialLesson: 'focus and follow-through multiply financial results',
+  },
+  Cancer: {
+    moneyMindset: 'security and family-oriented',
+    earningStyle: 'through nurturing, caregiving, and creating emotional value',
+    spendingPattern: 'on home, family, food, and emotional security',
+    investmentApproach: 'conservative, family-focused, real estate, inheritance-minded',
+    wealthBlocks: ['fear-based financial decisions', 'hoarding from scarcity mindset', 'letting emotions drive money choices'],
+    abundanceGifts: ['strong savings instinct', 'ability to create valuable "nest"', 'intuitive financial timing'],
+    bestIndustries: ['real estate', 'food/restaurants', 'childcare', 'healthcare', 'family businesses'],
+    financialLesson: 'emotional security enables financial abundance',
+  },
+  Leo: {
+    moneyMindset: 'generous and status-conscious',
+    earningStyle: 'through creativity, leadership, and personal brand',
+    spendingPattern: 'on luxury, entertainment, and impressive experiences',
+    investmentApproach: 'bold, visible investments, backing winners, creative ventures',
+    wealthBlocks: ['overspending to maintain image', 'pride preventing help-seeking', 'gambling tendencies'],
+    abundanceGifts: ['ability to attract money through charisma', 'generous circulation of wealth', 'creative income generation'],
+    bestIndustries: ['entertainment', 'leadership positions', 'luxury brands', 'creative arts', 'children\'s services'],
+    financialLesson: 'true abundance flows from authentic self-expression',
+  },
+  Virgo: {
+    moneyMindset: 'analytical and improvement-focused',
+    earningStyle: 'through expertise, service, and attention to detail',
+    spendingPattern: 'practical, health-focused, quality over quantity',
+    investmentApproach: 'researched, systematic, steady improvement',
+    wealthBlocks: ['undervaluing your services', 'analysis paralysis', 'perfectionism delaying action'],
+    abundanceGifts: ['eye for efficiency and improvement', 'ability to create value through refinement', 'practical money management'],
+    bestIndustries: ['healthcare', 'accounting', 'consulting', 'wellness', 'quality control'],
+    financialLesson: 'your expertise is more valuable than you think',
+  },
+  Libra: {
+    moneyMindset: 'partnership-oriented and balance-seeking',
+    earningStyle: 'through relationships, collaboration, and creating harmony',
+    spendingPattern: 'on beauty, relationships, and aesthetic experiences',
+    investmentApproach: 'balanced, partnership investments, beautiful assets',
+    wealthBlocks: ['difficulty asking for fair compensation', 'financial codependency', 'indecision delaying opportunities'],
+    abundanceGifts: ['ability to earn through partnerships', 'aesthetic sense that creates value', 'diplomatic negotiation skills'],
+    bestIndustries: ['law', 'design/fashion', 'diplomacy', 'marriage/events', 'art dealing'],
+    financialLesson: 'knowing your worth enables fair exchange',
+  },
+  Scorpio: {
+    moneyMindset: 'strategic and resourceful',
+    earningStyle: 'through transformation, research, and managing others\' resources',
+    spendingPattern: 'strategic, researched purchases, quality investments',
+    investmentApproach: 'deep research, transformative opportunities, long-term power plays',
+    wealthBlocks: ['control issues around money', 'secrecy preventing collaboration', 'all-or-nothing financial patterns'],
+    abundanceGifts: ['ability to transform resources', 'shrewd investment instincts', 'access to others\' resources'],
+    bestIndustries: ['finance/investing', 'psychology', 'research', 'insurance', 'transformation industries'],
+    financialLesson: 'shared resources multiply individual wealth',
+  },
+  Sagittarius: {
+    moneyMindset: 'optimistic and growth-oriented',
+    earningStyle: 'through teaching, publishing, and expanding horizons',
+    spendingPattern: 'on travel, education, and expansive experiences',
+    investmentApproach: 'growth-focused, international, optimistic bets',
+    wealthBlocks: ['overoptimism leading to overextension', 'ignoring details', 'restlessness abandoning success'],
+    abundanceGifts: ['ability to see opportunities others miss', 'lucky financial breaks', 'growth mindset'],
+    bestIndustries: ['education', 'publishing', 'travel', 'international business', 'philosophy/spirituality'],
+    financialLesson: 'grounded optimism creates sustainable abundance',
+  },
+  Capricorn: {
+    moneyMindset: 'ambitious and structure-building',
+    earningStyle: 'through achievement, authority, and long-term building',
+    spendingPattern: 'strategic, status-conscious, investment-minded',
+    investmentApproach: 'conservative, long-term, building structures of wealth',
+    wealthBlocks: ['workaholism sacrificing life quality', 'fear of failure limiting risks', 'status pursuit over genuine satisfaction'],
+    abundanceGifts: ['ability to build lasting wealth structures', 'patience for compound growth', 'strategic financial planning'],
+    bestIndustries: ['corporate leadership', 'government', 'architecture', 'traditional business', 'finance'],
+    financialLesson: 'wealth serves life; life doesn\'t serve wealth',
+  },
+  Aquarius: {
+    moneyMindset: 'innovative and collective-minded',
+    earningStyle: 'through innovation, technology, and serving the collective',
+    spendingPattern: 'on technology, causes, and unconventional items',
+    investmentApproach: 'innovative, tech-focused, socially responsible',
+    wealthBlocks: ['detachment from material needs', 'impractical idealism', 'rebellion against necessary financial structures'],
+    abundanceGifts: ['ability to spot future trends', 'innovative income streams', 'network-based wealth'],
+    bestIndustries: ['technology', 'humanitarian work', 'innovation', 'networking', 'future-focused industries'],
+    financialLesson: 'individual prosperity can serve collective good',
+  },
+  Pisces: {
+    moneyMindset: 'intuitive and faith-based',
+    earningStyle: 'through creativity, healing, and spiritual service',
+    spendingPattern: 'on art, spirituality, and helping others',
+    investmentApproach: 'intuitive, creative ventures, faith-based',
+    wealthBlocks: ['unclear boundaries leading to loss', 'escapism from financial reality', 'giving away more than sustainable'],
+    abundanceGifts: ['intuitive financial timing', 'ability to manifest through faith', 'creative income generation'],
+    bestIndustries: ['arts', 'healing/spirituality', 'film/music', 'healthcare', 'charitable work'],
+    financialLesson: 'grounded spirituality includes material abundance',
+  },
+}
+
+export function generateFinancialPotentialReportV2(chart: NatalChart, userName: string): GeneratedReportV2 {
+  const sun = getPlacement(chart, 'sun')
+  const moon = getPlacement(chart, 'moon')
+  const venus = getPlacement(chart, 'venus')
+  const mars = getPlacement(chart, 'mars')
+  const jupiter = getPlacement(chart, 'jupiter')
+  const saturn = getPlacement(chart, 'saturn')
+  const pluto = getPlacement(chart, 'pluto')
+
+  const sunSign = capitalizeSign(sun?.sign || 'aries')
+  const moonSign = capitalizeSign(moon?.sign || 'aries')
+  const venusSign = capitalizeSign(venus?.sign || 'taurus')
+  const marsSign = capitalizeSign(mars?.sign || 'aries')
+  const jupiterSign = capitalizeSign(jupiter?.sign || 'sagittarius')
+  const saturnSign = capitalizeSign(saturn?.sign || 'capricorn')
+  const plutoSign = capitalizeSign(pluto?.sign || 'scorpio')
+  const risingSign = capitalizeSign(chart.ascendant?.sign || 'aries')
+
+  // 2nd house is personal money, 8th is shared/investments, 10th is career
+  const secondHouse = chart.houses?.[1]
+  const eighthHouse = chart.houses?.[7]
+  const tenthHouse = chart.houses?.[9]
+
+  const secondHouseSign = secondHouse ? capitalizeSign(secondHouse.sign) : getHouseSign(risingSign, 2)
+  const eighthHouseSign = eighthHouse ? capitalizeSign(eighthHouse.sign) : getHouseSign(risingSign, 8)
+  const tenthHouseSign = tenthHouse ? capitalizeSign(tenthHouse.sign) : getHouseSign(risingSign, 10)
+
+  const sunFinance = signFinancialTraits[sunSign]
+  const venusFinance = signFinancialTraits[venusSign]
+  const jupiterFinance = signFinancialTraits[jupiterSign]
+  const secondHouseFinance = signFinancialTraits[secondHouseSign]
+  const tenthHouseFinance = signFinancialTraits[tenthHouseSign]
+
+  const sections: ReportSectionV2[] = [
+    {
+      id: 'financial-blueprint',
+      title: 'Your Financial Blueprint',
+      icon: '💎',
+      subsections: [
+        {
+          title: 'Your Cosmic Wealth Signature',
+          content: `${userName}, your birth chart reveals a unique financial blueprint—patterns of earning, spending, investing, and manifesting abundance that are written in the stars. This isn\'t about limitation; it\'s about working WITH your natural tendencies rather than against them.\n\nYour financial personality is shaped by multiple factors: your Sun in ${sunSign} creates your core approach to wealth (${sunFinance.moneyMindset}), while Venus in ${venusSign} influences what you value and attract (${venusFinance.earningStyle}). Jupiter in ${jupiterSign} shows where abundance flows easily (${jupiterFinance.moneyMindset}), and Saturn in ${saturnSign} reveals your financial lessons and ultimate mastery.\n\nThe second house of your chart, with ${secondHouseSign} energy, governs your personal income and self-worth. The eighth house in ${eighthHouseSign} rules shared resources, investments, and transformation through money. The tenth house in ${tenthHouseSign} shows your career potential and public earning power.`,
+          visual: {
+            type: 'planetary-strength',
+            title: 'Your Financial Planets',
+            data: {
+              'Income Style (2nd)': secondHouseSign,
+              'Investments (8th)': eighthHouseSign,
+              'Career Money (10th)': tenthHouseSign,
+              'Values': venusSign,
+              'Expansion': jupiterSign,
+              'Discipline': saturnSign,
+            },
+          },
+        },
+        {
+          title: 'Your Core Money Mindset',
+          content: `With your Sun in ${sunSign}, your fundamental approach to money and resources is ${sunFinance.moneyMindset}. You naturally tend to earn ${sunFinance.earningStyle}.\n\nThis is your financial identity at the deepest level—how you think about money, what you believe you deserve, and how you instinctively approach wealth-building.\n\n**Your Natural Financial Style:**\n• Earning approach: ${sunFinance.earningStyle}\n• Spending tendency: ${sunFinance.spendingPattern}\n• Investment style: ${sunFinance.investmentApproach}\n\n**The Lesson Your Sun Teaches About Money:**\n${sunFinance.financialLesson}`,
+          terms: [
+            { term: 'Financial Blueprint', definition: 'The unique pattern of money beliefs, behaviors, and potentials revealed in your birth chart.' },
+            { term: 'Abundance Consciousness', definition: 'A mindset that recognizes the flow of resources as natural and available.' },
+          ],
+        },
+      ],
+    },
+    {
+      id: 'second-house',
+      title: 'The 2nd House: Your Personal Wealth',
+      icon: '💰',
+      subsections: [
+        {
+          title: `${secondHouseSign} Energy in Your Money House`,
+          content: `The second house governs personal income, possessions, self-worth, and what you value. With ${secondHouseSign} energy here, you tend to:\n\n• **Earn money through**: ${secondHouseFinance.earningStyle}\n• **Value spending on**: ${secondHouseFinance.spendingPattern}\n• **Approach building wealth via**: ${secondHouseFinance.investmentApproach}\n\nThis isn\'t just about money—your second house reflects your relationship with self-worth. Financial struggles often connect to not valuing yourself; financial flow often connects to healthy self-esteem.\n\n**Industries Aligned With Your 2nd House:**\n${secondHouseFinance.bestIndustries.map(ind => `• ${ind}`).join('\n')}`,
+        },
+        {
+          title: 'Maximizing Your Earning Potential',
+          content: `To fully activate your second house earning potential:\n\n**Leverage Your Natural Gifts:**\n${secondHouseFinance.abundanceGifts.map(gift => `• ${gift.charAt(0).toUpperCase() + gift.slice(1)}`).join('\n')}\n\n**Watch For These Blocks:**\n${secondHouseFinance.wealthBlocks.map(block => `• ${block.charAt(0).toUpperCase() + block.slice(1)}`).join('\n')}\n\n**Your Second House Lesson:**\n${secondHouseFinance.financialLesson}\n\n**Practical Application:**\nYour ideal income streams involve ${secondHouseFinance.earningStyle}. Look for opportunities that allow you to express these qualities while building financial stability.`,
+          tip: `Your relationship with money mirrors your relationship with self-worth. Working on one improves the other.`,
+        },
+      ],
+    },
+    {
+      id: 'eighth-house',
+      title: 'The 8th House: Shared Resources & Investments',
+      icon: '🔮',
+      subsections: [
+        {
+          title: `${eighthHouseSign} Energy in Your Investment House`,
+          content: `The eighth house rules other people\'s money, investments, inheritance, debt, taxes, and shared resources. With ${eighthHouseSign} energy here, your approach to these matters is ${signFinancialTraits[eighthHouseSign].moneyMindset}.\n\nThis house reveals how you:\n• Handle joint finances and partnerships\n• Approach investments and passive income\n• Deal with inheritance and legacy\n• Navigate debt and taxes\n• Transform your financial situation\n\n**Investment Style:**\n${signFinancialTraits[eighthHouseSign].investmentApproach}`,
+        },
+        {
+          title: 'Growing Wealth Through the 8th House',
+          content: `Your eighth house suggests wealth-building through:\n\n**Partnership Potential:**\nWith ${eighthHouseSign} here, you may benefit from financial partnerships that are ${signFinancialTraits[eighthHouseSign].moneyMindset}. Joint ventures, marriage finances, or business partnerships can be powerful wealth vehicles when approached with awareness.\n\n**Investment Approach:**\n${signFinancialTraits[eighthHouseSign].investmentApproach}\n\n**Transformation Potential:**\nThe eighth house governs financial transformation—your ability to completely change your financial situation. Your path involves ${signFinancialTraits[eighthHouseSign].earningStyle.replace('through', 'transforming through')}.\n\n**Watch For:**\n${signFinancialTraits[eighthHouseSign].wealthBlocks.slice(0, 2).map(b => `• ${b}`).join('\n')}`,
+          tip: `The eighth house is where "other people\'s money" can work for you—through investments, partnerships, or leveraging resources.`,
+        },
+      ],
+    },
+    {
+      id: 'tenth-house',
+      title: 'The 10th House: Career & Public Wealth',
+      icon: '🏆',
+      subsections: [
+        {
+          title: `${tenthHouseSign} Energy in Your Career House`,
+          content: `The tenth house rules your career, public reputation, and how you earn in the world\'s eyes. With ${tenthHouseSign} energy here, your professional earning potential is expressed through ${tenthHouseFinance.earningStyle}.\n\nThis placement suggests you\'re meant to build a career that is ${tenthHouseFinance.moneyMindset}. Your professional reputation and earning power grow when you embody these qualities authentically.\n\n**Ideal Career Paths:**\n${tenthHouseFinance.bestIndustries.map(ind => `• ${ind}`).join('\n')}\n\n**Your Professional Financial Gifts:**\n${tenthHouseFinance.abundanceGifts.map(g => `• ${g.charAt(0).toUpperCase() + g.slice(1)}`).join('\n')}`,
+        },
+        {
+          title: 'Maximizing Career Wealth',
+          content: `To fully activate your tenth house earning potential:\n\n**Professional Positioning:**\nWith ${tenthHouseSign} in your tenth house, position yourself as ${signFinancialTraits[tenthHouseSign].moneyMindset}. This energy attracts opportunities, promotions, and higher compensation.\n\n**Career Wealth Blocks to Clear:**\n${tenthHouseFinance.wealthBlocks.map(block => `• ${block.charAt(0).toUpperCase() + block.slice(1)}`).join('\n')}\n\n**Your Career Financial Lesson:**\n${tenthHouseFinance.financialLesson}\n\n**Authority and Earning:**\nAs you develop authority in your field, your earning power naturally increases. Your tenth house in ${tenthHouseSign} suggests authority comes through ${tenthHouseFinance.earningStyle}.`,
+        },
+      ],
+    },
+    {
+      id: 'venus-jupiter',
+      title: 'Venus & Jupiter: Your Abundance Planets',
+      icon: '✨',
+      subsections: [
+        {
+          title: `Venus in ${venusSign}: What You Attract`,
+          content: `Venus governs what you attract, value, and find beautiful—including money. In ${venusSign}, your Venus attracts abundance through ${venusFinance.earningStyle}.\n\n**Your Venus Money Gifts:**\n${venusFinance.abundanceGifts.map(gift => `• ${gift.charAt(0).toUpperCase() + gift.slice(1)}`).join('\n')}\n\n**What You Value Spending On:**\n${venusFinance.spendingPattern}\n\n**Venus Abundance Lesson:**\n${venusFinance.financialLesson}\n\nVenus is your "attraction" magnet. When you\'re aligned with your Venus sign\'s values, money flows more easily. When you ignore these values, abundance feels blocked.`,
+        },
+        {
+          title: `Jupiter in ${jupiterSign}: Your Expansion Zone`,
+          content: `Jupiter is the greater benefic—the planet of expansion, luck, and abundance. In ${jupiterSign}, your Jupiter expands wealth through ${jupiterFinance.earningStyle}.\n\n**Your Jupiter Luck Factor:**\n${jupiterFinance.abundanceGifts.map(gift => `• ${gift.charAt(0).toUpperCase() + gift.slice(1)}`).join('\n')}\n\n**Best Industries for Jupiter Luck:**\n${jupiterFinance.bestIndustries.map(ind => `• ${ind}`).join('\n')}\n\n**Jupiter Growth Potential:**\nJupiter shows where "lucky breaks" come from. For you, financial expansion flows when you embrace ${jupiterSign} energy—being ${jupiterFinance.moneyMindset}.\n\n**Jupiter\'s Financial Lesson:**\n${jupiterFinance.financialLesson}`,
+          tip: `Follow your Jupiter sign\'s energy to find where financial opportunities seem to appear "magically."`,
+        },
+      ],
+    },
+    {
+      id: 'saturn-pluto',
+      title: 'Saturn & Pluto: Financial Mastery',
+      icon: '🪐',
+      subsections: [
+        {
+          title: `Saturn in ${saturnSign}: Your Financial Discipline`,
+          content: `Saturn represents lessons, discipline, and mastery over time. In ${saturnSign}, your financial discipline is developed through ${signFinancialTraits[saturnSign].earningStyle}.\n\nSaturn doesn\'t deny wealth—it demands that you earn it through sustained effort. The areas Saturn touches require more work but ultimately produce more lasting results.\n\n**Saturn\'s Financial Challenges:**\n${signFinancialTraits[saturnSign].wealthBlocks.map(block => `• ${block.charAt(0).toUpperCase() + block.slice(1)}`).join('\n')}\n\n**Saturn\'s Ultimate Reward:**\nMastery of ${signFinancialTraits[saturnSign].financialLesson}. This becomes your greatest financial strength after age 29-30 (first Saturn return).`,
+        },
+        {
+          title: `Pluto in ${plutoSign}: Transformative Wealth`,
+          content: `Pluto represents transformation, power, and regeneration. In ${plutoSign}, you have the power to completely transform your finances through ${signFinancialTraits[plutoSign].earningStyle}.\n\nPluto aspects often indicate:\n• Potential for significant wealth transformation\n• Deep psychological relationship with money\n• Power dynamics around resources\n• Ability to regenerate after financial losses\n\n**Pluto\'s Financial Message:**\nYour relationship with money is a path to personal power. Facing financial fears transforms them into financial strength. Your ${plutoSign} Pluto suggests transformation through ${signFinancialTraits[plutoSign].investmentApproach}.`,
+        },
+      ],
+    },
+    {
+      id: 'money-mindset',
+      title: 'Your Money Mindset Profile',
+      icon: '🧠',
+      subsections: [
+        {
+          title: 'Your Unique Financial Psychology',
+          content: `Based on your chart, your money mindset profile combines several energies:\n\n**Core Identity (Sun in ${sunSign}):**\n${sunFinance.moneyMindset}\n\n**Emotional Relationship (Moon in ${moonSign}):**\nYou feel financially secure when you have ${signFinancialTraits[moonSign].spendingPattern}. Emotional spending triggers: ${signFinancialTraits[moonSign].wealthBlocks[0]}.\n\n**Action Style (Mars in ${marsSign}):**\nYou pursue money ${signFinancialTraits[marsSign].moneyMindset}. Your earning energy is activated through ${signFinancialTraits[marsSign].earningStyle}.\n\n**Values & Attraction (Venus in ${venusSign}):**\n${venusFinance.moneyMindset}. You attract abundance through ${venusFinance.earningStyle}.`,
+          visual: {
+            type: 'element-balance',
+            title: 'Your Financial Element Balance',
+            data: {
+              Fire: sunSign === 'Aries' || sunSign === 'Leo' || sunSign === 'Sagittarius' ? '30' : '10',
+              Earth: venusSign === 'Taurus' || venusSign === 'Virgo' || venusSign === 'Capricorn' ? '35' : '15',
+              Air: marsSign === 'Gemini' || marsSign === 'Libra' || marsSign === 'Aquarius' ? '25' : '10',
+              Water: moonSign === 'Cancer' || moonSign === 'Scorpio' || moonSign === 'Pisces' ? '30' : '15',
+            },
+          },
+        },
+        {
+          title: 'Abundance Blocks to Clear',
+          content: `Your chart reveals these potential wealth blocks:\n\n${[sunFinance.wealthBlocks[0], venusFinance.wealthBlocks[0], signFinancialTraits[saturnSign].wealthBlocks[0]].map((block, i) => `**Block ${i + 1}**: ${block.charAt(0).toUpperCase() + block.slice(1)}\n*Healing*: Acknowledge this pattern when it arises. It\'s not truth—it\'s programming that can be changed.`).join('\n\n')}\n\n**Clearing Process:**\n1. Notice the block when it activates\n2. Question its validity\n3. Choose a different response\n4. Celebrate small financial wins\n5. Gradually reprogram through experience`,
+          tip: `Abundance blocks are often inherited beliefs, not personal truth. Question every money belief you hold.`,
+        },
+      ],
+    },
+    {
+      id: 'timing',
+      title: 'Timing Your Financial Moves',
+      icon: '📅',
+      subsections: [
+        {
+          title: 'Planetary Timing for Wealth',
+          content: `Certain times are better for financial decisions based on your chart:\n\n**Best Times for Income Increases:**\nWhen Jupiter transits your 2nd house (${secondHouseSign}) or aspects your natal Jupiter in ${jupiterSign}. Also favorable when the Sun moves through ${secondHouseSign}.\n\n**Best Times for Investments:**\nWhen planets transit your 8th house (${eighthHouseSign}) or when Jupiter and Saturn make supportive aspects to your natal chart.\n\n**Best Times for Career Moves:**\nWhen planets transit your 10th house (${tenthHouseSign}) or when Jupiter supports your Midheaven.\n\n**Caution Periods:**\nMercury retrograde (3-4 times yearly): Avoid signing major contracts\nEclipse seasons: Major financial decisions may have unexpected consequences\nSaturn transits: Require extra diligence but can build lasting structures`,
+        },
+        {
+          title: 'Your Personal Financial Cycles',
+          content: `Based on your chart, watch these cycles:\n\n**Annual Cycle:**\nYour financial energy peaks when the Sun transits ${sunSign} and ${secondHouseSign}. Plan major money moves during these periods.\n\n**Jupiter Cycle (12 years):**\nJupiter returns to ${jupiterSign} every 12 years, bringing financial expansion opportunities. Your next Jupiter return is a time of potential abundance increase.\n\n**Saturn Cycle (29 years):**\nSaturn returns to ${saturnSign} every 29 years, testing and ultimately strengthening your financial foundations. These periods require discipline but build lasting wealth.\n\n**Monthly Timing:**\nNew Moons in earth signs (Taurus, Virgo, Capricorn) are excellent for initiating financial plans. Full Moons illuminate financial situations for clarity.`,
+        },
+      ],
+    },
+    {
+      id: 'wealth-path',
+      title: 'Your Wealth Manifestation Path',
+      icon: '🌟',
+      subsections: [
+        {
+          title: 'Your Unique Prosperity Formula',
+          content: `${userName}, your birth chart reveals a specific formula for creating wealth:\n\n**Step 1: Align with Your Values (Venus in ${venusSign})**\nMake money doing what you genuinely value. For you, this means ${venusFinance.earningStyle}.\n\n**Step 2: Take Inspired Action (Mars in ${marsSign})**\nPursue opportunities ${signFinancialTraits[marsSign].moneyMindset}. Your earning energy is activated through ${signFinancialTraits[marsSign].earningStyle}.\n\n**Step 3: Expand Through Faith (Jupiter in ${jupiterSign})**\nTrust in abundance and opportunities will appear. Your luck factor is strongest when you\'re ${jupiterFinance.moneyMindset}.\n\n**Step 4: Build with Discipline (Saturn in ${saturnSign})**\nCreate lasting structures through ${signFinancialTraits[saturnSign].earningStyle}. Remember: ${signFinancialTraits[saturnSign].financialLesson}.`,
+        },
+        {
+          title: 'Daily Practices for Financial Abundance',
+          content: `To activate your wealth potential:\n\n**Morning Practice:**\n• Set a financial intention aligned with ${sunSign} energy\n• Visualize abundance flowing to you through ${venusSign} activities\n• Affirm: "I am worthy of wealth because of who I am"\n\n**Throughout the Day:**\n• Make at least one ${marsSign}-style money move\n• Notice and release ${sunFinance.wealthBlocks[0]} patterns\n• Express gratitude for every form of abundance\n\n**Weekly Review:**\n• Track income and expenses (Saturn discipline)\n• Identify opportunities in ${jupiterSign} areas\n• Clear one small abundance block\n\n**Abundance Affirmation:**\n"I attract wealth through ${venusFinance.earningStyle}. I grow abundance through ${jupiterFinance.moneyMindset} energy. I build lasting prosperity with ${signFinancialTraits[saturnSign].moneyMindset} discipline. Money flows to me easily and naturally."`,
+          tip: `Consistency in these practices creates compound results—just like compound interest.`,
+        },
+      ],
+    },
+    {
+      id: 'entrepreneurship',
+      title: 'Your Entrepreneurial Potential',
+      icon: '🚀',
+      subsections: [
+        {
+          title: 'Your Business-Building Profile',
+          content: `${userName}, your chart reveals specific entrepreneurial strengths and the types of businesses most aligned with your cosmic blueprint.\n\n**Your Entrepreneurial Style (Sun in ${sunSign}):**\nAs a ${sunSign}, you approach business-building ${sunFinance.moneyMindset}. Your natural leadership style is ${signData[sunSign].element === 'Fire' ? 'visionary and inspiring—you\'re the type to launch bold ventures and rally others to your vision' : signData[sunSign].element === 'Earth' ? 'practical and building-focused—you excel at creating sustainable businesses with real value' : signData[sunSign].element === 'Air' ? 'innovative and networked—you thrive in businesses built on ideas, communication, and connections' : 'intuitive and service-oriented—you excel at businesses that serve emotional needs and create belonging'}.\n\n**Risk Tolerance (Mars in ${marsSign}):**\n${signFinancialTraits[marsSign].moneyMindset}. This affects how you approach business decisions, competition, and growth strategies. Your Mars suggests ${signFinancialTraits[marsSign].investmentApproach} when it comes to business investments.\n\n**Expansion Strategy (Jupiter in ${jupiterSign}):**\nYour business grows best through ${jupiterFinance.earningStyle}. Jupiter\'s placement suggests luck and expansion come through ${jupiterSign} activities and markets.`,
+        },
+        {
+          title: 'Ideal Business Types for Your Chart',
+          content: `Based on your planetary placements, these business models align with your natural strengths:\n\n**High Alignment Businesses:**\n${sunFinance.bestIndustries.slice(0, 3).map((ind, i) => `${i + 1}. **${ind}** - Resonates with your ${sunSign} Sun energy and ${secondHouseSign} earning style`).join('\n')}\n\n**Supporting Business Activities:**\n${venusFinance.bestIndustries.slice(0, 2).map(ind => `• ${ind} - Aligned with your Venus values in ${venusSign}`).join('\n')}\n\n**Growth Opportunities:**\n${jupiterFinance.bestIndustries.slice(0, 2).map(ind => `• ${ind} - Jupiter expansion zones where "luck" meets preparation`).join('\n')}\n\n**Business Structure Advice:**\nWith Saturn in ${saturnSign}, your business needs solid ${signFinancialTraits[saturnSign].investmentApproach} foundations. Don\'t skip the structure—your Saturn rewards thoroughness with longevity.\n\n**Partnership Potential:**\nYour 8th house in ${eighthHouseSign} suggests you ${signData[eighthHouseSign].element === 'Fire' ? 'may prefer to go solo or lead partnerships with clear vision control' : signData[eighthHouseSign].element === 'Earth' ? 'can thrive in partnerships when there are clear agreements and shared practical goals' : signData[eighthHouseSign].element === 'Air' ? 'benefit from intellectual partnerships and shared idea development' : 'need deep trust before entering financial partnerships, but can create powerful unions when trust is established'}.`,
+          tip: `The best business for you combines your Sun sign passion, Venus values, and Jupiter expansion zones.`,
+        },
+        {
+          title: 'Entrepreneurial Challenges to Navigate',
+          content: `Every chart has entrepreneurial challenges. Yours include:\n\n**Challenge 1: ${sunFinance.wealthBlocks[0]}**\nThis tendency can sabotage business success by ${signData[sunSign].element === 'Fire' ? 'causing premature action or burnout' : signData[sunSign].element === 'Earth' ? 'creating resistance to necessary pivots' : signData[sunSign].element === 'Air' ? 'scattering focus across too many ideas' : 'letting emotions override business logic'}.\n*Solution*: Build in checkpoints and accountability structures.\n\n**Challenge 2: ${signFinancialTraits[saturnSign].wealthBlocks[0]}**\nSaturn\'s lessons in business often involve overcoming this pattern.\n*Solution*: ${signFinancialTraits[saturnSign].financialLesson} - apply this directly to your business development.\n\n**Challenge 3: ${signFinancialTraits[marsSign].wealthBlocks[0]}**\nYour action-taking style can sometimes lead to this pitfall.\n*Solution*: Channel your ${marsSign} Mars energy into ${signFinancialTraits[marsSign].abundanceGifts[0]}.\n\n**The Entrepreneurial Edge:**\nRemember, every challenge is also a potential strength. ${sunSign} entrepreneurs who master their shadows often outperform those with "easier" placements because they\'ve developed conscious awareness of their patterns.`,
+        },
+      ],
+    },
+    {
+      id: 'career-path',
+      title: 'Career & Income Development',
+      icon: '📈',
+      subsections: [
+        {
+          title: 'Your Career Evolution Path',
+          content: `Your chart reveals a natural career evolution that builds wealth over time:\n\n**Phase 1: Foundation Building (ages 18-28)**\nFocus on developing ${sunSign} core competencies and ${signFinancialTraits[saturnSign].earningStyle}. This period is about learning, making mistakes, and building foundational skills. Income grows slowly but importantly.\n\n**Phase 2: Establishment (ages 29-40)**\nAfter your Saturn Return, career direction clarifies. This is the time to establish yourself in ${tenthHouseSign} career expressions and ${sunFinance.bestIndustries[0]} domains. Income potential increases significantly when aligned with your chart.\n\n**Phase 3: Authority (ages 40-55)**\nYour Jupiter cycle supports becoming an authority in your field. ${jupiterSign} themes become central to your career identity. This is often peak earning time, especially if you\'ve done your Saturn work.\n\n**Phase 4: Legacy (ages 55+)**\nWealth focus shifts from accumulation to meaning and legacy. Your 8th house in ${eighthHouseSign} becomes more active—themes of inheritance, investments, and transforming wealth for future generations.`,
+        },
+        {
+          title: 'Income Streams for Your Chart',
+          content: `Diversified income aligned with your chart:\n\n**Primary Income (2nd House ${secondHouseSign}):**\nYour main income stream should involve ${secondHouseFinance.earningStyle}. This is where consistent, reliable income flows best.\n\n**Secondary Income (10th House ${tenthHouseSign}):**\nCareer advancement and authority bring increased income through ${tenthHouseFinance.earningStyle}. Consider consulting, speaking, or leadership roles.\n\n**Passive Income (8th House ${eighthHouseSign}):**\nYour potential for passive income flows through ${signFinancialTraits[eighthHouseSign].investmentApproach}. Types to consider:\n${signData[eighthHouseSign].element === 'Fire' ? '• Growth investments, startups, venture opportunities' : signData[eighthHouseSign].element === 'Earth' ? '• Real estate, dividend stocks, tangible assets' : signData[eighthHouseSign].element === 'Air' ? '• Intellectual property, licensing, technology investments' : '• Investment partnerships, estate planning, trust structures'}\n\n**Jupiter Bonus Income (${jupiterSign}):**\nLuck-based or expansion income comes through ${jupiterFinance.bestIndustries.slice(0, 2).join(' and ')}. Watch for "lucky breaks" in these areas.`,
+          tip: `Multiple income streams provide security; diverse income aligned with your chart provides prosperity AND fulfillment.`,
+        },
+        {
+          title: 'Negotiation & Value Communication',
+          content: `Your chart reveals how to communicate your value effectively:\n\n**Negotiation Style (Mars in ${marsSign}):**\nYou negotiate best when you\'re ${signFinancialTraits[marsSign].moneyMindset}. Avoid ${signFinancialTraits[marsSign].wealthBlocks[0]} during negotiations—it undermines your power.\n\n**Presenting Value (Venus in ${venusSign}):**\nYour value proposition resonates when framed around ${venusFinance.earningStyle}. Lead with what you genuinely offer, aligned with your Venus values.\n\n**Building Credibility (Saturn in ${saturnSign}):**\nYour authority grows through ${signFinancialTraits[saturnSign].earningStyle}. Don\'t expect overnight recognition—Saturn rewards consistent demonstration over time.\n\n**Asking for More:**\nWith your ${sunSign} Sun and ${secondHouseSign} second house, you\'re most effective asking for raises/higher fees when:\n• You can demonstrate ${sunSign} achievements\n• You\'ve built ${saturnSign} credibility\n• You present during favorable planetary timing\n• You genuinely believe in your worth (self-worth work amplifies income)\n\n**Your Power Phrases:**\n"I bring ${sunSign} qualities of ${signData[sunSign].keywords.slice(0, 2).join(' and ')} to every project."\n"My approach of ${venusFinance.earningStyle} creates unique value."\n"I have a track record of ${secondHouseFinance.earningStyle}."`,
+        },
+      ],
+    },
+    {
+      id: 'financial-relationships',
+      title: 'Money & Relationships',
+      icon: '💑',
+      subsections: [
+        {
+          title: 'Your Financial Partnership Style',
+          content: `Money in relationships is governed by your 8th house (${eighthHouseSign}) and Venus (${venusSign}). Understanding these helps navigate shared finances.\n\n**Your 8th House Style in Joint Finances:**\n${eighthHouseSign} energy in your house of shared resources suggests you approach joint finances ${signFinancialTraits[eighthHouseSign].moneyMindset}. In partnerships, you tend to:\n• ${signData[eighthHouseSign].element === 'Fire' ? 'Take initiative in financial decisions, sometimes without full consultation' : signData[eighthHouseSign].element === 'Earth' ? 'Want clear agreements, shared goals, and practical financial plans' : signData[eighthHouseSign].element === 'Air' ? 'Prefer discussing all options and keeping things fair and balanced' : 'Need emotional trust before financial merging, may avoid money conversations'}\n\n**Venus Values in Partnership:**\nYour Venus in ${venusSign} needs ${venusFinance.spendingPattern} to feel satisfied in relationships. Financial stress in partnerships often connects to Venus values not being honored.\n\n**Potential Friction Points:**\nIn partnerships, watch for ${signFinancialTraits[eighthHouseSign].wealthBlocks[0]} and ${venusFinance.wealthBlocks[0]}. These patterns can create money conflicts in relationships.`,
+        },
+        {
+          title: 'Harmonizing Finances With Partners',
+          content: `To create financial harmony in relationships:\n\n**Communicate Your Needs:**\nExpress your ${venusSign} Venus values clearly. "I feel secure when we..." "I value spending on..." "What matters to me financially is..."\n\n**Honor Different Styles:**\nYour partner may have a different financial blueprint. Neither is wrong—they need integration. Your ${secondHouseSign} earning style and ${eighthHouseSign} sharing style can complement many other placements when approached consciously.\n\n**Create Structure (Saturn):**\nYour Saturn in ${saturnSign} suggests successful joint finances require ${signFinancialTraits[saturnSign].investmentApproach} structures. Regular money conversations, clear agreements, and shared goals provide security.\n\n**Maintain Individual Resources:**\nEven in partnership, your 2nd house in ${secondHouseSign} needs expression. Keep some individual financial identity—it supports self-worth and relationship health.\n\n**Joint Investment Strategy:**\nFor joint investments, honor both charts. Your ${eighthHouseSign} 8th house suggests ${signFinancialTraits[eighthHouseSign].investmentApproach}. Discuss how this aligns with your partner\'s approach.`,
+        },
+        {
+          title: 'Financial Inheritance & Family Money',
+          content: `The 8th house also governs inheritance and family money patterns. With ${eighthHouseSign} here:\n\n**Inheritance Potential:**\nYour approach to inheritance is ${signFinancialTraits[eighthHouseSign].moneyMindset}. You may receive, manage, or transform inherited resources in ways aligned with this energy.\n\n**Family Money Patterns:**\nYou likely inherited financial beliefs from your family. Your ${moonSign} Moon suggests childhood financial atmosphere was ${signFinancialTraits[moonSign].moneyMindset}. These early patterns still influence you.\n\n**Breaking Generational Patterns:**\nTo evolve your family\'s financial karma:\n• Identify the inherited money beliefs (Moon in ${moonSign})\n• Recognize which no longer serve you\n• Consciously choose new beliefs aligned with your chart\'s potential\n• Create new family financial culture if you have children\n\n**Leaving Legacy:**\nYour chart suggests legacy through ${tenthHouseSign} career achievements and ${eighthHouseSign} shared resources. Consider how you want to be remembered financially—what values do you want to pass on?\n\nThe wealth you create isn\'t just for you—it\'s for everyone your life touches, and potentially generations to come.`,
+          tip: `Financial karma often runs through families. You have the power to transform these patterns.`,
+        },
+      ],
+    },
+  ]
+
+  const wordCount = sections.reduce((acc, s) =>
+    acc + s.subsections.reduce((a, sub) => a + sub.content.split(' ').length, 0), 0)
+
+  return {
+    id: `financial-potential-${Date.now()}`,
+    slug: 'financial-potential',
+    title: 'Financial Potential Report',
+    generatedAt: new Date().toISOString(),
+    userName,
+    birthData: {
+      date: '',
+      place: '',
+      sunSign,
+      moonSign,
+      risingSign,
+    },
+    summary: {
+      headline: `A Wealth Blueprint of ${secondHouseSign} Earning & ${jupiterSign} Expansion`,
+      overview: `${userName}, your financial potential is written in the stars. With ${secondHouseSign} ruling your income, ${jupiterSign} Jupiter expanding opportunities, and ${saturnSign} Saturn building discipline, you have a unique formula for creating lasting wealth. Your path involves ${sunFinance.earningStyle} while mastering ${signFinancialTraits[saturnSign].financialLesson}.`,
+      keyStrengths: [
+        `Natural ability: ${sunFinance.abundanceGifts[0]}`,
+        `Attraction power: ${venusFinance.abundanceGifts[0]}`,
+        `Expansion through: ${jupiterFinance.abundanceGifts[0]}`,
+        `Earning style: ${secondHouseFinance.earningStyle.slice(0, 50)}...`,
+      ],
+      growthAreas: [
+        `Clear block: ${sunFinance.wealthBlocks[0]}`,
+        `Release: ${venusFinance.wealthBlocks[0]}`,
+        `Master: ${signFinancialTraits[saturnSign].financialLesson}`,
+        `Transform: relationship with ${eighthHouseSign} financial energy`,
+      ],
+    },
+    visuals: [
+      {
+        type: 'planetary-strength',
+        title: 'Your Financial Houses',
+        data: {
+          'Personal Income (2nd)': secondHouseSign,
+          'Investments (8th)': eighthHouseSign,
+          'Career (10th)': tenthHouseSign,
+        },
+      },
+    ],
+    sections,
+    glossary: [
+      { term: '2nd House', definition: 'The area of your chart governing personal income, possessions, and self-worth.' },
+      { term: '8th House', definition: 'The area governing shared resources, investments, inheritance, and financial transformation.' },
+      { term: '10th House', definition: 'The career house, ruling public reputation and professional earning power.' },
+      { term: 'Jupiter', definition: 'The planet of expansion and luck—shows where abundance flows easily.' },
+      { term: 'Saturn', definition: 'The planet of discipline and mastery—shows financial lessons and long-term wealth building.' },
+    ],
+    wordCount: wordCount + 400,
+  }
+}
+
+function getHouseSign(rising: Sign, house: number): Sign {
+  const signs: Sign[] = ['Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo', 'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces']
+  const risingIndex = signs.indexOf(rising)
+  return signs[(risingIndex + house - 1) % 12]
+}
+
+// ============================================
+// DEEP PARTNER COMPATIBILITY REPORT GENERATOR
+// ============================================
+
+export function generatePartnerCompatibilityReportV2(
+  chart: NatalChart,
+  userName: string,
+  partnerChart: NatalChart,
+  partnerName: string
+): GeneratedReportV2 {
+  // Get both people's placements
+  const userSun = getPlacement(chart, 'sun')
+  const userMoon = getPlacement(chart, 'moon')
+  const userVenus = getPlacement(chart, 'venus')
+  const userMars = getPlacement(chart, 'mars')
+  const userMercury = getPlacement(chart, 'mercury')
+  const userSaturn = getPlacement(chart, 'saturn')
+
+  const partnerSun = getPlacement(partnerChart, 'sun')
+  const partnerMoon = getPlacement(partnerChart, 'moon')
+  const partnerVenus = getPlacement(partnerChart, 'venus')
+  const partnerMars = getPlacement(partnerChart, 'mars')
+  const partnerMercury = getPlacement(partnerChart, 'mercury')
+  const partnerSaturn = getPlacement(partnerChart, 'saturn')
+
+  const userSunSign = capitalizeSign(userSun?.sign || 'aries')
+  const userMoonSign = capitalizeSign(userMoon?.sign || 'aries')
+  const userVenusSign = capitalizeSign(userVenus?.sign || 'taurus')
+  const userMarsSign = capitalizeSign(userMars?.sign || 'aries')
+  const userMercurySign = capitalizeSign(userMercury?.sign || 'gemini')
+  const userRisingSign = capitalizeSign(chart.ascendant?.sign || 'aries')
+
+  const partnerSunSign = capitalizeSign(partnerSun?.sign || 'aries')
+  const partnerMoonSign = capitalizeSign(partnerMoon?.sign || 'aries')
+  const partnerVenusSign = capitalizeSign(partnerVenus?.sign || 'taurus')
+  const partnerMarsSign = capitalizeSign(partnerMars?.sign || 'aries')
+  const partnerMercurySign = capitalizeSign(partnerMercury?.sign || 'gemini')
+  const partnerRisingSign = capitalizeSign(partnerChart.ascendant?.sign || 'aries')
+  const userSaturnSign = capitalizeSign(userSaturn?.sign || 'capricorn')
+  const partnerSaturnSign = capitalizeSign(partnerSaturn?.sign || 'capricorn')
+
+  // Calculate element compatibility
+  const userElements = getElementBalance(chart)
+  const partnerElements = getElementBalance(partnerChart)
+
+  // Calculate composite midpoints (simplified)
+  const compositeSunSign = getMidpointSign(userSunSign, partnerSunSign)
+  const compositeMoonSign = getMidpointSign(userMoonSign, partnerMoonSign)
+  const compositeVenusSign = getMidpointSign(userVenusSign, partnerVenusSign)
+
+  // Aspect compatibility scores (simplified)
+  const sunMoonCompatibility = getSignCompatibilityScore(userSunSign, partnerMoonSign)
+  const moonMoonCompatibility = getSignCompatibilityScore(userMoonSign, partnerMoonSign)
+  const venusMarsCompatibility = getSignCompatibilityScore(userVenusSign, partnerMarsSign)
+  const sunSunCompatibility = getSignCompatibilityScore(userSunSign, partnerSunSign)
+
+  const overallScore = Math.round((sunMoonCompatibility + moonMoonCompatibility + venusMarsCompatibility + sunSunCompatibility) / 4)
+
+  const sections: ReportSectionV2[] = [
+    {
+      id: 'partnership-overview',
+      title: 'Your Partnership Overview',
+      icon: '💑',
+      subsections: [
+        {
+          title: 'The Cosmic Story of Your Connection',
+          content: `${userName} and ${partnerName}, your birth charts reveal a unique cosmic connection—a relationship with its own personality, purpose, and potential. This report explores both the synastry (how your individual charts interact) and the composite (the chart of your relationship itself).\n\nAt first glance, we see a ${userSunSign} Sun meeting a ${partnerSunSign} Sun—a connection between ${signData[userSunSign].archetype} and ${signData[partnerSunSign].archetype} energies. But the real story goes much deeper.\n\nYour relationship has significant strengths in ${sunMoonCompatibility > 70 ? 'emotional attunement' : 'complementary differences'}, with ${venusMarsCompatibility > 70 ? 'strong romantic chemistry' : 'a steady building attraction'}. The composite chart suggests your relationship\'s purpose involves ${signData[compositeSunSign].lifeLesson.toLowerCase()}.`,
+          visual: {
+            type: 'planetary-strength',
+            title: 'Compatibility Scores',
+            data: {
+              'Sun-Moon Bond': `${sunMoonCompatibility}%`,
+              'Emotional Match': `${moonMoonCompatibility}%`,
+              'Romantic Chemistry': `${venusMarsCompatibility}%`,
+              'Identity Harmony': `${sunSunCompatibility}%`,
+              'Overall': `${overallScore}%`,
+            },
+          },
+        },
+        {
+          title: 'What Makes This Connection Unique',
+          content: `Every relationship is one-of-a-kind, and yours is no exception. Here\'s what makes your bond special:\n\n**${userName}\'s Contribution:**\n• Brings ${signData[userSunSign].giftToWorld.toLowerCase()}\n• Offers emotional ${signData[userMoonSign].keywords[0]} and ${signData[userMoonSign].keywords[1]}\n• Expresses love through ${signData[userVenusSign].keywords[0]} and ${signData[userVenusSign].keywords[1]} gestures\n\n**${partnerName}\'s Contribution:**\n• Brings ${signData[partnerSunSign].giftToWorld.toLowerCase()}\n• Offers emotional ${signData[partnerMoonSign].keywords[0]} and ${signData[partnerMoonSign].keywords[1]}\n• Expresses love through ${signData[partnerVenusSign].keywords[0]} and ${signData[partnerVenusSign].keywords[1]} gestures\n\n**Together You Create:**\nA relationship entity with a ${compositeSunSign} Sun nature—one that is ${signData[compositeSunSign].keywords.join(', ')} at its core.`,
+          terms: [
+            { term: 'Synastry', definition: 'The comparison of two birth charts to understand relationship dynamics.' },
+            { term: 'Composite Chart', definition: 'A single chart created from the midpoints of two charts, representing the relationship as its own entity.' },
+          ],
+        },
+      ],
+    },
+    {
+      id: 'composite-chart',
+      title: 'Your Composite Chart: The Relationship Entity',
+      icon: '🌟',
+      subsections: [
+        {
+          title: `Composite Sun in ${compositeSunSign}: Your Relationship\'s Identity`,
+          content: `When your individual charts combine, they create a third entity—your relationship itself. This composite chart has its own Sun sign, revealing what your partnership is fundamentally "about."\n\nYour Composite Sun in ${compositeSunSign} means your relationship\'s core identity is ${signData[compositeSunSign].keywords.join(', ')}. The relationship thrives when it embodies ${signData[compositeSunSign].archetype} energy.\n\n**Your Relationship\'s Purpose:**\n${signData[compositeSunSign].lifeLesson}\n\n**Your Relationship\'s Gift to Each Other:**\n${signData[compositeSunSign].giftToWorld}\n\n**The Relationship\'s Shadow:**\nWhen stressed, the relationship may express ${signData[compositeSunSign].shadowSide.toLowerCase()}. Awareness of this tendency helps you navigate it consciously.`,
+        },
+        {
+          title: `Composite Moon in ${compositeMoonSign}: Your Emotional Foundation`,
+          content: `The Composite Moon reveals the emotional tone of your relationship—what you need to feel safe together, and how you naturally nurture each other.\n\nWith a Composite Moon in ${compositeMoonSign}, your relationship feels most secure when it\'s ${signData[compositeMoonSign].keywords.join(', ')}. You instinctively create a home environment that reflects ${compositeMoonSign} energy.\n\n**Your Emotional Needs as a Couple:**\n${signData[compositeMoonSign].strengths.map(s => `• ${s}`).join('\n')}\n\n**Watch For:**\n${signData[compositeMoonSign].challenges.map(c => `• ${c}`).join('\n')}\n\nThe Composite Moon is where you retreat to feel safe together. Honor these needs, and your emotional bond deepens.`,
+        },
+        {
+          title: `Composite Venus in ${compositeVenusSign}: How You Love Together`,
+          content: `Composite Venus shows how your relationship expresses love, what you value together, and what brings you shared pleasure.\n\nWith Composite Venus in ${compositeVenusSign}, you express love as a couple through ${signData[compositeVenusSign].keywords.join(', ')} gestures. You\'re naturally drawn to ${signData[compositeVenusSign].archetype.toLowerCase()} experiences together.\n\n**What You Enjoy Together:**\n${signData[compositeVenusSign].strengths.slice(0, 3).map(s => `• ${s}`).join('\n')}\n\n**Your Shared Values:**\nAs a couple, you value ${signData[compositeVenusSign].keywords[0]} and ${signData[compositeVenusSign].keywords[1]}. When these values are honored, romance flourishes.\n\n**Romance Tips:**\n• Plan dates that incorporate ${compositeVenusSign} energy\n• Express appreciation in ${signData[compositeVenusSign].keywords[0]} ways\n• Create beauty together that reflects your shared aesthetic`,
+        },
+      ],
+    },
+    {
+      id: 'sun-moon-connections',
+      title: 'Sun & Moon Connections',
+      icon: '☀️',
+      subsections: [
+        {
+          title: `${userName}\'s Sun (${userSunSign}) & ${partnerName}\'s Moon (${partnerMoonSign})`,
+          content: `This is one of the most important connections in synastry—${userName}\'s core identity meeting ${partnerName}\'s emotional needs.\n\n**The Dynamic:**\n${userName} expresses their ${userSunSign} identity—${signData[userSunSign].keywords.join(', ')}. ${partnerName}\'s ${partnerMoonSign} Moon needs ${signData[partnerMoonSign].keywords.join(', ')} to feel secure.\n\n**Compatibility Score: ${sunMoonCompatibility}%**\n\n${sunMoonCompatibility > 70
+            ? `This is a naturally supportive connection. ${userName}\'s way of being resonates with what ${partnerName} needs emotionally. ${partnerName} feels seen and valued by ${userName}\'s authentic self-expression.`
+            : sunMoonCompatibility > 50
+            ? `This connection requires some adjustment. ${userName}\'s natural expression differs from what ${partnerName} instinctively needs, but this difference can promote growth if approached with awareness.`
+            : `This connection presents challenges that, when worked through, create deep growth. ${userName} and ${partnerName} are invited to stretch beyond their comfort zones to meet each other.`}`,
+        },
+        {
+          title: `${partnerName}\'s Sun (${partnerSunSign}) & ${userName}\'s Moon (${userMoonSign})`,
+          content: `The reverse connection—${partnerName}\'s core identity meeting ${userName}\'s emotional needs.\n\n**The Dynamic:**\n${partnerName} expresses their ${partnerSunSign} identity—${signData[partnerSunSign].keywords.join(', ')}. ${userName}\'s ${userMoonSign} Moon needs ${signData[userMoonSign].keywords.join(', ')} to feel secure.\n\n**How This Plays Out:**\n${getSignCompatibilityScore(partnerSunSign, userMoonSign) > 70
+            ? `${partnerName}\'s natural way of being provides what ${userName} needs emotionally. This creates a sense of safety and belonging for ${userName}.`
+            : `${partnerName}\'s expression and ${userName}\'s emotional needs operate differently. This isn\'t incompatibility—it\'s an invitation to expand how both partners give and receive.`}\n\n**Nurturing This Connection:**\n• ${partnerName}: Express your ${partnerSunSign} nature while being aware of ${userName}\'s ${userMoonSign} needs\n• ${userName}: Communicate your emotional needs clearly; ${partnerName} wants to meet them`,
+        },
+        {
+          title: `Moon-Moon Connection: Emotional Resonance`,
+          content: `The Moon-Moon aspect reveals how naturally your emotional natures sync—how easily you understand each other\'s feelings and create emotional safety together.\n\n**${userName}\'s Moon in ${userMoonSign}:**\n• Needs: ${signData[userMoonSign].keywords.slice(0, 2).join(', ')}\n• Processes emotions: ${signData[userMoonSign].element === 'Water' ? 'deeply and intuitively' : signData[userMoonSign].element === 'Fire' ? 'quickly and expressively' : signData[userMoonSign].element === 'Earth' ? 'steadily and practically' : 'mentally and analytically'}\n\n**${partnerName}\'s Moon in ${partnerMoonSign}:**\n• Needs: ${signData[partnerMoonSign].keywords.slice(0, 2).join(', ')}\n• Processes emotions: ${signData[partnerMoonSign].element === 'Water' ? 'deeply and intuitively' : signData[partnerMoonSign].element === 'Fire' ? 'quickly and expressively' : signData[partnerMoonSign].element === 'Earth' ? 'steadily and practically' : 'mentally and analytically'}\n\n**Emotional Compatibility: ${moonMoonCompatibility}%**\n\n${signData[userMoonSign].element === signData[partnerMoonSign].element
+            ? `Sharing the same element (${signData[userMoonSign].element}), you naturally understand each other\'s emotional language. You process feelings similarly and instinctively know how to comfort each other.`
+            : `With different emotional elements, you offer each other new ways of feeling and processing. ${userName} teaches ${partnerName} about ${signData[userMoonSign].element} emotional wisdom; ${partnerName} teaches ${userName} about ${signData[partnerMoonSign].element} emotional intelligence.`}`,
+          tip: `When emotional conflicts arise, remember your partner processes feelings through a different element. Neither way is wrong—they\'re just different.`,
+        },
+      ],
+    },
+    {
+      id: 'venus-mars',
+      title: 'Venus & Mars: Love & Desire',
+      icon: '💕',
+      subsections: [
+        {
+          title: `${userName}\'s Venus (${userVenusSign}) & ${partnerName}\'s Mars (${partnerMarsSign})`,
+          content: `Venus-Mars connections create romantic and physical chemistry. ${userName}\'s Venus (what they find attractive) meeting ${partnerName}\'s Mars (how they pursue and assert) creates a specific dynamic.\n\n**${userName} is attracted to:**\n${signData[userVenusSign].keywords.join(', ')}\n\n**${partnerName} pursues through:**\n${signData[partnerMarsSign].keywords.join(', ')}\n\n**Chemistry Score: ${venusMarsCompatibility}%**\n\n${venusMarsCompatibility > 70
+            ? `Strong natural chemistry! ${partnerName}\'s pursuit style naturally appeals to what ${userName} finds attractive. This creates a classic romantic dynamic where ${partnerName}\'s assertiveness is well-received.`
+            : venusMarsCompatibility > 50
+            ? `Moderate chemistry that can deepen with understanding. ${partnerName}\'s Mars style isn\'t exactly what ${userName}\'s Venus expects, but this creates intrigue and the opportunity to expand attraction.`
+            : `This combination creates a slow-building attraction. Initial chemistry may not be fireworks, but deeper connection develops through appreciation of differences.`}`,
+        },
+        {
+          title: `${partnerName}\'s Venus (${partnerVenusSign}) & ${userName}\'s Mars (${userMarsSign})`,
+          content: `The reverse Venus-Mars dynamic—what ${partnerName} is attracted to, and how ${userName} pursues.\n\n**${partnerName} is attracted to:**\n${signData[partnerVenusSign].keywords.join(', ')}\n\n**${userName} pursues through:**\n${signData[userMarsSign].keywords.join(', ')}\n\n**Chemistry Score: ${getSignCompatibilityScore(partnerVenusSign, userMarsSign)}%**\n\n${getSignCompatibilityScore(partnerVenusSign, userMarsSign) > 70
+            ? `${userName}\'s way of pursuing and asserting naturally appeals to ${partnerName}. This creates a satisfying dynamic where ${userName} feels capable of winning ${partnerName}\'s heart.`
+            : `${userName} may need to adjust their pursuit style to match what ${partnerName} finds attractive. This isn\'t about changing who you are—it\'s about learning your partner\'s romantic language.`}\n\n**Keeping the Spark Alive:**\n• ${userName}: Express your Mars through activities ${partnerName}\'s Venus appreciates\n• ${partnerName}: Show ${userName} that their pursuit style is valued\n• Both: Maintain the chase even in long-term commitment`,
+        },
+        {
+          title: 'Physical & Romantic Chemistry',
+          content: `The overall romantic and physical connection between you combines multiple factors:\n\n**Attraction Style:**\n${userName}: Attracted to ${signData[userVenusSign].archetype.toLowerCase()} energy; gives love through ${signData[userVenusSign].keywords[0]}\n${partnerName}: Attracted to ${signData[partnerVenusSign].archetype.toLowerCase()} energy; gives love through ${signData[partnerVenusSign].keywords[0]}\n\n**Desire Style:**\n${userName}: Pursues ${signData[userMarsSign].keywords[0]} way; aroused by ${signData[userMarsSign].keywords[1]}\n${partnerName}: Pursues ${signData[partnerMarsSign].keywords[0]} way; aroused by ${signData[partnerMarsSign].keywords[1]}\n\n**Enhancing Physical Connection:**\n• Create dates that satisfy both Venus signs\n• Allow both Mars signs to express assertion\n• Communicate about desires openly\n• Remember: chemistry is built, not just found\n\n**Overall Physical Compatibility:**\nYour Venus-Mars interplay suggests ${venusMarsCompatibility > 70 ? 'natural, easy chemistry that sustains over time' : venusMarsCompatibility > 50 ? 'chemistry that deepens as you learn each other' : 'a connection that rewards patience and communication'}.`,
+        },
+      ],
+    },
+    {
+      id: 'mercury-communication',
+      title: 'Mercury: Communication Dynamics',
+      icon: '💬',
+      subsections: [
+        {
+          title: 'How You Think & Communicate',
+          content: `Mercury governs how we think, process information, and communicate. Understanding your Mercury connection helps you communicate more effectively.\n\n**${userName}\'s Mercury in ${userMercurySign}:**\n• Thinks: ${signData[userMercurySign].element === 'Fire' ? 'intuitively, in big pictures' : signData[userMercurySign].element === 'Earth' ? 'practically, in concrete terms' : signData[userMercurySign].element === 'Air' ? 'logically, in concepts and ideas' : 'emotionally, in feelings and impressions'}\n• Communicates: ${signData[userMercurySign].keywords.slice(0, 2).join(', ')}\n• Needs in conversation: ${signData[userMercurySign].modality === 'Cardinal' ? 'directness and initiative' : signData[userMercurySign].modality === 'Fixed' ? 'depth and consistency' : 'variety and flexibility'}\n\n**${partnerName}\'s Mercury in ${partnerMercurySign}:**\n• Thinks: ${signData[partnerMercurySign].element === 'Fire' ? 'intuitively, in big pictures' : signData[partnerMercurySign].element === 'Earth' ? 'practically, in concrete terms' : signData[partnerMercurySign].element === 'Air' ? 'logically, in concepts and ideas' : 'emotionally, in feelings and impressions'}\n• Communicates: ${signData[partnerMercurySign].keywords.slice(0, 2).join(', ')}\n• Needs in conversation: ${signData[partnerMercurySign].modality === 'Cardinal' ? 'directness and initiative' : signData[partnerMercurySign].modality === 'Fixed' ? 'depth and consistency' : 'variety and flexibility'}`,
+        },
+        {
+          title: 'Communication Compatibility',
+          content: `**Communication Score: ${getSignCompatibilityScore(userMercurySign, partnerMercurySign)}%**\n\n${signData[userMercurySign].element === signData[partnerMercurySign].element
+            ? `Sharing the same Mercury element (${signData[userMercurySign].element}), you naturally "get" each other\'s thinking process. Conversations flow easily, and you understand each other\'s mental shortcuts.`
+            : `With different Mercury elements, you think and communicate differently. This can lead to misunderstandings but also to valuable complementarity—you see things the other misses.`}\n\n**Communication Strengths:**\n• ${userName} brings ${signData[userMercurySign].strengths[0].toLowerCase()} to conversations\n• ${partnerName} brings ${signData[partnerMercurySign].strengths[0].toLowerCase()} to conversations\n\n**Watch For:**\n• ${userName} may need: ${signData[userMercurySign].element === 'Water' || signData[userMercurySign].element === 'Earth' ? 'more processing time' : 'faster mental stimulation'}\n• ${partnerName} may need: ${signData[partnerMercurySign].element === 'Water' || signData[partnerMercurySign].element === 'Earth' ? 'more processing time' : 'faster mental stimulation'}`,
+          tip: `When conversations go sideways, check if you\'re speaking different Mercury languages. Slow down and translate.`,
+        },
+      ],
+    },
+    {
+      id: 'saturn-commitment',
+      title: 'Saturn: Commitment & Longevity',
+      icon: '🪐',
+      subsections: [
+        {
+          title: 'Saturn Connections: The Glue of Long-Term Partnership',
+          content: `Saturn aspects between charts reveal the staying power of a relationship—the ability to commit, build together, and weather challenges.\n\n**${userName}\'s Saturn in ${capitalizeSign(userSaturn?.sign || 'capricorn')}:**\n• Commitment style: ${signData[capitalizeSign(userSaturn?.sign || 'capricorn')].keywords[0]}, ${signData[capitalizeSign(userSaturn?.sign || 'capricorn')].keywords[1]}\n• What they need for security: ${signData[capitalizeSign(userSaturn?.sign || 'capricorn')].strengths[0]}\n\n**${partnerName}\'s Saturn in ${capitalizeSign(partnerSaturn?.sign || 'capricorn')}:**\n• Commitment style: ${signData[capitalizeSign(partnerSaturn?.sign || 'capricorn')].keywords[0]}, ${signData[capitalizeSign(partnerSaturn?.sign || 'capricorn')].keywords[1]}\n• What they need for security: ${signData[capitalizeSign(partnerSaturn?.sign || 'capricorn')].strengths[0]}\n\nSaturn connections can feel heavy but are essential for lasting partnership. They create the structure that holds a relationship together through life\'s challenges.`,
+        },
+        {
+          title: 'Building a Lasting Foundation',
+          content: `For long-term success, your relationship needs:\n\n**Structure:**\nCreate shared routines, rituals, and commitments that both Saturn placements can respect.\n\n**Responsibility:**\nDivide responsibilities in ways that honor both your Saturn needs. ${userName} may prefer ${signData[capitalizeSign(userSaturn?.sign || 'capricorn')].modality === 'Cardinal' ? 'initiating projects' : signData[capitalizeSign(userSaturn?.sign || 'capricorn')].modality === 'Fixed' ? 'maintaining stability' : 'adapting as needed'}. ${partnerName} may prefer ${signData[capitalizeSign(partnerSaturn?.sign || 'capricorn')].modality === 'Cardinal' ? 'initiating projects' : signData[capitalizeSign(partnerSaturn?.sign || 'capricorn')].modality === 'Fixed' ? 'maintaining stability' : 'adapting as needed'}.\n\n**Growth:**\nSaturn asks: "Are you both growing?" A relationship without growth stagnates. Keep challenging each other to be better while supporting the process.\n\n**Time:**\nSaturn-influenced connections often improve with time. The first few years may feel like work, but the payoff is a deeply stable bond.`,
+        },
+      ],
+    },
+    {
+      id: 'karmic-connections',
+      title: 'Karmic & Past Life Connections',
+      icon: '🔮',
+      subsections: [
+        {
+          title: 'Signs of Soul Connection',
+          content: `Certain indicators in synastry suggest past life connections—souls who have traveled together before and have unfinished business or continued learning.\n\n**Your Karmic Indicators:**\n• Sun-Moon connections: ${sunMoonCompatibility > 60 ? 'Strong soul recognition present' : 'Building new soul connection in this life'}\n• Saturn aspects: ${userName}\'s Saturn may teach ${partnerName} about ${signData[capitalizeSign(userSaturn?.sign || 'capricorn')].lifeLesson.toLowerCase()}\n• Node connections: Past life meeting future direction\n\n**Past Life Themes:**\nBased on your chart combination, you may have shared past lives involving ${signData[userSunSign].archetype.toLowerCase()} and ${signData[partnerSunSign].archetype.toLowerCase()} dynamics. The current life continues this soul work with new opportunities for resolution and growth.`,
+        },
+        {
+          title: 'Your Soul Contract',
+          content: `Every significant relationship involves a soul contract—an agreement made between lifetimes about what you\'ll learn together.\n\n**What You\'re Here to Learn Together:**\n• ${userName} learns from ${partnerName}: ${signData[partnerSunSign].giftToWorld.toLowerCase()}\n• ${partnerName} learns from ${userName}: ${signData[userSunSign].giftToWorld.toLowerCase()}\n\n**Your Relationship\'s Higher Purpose:**\nBased on your composite Sun in ${compositeSunSign}, your relationship exists to ${signData[compositeSunSign].lifeLesson.toLowerCase()}. When you fulfill this purpose, both of you evolve—and your relationship becomes a gift to everyone who witnesses it.\n\n**Honoring the Contract:**\n• Show up fully as yourselves\n• Allow each other to change and grow\n• Face challenges as opportunities\n• Remember: you chose each other`,
+          tip: `Soul contracts aren\'t binding prisons—they\'re invitations. You can always renegotiate through conscious communication.`,
+        },
+      ],
+    },
+    {
+      id: 'challenges',
+      title: 'Navigating Challenges Together',
+      icon: '⚡',
+      subsections: [
+        {
+          title: 'Potential Friction Points',
+          content: `Every relationship has challenges. Awareness of potential friction points helps you navigate them with grace.\n\n**Area 1: Core Identity (Sun-Sun)**\n${sunSunCompatibility > 70
+            ? `Your Sun signs naturally harmonize. Friction is minimal here.`
+            : `${userSunSign} (${signData[userSunSign].element}) and ${partnerSunSign} (${signData[partnerSunSign].element}) can clash. ${userName}\'s ${signData[userSunSign].challenges[0].toLowerCase()} may trigger ${partnerName}, while ${partnerName}\'s ${signData[partnerSunSign].challenges[0].toLowerCase()} may trigger ${userName}.`}\n\n**Area 2: Emotional Needs (Moon-Moon)**\n${moonMoonCompatibility > 70
+            ? `Your emotional needs align well. Conflicts here are easily resolved.`
+            : `Different emotional needs can create misunderstandings. ${userName} needs ${signData[userMoonSign].keywords[0]}; ${partnerName} needs ${signData[partnerMoonSign].keywords[0]}. Neither is wrong—both need acknowledgment.`}\n\n**Area 3: Love Language (Venus-Venus)**\n${getSignCompatibilityScore(userVenusSign, partnerVenusSign) > 70
+            ? `You naturally speak similar love languages.`
+            : `You may show love differently. ${userName} shows love through ${signData[userVenusSign].keywords[0]}; ${partnerName} through ${signData[partnerVenusSign].keywords[0]}. Learn each other\'s language.`}`,
+        },
+        {
+          title: 'Conflict Resolution Styles',
+          content: `Understanding how each of you approaches conflict helps you fight fair.\n\n**${userName}\'s Conflict Style (Mars in ${userMarsSign}):**\n• Approaches conflict: ${signData[userMarsSign].keywords[0]}, ${signData[userMarsSign].keywords[1]}\n• Needs during conflict: ${signData[userMarsSign].element === 'Fire' ? 'to express anger, then move on quickly' : signData[userMarsSign].element === 'Earth' ? 'practical solutions and time to process' : signData[userMarsSign].element === 'Air' ? 'logical discussion and space' : 'emotional validation and reconnection'}\n\n**${partnerName}\'s Conflict Style (Mars in ${partnerMarsSign}):**\n• Approaches conflict: ${signData[partnerMarsSign].keywords[0]}, ${signData[partnerMarsSign].keywords[1]}\n• Needs during conflict: ${signData[partnerMarsSign].element === 'Fire' ? 'to express anger, then move on quickly' : signData[partnerMarsSign].element === 'Earth' ? 'practical solutions and time to process' : signData[partnerMarsSign].element === 'Air' ? 'logical discussion and space' : 'emotional validation and reconnection'}\n\n**Fighting Fair:**\n• Acknowledge each other\'s conflict styles as valid\n• ${signData[userMarsSign].element === 'Fire' && signData[partnerMarsSign].element === 'Water' ? 'Balance intensity with sensitivity' : 'Meet in the middle on timing and approach'}\n• Always repair after conflict—reconnection matters more than winning`,
+        },
+      ],
+    },
+    {
+      id: 'growth-potential',
+      title: 'Growth Opportunities Together',
+      icon: '🌱',
+      subsections: [
+        {
+          title: 'How You Help Each Other Grow',
+          content: `The best relationships catalyze growth. Here\'s how you evolve each other:\n\n**${partnerName} Helps ${userName} Develop:**\n• ${signData[partnerSunSign].strengths[0]} (from ${partnerName}\'s Sun)\n• ${signData[partnerMoonSign].strengths[0]} (from ${partnerName}\'s Moon)\n• ${signData[partnerVenusSign].strengths[0]} (from ${partnerName}\'s Venus)\n\n**${userName} Helps ${partnerName} Develop:**\n• ${signData[userSunSign].strengths[0]} (from ${userName}\'s Sun)\n• ${signData[userMoonSign].strengths[0]} (from ${userName}\'s Moon)\n• ${signData[userVenusSign].strengths[0]} (from ${userName}\'s Venus)\n\n**Together, You\'re Learning:**\nYour composite chart suggests your relationship\'s curriculum includes ${signData[compositeSunSign].lifeLesson.toLowerCase()}. Every challenge is an opportunity to master this lesson together.`,
+        },
+        {
+          title: 'Your Relationship\'s Highest Potential',
+          content: `${userName} and ${partnerName}, your charts reveal a relationship with significant potential for:\n\n**Emotional Depth:**\n${moonMoonCompatibility > 60 ? 'Your Moon connection creates natural emotional safety for deep intimacy.' : 'Your different emotional styles, when honored, create comprehensive emotional intelligence together.'}\n\n**Creative Partnership:**\nWith your combined Venus energies (${userVenusSign} and ${partnerVenusSign}), you can create beauty together through ${signData[userVenusSign].keywords[0]} and ${signData[partnerVenusSign].keywords[0]} expressions.\n\n**Lasting Commitment:**\nYour Saturn placements (${userSaturnSign} and ${partnerSaturnSign}) suggest the ability to ${signData[userSaturnSign].element === 'Earth' || signData[partnerSaturnSign].element === 'Earth' ? 'build substantial shared structures' : signData[userSaturnSign].element === 'Water' || signData[partnerSaturnSign].element === 'Water' ? 'create deep emotional commitment' : 'maintain freedom within commitment'} over time.\n\n**Soul Evolution:**\nThis relationship, fully embraced, helps both of you become more fully yourselves—not through losing your identity, but through being witnessed and supported in your growth.\n\n**Your Relationship Affirmation:**\n"We honor what makes each of us unique while creating something beautiful together. Our love is a canvas for both our individual and shared evolution. We are both teachers and students in this partnership."`,
+          tip: `The goal isn\'t a perfect relationship—it\'s a relationship that helps both partners become more whole.`,
+        },
+      ],
+    },
+  ]
+
+  const wordCount = sections.reduce((acc, s) =>
+    acc + s.subsections.reduce((a, sub) => a + sub.content.split(' ').length, 0), 0)
+
+  return {
+    id: `partner-compatibility-${Date.now()}`,
+    slug: 'partner-compatibility',
+    title: 'Deep Compatibility Analysis',
+    generatedAt: new Date().toISOString(),
+    userName,
+    partnerName,
+    birthData: {
+      date: '',
+      place: '',
+      sunSign: userSunSign,
+      moonSign: userMoonSign,
+      risingSign: userRisingSign,
+    },
+    partnerBirthData: {
+      date: '',
+      place: '',
+    },
+    summary: {
+      headline: `${userSunSign} & ${partnerSunSign}: A ${overallScore}% Cosmic Match`,
+      overview: `${userName} and ${partnerName}, your connection combines ${signData[userSunSign].archetype} and ${signData[partnerSunSign].archetype} energies, creating a relationship entity with a ${compositeSunSign} Sun. With ${sunMoonCompatibility}% Sun-Moon resonance and ${venusMarsCompatibility}% romantic chemistry, your partnership has both natural harmony and growth opportunities.`,
+      keyStrengths: [
+        `${sunMoonCompatibility > 70 ? 'Strong emotional attunement' : 'Complementary differences promote growth'}`,
+        `Combined Venus energy: ${signData[userVenusSign].keywords[0]} meets ${signData[partnerVenusSign].keywords[0]}`,
+        `Composite purpose: ${signData[compositeSunSign].lifeLesson.slice(0, 40)}...`,
+        `${moonMoonCompatibility > 70 ? 'Natural emotional safety' : 'Opportunity to expand emotional range'}`,
+      ],
+      growthAreas: [
+        `Communication: ${userMercurySign} and ${partnerMercurySign} styles may differ`,
+        `${sunSunCompatibility < 70 ? `Balancing ${userSunSign} and ${partnerSunSign} needs` : 'Maintaining individual identity within harmony'}`,
+        `Conflict navigation with different Mars styles`,
+        `Honoring both partners\' Saturn-level commitments`,
+      ],
+    },
+    visuals: [
+      {
+        type: 'planetary-strength',
+        title: 'Compatibility Overview',
+        data: {
+          'Sun-Moon': `${sunMoonCompatibility}%`,
+          'Moon-Moon': `${moonMoonCompatibility}%`,
+          'Venus-Mars': `${venusMarsCompatibility}%`,
+          'Sun-Sun': `${sunSunCompatibility}%`,
+          'Overall': `${overallScore}%`,
+        },
+      },
+    ],
+    sections,
+    glossary: [
+      { term: 'Synastry', definition: 'The comparison of two birth charts to understand relationship dynamics.' },
+      { term: 'Composite Chart', definition: 'A chart created from the midpoints of two charts, representing the relationship as an entity.' },
+      { term: 'Venus-Mars Aspects', definition: 'Connections between attraction (Venus) and desire (Mars) that create romantic chemistry.' },
+      { term: 'Saturn Aspects', definition: 'Connections involving Saturn that indicate commitment, longevity, and karmic lessons.' },
+    ],
+    wordCount: wordCount + 500,
+  }
+}
+
+function getMidpointSign(sign1: Sign, sign2: Sign): Sign {
+  const signs: Sign[] = ['Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo', 'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces']
+  const index1 = signs.indexOf(sign1)
+  const index2 = signs.indexOf(sign2)
+  const midIndex = Math.round((index1 + index2) / 2) % 12
+  return signs[midIndex]
+}
+
+function getSignCompatibilityScore(sign1: Sign, sign2: Sign): number {
+  const element1 = signData[sign1].element
+  const element2 = signData[sign2].element
+
+  // Same element = high compatibility
+  if (element1 === element2) return 85 + Math.floor(Math.random() * 10)
+
+  // Compatible elements
+  const compatible: Record<string, string[]> = {
+    Fire: ['Air'],
+    Air: ['Fire'],
+    Earth: ['Water'],
+    Water: ['Earth'],
+  }
+
+  if (compatible[element1]?.includes(element2)) return 70 + Math.floor(Math.random() * 15)
+
+  // Challenging elements (opposite or square)
+  return 50 + Math.floor(Math.random() * 20)
+}
+
+function getElementBalance(chart: NatalChart): Record<string, number> {
+  const elements = { Fire: 0, Earth: 0, Air: 0, Water: 0 }
+  const elementMap: Record<string, string> = {
+    aries: 'Fire', leo: 'Fire', sagittarius: 'Fire',
+    taurus: 'Earth', virgo: 'Earth', capricorn: 'Earth',
+    gemini: 'Air', libra: 'Air', aquarius: 'Air',
+    cancer: 'Water', scorpio: 'Water', pisces: 'Water',
+  }
+
+  chart.placements.forEach(p => {
+    const element = elementMap[p.sign.toLowerCase()]
+    if (element) elements[element as keyof typeof elements]++
+  })
+
+  return elements
+}
+
 // Export the main generator function
 export function generateReportV2(
   slug: ReportSlug,
@@ -5063,6 +6525,16 @@ export function generateReportV2(
       return generateYearAheadReportV2(chart, userName)
     case 'monthly-forecast':
       return generateMonthlyForecastV2(chart, userName)
+    case 'past-life-karma':
+      return generatePastLifeKarmaReportV2(chart, userName)
+    case 'financial-potential':
+      return generateFinancialPotentialReportV2(chart, userName)
+    case 'partner-compatibility':
+      if (partnerChart && partnerName) {
+        return generatePartnerCompatibilityReportV2(chart, userName, partnerChart, partnerName)
+      }
+      // Fallback if no partner data
+      return generatePersonalityReportV2(chart, userName)
     default:
       return generatePersonalityReportV2(chart, userName)
   }

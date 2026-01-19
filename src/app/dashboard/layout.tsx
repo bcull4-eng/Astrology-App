@@ -45,6 +45,12 @@ export default async function DashboardLayout({
                 Reports
               </Link>
               <Link
+                href="/charts"
+                className="text-indigo-200/70 hover:text-white transition-colors text-sm"
+              >
+                Calculators
+              </Link>
+              <Link
                 href="/synastry"
                 className="text-indigo-200/70 hover:text-white transition-colors text-sm"
               >

@@ -11,9 +11,18 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { reportsList } from '@/lib/reports'
 import { ReportIcon, ConstellationIcon, StarIcon, ZodiacWheelIcon } from '@/components/ui/astrology-icons'
+import { StatsBar } from '@/components/social-proof/stats-bar'
+import { TestimonialCard } from '@/components/social-proof/testimonial-card'
+import { getTestimonialsByFeature } from '@/components/social-proof/testimonials-data'
 
-const BUNDLE_PRICE = 49
-const BUNDLE_SAVINGS = 87 - 49 // £29 + £29 + £29 = £87
+// Bundle pricing
+const PICK_3_BUNDLE_PRICE = 59
+const PICK_3_ORIGINAL = 87 // £29 x 3
+const ALL_6_BUNDLE_PRICE = 89
+const ALL_6_ORIGINAL = 174 // £29 x 6
+
+// Filter out free reports for bundle calculations
+const paidReports = reportsList.filter(r => r.price > 0)
 
 export default function ReportsPage() {
   const [showGiftModal, setShowGiftModal] = useState(false)
@@ -79,61 +88,106 @@ export default function ReportsPage() {
           Comprehensive, personalized reports based on your unique birth chart. Each report is generated
           instantly and tailored specifically to you.
         </p>
+
+        {/* Social Proof Stats */}
+        <div className="mt-6">
+          <StatsBar variant="minimal" />
+        </div>
       </div>
 
-      {/* Bundle Offer */}
-      <div className="mb-8 bg-gradient-to-r from-amber-500/5 via-orange-500/5 to-rose-500/5 rounded-2xl p-6 relative overflow-hidden">
-        <div className="absolute top-0 right-0 bg-amber-500/90 text-black text-xs font-bold px-3 py-1 rounded-bl-lg">
-          BEST VALUE
-        </div>
-        <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="flex-1">
-            <div className="flex items-center gap-3 mb-2">
-              <div className="flex -space-x-2">
-                {reportsList.map((report) => (
-                  <div
-                    key={report.slug}
-                    className={`w-10 h-10 rounded-lg bg-gradient-to-br ${report.gradient} flex items-center justify-center border-2 border-[#1a1a2e]`}
-                  >
-                    <ReportIcon type={report.slug} size={20} className="text-white" />
-                  </div>
-                ))}
-              </div>
-              <h2 className="text-xl font-bold text-white">Complete Report Bundle</h2>
-            </div>
-            <p className="text-indigo-200/70 mb-3">
-              Get all 3 reports and unlock the complete picture of your cosmic blueprint. Includes
-              Personality Deep Dive, Relationship Compatibility, and Year Ahead Forecast.
-            </p>
-            <div className="flex items-center gap-4 text-sm">
-              <div className="flex items-center gap-1 text-emerald-400">
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                </svg>
-                12,000+ words of insights
-              </div>
-              <div className="flex items-center gap-1 text-emerald-400">
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                </svg>
-                Save £{BUNDLE_SAVINGS}
-              </div>
-            </div>
+      {/* Bundle Offers */}
+      <div className="grid md:grid-cols-2 gap-4 mb-8">
+        {/* Pick Any 3 Bundle */}
+        <div className="bg-gradient-to-r from-amber-500/5 via-orange-500/5 to-rose-500/5 rounded-2xl p-6 relative overflow-hidden">
+          <div className="absolute top-0 right-0 bg-amber-500/90 text-black text-xs font-bold px-3 py-1 rounded-bl-lg">
+            POPULAR
           </div>
-          <div className="text-center md:text-right flex-shrink-0">
-            <div className="flex items-baseline gap-2 justify-center md:justify-end">
-              <span className="text-indigo-300/50 line-through text-lg">£87</span>
-              <span className="text-4xl font-bold text-white">£{BUNDLE_PRICE}</span>
+          <div className="flex items-center gap-3 mb-3">
+            <div className="flex -space-x-2">
+              {paidReports.slice(0, 3).map((report) => (
+                <div
+                  key={report.slug}
+                  className={`w-10 h-10 rounded-lg bg-gradient-to-br ${report.gradient} flex items-center justify-center border-2 border-[#1a1a2e]`}
+                >
+                  <ReportIcon type={report.slug} size={20} className="text-white" />
+                </div>
+              ))}
             </div>
-            <p className="text-amber-400 text-sm font-medium mb-3">Save 44%</p>
-            <Link
-              href="/reports/bundle"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-black font-semibold rounded-xl transition-all shadow-lg shadow-amber-500/20"
-            >
-              Get All 3 Reports
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+            <h2 className="text-lg font-bold text-white">Pick Any 3 Reports</h2>
+          </div>
+          <p className="text-indigo-200/70 text-sm mb-3">
+            Choose any 3 reports from our collection. Mix and match to create your perfect cosmic reading.
+          </p>
+          <div className="flex items-center gap-3 text-sm mb-4">
+            <span className="text-emerald-400 flex items-center gap-1">
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
               </svg>
+              Save £{PICK_3_ORIGINAL - PICK_3_BUNDLE_PRICE}
+            </span>
+          </div>
+          <div className="flex items-center justify-between">
+            <div>
+              <span className="text-indigo-300/50 line-through text-lg">£{PICK_3_ORIGINAL}</span>
+              <span className="text-3xl font-bold text-white ml-2">£{PICK_3_BUNDLE_PRICE}</span>
+            </div>
+            <Link
+              href="/reports/bundle?type=pick3"
+              className="px-5 py-2.5 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-black font-semibold rounded-xl transition-all shadow-lg shadow-amber-500/20 text-sm"
+            >
+              Choose Reports
+            </Link>
+          </div>
+        </div>
+
+        {/* All 6 Reports Bundle */}
+        <div className="bg-gradient-to-r from-purple-500/5 via-indigo-500/5 to-blue-500/5 rounded-2xl p-6 relative overflow-hidden">
+          <div className="absolute top-0 right-0 bg-purple-500/90 text-white text-xs font-bold px-3 py-1 rounded-bl-lg">
+            BEST VALUE
+          </div>
+          <div className="flex items-center gap-3 mb-3">
+            <div className="flex -space-x-2">
+              {paidReports.slice(0, 4).map((report) => (
+                <div
+                  key={report.slug}
+                  className={`w-10 h-10 rounded-lg bg-gradient-to-br ${report.gradient} flex items-center justify-center border-2 border-[#1a1a2e]`}
+                >
+                  <ReportIcon type={report.slug} size={20} className="text-white" />
+                </div>
+              ))}
+              <div className="w-10 h-10 rounded-lg bg-indigo-600/50 flex items-center justify-center border-2 border-[#1a1a2e] text-white text-xs font-bold">
+                +2
+              </div>
+            </div>
+            <h2 className="text-lg font-bold text-white">Complete Collection</h2>
+          </div>
+          <p className="text-indigo-200/70 text-sm mb-3">
+            Get all 6 premium reports for the ultimate cosmic deep dive. Everything you need to understand your chart.
+          </p>
+          <div className="flex items-center gap-3 text-sm mb-4">
+            <span className="text-emerald-400 flex items-center gap-1">
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+              </svg>
+              Save £{ALL_6_ORIGINAL - ALL_6_BUNDLE_PRICE}
+            </span>
+            <span className="text-purple-400 flex items-center gap-1">
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+              </svg>
+              27,000+ words
+            </span>
+          </div>
+          <div className="flex items-center justify-between">
+            <div>
+              <span className="text-indigo-300/50 line-through text-lg">£{ALL_6_ORIGINAL}</span>
+              <span className="text-3xl font-bold text-white ml-2">£{ALL_6_BUNDLE_PRICE}</span>
+            </div>
+            <Link
+              href="/reports/bundle?type=all6"
+              className="px-5 py-2.5 bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-400 hover:to-indigo-400 text-white font-semibold rounded-xl transition-all shadow-lg shadow-purple-500/20 text-sm"
+            >
+              Get All 6
             </Link>
           </div>
         </div>
@@ -211,31 +265,59 @@ export default function ReportsPage() {
             <div className="pt-4 border-t border-indigo-500/10">
               <div className="flex items-center justify-between mb-3">
                 <div>
-                  <span className="text-2xl font-bold text-white">£{report.price}</span>
-                  <span className="text-indigo-300/40 text-sm ml-1">one-time</span>
+                  {report.price > 0 ? (
+                    <>
+                      <span className="text-2xl font-bold text-white">£{report.price}</span>
+                      <span className="text-indigo-300/40 text-sm ml-1">one-time</span>
+                    </>
+                  ) : (
+                    <span className="text-xl font-bold text-emerald-400">Free with Pro</span>
+                  )}
                 </div>
-              </div>
-              <div className="flex gap-2">
                 <Link
-                  href={`/reports/${report.slug}`}
-                  className="flex-1 py-2 px-4 bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-medium rounded-lg transition-colors text-center"
+                  href={`/reports/${report.slug}#sample`}
+                  className="text-xs text-indigo-400 hover:text-indigo-300 flex items-center gap-1 transition-colors"
                 >
-                  Get Report
-                </Link>
-                <button
-                  onClick={() => handleGiftClick(report.slug)}
-                  className="py-2 px-3 bg-indigo-900/50 hover:bg-indigo-800/50 text-indigo-200 rounded-lg transition-colors"
-                  title="Gift this report"
-                >
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path
                       strokeLinecap="round"
                       strokeLinejoin="round"
                       strokeWidth={2}
-                      d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"
+                      d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                    />
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
                     />
                   </svg>
-                </button>
+                  View Sample
+                </Link>
+              </div>
+              <div className="flex gap-2">
+                <Link
+                  href={`/reports/${report.slug}`}
+                  className={`flex-1 py-2 px-4 ${report.price > 0 ? 'bg-indigo-600 hover:bg-indigo-500' : 'bg-emerald-600 hover:bg-emerald-500'} text-white text-sm font-medium rounded-lg transition-colors text-center`}
+                >
+                  {report.price > 0 ? 'Get Report' : 'View Report'}
+                </Link>
+                {report.price > 0 && (
+                  <button
+                    onClick={() => handleGiftClick(report.slug)}
+                    className="py-2 px-3 bg-indigo-900/50 hover:bg-indigo-800/50 text-indigo-200 rounded-lg transition-colors"
+                    title="Gift this report"
+                  >
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"
+                      />
+                    </svg>
+                  </button>
+                )}
               </div>
             </div>
           </div>
@@ -303,6 +385,16 @@ export default function ReportsPage() {
             <h4 className="text-white font-medium mb-1">In-Depth Analysis</h4>
             <p className="text-indigo-200/50 text-sm">4,000-5,000 words of comprehensive astrological insight</p>
           </div>
+        </div>
+      </div>
+
+      {/* Customer Testimonials */}
+      <div className="mt-8">
+        <h3 className="text-lg font-semibold text-white mb-4 text-center">What our users say</h3>
+        <div className="grid md:grid-cols-3 gap-4">
+          {getTestimonialsByFeature('reports').slice(0, 3).map((testimonial) => (
+            <TestimonialCard key={testimonial.id} testimonial={testimonial} />
+          ))}
         </div>
       </div>
 

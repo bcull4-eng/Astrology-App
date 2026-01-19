@@ -180,7 +180,23 @@ export function StarIcon({ className = '', size = 24 }: IconProps) {
 
 /**
  * Zodiac wheel icon
+ * Pre-calculated line positions to avoid hydration mismatch from floating-point precision differences
  */
+const zodiacLines = [
+  { x1: 19, y1: 12, x2: 22, y2: 12 },       // 0°
+  { x1: 18.06, y1: 15.5, x2: 20.66, y2: 17 },   // 30°
+  { x1: 15.5, y1: 18.06, x2: 17, y2: 20.66 },   // 60°
+  { x1: 12, y1: 19, x2: 12, y2: 22 },       // 90°
+  { x1: 8.5, y1: 18.06, x2: 7, y2: 20.66 },     // 120°
+  { x1: 5.94, y1: 15.5, x2: 3.34, y2: 17 },     // 150°
+  { x1: 5, y1: 12, x2: 2, y2: 12 },         // 180°
+  { x1: 5.94, y1: 8.5, x2: 3.34, y2: 7 },       // 210°
+  { x1: 8.5, y1: 5.94, x2: 7, y2: 3.34 },       // 240°
+  { x1: 12, y1: 5, x2: 12, y2: 2 },         // 270°
+  { x1: 15.5, y1: 5.94, x2: 17, y2: 3.34 },     // 300°
+  { x1: 18.06, y1: 8.5, x2: 20.66, y2: 7 },     // 330°
+]
+
 export function ZodiacWheelIcon({ className = '', size = 24 }: IconProps) {
   return (
     <svg
@@ -193,26 +209,107 @@ export function ZodiacWheelIcon({ className = '', size = 24 }: IconProps) {
     >
       <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="1.5" />
       <circle cx="12" cy="12" r="7" stroke="currentColor" strokeWidth="1" opacity="0.5" />
-      {/* Zodiac division lines */}
-      {[0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330].map((angle) => {
-        const rad = (angle * Math.PI) / 180
-        const x1 = 12 + 7 * Math.cos(rad)
-        const y1 = 12 + 7 * Math.sin(rad)
-        const x2 = 12 + 10 * Math.cos(rad)
-        const y2 = 12 + 10 * Math.sin(rad)
-        return (
-          <line
-            key={angle}
-            x1={x1}
-            y1={y1}
-            x2={x2}
-            y2={y2}
-            stroke="currentColor"
-            strokeWidth="1"
-            opacity="0.3"
-          />
-        )
-      })}
+      {zodiacLines.map((line, i) => (
+        <line
+          key={i}
+          x1={line.x1}
+          y1={line.y1}
+          x2={line.x2}
+          y2={line.y2}
+          stroke="currentColor"
+          strokeWidth="1"
+          opacity="0.3"
+        />
+      ))}
+    </svg>
+  )
+}
+
+/**
+ * Jupiter symbol icon - for Financial Potential report
+ */
+export function JupiterSymbolIcon({ className = '', size = 24 }: IconProps) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      className={className}
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path d="M9 4c2 0 4 2 4 4s-2 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+      <line x1="4" y1="8" x2="13" y2="8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+      <line x1="17" y1="4" x2="17" y2="20" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+      <line x1="14" y1="20" x2="20" y2="20" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+    </svg>
+  )
+}
+
+/**
+ * Pluto symbol icon - for Past Life & Karma report
+ */
+export function PlutoSymbolIcon({ className = '', size = 24 }: IconProps) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      className={className}
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <circle cx="12" cy="6" r="3" stroke="currentColor" strokeWidth="1.5" />
+      <line x1="12" y1="9" x2="12" y2="15" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+      <line x1="8" y1="12" x2="16" y2="12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+      <line x1="12" y1="15" x2="12" y2="22" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+      <path d="M8 16c0 2.5 4 5 4 5s4-2.5 4-5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" fill="none" />
+    </svg>
+  )
+}
+
+/**
+ * Linked hearts icon - for Partner Compatibility report
+ */
+export function LinkedHeartsIcon({ className = '', size = 24 }: IconProps) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      className={className}
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M8.5 7C6.5 7 5 8.5 5 10.5C5 12.5 6.5 14 8.5 14L12 18L15.5 14C17.5 14 19 12.5 19 10.5C19 8.5 17.5 7 15.5 7C14 7 13 8 12 9C11 8 10 7 8.5 7Z"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  )
+}
+
+/**
+ * Calendar with moon icon - for Monthly Forecast report
+ */
+export function CalendarMoonIcon({ className = '', size = 24 }: IconProps) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      className={className}
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" strokeWidth="1.5" />
+      <line x1="16" y1="2" x2="16" y2="6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+      <line x1="8" y1="2" x2="8" y2="6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+      <line x1="3" y1="10" x2="21" y2="10" stroke="currentColor" strokeWidth="1.5" />
+      <path d="M15 16a2 2 0 1 1-4 0 2 2 0 0 1 4 0z" fill="currentColor" />
     </svg>
   )
 }
@@ -228,6 +325,14 @@ export function ReportIcon({ type, className = '', size = 24 }: { type: string }
       return <VenusSymbolIcon className={className} size={size} />
     case 'year-ahead-forecast':
       return <SaturnSymbolIcon className={className} size={size} />
+    case 'monthly-forecast':
+      return <CalendarMoonIcon className={className} size={size} />
+    case 'past-life-karma':
+      return <PlutoSymbolIcon className={className} size={size} />
+    case 'financial-potential':
+      return <JupiterSymbolIcon className={className} size={size} />
+    case 'partner-compatibility':
+      return <LinkedHeartsIcon className={className} size={size} />
     default:
       return <StarIcon className={className} size={size} />
   }

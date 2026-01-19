@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Fraunces } from "next/font/google";
 import "./globals.css";
+import { AIAssistantProvider } from "@/components/ai-assistant";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -28,7 +29,9 @@ export default function RootLayout({
       <body
         className={`${inter.variable} ${fraunces.variable} font-sans antialiased`}
       >
-        {children}
+        <AIAssistantProvider>
+          {children}
+        </AIAssistantProvider>
       </body>
     </html>
   );

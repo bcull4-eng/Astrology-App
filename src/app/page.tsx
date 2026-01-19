@@ -477,7 +477,7 @@ export default async function Home() {
                 href="/auth/sign-up"
                 className="block w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-xl transition-colors text-center"
               >
-                Start 7-day free trial
+                Get Started Free
               </Link>
             </div>
           </div>

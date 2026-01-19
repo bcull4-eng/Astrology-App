@@ -34,6 +34,7 @@ export interface AstrologistState {
   selectedCharacter: CharacterId | null
   conversations: Record<CharacterId, AstrologistMessage[]>
   isLoading: boolean
+  freeMessagesUsed: number
 
   // Actions
   selectCharacter: (characterId: CharacterId | null) => void
@@ -41,4 +42,6 @@ export interface AstrologistState {
   updateLastMessage: (characterId: CharacterId, content: string) => void
   clearConversation: (characterId: CharacterId) => void
   setIsLoading: (loading: boolean) => void
+  incrementFreeMessages: () => void
+  getFreeMessagesUsed: () => number
 }

@@ -162,26 +162,157 @@ export default function DashboardPage() {
 
       {/* Upgrade CTA - only show for non-pro users */}
       {!isPro && (
-        <div className="bg-gradient-to-r from-indigo-600/10 via-purple-600/10 to-pink-600/10 rounded-2xl p-6 text-center mb-8">
-          <h3 className="text-xl font-bold text-white mb-2">Unlock Your Full Cosmic Potential</h3>
-          <p className="text-indigo-200/60 mb-4 max-w-md mx-auto">
-            Get daily insights, weekly forecasts, and monthly reports delivered fresh to your inbox. Plus access to AI Astrologist, courses, and synastry analysis.
-          </p>
-          <Link
-            href="/paywall"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-semibold rounded-xl transition-all shadow-lg shadow-indigo-500/25"
-          >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-            </svg>
-            Upgrade to Pro
-          </Link>
-          <div className="flex items-center justify-center gap-4 mt-4 text-xs text-indigo-300/40">
-            <span>From £14.99/month</span>
-            <span>•</span>
+        <div className="bg-gradient-to-r from-indigo-600/10 via-purple-600/10 to-pink-600/10 rounded-2xl p-6 mb-8">
+          <div className="text-center mb-6">
+            <h3 className="text-xl font-bold text-white mb-2">Unlock Your Full Cosmic Potential</h3>
+            <p className="text-indigo-200/60 max-w-md mx-auto">
+              Choose the plan that works best for you
+            </p>
+          </div>
+
+          {/* Pricing Options */}
+          <div className="grid md:grid-cols-3 gap-4 mb-6">
+            {/* Monthly */}
+            <Link
+              href="/paywall"
+              className="bg-indigo-950/50 hover:bg-indigo-950/70 border border-indigo-500/20 hover:border-indigo-500/40 rounded-xl p-5 transition-all block"
+            >
+              <div className="text-center mb-4">
+                <div className="text-white font-semibold mb-1">Monthly</div>
+                <div className="text-3xl font-bold text-white">£14.99</div>
+                <div className="text-indigo-300/50 text-sm">/month</div>
+              </div>
+              <ul className="space-y-2 text-sm">
+                <li className="flex items-center gap-2 text-indigo-200/70">
+                  <svg className="w-4 h-4 text-indigo-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                  Daily personalized insights
+                </li>
+                <li className="flex items-center gap-2 text-indigo-200/70">
+                  <svg className="w-4 h-4 text-indigo-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                  Weekly & monthly forecasts
+                </li>
+                <li className="flex items-center gap-2 text-indigo-200/70">
+                  <svg className="w-4 h-4 text-indigo-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                  AI Astrologist chat
+                </li>
+                <li className="flex items-center gap-2 text-indigo-200/70">
+                  <svg className="w-4 h-4 text-indigo-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                  Learning courses
+                </li>
+                <li className="flex items-center gap-2 text-indigo-200/70">
+                  <svg className="w-4 h-4 text-indigo-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                  Synastry analysis
+                </li>
+              </ul>
+            </Link>
+
+            {/* Annual - Popular */}
+            <Link
+              href="/paywall"
+              className="bg-indigo-600/20 hover:bg-indigo-600/30 border-2 border-indigo-500/50 hover:border-indigo-500/70 rounded-xl p-5 transition-all relative block"
+            >
+              <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 bg-indigo-500 text-white text-xs font-bold rounded-full">
+                MOST POPULAR
+              </div>
+              <div className="text-center mb-4">
+                <div className="text-white font-semibold mb-1">Annual</div>
+                <div className="text-3xl font-bold text-white">£99</div>
+                <div className="text-indigo-300/50 text-sm">/year</div>
+                <div className="text-emerald-400 text-sm font-medium">Save 45%</div>
+              </div>
+              <ul className="space-y-2 text-sm">
+                <li className="flex items-center gap-2 text-indigo-200/70">
+                  <svg className="w-4 h-4 text-indigo-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                  Everything in Monthly
+                </li>
+                <li className="flex items-center gap-2 text-indigo-200">
+                  <svg className="w-4 h-4 text-emerald-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                  <span className="text-emerald-400 font-medium">2 free reports (£58 value)</span>
+                </li>
+                <li className="flex items-center gap-2 text-indigo-200/70">
+                  <svg className="w-4 h-4 text-indigo-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                  12 months full access
+                </li>
+                <li className="flex items-center gap-2 text-indigo-200/70">
+                  <svg className="w-4 h-4 text-indigo-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                  Priority email support
+                </li>
+              </ul>
+            </Link>
+
+            {/* Lifetime - Best Value */}
+            <Link
+              href="/paywall"
+              className="bg-purple-600/20 hover:bg-purple-600/30 border-2 border-purple-500/50 hover:border-purple-500/70 rounded-xl p-5 transition-all relative block"
+            >
+              <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 bg-purple-500 text-white text-xs font-bold rounded-full">
+                BEST VALUE
+              </div>
+              <div className="text-center mb-4">
+                <div className="text-white font-semibold mb-1">Lifetime</div>
+                <div className="text-3xl font-bold text-white">£149</div>
+                <div className="text-indigo-300/50 text-sm">one-time</div>
+                <div className="text-purple-400 text-sm font-medium">Pay once, yours forever</div>
+              </div>
+              <ul className="space-y-2 text-sm">
+                <li className="flex items-center gap-2 text-indigo-200/70">
+                  <svg className="w-4 h-4 text-purple-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                  Everything in Annual
+                </li>
+                <li className="flex items-center gap-2 text-indigo-200">
+                  <svg className="w-4 h-4 text-purple-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                  <span className="text-purple-400 font-medium">All 3 reports free (£87 value)</span>
+                </li>
+                <li className="flex items-center gap-2 text-indigo-200/70">
+                  <svg className="w-4 h-4 text-purple-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                  Lifetime access forever
+                </li>
+                <li className="flex items-center gap-2 text-indigo-200/70">
+                  <svg className="w-4 h-4 text-purple-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                  All future updates included
+                </li>
+                <li className="flex items-center gap-2 text-indigo-200/70">
+                  <svg className="w-4 h-4 text-purple-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                  Priority support
+                </li>
+              </ul>
+            </Link>
+          </div>
+
+          <div className="flex items-center justify-center gap-4 text-xs text-indigo-300/40">
             <span>Cancel anytime</span>
             <span>•</span>
             <span>30-day guarantee</span>
+            <span>•</span>
+            <span>Secure payment via Stripe</span>
           </div>
         </div>
       )}

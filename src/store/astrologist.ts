@@ -19,12 +19,17 @@ const initialConversations: Record<CharacterId, AstrologistMessage[]> = {
 
 export const useAstrologistStore = create<AstrologistState>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       selectedCharacter: null,
       conversations: initialConversations,
       isLoading: false,
+      freeMessagesUsed: 0,
 
       selectCharacter: (characterId) => set({ selectedCharacter: characterId }),
+
+      incrementFreeMessages: () => set({ freeMessagesUsed: get().freeMessagesUsed + 1 }),
+
+      getFreeMessagesUsed: () => get().freeMessagesUsed,
 
       addMessage: (characterId, message) =>
         set((state) => ({
@@ -75,6 +80,7 @@ export const useAstrologistStore = create<AstrologistState>()(
       partialize: (state) => ({
         selectedCharacter: state.selectedCharacter,
         conversations: state.conversations,
+        freeMessagesUsed: state.freeMessagesUsed,
       }),
     }
   )

@@ -75,18 +75,27 @@ export default function LearnPage() {
       <div className="max-w-4xl mx-auto px-4 py-8">
         {/* Hero */}
         <div className="text-center mb-10">
-          <div className="inline-flex items-center gap-2 bg-amber-500/10 text-amber-400 text-sm font-medium px-4 py-2 rounded-full mb-4">
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
-            </svg>
-            Certification Program
+          <div className="inline-flex items-center gap-2 bg-purple-500/10 text-purple-400 text-sm font-medium px-4 py-2 rounded-full mb-4">
+            <span className="text-lg">✨</span>
+            Learn at your own pace
           </div>
           <h1 className="text-3xl font-semibold text-white mb-3">
-            {COMPREHENSIVE_COURSE_OUTLINE.title}
+            Master Astrology Your Way
           </h1>
-          <p className="text-indigo-200/60 text-lg max-w-2xl mx-auto">
-            {COMPREHENSIVE_COURSE_OUTLINE.subtitle}. Master astrology and earn your {CERTIFICATE_INFO.title} credential.
+          <p className="text-indigo-200/60 text-lg max-w-2xl mx-auto mb-4">
+            Whether you want to understand your own chart better or dream of reading charts for others, this course takes you from curious beginner to confident practitioner.
           </p>
+          <div className="flex flex-wrap items-center justify-center gap-3">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-indigo-500/10 text-indigo-300 text-sm rounded-full">
+              <span>🔮</span> For personal discovery
+            </span>
+            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-pink-500/10 text-pink-300 text-sm rounded-full">
+              <span>💫</span> For aspiring readers
+            </span>
+            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-amber-500/10 text-amber-300 text-sm rounded-full">
+              <span>🎓</span> For future teachers
+            </span>
+          </div>
         </div>
 
         {/* Quick Stats */}
@@ -133,50 +142,55 @@ export default function LearnPage() {
           {/* Lock Overlay */}
           <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-t from-[#1a1a2e]/95 via-[#1a1a2e]/70 to-[#1a1a2e]/50 rounded-2xl">
             <div className="text-center px-6">
-              <div className="w-16 h-16 bg-indigo-500/20 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                <svg className="w-8 h-8 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                </svg>
+              <div className="w-16 h-16 bg-purple-500/20 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                <span className="text-4xl">🌟</span>
               </div>
-              <h3 className="text-xl font-semibold text-white mb-2">Unlock Full Course Access</h3>
+              <h3 className="text-xl font-semibold text-white mb-2">Start Your Astrology Journey</h3>
               <p className="text-indigo-200/60 mb-6 max-w-md">
-                Get lifetime access to all {COMPREHENSIVE_COURSE_OUTLINE.totalLessons} lessons, interactive exercises, quizzes, and earn your official certificate.
+                {COMPREHENSIVE_COURSE_OUTLINE.totalLessons} lessons designed to take you from complete beginner to confidently reading charts - at your own pace.
               </p>
               <Link
                 href="/learn/preview"
                 className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-semibold rounded-xl transition-all shadow-lg shadow-indigo-500/25 text-lg"
               >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                </svg>
-                View Full Course - £{COURSE_PRICE}
+                See What You&apos;ll Learn - £{COURSE_PRICE}
               </Link>
             </div>
           </div>
         </div>
 
-        {/* Certificate Preview */}
-        <div className="mb-10">
-          <h2 className="text-xl font-semibold text-white mb-4 text-center">Earn Your Certificate</h2>
-          <CertificatePreview />
-          <p className="text-center text-indigo-200/50 text-sm mt-4">
-            Complete all lessons to receive your {CERTIFICATE_INFO.title} credential
-          </p>
+        {/* Two Paths Section */}
+        <div className="grid md:grid-cols-2 gap-4 mb-10">
+          <div className="bg-gradient-to-br from-indigo-500/10 to-purple-500/10 border border-indigo-500/20 rounded-2xl p-6">
+            <div className="text-3xl mb-3">🔮</div>
+            <h3 className="text-lg font-semibold text-white mb-2">For Personal Discovery</h3>
+            <p className="text-indigo-200/60 text-sm">
+              Finally understand your birth chart on a deep level. Learn why you are the way you are, what drives you, and how to work with your cosmic blueprint.
+            </p>
+          </div>
+          <div className="bg-gradient-to-br from-pink-500/10 to-amber-500/10 border border-pink-500/20 rounded-2xl p-6">
+            <div className="text-3xl mb-3">💫</div>
+            <h3 className="text-lg font-semibold text-white mb-2">For Aspiring Professionals</h3>
+            <p className="text-indigo-200/60 text-sm">
+              Want to read charts for friends, start a side hustle, or even teach astrology? We&apos;ve got dedicated modules on professional practice and how to teach.
+            </p>
+          </div>
         </div>
 
         {/* What's Included */}
         <div className="bg-indigo-950/30 rounded-2xl p-6 mb-10">
-          <h2 className="text-xl font-semibold text-white mb-4">What&apos;s Included</h2>
+          <h2 className="text-xl font-semibold text-white mb-2">Everything you need to learn astrology properly</h2>
+          <p className="text-indigo-200/50 text-sm mb-4">No fluff, no filler - just a clear path from beginner to confident practitioner</p>
           <div className="grid md:grid-cols-2 gap-4">
             {[
-              { icon: '📚', text: `${COMPREHENSIVE_COURSE_OUTLINE.totalLessons} comprehensive lessons` },
+              { icon: '📚', text: `${COMPREHENSIVE_COURSE_OUTLINE.totalLessons} lessons (beginner → advanced)` },
               { icon: '⏰', text: `${COMPREHENSIVE_COURSE_OUTLINE.estimatedHours}+ hours of content` },
-              { icon: '✨', text: 'Interactive exercises with your chart' },
-              { icon: '📝', text: 'Quizzes to test your knowledge' },
-              { icon: '🎓', text: 'Official certificate upon completion' },
-              { icon: '👨‍🏫', text: 'Teaching module included' },
-              { icon: '♾️', text: 'Lifetime access' },
-              { icon: '📱', text: 'Learn on any device' },
+              { icon: '✨', text: 'Practice with your own birth chart' },
+              { icon: '📝', text: 'Quizzes to check your understanding' },
+              { icon: '👥', text: 'How to read for clients professionally' },
+              { icon: '🎓', text: 'How to teach astrology to others' },
+              { icon: '📜', text: 'Certificate when you complete it' },
+              { icon: '♾️', text: 'Lifetime access - go at your own pace' },
             ].map((item, i) => (
               <div key={i} className="flex items-center gap-3">
                 <span className="text-xl">{item.icon}</span>
@@ -184,6 +198,15 @@ export default function LearnPage() {
               </div>
             ))}
           </div>
+        </div>
+
+        {/* Certificate Preview */}
+        <div className="mb-10">
+          <h2 className="text-xl font-semibold text-white mb-2 text-center">Get certified when you&apos;re done</h2>
+          <p className="text-center text-indigo-200/50 text-sm mb-4">
+            Complete the course and earn a certificate you can share with clients or add to your credentials
+          </p>
+          <CertificatePreview />
         </div>
 
         {/* Final CTA */}
@@ -208,10 +231,10 @@ export default function LearnPage() {
       {/* Hero */}
       <div className="text-center mb-12">
         <h1 className="text-3xl font-semibold text-white mb-3">
-          Learn Astrology
+          Your Astrology Journey 🌟
         </h1>
         <p className="text-indigo-200/60 text-lg max-w-2xl mx-auto">
-          Master the building blocks of astrology with personalized lessons that connect directly to your birth chart.
+          Work through the lessons at your own pace. Each one builds on the last, and you can always come back to review.
         </p>
       </div>
 

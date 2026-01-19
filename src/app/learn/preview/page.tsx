@@ -86,17 +86,15 @@ export default function CoursePreviewPage() {
 
       {/* Hero Section */}
       <div className="text-center mb-12">
-        <div className="inline-flex items-center gap-2 bg-amber-500/10 text-amber-400 text-sm font-medium px-4 py-2 rounded-full mb-4">
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
-          </svg>
-          Certified Program
+        <div className="inline-flex items-center gap-2 bg-purple-500/10 text-purple-400 text-sm font-medium px-4 py-2 rounded-full mb-4">
+          <span className="text-lg">✨</span>
+          From curious to confident
         </div>
         <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
-          {COMPREHENSIVE_COURSE_OUTLINE.title}
+          Learn Astrology Properly
         </h1>
         <p className="text-xl text-indigo-200/70 max-w-2xl mx-auto mb-6">
-          {COMPREHENSIVE_COURSE_OUTLINE.description}
+          A complete course that takes you from &quot;what&apos;s a rising sign?&quot; to confidently reading charts for yourself and others. Whether you want personal insight or to start reading professionally.
         </p>
 
         {/* Stats Row */}

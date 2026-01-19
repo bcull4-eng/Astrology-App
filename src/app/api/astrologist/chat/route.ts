@@ -2,18 +2,49 @@
  * AI Astrologist Chat API Route
  *
  * Handles chat requests with streaming responses from xAI Grok API.
+ * Pro users get unlimited access, free users get 1 message.
  * POST /api/astrologist/chat
  */
 
 import { NextRequest } from 'next/server'
+import { createClient } from '@/lib/supabase/server'
 import { getCharacter } from '@/lib/astrologist/characters'
-import type { CharacterId, NatalChart, NatalPlacement } from '@/types'
+import type { CharacterId, NatalChart, NatalPlacement, SubscriptionStatus } from '@/types'
 
 interface ChatRequest {
   characterId: CharacterId
   message: string
   conversationHistory: Array<{ role: 'user' | 'assistant'; content: string }>
   natalChart?: NatalChart | null
+  freeMessagesUsed?: number
+}
+
+const FREE_MESSAGE_LIMIT = 1
+
+// Check if user has an active Pro subscription
+async function checkSubscription(): Promise<boolean> {
+  try {
+    const supabase = await createClient()
+    const { data: { user } } = await supabase.auth.getUser()
+
+    if (!user) return false
+
+    const metadata = user.user_metadata || {}
+    const status = (metadata.subscription_status as SubscriptionStatus) || 'free'
+    const expiresAtStr = metadata.subscription_expires_at as string | undefined
+    const expiresAt = expiresAtStr ? new Date(expiresAtStr) : null
+
+    if (status === 'pro') {
+      // Check if not expired (lifetime users have no expiration)
+      if (!expiresAt || expiresAt > new Date()) {
+        return true
+      }
+    }
+
+    return false
+  } catch {
+    return false
+  }
 }
 
 function formatNatalChartContext(chart: NatalChart): string {
@@ -42,6 +73,24 @@ export async function POST(request: NextRequest) {
         JSON.stringify({ error: 'Character ID and message are required' }),
         { status: 400, headers: { 'Content-Type': 'application/json' } }
       )
+    }
+
+    // Check subscription status
+    const isPro = await checkSubscription()
+
+    // If not Pro, check if they've exceeded their free message limit
+    if (!isPro) {
+      const freeMessagesUsed = body.freeMessagesUsed || 0
+      if (freeMessagesUsed >= FREE_MESSAGE_LIMIT) {
+        return new Response(
+          JSON.stringify({
+            error: 'Free message limit reached',
+            code: 'FREE_LIMIT_REACHED',
+            message: 'Upgrade to Pro for unlimited AI Astrologist chats'
+          }),
+          { status: 403, headers: { 'Content-Type': 'application/json' } }
+        )
+      }
     }
 
     // Get character

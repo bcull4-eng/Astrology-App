@@ -79,7 +79,7 @@ export default function FreeInsightPage() {
   }, [])
 
   const handleContinue = () => {
-    router.push('/paywall')
+    router.push('/dashboard')
   }
 
   if (!insight) {
@@ -129,18 +129,18 @@ export default function FreeInsightPage() {
         </p>
       </div>
 
-      {/* What's locked */}
+      {/* What's next */}
       <div className="bg-slate-800/30 border border-slate-700/50 rounded-xl p-4 mb-8">
         <div className="flex items-start gap-3">
           <div className="w-8 h-8 bg-indigo-500/20 rounded-lg flex items-center justify-center flex-shrink-0">
             <svg className="w-4 h-4 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
             </svg>
           </div>
           <div>
-            <p className="text-white font-medium text-sm">Unlock your full dashboard</p>
+            <p className="text-white font-medium text-sm">Explore your dashboard</p>
             <p className="text-slate-400 text-sm">
-              See daily guidance, intensity timelines, and what to do about it.
+              See your birth chart, daily horoscope, reports, calculators, and more.
             </p>
           </div>
         </div>
@@ -151,7 +151,7 @@ export default function FreeInsightPage() {
         onClick={handleContinue}
         className="w-full py-3 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg transition-colors"
       >
-        See what to do about it
+        Go to Dashboard
       </button>
     </div>
   )

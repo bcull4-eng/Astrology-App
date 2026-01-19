@@ -4,15 +4,20 @@
  * Chat Interface Component
  *
  * Main chat interface for the AI astrologist with streaming support.
+ * Free users get 1 message, then must upgrade to Pro.
  */
 
 import { useEffect, useRef, useState } from 'react'
+import Link from 'next/link'
 import { ChatMessage } from './chat-message'
 import { ChatInput } from './chat-input'
 import { TypingIndicator } from './typing-indicator'
 import { useAstrologistStore } from '@/store/astrologist'
+import { useSubscription } from '@/hooks/use-subscription'
 import { getCharacter } from '@/lib/astrologist/characters'
 import type { CharacterId, NatalChart } from '@/types'
+
+const FREE_MESSAGE_LIMIT = 1
 
 interface ChatInterfaceProps {
   characterId: CharacterId
@@ -22,9 +27,13 @@ interface ChatInterfaceProps {
 export function ChatInterface({ characterId, onBack }: ChatInterfaceProps) {
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const [natalChart, setNatalChart] = useState<NatalChart | null>(null)
+  const { isPro, loading: subscriptionLoading } = useSubscription()
 
-  const { conversations, isLoading, addMessage, updateLastMessage, setIsLoading, clearConversation } =
+  const { conversations, isLoading, addMessage, updateLastMessage, setIsLoading, clearConversation, freeMessagesUsed, incrementFreeMessages } =
     useAstrologistStore()
+
+  // Check if free user has hit their limit
+  const hasReachedFreeLimit = !isPro && freeMessagesUsed >= FREE_MESSAGE_LIMIT
 
   const messages = conversations[characterId] || []
   const character = getCharacter(characterId)
@@ -67,6 +76,16 @@ export function ChatInterface({ characterId, onBack }: ChatInterfaceProps) {
   }, [messages])
 
   const handleSend = async (message: string) => {
+    // Check if free user has reached limit
+    if (hasReachedFreeLimit) {
+      return
+    }
+
+    // Increment free message counter for non-Pro users
+    if (!isPro) {
+      incrementFreeMessages()
+    }
+
     // Add user message
     addMessage(characterId, {
       role: 'user',
@@ -98,6 +117,7 @@ export function ChatInterface({ characterId, onBack }: ChatInterfaceProps) {
           message,
           conversationHistory: history,
           natalChart,
+          freeMessagesUsed: isPro ? 0 : freeMessagesUsed,
         }),
       })
 
@@ -214,8 +234,37 @@ export function ChatInterface({ characterId, onBack }: ChatInterfaceProps) {
         )}
       </div>
 
-      {/* Input */}
-      <ChatInput onSend={handleSend} isLoading={isLoading} />
+      {/* Input or Upgrade Prompt */}
+      {hasReachedFreeLimit ? (
+        <div className="p-4 border-t border-indigo-500/10 bg-gradient-to-r from-indigo-600/10 via-purple-600/10 to-pink-600/10">
+          <div className="text-center">
+            <div className="inline-flex items-center gap-2 bg-indigo-500/20 text-indigo-300 text-xs font-medium px-3 py-1 rounded-full mb-3">
+              <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+              </svg>
+              Free message used
+            </div>
+            <h3 className="text-white font-semibold mb-1">Enjoying the conversation?</h3>
+            <p className="text-indigo-200/60 text-sm mb-4">
+              Upgrade to Pro for unlimited chats with all our AI astrologers
+            </p>
+            <Link
+              href="/paywall"
+              className="inline-flex items-center gap-2 px-6 py-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-medium rounded-xl transition-all shadow-lg shadow-indigo-500/25"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+              </svg>
+              Upgrade to Pro
+            </Link>
+            <p className="text-indigo-300/40 text-xs mt-3">
+              From £14.99/month • Cancel anytime
+            </p>
+          </div>
+        </div>
+      ) : (
+        <ChatInput onSend={handleSend} isLoading={isLoading || subscriptionLoading} />
+      )}
     </div>
   )
 }

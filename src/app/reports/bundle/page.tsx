@@ -10,9 +10,10 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { reportsList } from '@/lib/reports'
+import { ReportIcon } from '@/components/ui/astrology-icons'
 
-const BUNDLE_PRICE = 59
-const ORIGINAL_PRICE = 103 // £29 + £39 + £35
+const BUNDLE_PRICE = 49
+const ORIGINAL_PRICE = 87 // £29 + £29 + £29
 
 export default function BundlePage() {
   const router = useRouter()
@@ -74,7 +75,7 @@ export default function BundlePage() {
       {/* Back Link */}
       <Link
         href="/reports"
-        className="inline-flex items-center gap-2 text-slate-400 hover:text-white mb-6 transition-colors"
+        className="inline-flex items-center gap-2 text-indigo-200/50 hover:text-white mb-6 transition-colors"
       >
         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -83,8 +84,8 @@ export default function BundlePage() {
       </Link>
 
       {/* Header */}
-      <div className="bg-gradient-to-r from-amber-500/10 via-orange-500/10 to-red-500/10 border-2 border-amber-500/30 rounded-2xl p-8 mb-8 relative overflow-hidden">
-        <div className="absolute top-0 right-0 bg-amber-500 text-black text-sm font-bold px-4 py-1 rounded-bl-xl">
+      <div className="bg-gradient-to-r from-amber-500/5 via-orange-500/5 to-rose-500/5 rounded-2xl p-8 mb-8 relative overflow-hidden">
+        <div className="absolute top-0 right-0 bg-amber-500/90 text-black text-sm font-bold px-4 py-1 rounded-bl-xl">
           SAVE £{ORIGINAL_PRICE - BUNDLE_PRICE}
         </div>
 
@@ -93,23 +94,23 @@ export default function BundlePage() {
             {reportsList.map((report) => (
               <div
                 key={report.slug}
-                className={`w-14 h-14 rounded-xl bg-gradient-to-br ${report.gradient} flex items-center justify-center text-2xl border-2 border-slate-900 shadow-lg`}
+                className={`w-14 h-14 rounded-xl bg-gradient-to-br ${report.gradient} flex items-center justify-center border-2 border-[#1a1a2e] shadow-lg`}
               >
-                {report.icon}
+                <ReportIcon type={report.slug} size={28} className="text-white" />
               </div>
             ))}
           </div>
         </div>
 
         <h1 className="text-3xl font-bold text-white mb-2">Complete Report Bundle</h1>
-        <p className="text-slate-300 text-lg mb-4">
+        <p className="text-indigo-200/70 text-lg mb-4">
           Get all 3 personalized astrology reports and unlock the complete picture of your cosmic blueprint.
         </p>
 
         <div className="flex items-baseline gap-3">
-          <span className="text-slate-500 line-through text-2xl">£{ORIGINAL_PRICE}</span>
+          <span className="text-indigo-300/40 line-through text-2xl">£{ORIGINAL_PRICE}</span>
           <span className="text-5xl font-bold text-white">£{BUNDLE_PRICE}</span>
-          <span className="text-amber-400 font-medium">Save 43%</span>
+          <span className="text-amber-400 font-medium">Save 44%</span>
         </div>
       </div>
 
@@ -120,20 +121,20 @@ export default function BundlePage() {
         {reportsList.map((report) => (
           <div
             key={report.slug}
-            className="bg-slate-800/30 border border-slate-700/50 rounded-xl p-5 flex items-start gap-4"
+            className="bg-indigo-950/30 rounded-xl p-5 flex items-start gap-4"
           >
             <div
-              className={`w-12 h-12 rounded-lg bg-gradient-to-br ${report.gradient} flex items-center justify-center text-xl flex-shrink-0`}
+              className={`w-12 h-12 rounded-lg bg-gradient-to-br ${report.gradient} flex items-center justify-center flex-shrink-0`}
             >
-              {report.icon}
+              <ReportIcon type={report.slug} size={24} className="text-white" />
             </div>
             <div className="flex-1">
               <div className="flex items-center justify-between mb-1">
                 <h3 className="text-white font-medium">{report.title}</h3>
-                <span className="text-slate-500 text-sm">£{report.price} value</span>
+                <span className="text-indigo-300/40 text-sm">£{report.price} value</span>
               </div>
-              <p className="text-slate-400 text-sm mb-2">{report.subtitle}</p>
-              <div className="flex items-center gap-3 text-xs text-slate-500">
+              <p className="text-indigo-200/50 text-sm mb-2">{report.subtitle}</p>
+              <div className="flex items-center gap-3 text-xs text-indigo-300/40">
                 <span>{report.wordCount}</span>
                 <span>•</span>
                 <span>{report.deliveryTime}</span>
@@ -144,11 +145,11 @@ export default function BundlePage() {
       </div>
 
       {/* Total Value */}
-      <div className="bg-emerald-500/10 border border-emerald-500/30 rounded-xl p-4 mb-8">
+      <div className="bg-emerald-500/10 rounded-xl p-4 mb-8">
         <div className="flex items-center justify-between">
           <div>
             <p className="text-emerald-400 font-medium">Total value: £{ORIGINAL_PRICE}</p>
-            <p className="text-slate-400 text-sm">Over 12,000 words of personalized insights</p>
+            <p className="text-indigo-200/50 text-sm">Over 12,000 words of personalized insights</p>
           </div>
           <div className="text-right">
             <p className="text-white font-bold text-xl">You pay: £{BUNDLE_PRICE}</p>
@@ -158,14 +159,14 @@ export default function BundlePage() {
       </div>
 
       {/* Partner Details (Required for Relationship Report) */}
-      <div className="bg-slate-800/30 border border-slate-700/50 rounded-xl p-6 mb-8">
+      <div className="bg-indigo-950/30 rounded-xl p-6 mb-8">
         <h3 className="text-white font-semibold mb-2">Partner&apos;s birth details</h3>
-        <p className="text-slate-400 text-sm mb-4">
+        <p className="text-indigo-200/50 text-sm mb-4">
           Required for the Relationship Compatibility report. We&apos;ll compare your chart with theirs.
         </p>
 
         {!hasChart ? (
-          <div className="bg-amber-500/10 border border-amber-500/30 rounded-xl p-4 mb-4">
+          <div className="bg-amber-500/10 rounded-xl p-4 mb-4">
             <div className="flex items-start gap-3">
               <svg
                 className="w-5 h-5 text-amber-400 flex-shrink-0 mt-0.5"
@@ -195,36 +196,36 @@ export default function BundlePage() {
               value={partnerName}
               onChange={(e) => setPartnerName(e.target.value)}
               placeholder="Partner's name"
-              className="w-full px-4 py-3 bg-slate-800/50 border border-slate-600 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-4 py-3 bg-indigo-950/50 border border-indigo-500/20 rounded-lg text-white placeholder-indigo-300/40 focus:outline-none focus:ring-2 focus:ring-indigo-500"
             />
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-slate-400 text-xs mb-1">Date of birth</label>
+                <label className="block text-indigo-200/50 text-xs mb-1">Date of birth</label>
                 <input
                   type="date"
                   value={partnerBirthDate}
                   onChange={(e) => setPartnerBirthDate(e.target.value)}
-                  className="w-full px-4 py-3 bg-slate-800/50 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 [color-scheme:dark]"
+                  className="w-full px-4 py-3 bg-indigo-950/50 border border-indigo-500/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 [color-scheme:dark]"
                 />
               </div>
               <div>
-                <label className="block text-slate-400 text-xs mb-1">Time of birth (optional)</label>
+                <label className="block text-indigo-200/50 text-xs mb-1">Time of birth (optional)</label>
                 <input
                   type="time"
                   value={partnerBirthTime}
                   onChange={(e) => setPartnerBirthTime(e.target.value)}
-                  className="w-full px-4 py-3 bg-slate-800/50 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 [color-scheme:dark]"
+                  className="w-full px-4 py-3 bg-indigo-950/50 border border-indigo-500/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 [color-scheme:dark]"
                 />
               </div>
             </div>
             <div>
-              <label className="block text-slate-400 text-xs mb-1">Place of birth</label>
+              <label className="block text-indigo-200/50 text-xs mb-1">Place of birth</label>
               <input
                 type="text"
                 value={partnerBirthPlace}
                 onChange={(e) => setPartnerBirthPlace(e.target.value)}
                 placeholder="City, Country"
-                className="w-full px-4 py-3 bg-slate-800/50 border border-slate-600 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full px-4 py-3 bg-indigo-950/50 border border-indigo-500/20 rounded-lg text-white placeholder-indigo-300/40 focus:outline-none focus:ring-2 focus:ring-indigo-500"
               />
             </div>
           </div>
@@ -235,7 +236,7 @@ export default function BundlePage() {
       <button
         onClick={handlePurchase}
         disabled={loading || (hasChart && (!partnerName || !partnerBirthDate || !partnerBirthPlace))}
-        className="w-full py-4 px-6 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 disabled:opacity-50 disabled:cursor-not-allowed text-black font-bold text-lg rounded-xl transition-all shadow-lg shadow-amber-500/25"
+        className="w-full py-4 px-6 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 disabled:opacity-50 disabled:cursor-not-allowed text-black font-bold text-lg rounded-xl transition-all shadow-lg shadow-amber-500/20"
       >
         {loading ? (
           <span className="flex items-center justify-center gap-2">
@@ -250,7 +251,7 @@ export default function BundlePage() {
       </button>
 
       {/* Trust Signals */}
-      <div className="mt-6 flex items-center justify-center gap-6 text-slate-500 text-sm">
+      <div className="mt-6 flex items-center justify-center gap-6 text-indigo-300/40 text-sm">
         <div className="flex items-center gap-2">
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path

@@ -27,20 +27,20 @@ export function SecondaryInfluences({ themes }: SecondaryInfluencesProps) {
   if (themes.length === 0) return null
 
   return (
-    <div className="bg-slate-800/50 border border-slate-700 rounded-2xl p-6 mb-6">
+    <div className="bg-indigo-950/30 rounded-2xl p-6 mb-6">
       <h2 className="text-white font-semibold mb-4">Secondary Influences</h2>
 
       <div className="space-y-3">
         {themes.map((theme) => (
           <div
             key={theme.id}
-            className="bg-slate-900/50 border border-slate-700/50 rounded-xl overflow-hidden"
+            className="bg-indigo-950/40 rounded-xl overflow-hidden"
           >
             <button
               onClick={() =>
                 setExpandedId(expandedId === theme.id ? null : theme.id)
               }
-              className="w-full p-4 flex items-center gap-3 text-left"
+              className="w-full p-4 flex items-center gap-3 text-left hover:bg-indigo-900/30 transition-colors"
             >
               <span className="text-xl">
                 {focusAreaIcons[theme.primary_focus_area]}
@@ -49,7 +49,7 @@ export function SecondaryInfluences({ themes }: SecondaryInfluencesProps) {
                 <div className="text-white font-medium truncate">
                   {theme.theme_name}
                 </div>
-                <div className="text-slate-400 text-sm">
+                <div className="text-indigo-200/50 text-sm">
                   Until {format(new Date(theme.end_date), 'MMM d')}
                 </div>
               </div>
@@ -62,13 +62,13 @@ export function SecondaryInfluences({ themes }: SecondaryInfluencesProps) {
                       className={`w-1.5 h-1.5 rounded-full ${
                         level <= theme.intensity_today
                           ? 'bg-indigo-500'
-                          : 'bg-slate-700'
+                          : 'bg-indigo-900/50'
                       }`}
                     />
                   ))}
                 </div>
                 <svg
-                  className={`w-5 h-5 text-slate-400 transition-transform ${
+                  className={`w-5 h-5 text-indigo-300/50 transition-transform ${
                     expandedId === theme.id ? 'rotate-180' : ''
                   }`}
                   fill="none"
@@ -87,10 +87,10 @@ export function SecondaryInfluences({ themes }: SecondaryInfluencesProps) {
 
             {expandedId === theme.id && (
               <div className="px-4 pb-4 pt-0">
-                <p className="text-slate-300 text-sm leading-relaxed">
+                <p className="text-indigo-200/70 text-sm leading-relaxed">
                   {theme.description}
                 </p>
-                <div className="mt-3 flex items-center gap-4 text-xs text-slate-500">
+                <div className="mt-3 flex items-center gap-4 text-xs text-indigo-300/40">
                   <span>
                     Peak: {format(new Date(theme.peak_window.start), 'MMM d')} –{' '}
                     {format(new Date(theme.peak_window.end), 'MMM d')}

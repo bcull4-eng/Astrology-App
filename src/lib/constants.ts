@@ -5,7 +5,27 @@
 /**
  * Subscription pricing
  */
-export const SUBSCRIPTION_PRICE_PENCE = 2000 // £20/month
+export const SUBSCRIPTION_PRICES = {
+  MONTHLY_PENCE: 1499, // £14.99/month
+  ANNUAL_PENCE: 9900, // £99/year
+  LIFETIME_PENCE: 14900, // £149 one-time
+} as const
+
+/**
+ * Report pricing
+ */
+export const REPORT_PRICES = {
+  SINGLE_PRICE: 29, // £29 per report
+  BUNDLE_PRICE: 49, // £49 for all 3 reports
+} as const
+
+/**
+ * Subscription benefits
+ */
+export const SUBSCRIPTION_BENEFITS = {
+  ANNUAL_FREE_REPORTS: 2, // Annual includes 2 free reports
+  LIFETIME_FREE_REPORTS: 3, // Lifetime includes all 3 reports
+} as const
 
 /**
  * Dashboard element update cadences (in days)

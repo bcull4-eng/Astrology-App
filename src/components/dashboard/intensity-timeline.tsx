@@ -75,7 +75,7 @@ export function IntensityTimeline({ theme }: IntensityTimelineProps) {
   }
 
   return (
-    <div className="bg-slate-800/50 border border-slate-700 rounded-2xl p-6 mb-6">
+    <div className="bg-indigo-950/30 rounded-2xl p-6 mb-6">
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-white font-semibold">Intensity Timeline</h2>
         <span className={`text-sm font-medium ${phaseLabels[phase].color}`}>
@@ -131,7 +131,7 @@ export function IntensityTimeline({ theme }: IntensityTimelineProps) {
       </div>
 
       {/* Date labels */}
-      <div className="flex justify-between text-slate-500 text-xs">
+      <div className="flex justify-between text-indigo-300/40 text-xs">
         <span>{format(startDate, 'MMM d')}</span>
         <span className="text-indigo-400">Today</span>
         <span>{format(endDate, 'MMM d')}</span>

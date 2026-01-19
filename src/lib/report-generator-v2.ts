@@ -78,7 +78,7 @@ function getPlacement(chart: NatalChart, planet: string): NatalPlacement | undef
 }
 
 // Sign data with extensive descriptions
-const signData: Record<Sign, {
+export const signData: Record<Sign, {
   element: 'Fire' | 'Earth' | 'Air' | 'Water'
   modality: 'Cardinal' | 'Fixed' | 'Mutable'
   ruler: string
@@ -818,6 +818,196 @@ ${marsSign} Mars energy is best channeled through ${marsSign === 'Aries' ? 'phys
       ],
     },
     {
+      id: 'jupiter',
+      title: 'Jupiter: Your Path to Growth & Abundance',
+      icon: '♃',
+      subsections: [
+        {
+          title: `Jupiter in ${jupiterSign}: Where Fortune Finds You`,
+          content: `Jupiter is the largest planet in our solar system, and astrologically it represents expansion, growth, luck, and abundance. Where Jupiter sits in your chart shows how you grow, what brings you opportunities, and where you naturally attract good fortune. It's often called the "Great Benefic" because its influence tends to be supportive and expansive.
+
+${userName}, with Jupiter in ${jupiterSign}, your path to growth and abundance flows through ${signData[jupiterSign].keywords.slice(0, 3).join(', ')} experiences. This placement suggests that you expand and prosper when you embrace ${signData[jupiterSign].element} qualities and approach life with ${signData[jupiterSign].keywords[0]} energy.
+
+**How You Experience Growth:**
+
+Jupiter in ${jupiterSign} means you grow best through ${jupiterSign === 'Aries' ? 'taking bold risks, being a pioneer, and trusting your independent instincts. Fortune favors your courage - when you take initiative, the universe tends to support you. You expand through new beginnings and brave ventures' : jupiterSign === 'Taurus' ? 'patient accumulation, sensory experiences, and building lasting value. You attract abundance through reliability and appreciation of quality. Slow, steady growth brings you the greatest rewards' : jupiterSign === 'Gemini' ? 'learning, communication, and making connections. You expand through curiosity - every new piece of information, every conversation, every short journey brings opportunities. Mental flexibility is your fortune' : jupiterSign === 'Cancer' ? 'nurturing others, honoring family and roots, and trusting your intuition. You attract abundance through emotional generosity and creating safe spaces. Home and family are sources of growth for you' : jupiterSign === 'Leo' ? 'creative self-expression, generosity, and stepping into the spotlight. You expand through confidence - when you share your talents openly, recognition and opportunities follow. Joy attracts your fortune' : jupiterSign === 'Virgo' ? 'service, attention to detail, and continuous improvement. You attract abundance through being useful and competent. Your ability to refine and perfect brings opportunities others miss' : jupiterSign === 'Libra' ? 'partnerships, diplomacy, and creating harmony. You expand through relationships - collaboration brings you opportunities that solo efforts wouldn\'t. Beauty and fairness attract your fortune' : jupiterSign === 'Scorpio' ? 'transformation, depth, and facing life\'s mysteries. You attract abundance through intensity and psychological insight. Crises can become your greatest opportunities for growth' : jupiterSign === 'Sagittarius' ? 'adventure, philosophy, and expanding your horizons. Jupiter is at home in Sagittarius, making this a powerful placement for growth through travel, education, and big-picture thinking. Optimism is your fortune' : jupiterSign === 'Capricorn' ? 'ambition, discipline, and building structures. You attract abundance through hard work and strategic planning. Success comes through respecting rules and climbing steadily toward goals' : jupiterSign === 'Aquarius' ? 'innovation, community, and humanitarian causes. You expand through original thinking and working toward collective progress. Being different attracts your unique opportunities' : 'spirituality, creativity, and compassionate service. You attract abundance through faith and artistic expression. Surrender brings you more than striving. Dreams and intuition guide your fortune'}.
+
+**Your Abundance Mindset:**
+
+Jupiter reveals your natural relationship with abundance and optimism. With Jupiter in ${jupiterSign}, you believe that ${signData[jupiterSign].element === 'Fire' ? 'life rewards those who take action, that opportunities come to the bold, and that enthusiasm creates its own luck' : signData[jupiterSign].element === 'Earth' ? 'steady effort pays off, that resources should be wisely managed, and that practical application of wisdom brings results' : signData[jupiterSign].element === 'Air' ? 'ideas have power, that connections open doors, and that understanding brings freedom' : 'feelings matter, that generosity returns multiplied, and that faith and intuition guide us toward what we need'}.
+
+**Potential Pitfalls:**
+
+Jupiter's expansive nature can sometimes go too far. With your Jupiter in ${jupiterSign}, watch for tendencies toward ${jupiterSign === 'Aries' ? 'recklessness, overconfidence, or starting too many things at once without follow-through' : jupiterSign === 'Taurus' ? 'excessive materialism, indulgence, or resistance to change even when growth requires it' : jupiterSign === 'Gemini' ? 'scattered interests, superficial learning, or promising more than you can deliver' : jupiterSign === 'Cancer' ? 'emotional overprotection, clinging to the past, or using family as an excuse not to grow' : jupiterSign === 'Leo' ? 'egotism, excessive need for recognition, or dramatic gestures that overshadow substance' : jupiterSign === 'Virgo' ? 'perfectionism that prevents action, excessive worry, or being too critical of opportunities' : jupiterSign === 'Libra' ? 'over-reliance on partners, indecision about opportunities, or valuing appearance over substance' : jupiterSign === 'Scorpio' ? 'excessive intensity, power struggles, or using insight manipulatively rather than wisely' : jupiterSign === 'Sagittarius' ? 'over-promising, tactless truth-telling, or believing you know best without evidence' : jupiterSign === 'Capricorn' ? 'excessive focus on status, pessimism about possibilities, or sacrificing joy for achievement' : jupiterSign === 'Aquarius' ? 'stubbornness about unconventional approaches, emotional detachment, or rebellion without cause' : 'escapism, excessive idealism, or giving too much without maintaining boundaries'}.
+
+**Activating Your Jupiter Gifts:**
+
+To maximize your Jupiter blessings, regularly engage with ${jupiterSign} activities and environments. For you, this means prioritizing ${signData[jupiterSign].element === 'Fire' ? 'adventure, creative projects, and situations that require courage' : signData[jupiterSign].element === 'Earth' ? 'building tangible things, spending time in nature, and developing practical skills' : signData[jupiterSign].element === 'Air' ? 'learning, social activities, and intellectual exploration' : 'emotional connection, creative expression, and spiritual practice'}. When you feel stuck, returning to your Jupiter sign's energy often unlocks new growth.`,
+          terms: [
+            { term: 'Jupiter', definition: 'The planet of expansion, growth, luck, and abundance. Its sign shows how you naturally attract opportunities and where you experience the most growth.' },
+            { term: 'Benefic Planet', definition: 'A planet considered to bring positive influences. Jupiter is the "Great Benefic" while Venus is the "Lesser Benefic."' },
+          ],
+        },
+        {
+          title: 'Jupiter and Your Life Philosophy',
+          content: `Jupiter also represents your belief system, philosophy of life, and relationship with meaning, faith, and truth. It shows what you believe in and how you find purpose beyond day-to-day existence.
+
+**Your Philosophical Approach:**
+
+With Jupiter in ${jupiterSign}, your life philosophy tends toward ${jupiterSign === 'Aries' ? 'believing in individual potential and the power of courage. You have faith that action creates results, that life rewards the brave, and that everyone has the right to forge their own path. Your philosophy emphasizes authenticity and self-determination' : jupiterSign === 'Taurus' ? 'valuing stability, sensory beauty, and the wisdom of nature. You have faith in the material world, in the value of patience, and in the rewards of consistent effort. Your philosophy emphasizes appreciation and stewardship' : jupiterSign === 'Gemini' ? 'the power of ideas, curiosity, and connection. You have faith in learning, in the value of multiple perspectives, and in the ability of communication to solve problems. Your philosophy emphasizes mental exploration' : jupiterSign === 'Cancer' ? 'the importance of roots, emotional bonds, and nurturing. You have faith in family (biological or chosen), in the wisdom of feelings, and in the power of care to create growth. Your philosophy emphasizes belonging' : jupiterSign === 'Leo' ? 'the value of self-expression, creativity, and joy. You have faith in the human heart, in the importance of play, and in the power of generosity to transform lives. Your philosophy emphasizes authentic living' : jupiterSign === 'Virgo' ? 'the virtue of service, improvement, and practical wisdom. You have faith in effort, in the value of getting things right, and in the power of humble work to make a difference. Your philosophy emphasizes useful contribution' : jupiterSign === 'Libra' ? 'harmony, justice, and the power of relationship. You have faith in fairness, in the value of beauty, and in the ability of collaboration to achieve more than competition. Your philosophy emphasizes balance and connection' : jupiterSign === 'Scorpio' ? 'transformation, depth, and the power of facing truth. You have faith in rebirth, in the value of psychological honesty, and in the strength that comes from surviving difficulty. Your philosophy emphasizes evolution through crisis' : jupiterSign === 'Sagittarius' ? 'the quest for meaning, truth, and expansion. You have faith in the universe\'s benevolence, in the value of exploration, and in the existence of higher truths worth seeking. Your philosophy is optimistic and expansive' : jupiterSign === 'Capricorn' ? 'achievement, responsibility, and the wisdom of time. You have faith in effort, in the value of structure, and in the power of discipline to overcome obstacles. Your philosophy emphasizes earned success' : jupiterSign === 'Aquarius' ? 'progress, innovation, and collective evolution. You have faith in humanity\'s potential, in the value of original thinking, and in the power of working toward a better future. Your philosophy emphasizes contribution to the whole' : 'unity, compassion, and spiritual reality. You have faith in something beyond the material, in the value of surrender, and in the ultimate goodness behind apparent chaos. Your philosophy emphasizes transcendence'}.
+
+**Teaching and Learning:**
+
+Jupiter is connected to higher education, teaching, and the transmission of wisdom. Your Jupiter in ${jupiterSign} suggests you learn best through ${signData[jupiterSign].element === 'Fire' ? 'experiential, hands-on approaches that keep you engaged and inspired. Lecturing bores you; demonstration excites you' : signData[jupiterSign].element === 'Earth' ? 'practical, applicable instruction that produces tangible skills. Abstract theory without application frustrates you' : signData[jupiterSign].element === 'Air' ? 'discussion, reading, and intellectual exchange. You process through articulating ideas and hearing different perspectives' : 'immersive, emotionally engaging experiences that feel meaningful. Dry facts don\'t stick; stories and felt connections do'}. Similarly, you teach others best by sharing ${signData[jupiterSign].keywords[0]} wisdom in your own authentic style.`,
+          tip: 'Jupiter transits (when Jupiter in the sky aspects your natal planets) often bring periods of growth and opportunity. Knowing your Jupiter sign helps you recognize and maximize these windows.',
+        },
+      ],
+    },
+    {
+      id: 'saturn',
+      title: 'Saturn: Your Challenges & Path to Mastery',
+      icon: '♄',
+      subsections: [
+        {
+          title: `Saturn in ${saturnSign}: Where You Build Strength`,
+          content: `If Jupiter represents expansion and ease, Saturn represents contraction and challenge. But this isn't punishment - it's the universe's personal trainer. Saturn shows where you face your greatest challenges, but also where you can build your most enduring strengths. It's often called the "Great Teacher" because its lessons, though difficult, create lasting wisdom and character.
+
+${userName}, with Saturn in ${saturnSign}, your life lessons center around ${signData[saturnSign].keywords.slice(0, 3).join(', ')} themes. This placement often creates early difficulties or a sense of inadequacy in these areas, but through conscious effort, you can develop exceptional ${signData[saturnSign].strengths[0].toLowerCase()} that becomes one of your greatest assets.
+
+**Your Core Life Lesson:**
+
+Saturn in ${saturnSign} teaches you to ${saturnSign === 'Aries' ? 'balance independence with interdependence, courage with caution. You may have early experiences that make you doubt your assertiveness or right to lead. The lesson is learning to take initiative while respecting consequences - to be brave and wise' : saturnSign === 'Taurus' ? 'find security within rather than through possessions alone. You may experience early financial instability or learn hard lessons about material attachment. The lesson is developing true self-worth and sustainable abundance' : saturnSign === 'Gemini' ? 'communicate with precision and take your ideas seriously. You may struggle early with learning, speaking, or being heard. The lesson is developing intellectual rigor and learning to say less but mean more' : saturnSign === 'Cancer' ? 'build emotional security independently of family patterns. You may experience early home instability or emotional coldness. The lesson is becoming your own nurturing parent and creating the safety you need' : saturnSign === 'Leo' ? 'find authentic confidence rather than seeking external validation. You may struggle with self-doubt, creative blocks, or fear of being seen. The lesson is shining your light regardless of audience response' : saturnSign === 'Virgo' ? 'accept imperfection while still striving for excellence. You may struggle with harsh self-criticism, health anxieties, or feeling never good enough. The lesson is useful service without destructive perfectionism' : saturnSign === 'Libra' ? 'maintain balance and fairness including toward yourself. You may struggle with relationships, finding that partnership brings challenges and lessons. The lesson is healthy interdependence based on mutual respect' : saturnSign === 'Scorpio' ? 'face the darkness without being consumed by it. You may encounter early experiences with loss, betrayal, or the shadow side of life. The lesson is transformative power that heals rather than destroys' : saturnSign === 'Sagittarius' ? 'ground your philosophy in practical reality. You may struggle with faith, finding your optimism tested by experience. The lesson is developing wisdom that integrates hope with reality' : saturnSign === 'Capricorn' ? 'achieve success while maintaining humanity. Saturn is at home in Capricorn, amplifying both discipline and pressure. The lesson is building structures that serve rather than imprison' : saturnSign === 'Aquarius' ? 'honor both your individuality and your need for community. You may feel isolated by your differentness or rejected for unconventional views. The lesson is being yourself while finding your people' : 'ground your spiritual life in everyday reality. You may struggle with boundaries, escapism, or feeling lost in the world. The lesson is bringing transcendent awareness into practical living'}.
+
+**Your Saturn Fears:**
+
+Saturn often represents our deepest fears and insecurities - the areas where we feel most vulnerable and most motivated to develop defenses. With Saturn in ${saturnSign}, you may harbor fears around ${saturnSign === 'Aries' ? 'not being strong enough, capable enough, or brave enough to succeed on your own terms' : saturnSign === 'Taurus' ? 'not having enough resources, losing what you have, or being fundamentally unworthy of abundance' : saturnSign === 'Gemini' ? 'not being smart enough, saying the wrong thing, or having your ideas dismissed or misunderstood' : saturnSign === 'Cancer' ? 'being abandoned, emotionally unsafe, or unable to create the home and family you need' : saturnSign === 'Leo' ? 'being insignificant, untalented, or unloved for who you truly are' : saturnSign === 'Virgo' ? 'making mistakes, being imperfect, or failing to be useful enough to justify your existence' : saturnSign === 'Libra' ? 'being alone, unfair treatment, or being fundamentally unlovable in partnership' : saturnSign === 'Scorpio' ? 'betrayal, loss of control, or having your vulnerabilities used against you' : saturnSign === 'Sagittarius' ? 'a meaningless life, being trapped, or having your faith proven wrong' : saturnSign === 'Capricorn' ? 'failure, loss of status, or being seen as incompetent or unworthy of respect' : saturnSign === 'Aquarius' ? 'being rejected for your true self, belonging nowhere, or your uniqueness being worthless' : 'being lost, overwhelmed, or unable to maintain the boundaries needed to survive'}.
+
+Understanding these fears helps you work with them consciously rather than being unconsciously controlled by them.
+
+**Saturn Returns: Your Cosmic Coming of Age:**
+
+Saturn returns to its birth position approximately every 29.5 years. These Saturn Return periods (around ages 28-30, 57-59, and 86-88) are major life transitions. With your Saturn in ${saturnSign}, your Saturn Returns will focus on ${signData[saturnSign].keywords[0]} themes - expect significant growth, restructuring, and maturation in these areas during those ages.`,
+          terms: [
+            { term: 'Saturn', definition: 'The planet of discipline, challenges, and mastery. Its sign shows where you face your greatest lessons and can build your most enduring strengths.' },
+            { term: 'Saturn Return', definition: 'When Saturn returns to its position at your birth (around ages 29-30, 58-59, 87-88). Major life transitions focused on maturation and responsibility.' },
+          ],
+        },
+        {
+          title: 'Working With Your Saturn',
+          content: `Saturn responds to respect, effort, and patience. Unlike Jupiter's easy gifts, Saturn's rewards must be earned - but once earned, they cannot be taken away.
+
+**Your Saturn Strengths (When Developed):**
+
+Through facing Saturn in ${saturnSign} challenges, you can develop exceptional ${saturnSign === 'Aries' ? 'leadership ability, courage that comes from facing fear, and the capacity to take initiative when others hesitate. You become a model of authentic self-direction' : saturnSign === 'Taurus' ? 'financial wisdom, unshakeable values, and the ability to build lasting security. You become a model of sustainable abundance and genuine self-worth' : saturnSign === 'Gemini' ? 'mental discipline, precise communication, and the ability to think deeply about what matters. You become a model of intellectual integrity and effective expression' : saturnSign === 'Cancer' ? 'emotional maturity, the ability to nurture without losing yourself, and the creation of genuine security. You become a model of healthy emotional boundaries' : saturnSign === 'Leo' ? 'authentic confidence, creative discipline, and the ability to shine without needing applause. You become a model of self-validation and genuine creative expression' : saturnSign === 'Virgo' ? 'practical excellence, healing abilities, and the capacity to serve without self-destruction. You become a model of useful contribution and healthy standards' : saturnSign === 'Libra' ? 'relational wisdom, fairness in action, and the ability to maintain balance under pressure. You become a model of healthy partnership and justice' : saturnSign === 'Scorpio' ? 'psychological depth, transformative power, and the ability to face any darkness. You become a model of resurrection and healing through truth' : saturnSign === 'Sagittarius' ? 'grounded wisdom, teaching ability, and faith that has been tested and proven. You become a model of meaningful philosophy put into practice' : saturnSign === 'Capricorn' ? 'achievement, integrity, and the ability to build lasting structures. You become a model of disciplined success and responsible authority' : saturnSign === 'Aquarius' ? 'innovative thinking, community building, and the courage to be yourself regardless of convention. You become a model of authentic individuality in service to the collective' : 'spiritual depth, compassionate boundaries, and the ability to bring transcendence into daily life. You become a model of grounded spirituality'}.
+
+**Practical Saturn Work:**
+
+To work constructively with your Saturn in ${saturnSign}:
+
+1. **Acknowledge the difficulty**: Don't pretend Saturn areas are easy. They're not - and pretending creates shame.
+
+2. **Commit to gradual improvement**: Saturn rewards patience. Small, consistent efforts over years create mastery.
+
+3. **Find mentors**: People who have mastered what Saturn challenges you in can accelerate your growth.
+
+4. **Embrace structure**: Saturn loves discipline. Creating routines around your ${saturnSign} challenges helps you develop competence.
+
+5. **Celebrate progress**: Saturn's timeline is long. Notice and honor how far you've come.
+
+**Saturn's Gift:**
+
+The ultimate Saturn gift is authority - not power over others, but genuine expertise that allows you to guide others through what you've mastered. Your Saturn in ${saturnSign} challenges you to become a genuine ${signData[saturnSign].archetype.toLowerCase()} through lived experience, not theory.`,
+          tip: 'Saturn is not your enemy but your most demanding teacher. What Saturn restricts, it eventually strengthens. Trust the process.',
+        },
+      ],
+    },
+    {
+      id: 'outer-planets',
+      title: 'The Outer Planets: Generational Influences',
+      icon: '🌌',
+      subsections: [
+        {
+          title: 'Uranus, Neptune & Pluto in Your Chart',
+          content: `The outer planets (Uranus, Neptune, and Pluto) move slowly through the zodiac, spending years or even decades in each sign. This means everyone born around the same time shares these placements - they're generational signatures rather than individual traits.
+
+However, while the SIGN of your outer planets is shared with your generation, the HOUSE placement and aspects to personal planets are uniquely yours, showing how these generational themes play out in your individual life.
+
+**Uranus: The Revolutionary**
+
+Uranus represents innovation, rebellion, sudden change, and the desire for freedom. It shows where you (and your generation) break from tradition and seek to do things differently.
+
+Your Uranus placement indicates where you:
+- Resist conformity and seek authentic self-expression
+- Experience sudden insights or unexpected changes
+- Bring innovative approaches that surprise others
+- Feel the need for freedom and independence
+
+Uranus themes in your life may manifest as sudden changes, brilliant insights, or a strong need for independence in certain areas. When Uranus is active by transit, expect the unexpected.
+
+**Neptune: The Mystic**
+
+Neptune represents spirituality, dreams, imagination, and transcendence - but also illusion, confusion, and escapism. It shows where you (and your generation) seek to dissolve boundaries and connect with something greater.
+
+Your Neptune placement indicates where you:
+- Access creativity, imagination, and spiritual sensitivity
+- May experience confusion, deception, or idealistic illusions
+- Seek to transcend ordinary reality
+- Feel compassion and the desire to serve
+
+Neptune areas of life require discernment - the ability to tell the difference between genuine inspiration and wishful thinking. Beauty, art, and spirituality flourish here, but so can addiction and avoidance.
+
+**Pluto: The Transformer**
+
+Pluto represents deep transformation, power, death and rebirth, and the exposure of hidden truths. It shows where you (and your generation) experience profound change and confront the shadowy aspects of human nature.
+
+Your Pluto placement indicates where you:
+- Experience intense transformation and regeneration
+- Confront power dynamics and your own shadow
+- Develop psychological depth and research abilities
+- Face the cycles of death and rebirth metaphorically
+
+Pluto areas of life don't do anything halfway. Superficiality is impossible here - you're drawn into depth whether you choose it or not. Pluto transits often coincide with life-changing transformations.`,
+          terms: [
+            { term: 'Outer Planets', definition: 'Uranus, Neptune, and Pluto. They move slowly and represent generational themes, but their house placement shows how these themes manifest individually.' },
+            { term: 'Generational Influence', definition: 'Astrological themes shared by everyone born within a certain time period due to slow-moving planets occupying the same sign.' },
+          ],
+        },
+        {
+          title: 'Integrating All Your Planetary Energies',
+          content: `Your birth chart is a symphony of all these planetary voices - from the Sun's core identity to Pluto's transformative depths. Understanding how they work together is the key to using astrology practically.
+
+**The Inner vs. Outer Planet Dynamic:**
+
+Your personal planets (Sun through Mars) describe your individual psychology and daily experience. Your social planets (Jupiter and Saturn) describe how you relate to society, opportunity, and limitation. Your outer planets (Uranus, Neptune, Pluto) describe the larger evolutionary currents affecting your generation and how they manifest in your life.
+
+**How They Work Together:**
+
+In your chart:
+- Your ${sunSign} Sun is the conductor - your core identity orchestrating everything else
+- Your ${moonSign} Moon provides the emotional foundation from which you experience life
+- Your ${risingSign} Rising is the instrument through which you play your cosmic music
+- Mercury, Venus, and Mars are your primary tools for thinking, loving, and acting
+- Jupiter and Saturn set the parameters of growth and challenge
+- The outer planets connect you to forces larger than individual psychology
+
+**Your Unique Integration:**
+
+${userName}, with your particular combination of placements, you're learning to:
+1. Express your ${sunSign} identity in the world
+2. Honor your ${moonSign} emotional needs
+3. Develop your ${risingSign} approach to life
+4. Communicate with ${mercurySign} style
+5. Love with ${venusSign} values
+6. Act with ${marsSign} drive
+7. Grow through ${jupiterSign} expansion
+8. Master ${saturnSign} challenges
+
+This is a lifelong journey of integration. No one masters all their chart energies quickly - but understanding them consciously accelerates growth and reduces unnecessary suffering.`,
+          tip: 'Your chart is a process, not a fixed portrait. You grow into your chart potentials over a lifetime. Trust your timing.',
+        },
+      ],
+    },
+    {
       id: 'life-purpose',
       title: 'Your Life Purpose & Soul\'s Journey',
       icon: '✨',
@@ -1356,6 +1546,164 @@ ${getLongtermStrategy(sunSign1, sunSign2, modality1, modality2)}`,
       ],
     },
     {
+      id: 'intimacy',
+      title: 'Intimacy & Physical Connection',
+      icon: '💋',
+      subsections: [
+        {
+          title: 'Your Physical Chemistry',
+          content: `Physical intimacy is where Venus (what you desire and find beautiful) meets Mars (how you pursue and express desire). Your specific combination creates a unique intimate dynamic.
+
+**${userName1}'s Intimate Nature:**
+
+With Venus in ${venusSign1} and Mars in ${marsSign1}, ${userName1} approaches intimacy with a ${venusData1.element}/${marsData1.element} energy blend. They desire ${venusSign1 === 'Aries' ? 'excitement, spontaneity, and a partner who matches their enthusiasm. They are turned on by confidence and directness' : venusSign1 === 'Taurus' ? 'sensuality, slow buildup, and physical comfort. They are turned on by touch, beautiful surroundings, and taking time to savor the experience' : venusSign1 === 'Gemini' ? 'mental stimulation, variety, and playful communication. They are turned on by words, humor, and keeping things interesting' : venusSign1 === 'Cancer' ? 'emotional safety, tenderness, and deep connection. They are turned on by feeling nurtured and knowing the emotional bond is secure' : venusSign1 === 'Leo' ? 'admiration, romance, and feeling special. They are turned on by being desired and appreciated, with generous expressions of affection' : venusSign1 === 'Virgo' ? 'attention to detail, cleanliness, and genuine helpfulness. They are turned on by competence and a partner who notices the little things' : venusSign1 === 'Libra' ? 'romance, beauty, and harmony. They are turned on by aesthetic experiences and a partner who creates an atmosphere of elegance' : venusSign1 === 'Scorpio' ? 'intensity, depth, and complete surrender. They are turned on by power dynamics, mystery, and transformative experiences' : venusSign1 === 'Sagittarius' ? 'adventure, humor, and freedom. They are turned on by spontaneity, philosophical connection, and a spirit of exploration' : venusSign1 === 'Capricorn' ? 'respect, ambition, and earned intimacy. They are turned on by competence, success, and partners who take relationships seriously' : venusSign1 === 'Aquarius' ? 'uniqueness, friendship, and intellectual connection. They are turned on by unconventional approaches and respecting their need for space' : 'romance, imagination, and spiritual connection. They\'re turned on by creativity, tenderness, and transcendent experiences'}.
+
+**${userName2}'s Intimate Nature:**
+
+With Venus in ${venusSign2} and Mars in ${marsSign2}, ${userName2} approaches intimacy with a ${venusData2.element}/${marsData2.element} energy blend. They desire ${venusSign2 === 'Aries' ? 'excitement, spontaneity, and a partner who matches their enthusiasm. They are turned on by confidence and directness' : venusSign2 === 'Taurus' ? 'sensuality, slow buildup, and physical comfort. They are turned on by touch, beautiful surroundings, and taking time to savor the experience' : venusSign2 === 'Gemini' ? 'mental stimulation, variety, and playful communication. They are turned on by words, humor, and keeping things interesting' : venusSign2 === 'Cancer' ? 'emotional safety, tenderness, and deep connection. They are turned on by feeling nurtured and knowing the emotional bond is secure' : venusSign2 === 'Leo' ? 'admiration, romance, and feeling special. They are turned on by being desired and appreciated, with generous expressions of affection' : venusSign2 === 'Virgo' ? 'attention to detail, cleanliness, and genuine helpfulness. They are turned on by competence and a partner who notices the little things' : venusSign2 === 'Libra' ? 'romance, beauty, and harmony. They are turned on by aesthetic experiences and a partner who creates an atmosphere of elegance' : venusSign2 === 'Scorpio' ? 'intensity, depth, and complete surrender. They are turned on by power dynamics, mystery, and transformative experiences' : venusSign2 === 'Sagittarius' ? 'adventure, humor, and freedom. They are turned on by spontaneity, philosophical connection, and a spirit of exploration' : venusSign2 === 'Capricorn' ? 'respect, ambition, and earned intimacy. They are turned on by competence, success, and partners who take relationships seriously' : venusSign2 === 'Aquarius' ? 'uniqueness, friendship, and intellectual connection. They are turned on by unconventional approaches and respecting their need for space' : 'romance, imagination, and spiritual connection. They\'re turned on by creativity, tenderness, and transcendent experiences'}.
+
+**Your Combined Chemistry:**
+
+The interplay between your Venus and Mars signs creates ${getVenusMarsChemistry(venusSign1, marsSign1, venusSign2, marsSign2)} chemistry. ${userName1}'s Mars in ${marsSign1} ${marsData1.element === venusData2.element ? 'naturally harmonizes with' : marsData1.element === 'Fire' && venusData2.element === 'Air' ? 'excites and stimulates' : marsData1.element === 'Earth' && venusData2.element === 'Water' ? 'provides grounding security for' : 'creates interesting tension with'} ${userName2}'s Venus in ${venusSign2}, while ${userName2}'s Mars in ${marsSign2} ${marsData2.element === venusData1.element ? 'naturally harmonizes with' : 'brings a different energy to'} ${userName1}'s Venus in ${venusSign1}.`,
+          terms: [
+            { term: 'Venus-Mars Chemistry', definition: 'The interplay between one person\'s Venus (what they desire) and their partner\'s Mars (how they pursue), creating the foundation of physical attraction.' },
+          ],
+        },
+        {
+          title: 'Keeping the Spark Alive',
+          content: `Every relationship requires attention to maintain passion over time. For your specific combination:
+
+**What Ignites ${userName1} (${venusSign1} Venus / ${marsSign1} Mars):**
+${getIgnitesTips(venusSign1, marsSign1)}
+
+**What Ignites ${userName2} (${venusSign2} Venus / ${marsSign2} Mars):**
+${getIgnitesTips(venusSign2, marsSign2)}
+
+**Creating Your Ideal Intimate Atmosphere:**
+
+Based on your combined Venus signs, your ideal intimate setting includes:
+${getIdealIntimateAtmosphere(venusSign1, venusSign2)}
+
+**Maintaining Long-Term Passion:**
+
+To keep your physical connection alive over the years:
+
+1. **Honor your different tempos**: ${marsData1.modality === marsData2.modality ? 'You share similar energy levels, which helps synchronization' : 'Your different energy rhythms mean you\'ll need to consciously meet in the middle'}
+
+2. **Speak each other's desire language**: ${userName1} needs ${venusData1.keywords[0].toLowerCase()} expressions of desire, while ${userName2} needs ${venusData2.keywords[0].toLowerCase()} ones
+
+3. **Create regular romance**: ${getRegularRomanceTips(venusSign1, venusSign2)}
+
+4. **Address issues quickly**: With your Mars combination, unresolved tension can ${marsData1.element === 'Fire' || marsData2.element === 'Fire' ? 'explode into arguments' : marsData1.element === 'Water' || marsData2.element === 'Water' ? 'create emotional distance' : marsData1.element === 'Air' || marsData2.element === 'Air' ? 'lead to mental games' : 'build into stubborn standoffs'}`,
+          tip: 'Physical intimacy often reflects the emotional state of the relationship. If passion fades, check in emotionally first.',
+        },
+      ],
+    },
+    {
+      id: 'home-family',
+      title: 'Home, Family & Shared Life',
+      icon: '🏠',
+      subsections: [
+        {
+          title: 'Building a Life Together',
+          content: `Your Moon signs reveal what you each need from a home environment and how you approach domesticity and family.
+
+**${userName1}'s Ideal Home (${moonSign1} Moon):**
+
+${moonSign1 === 'Aries' ? `${userName1} needs a home that supports action and independence. They may prefer a minimalist space that doesn't tie them down, with room for active pursuits. They need autonomy within the domestic sphere and may get restless with too much "nesting."` : moonSign1 === 'Taurus' ? `${userName1} needs a home that provides comfort, beauty, and stability. Quality furnishings, good food, and a peaceful atmosphere are essential. They want the home to be a sanctuary of sensory pleasure and security.` : moonSign1 === 'Gemini' ? `${userName1} needs a home that stimulates the mind. Books, technology, varied spaces, and good communication flow matter. They may enjoy a home that accommodates visitors and conversation.` : moonSign1 === 'Cancer' ? `${userName1} needs a home that feels emotionally safe and nurturing. Family connections, memories, and traditions are important. They likely want a home that feels like a true sanctuary from the world.` : moonSign1 === 'Leo' ? `${userName1} needs a home they can take pride in. Entertaining space, creative areas, and a certain flair in the decor matter. They want a home that reflects their identity and welcomes joyful gatherings.` : moonSign1 === 'Virgo' ? `${userName1} needs a home that's organized, clean, and functional. Practical systems, healthy living support, and everything in its place create their sense of security. They may be particular about how things are done.` : moonSign1 === 'Libra' ? `${userName1} needs a home that's beautiful and harmonious. Aesthetic considerations, balance, and a peaceful atmosphere are essential. They want a home suitable for partnership and entertaining.` : moonSign1 === 'Scorpio' ? `${userName1} needs a home that provides privacy and intensity. Deep emotional space, perhaps a private retreat within the home, and room for transformation matter. Surface-level living won't satisfy.` : moonSign1 === 'Sagittarius' ? `${userName1} needs a home that doesn't feel confining. Space for books, global influences, and room to roam (or easy access to travel) are important. They may resist too much domestic routine.` : moonSign1 === 'Capricorn' ? `${userName1} needs a home that represents achievement and respectability. Quality over quantity, traditional elements, and a space that supports ambition matter. They take domestic responsibilities seriously.` : moonSign1 === 'Aquarius' ? `${userName1} needs a home that allows for individuality and perhaps unconventional arrangements. Freedom within the domestic sphere, room for community or causes, and space for their unique interests are essential.` : `${userName1} needs a home that supports creativity and spiritual life. Artistic elements, peaceful retreats, and perhaps water features or oceanic themes create their sense of security.`}
+
+**${userName2}'s Ideal Home (${moonSign2} Moon):**
+
+${moonSign2 === 'Aries' ? `${userName2} needs a home that supports action and independence. They may prefer a minimalist space that doesn't tie them down, with room for active pursuits. They need autonomy within the domestic sphere.` : moonSign2 === 'Taurus' ? `${userName2} needs a home that provides comfort, beauty, and stability. Quality furnishings, good food, and a peaceful atmosphere are essential. They want the home to be a sanctuary.` : moonSign2 === 'Gemini' ? `${userName2} needs a home that stimulates the mind. Books, technology, varied spaces, and good communication flow matter. They may enjoy a home that accommodates visitors.` : moonSign2 === 'Cancer' ? `${userName2} needs a home that feels emotionally safe and nurturing. Family connections, memories, and traditions are important. They want a true sanctuary from the world.` : moonSign2 === 'Leo' ? `${userName2} needs a home they can take pride in. Entertaining space, creative areas, and flair in the decor matter. They want a home that reflects their identity.` : moonSign2 === 'Virgo' ? `${userName2} needs a home that's organized, clean, and functional. Practical systems and everything in its place create their sense of security.` : moonSign2 === 'Libra' ? `${userName2} needs a home that's beautiful and harmonious. Aesthetic considerations, balance, and a peaceful atmosphere are essential.` : moonSign2 === 'Scorpio' ? `${userName2} needs a home that provides privacy and intensity. Deep emotional space and room for transformation matter.` : moonSign2 === 'Sagittarius' ? `${userName2} needs a home that doesn't feel confining. Space for books, global influences, and easy access to travel are important.` : moonSign2 === 'Capricorn' ? `${userName2} needs a home that represents achievement. Quality over quantity and traditional elements matter.` : moonSign2 === 'Aquarius' ? `${userName2} needs a home that allows for individuality. Freedom within the domestic sphere and space for unique interests are essential.` : `${userName2} needs a home that supports creativity and spiritual life. Artistic elements and peaceful retreats create their sense of security.`}
+
+**Creating Your Shared Home:**
+
+With your Moon combination, your ideal shared home would incorporate:
+${getSharedHomeTips(moonSign1, moonSign2)}`,
+        },
+        {
+          title: 'Family & Future Vision',
+          content: `Your Sun and Moon signs influence your attitudes toward family, children, and legacy.
+
+**${userName1}'s Family Approach (${sunSign1} Sun / ${moonSign1} Moon):**
+
+${userName1} approaches family with ${sunData1.element} Sun and ${moonData1.element} Moon energy. This suggests ${getFamilyApproach(sunSign1, moonSign1)}.
+
+**${userName2}'s Family Approach (${sunSign2} Sun / ${moonSign2} Moon):**
+
+${userName2} approaches family with ${sunData2.element} Sun and ${moonData2.element} Moon energy. This suggests ${getFamilyApproach(sunSign2, moonSign2)}.
+
+**If Children Are Part of Your Vision:**
+
+Your combined parenting style would likely be ${getCombinedParentingStyle(sunSign1, sunSign2, moonSign1, moonSign2)}. ${userName1} would naturally take on the ${moonData1.element === 'Fire' || moonData1.element === 'Air' ? 'stimulating, teaching' : 'nurturing, grounding'} role, while ${userName2} would bring ${moonData2.element === 'Fire' || moonData2.element === 'Air' ? 'excitement and mental engagement' : 'emotional depth and practical care'}.
+
+**Long-Term Vision Alignment:**
+
+For long-term happiness, discuss:
+1. Your individual definitions of family (biological, chosen, or both)
+2. How you'll balance career ambitions with domestic life
+3. Where you want to live and what kind of community you want to be part of
+4. How you'll handle extended family relationships
+
+Your ${modality1}/${modality2} modal combination suggests you'll approach these discussions with ${modality1 === modality2 ? 'similar pacing and decision-making style' : 'different approaches to timing and change - be patient with each other'}.`,
+          tip: 'Having aligned visions for the future is more important than having identical ones. Focus on shared values rather than identical details.',
+        },
+      ],
+    },
+    {
+      id: 'couple-world',
+      title: 'You As a Couple in the World',
+      icon: '🌍',
+      subsections: [
+        {
+          title: 'How Others See Your Relationship',
+          content: `Your Rising signs and Sun signs determine how you present as a couple to the outside world.
+
+**Your Combined Presence:**
+
+${userName1}'s ${risingSign1} Rising and ${userName2}'s ${risingSign2} Rising create a couple that appears ${getCoupleAppearance(risingSign1, risingSign2)} to others. People likely see you as ${getCouplePublicImage(sunSign1, sunSign2, risingSign1, risingSign2)}.
+
+**Social Life as a Couple:**
+
+With your elemental combination (${element1} and ${element2}), you likely prefer ${getSocialPreferences(element1, element2)} social activities. You're energized by ${getSocialEnergizers(element1, element2)} and may be drained by ${getSocialDrains(element1, element2)}.
+
+**Supporting Each Other's Public Lives:**
+
+${userName1}'s ${sunSign1} nature thrives publicly when ${getPublicThriving(sunSign1)}. ${userName2} can support this by ${getSupportingPartnerPublicly(sunSign2, sunSign1)}.
+
+${userName2}'s ${sunSign2} nature thrives publicly when ${getPublicThriving(sunSign2)}. ${userName1} can support this by ${getSupportingPartnerPublicly(sunSign1, sunSign2)}.
+
+**Your Combined Impact:**
+
+Together, you have the potential to ${getCombinedImpact(sunSign1, sunSign2, element1, element2)}. Your relationship models ${getRelationshipModels(sunSign1, sunSign2)} for others around you.`,
+        },
+        {
+          title: 'Shared Activities & Adventures',
+          content: `Finding activities you both enjoy strengthens your bond. Based on your charts:
+
+**Activities That Suit You Both:**
+
+${getSharedActivityRecommendations(sunSign1, sunSign2, marsSign1, marsSign2, venusSign1, venusSign2)}
+
+**Travel Compatibility:**
+
+${userName1}'s ${sunSign1} nature enjoys travel that involves ${getTravelPreference(sunSign1)}, while ${userName2}'s ${sunSign2} nature prefers ${getTravelPreference(sunSign2)}. Your ideal trip together would combine ${getIdealTrip(sunSign1, sunSign2)}.
+
+**Learning & Growing Together:**
+
+With your Mercury signs (${mercurySign1} and ${mercurySign2}), you can learn together through ${getLearningTogether(mercurySign1, mercurySign2)}. Consider taking classes or workshops in ${getClassRecommendations(element1, element2)}.
+
+**Creating Shared Rituals:**
+
+Every strong couple benefits from rituals. For your specific combination:
+- **Daily:** ${getDailyRitual(moonSign1, moonSign2)}
+- **Weekly:** ${getWeeklyRitual(venusSign1, venusSign2)}
+- **Annually:** ${getAnnualRitual(sunSign1, sunSign2)}`,
+          tip: 'The couple that plays together stays together. Make time for shared joy - it\'s not a luxury but a relationship necessity.',
+        },
+      ],
+    },
+    {
       id: 'summary',
       title: 'Your Relationship Summary',
       icon: '💝',
@@ -1837,6 +2185,174 @@ function getDailyPractice(m1: Sign, m2: Sign, v1: Sign, v2: Sign): string {
   return `Each morning, share one thing you appreciate about each other. This simple practice keeps the Venus (love) energy flowing and reminds both of you why you chose each other. When conflict arises, remember your Moon signs and give each other what you need, not what you would need.`
 }
 
+// New helper functions for expanded relationship report
+
+function getVenusMarsChemistry(v1: Sign, m1: Sign, v2: Sign, m2: Sign): string {
+  const vElement1 = signData[v1].element
+  const mElement1 = signData[m1].element
+  const vElement2 = signData[v2].element
+  const mElement2 = signData[m2].element
+
+  if ((mElement1 === vElement2) || (mElement2 === vElement1)) {
+    return 'naturally harmonious'
+  }
+  if ((mElement1 === 'Fire' && vElement2 === 'Air') || (mElement1 === 'Air' && vElement2 === 'Fire') ||
+      (mElement2 === 'Fire' && vElement1 === 'Air') || (mElement2 === 'Air' && vElement1 === 'Fire')) {
+    return 'exciting and stimulating'
+  }
+  if ((mElement1 === 'Earth' && vElement2 === 'Water') || (mElement1 === 'Water' && vElement2 === 'Earth') ||
+      (mElement2 === 'Earth' && vElement1 === 'Water') || (mElement2 === 'Water' && vElement1 === 'Earth')) {
+    return 'deeply nurturing'
+  }
+  return 'dynamic and growth-oriented'
+}
+
+function getIgnitesTips(venus: Sign, mars: Sign): string {
+  const element = signData[venus].element
+  return element === 'Fire' ? '- Spontaneity and adventure\n- Enthusiasm and excitement\n- Bold gestures and confidence' :
+         element === 'Earth' ? '- Sensual experiences and touch\n- Quality time and undivided attention\n- Practical acts of service' :
+         element === 'Air' ? '- Intellectual stimulation and witty banter\n- Variety and novelty\n- Communication and verbal appreciation' :
+         '- Emotional depth and connection\n- Romantic gestures and tenderness\n- Creating intimate, private moments'
+}
+
+function getIdealIntimateAtmosphere(v1: Sign, v2: Sign): string {
+  const e1 = signData[v1].element
+  const e2 = signData[v2].element
+  return `- ${e1 === 'Fire' || e2 === 'Fire' ? 'Warmth and passionate energy' : 'Calm, pressure-free environment'}
+- ${e1 === 'Earth' || e2 === 'Earth' ? 'Physical comfort and beautiful surroundings' : 'Emotional safety above all'}
+- ${e1 === 'Air' || e2 === 'Air' ? 'Playful conversation and laughter' : 'Deep presence and connection'}
+- ${e1 === 'Water' || e2 === 'Water' ? 'Romantic ambiance and emotional intimacy' : 'Clear communication about desires'}`
+}
+
+function getRegularRomanceTips(v1: Sign, v2: Sign): string {
+  const e1 = signData[v1].element
+  const e2 = signData[v2].element
+  if (e1 === e2) {
+    return `Plan regular ${e1 === 'Fire' ? 'exciting adventures' : e1 === 'Earth' ? 'sensory experiences' : e1 === 'Air' ? 'social or intellectual outings' : 'emotionally meaningful dates'} that honor your shared element`
+  }
+  return `Alternate between ${signData[v1].keywords[0].toLowerCase()} dates (for ${v1} Venus) and ${signData[v2].keywords[0].toLowerCase()} dates (for ${v2} Venus)`
+}
+
+function getSharedHomeTips(m1: Sign, m2: Sign): string {
+  const e1 = signData[m1].element
+  const e2 = signData[m2].element
+  return `- ${e1 === 'Fire' || e2 === 'Fire' ? 'Space for activity and individual projects' : 'Cozy, nest-like atmosphere'}
+- ${e1 === 'Earth' || e2 === 'Earth' ? 'Quality furnishings and creature comforts' : 'Flexible arrangements that can evolve'}
+- ${e1 === 'Air' || e2 === 'Air' ? 'Good communication zones and intellectual stimulation' : 'Private spaces for emotional processing'}
+- ${e1 === 'Water' || e2 === 'Water' ? 'Emotionally nurturing and memory-filled spaces' : 'Balance between togetherness and independence'}`
+}
+
+function getFamilyApproach(sun: Sign, moon: Sign): string {
+  const element = signData[moon].element
+  return element === 'Fire' ? 'enthusiasm for shared activities, teaching through adventure, and encouraging independence' :
+         element === 'Earth' ? 'stability, providing materially, and teaching practical skills' :
+         element === 'Air' ? 'intellectual engagement, communication, and teaching through ideas' :
+         'deep emotional bonds, intuitive understanding, and creating emotional safety'
+}
+
+function getCombinedParentingStyle(s1: Sign, s2: Sign, m1: Sign, m2: Sign): string {
+  const elements = [signData[s1].element, signData[s2].element, signData[m1].element, signData[m2].element]
+  const hasAllElements = new Set(elements).size >= 3
+  if (hasAllElements) {
+    return 'well-rounded, able to meet children from multiple angles'
+  }
+  return `emphasizing ${elements[0]}-style approaches with complementary ${elements[1]} support`
+}
+
+function getCoupleAppearance(r1: Sign, r2: Sign): string {
+  const e1 = signData[r1].element
+  const e2 = signData[r2].element
+  if (e1 === e2) {
+    return `distinctly ${e1} - ${e1 === 'Fire' ? 'energetic and attention-grabbing' : e1 === 'Earth' ? 'grounded and established' : e1 === 'Air' ? 'social and intellectually engaged' : 'emotionally attuned and intuitive'}`
+  }
+  return `interestingly balanced between ${signData[r1].keywords[0].toLowerCase()} and ${signData[r2].keywords[0].toLowerCase()} energies`
+}
+
+function getCouplePublicImage(s1: Sign, s2: Sign, r1: Sign, r2: Sign): string {
+  return `a couple that ${signData[s1].keywords[0].toLowerCase()} and ${signData[s2].keywords[0].toLowerCase()}, presenting ${signData[r1].keywords[0].toLowerCase()} combined with ${signData[r2].keywords[0].toLowerCase()} energy to the world`
+}
+
+function getSocialPreferences(e1: string, e2: string): string {
+  if (e1 === e2) {
+    return e1 === 'Fire' ? 'active, exciting' : e1 === 'Earth' ? 'comfortable, quality' : e1 === 'Air' ? 'intellectually stimulating, varied' : 'intimate, meaningful'
+  }
+  return 'a balance of different types of'
+}
+
+function getSocialEnergizers(e1: string, e2: string): string {
+  return `${e1 === 'Fire' ? 'adventure and excitement' : e1 === 'Earth' ? 'quality experiences and good food' : e1 === 'Air' ? 'interesting conversation' : 'emotional connection'} combined with ${e2 === 'Fire' ? 'spontaneity' : e2 === 'Earth' ? 'comfort' : e2 === 'Air' ? 'variety' : 'intimacy'}`
+}
+
+function getSocialDrains(e1: string, e2: string): string {
+  return `${e1 === 'Fire' ? 'boring routines' : e1 === 'Earth' ? 'chaos and instability' : e1 === 'Air' ? 'heavy emotional demands' : 'superficial interactions'} and ${e2 === 'Fire' ? 'restriction' : e2 === 'Earth' ? 'unpredictability' : e2 === 'Air' ? 'isolation' : 'coldness'}`
+}
+
+function getPublicThriving(sun: Sign): string {
+  return signData[sun].element === 'Fire' ? 'in the spotlight, leading and inspiring' :
+         signData[sun].element === 'Earth' ? 'contributing practically and building tangible results' :
+         signData[sun].element === 'Air' ? 'connecting, communicating, and sharing ideas' :
+         'creating meaningful emotional impact and connection'
+}
+
+function getSupportingPartnerPublicly(supporter: Sign, supported: Sign): string {
+  return `bringing ${signData[supporter].keywords[0].toLowerCase()} support to ${signData[supported].keywords[0].toLowerCase()} endeavors`
+}
+
+function getCombinedImpact(s1: Sign, s2: Sign, e1: string, e2: string): string {
+  return `combine ${signData[s1].giftToWorld.split(',')[0].toLowerCase()} with ${signData[s2].giftToWorld.split(',')[0].toLowerCase()}, creating unique value in your community`
+}
+
+function getRelationshipModels(s1: Sign, s2: Sign): string {
+  return `how ${signData[s1].keywords[0].toLowerCase()} and ${signData[s2].keywords[0].toLowerCase()} energies can complement each other`
+}
+
+function getSharedActivityRecommendations(s1: Sign, s2: Sign, m1: Sign, m2: Sign, v1: Sign, v2: Sign): string {
+  const elements = [signData[s1].element, signData[s2].element]
+  return `Based on your combined elements (${elements.join(' and ')}):
+- ${elements.includes('Fire') ? 'Active adventures: hiking, dancing, sports, travel' : 'Creative projects: art, music, cooking together'}
+- ${elements.includes('Earth') ? 'Sensory experiences: wine tasting, spa days, gardening' : 'Learning experiences: classes, workshops, museums'}
+- ${elements.includes('Air') ? 'Social activities: hosting dinners, game nights, cultural events' : 'Intimate activities: movie nights, reading together, deep conversations'}
+- ${elements.includes('Water') ? 'Emotional bonding: volunteering together, spiritual practices, water activities' : 'Goal-oriented activities: working out together, building something, renovating'}`
+}
+
+function getTravelPreference(sun: Sign): string {
+  return signData[sun].element === 'Fire' ? 'adventure, exploration, and active experiences' :
+         signData[sun].element === 'Earth' ? 'comfort, luxury, and natural beauty' :
+         signData[sun].element === 'Air' ? 'cultural experiences and social opportunities' :
+         'emotionally meaningful destinations and romantic getaways'
+}
+
+function getIdealTrip(s1: Sign, s2: Sign): string {
+  return `${signData[s1].keywords[0].toLowerCase()} elements (for ${s1}) with ${signData[s2].keywords[0].toLowerCase()} experiences (for ${s2})`
+}
+
+function getLearningTogether(m1: Sign, m2: Sign): string {
+  const e1 = signData[m1].element
+  const e2 = signData[m2].element
+  return `${e1 === e2 ? `${e1}-style approaches that suit you both` : `both ${e1}-style (hands-on, ${e1 === 'Fire' ? 'experiential' : e1 === 'Earth' ? 'practical' : e1 === 'Air' ? 'discussion-based' : 'intuitive'}) and ${e2}-style approaches`}`
+}
+
+function getClassRecommendations(e1: string, e2: string): string {
+  const recommendations: string[] = []
+  if (e1 === 'Fire' || e2 === 'Fire') recommendations.push('fitness, dance, or adventure sports')
+  if (e1 === 'Earth' || e2 === 'Earth') recommendations.push('cooking, crafting, or gardening')
+  if (e1 === 'Air' || e2 === 'Air') recommendations.push('languages, writing, or technology')
+  if (e1 === 'Water' || e2 === 'Water') recommendations.push('art, music, or meditation')
+  return recommendations.join(' or ')
+}
+
+function getDailyRitual(m1: Sign, m2: Sign): string {
+  return `Morning connection (${signData[m1].element === 'Water' || signData[m2].element === 'Water' ? 'emotional check-in' : 'quick appreciation exchange'})`
+}
+
+function getWeeklyRitual(v1: Sign, v2: Sign): string {
+  return `Date night that honors both ${v1} and ${v2} love languages`
+}
+
+function getAnnualRitual(s1: Sign, s2: Sign): string {
+  return `Relationship review and goal-setting around your shared ${signData[s1].keywords[0].toLowerCase()} and ${signData[s2].keywords[0].toLowerCase()} values`
+}
+
 function calculateElements(chart: NatalChart): Record<string, number> {
   const elements: Record<string, number> = { Fire: 0, Earth: 0, Air: 0, Water: 0 }
   const elementMap: Record<string, string> = {
@@ -1939,6 +2455,48 @@ ${getCareerChallenges(sunSign, moonSign)}
 **Advice for Your Sign:**
 As a ${sunSign}, your professional superpowers include ${sunData.strengths.slice(0, 2).join(' and ')}. Lean into these strengths while being mindful of ${sunData.challenges[0].toLowerCase()}.`,
         },
+        {
+          title: 'Navigating Workplace Dynamics',
+          content: `**Your Natural Work Style:**
+As a ${sunSign}, you bring ${sunData.archetype.toLowerCase()} energy to everything you do professionally. You thrive in environments that allow you to express ${sunData.keywords.slice(0, 2).join(' and ')}, and you naturally gravitate toward roles that utilise your ${sunData.strengths[0].toLowerCase()}.
+
+**Working With Others in ${currentYear}:**
+Your ${moonSign} Moon influences how you connect with colleagues on an emotional level. This year, you may find yourself drawn to team members who appreciate your ${signData[moonSign].keywords[0]} approach. ${currentYear} is an excellent year to:
+
+• Build alliances with people who complement your ${sunSign} energy
+• Address any workplace relationships that have become strained
+• Find mentors who can help you develop in areas where you tend toward ${sunData.challenges[0].toLowerCase()}
+• Practice patience with colleagues whose working styles differ from yours
+
+**Leadership and Responsibility:**
+${sunSign} individuals are natural ${sunData.element === 'Fire' ? 'initiators who inspire others through passion and enthusiasm' : sunData.element === 'Earth' ? 'builders who lead through reliability and practical wisdom' : sunData.element === 'Air' ? 'communicators who lead through ideas and strategic thinking' : 'nurturers who lead through emotional intelligence and intuition'}. In ${currentYear}, opportunities for increased responsibility may arise during ${getCareerBestMonths(sunSign, currentYear).split('.')[0]}.
+
+**Handling Career Stress:**
+When work becomes overwhelming, your ${moonSign} Moon needs ${signData[moonSign].element === 'Fire' ? 'physical activity and time to process emotions through action' : signData[moonSign].element === 'Earth' ? 'stability, routine, and connection with nature' : signData[moonSign].element === 'Air' ? 'space to think, talk things through, and change of scenery' : 'solitude, creative expression, and emotional validation'}. Make sure to honour these needs, especially during high-pressure periods.`,
+        },
+        {
+          title: 'Career Growth Strategies for ' + currentYear,
+          content: `**Skills to Develop:**
+Based on your ${sunSign} Sun and ${moonSign} Moon combination, ${currentYear} is an excellent year to focus on developing:
+
+1. **${getSkillDevelopment(sunSign, 1)}** - This aligns with your natural strengths while pushing you to grow
+2. **${getSkillDevelopment(sunSign, 2)}** - Helps balance your tendency toward ${sunData.challenges[0].toLowerCase()}
+3. **${getSkillDevelopment(moonSign, 3)}** - Supports your emotional intelligence at work
+
+**Strategic Career Moves:**
+The planetary alignments in ${currentYear} support ${sunSign} individuals making bold moves during the first half of the year. Consider:
+
+• Updating your CV or professional profiles during your power months
+• Having important career conversations when Mercury is direct
+• Launching new initiatives after the New Moon in your Sun sign
+• Reviewing and negotiating salary or benefits during Venus transits to your career houses
+
+**Long-Term Career Vision:**
+${currentYear} offers you a chance to step back and consider where you want to be professionally in 5-10 years. Your ${sunSign} nature suggests you would find fulfillment in careers that allow you to ${sunData.giftToWorld.split(',')[0].toLowerCase()}. Consider whether your current path aligns with this deeper calling.
+
+**Networking and Visibility:**
+Your ${risingSign} Rising shapes how you present professionally. In ${currentYear}, focus on ${signData[risingSign].element === 'Fire' ? 'making bold first impressions and taking visible leadership roles' : signData[risingSign].element === 'Earth' ? 'building your reputation through consistent, quality work' : signData[risingSign].element === 'Air' ? 'expanding your professional network and sharing your ideas' : 'deepening authentic connections and building trust over time'}.`,
+        },
       ],
     },
     {
@@ -1962,6 +2520,115 @@ ${getCouplesAdvice(sunSign, moonSign, currentYear)}
 
 **Venus Influences:**
 Venus, planet of love, will particularly affect your chart when it ${getVenusInfluence(sunSign, currentYear)}. Mark these dates for important relationship conversations or romantic gestures.`,
+        },
+        {
+          title: 'Understanding Your Love Nature',
+          content: `**How You Love as a ${sunSign}:**
+Your ${sunSign} Sun expresses love through ${sunData.element === 'Fire' ? 'grand gestures, passionate declarations, and constant enthusiasm for your partner' : sunData.element === 'Earth' ? 'practical support, consistent presence, and building a stable future together' : sunData.element === 'Air' ? 'intellectual connection, meaningful conversation, and shared ideas and adventures' : 'deep emotional bonding, intuitive understanding, and nurturing care'}. You need a partner who appreciates your ${sunData.keywords[0]} nature and can match your ${sunData.strengths[0].toLowerCase()}.
+
+**Your Emotional Needs in Partnership:**
+With your Moon in ${moonSign}, you feel most loved when your partner provides ${signData[moonSign].element === 'Fire' ? 'excitement, admiration, and the freedom to be yourself' : signData[moonSign].element === 'Earth' ? 'security, reliability, and physical affection' : signData[moonSign].element === 'Air' ? 'mental stimulation, respect for your independence, and open communication' : 'emotional depth, loyalty, and genuine understanding'}.
+
+In ${currentYear}, you may find yourself drawn to partners or deepening connections with those who can offer ${signData[moonSign].keywords.slice(0, 2).join(' and ')} in relationship. Trust these instincts - your Moon knows what your heart needs.
+
+**Your Attraction Style:**
+Your ${risingSign} Rising is the first thing potential partners notice about you. You attract others through your ${signData[risingSign].keywords[0]} presence and ${signData[risingSign].giftToWorld.split(',')[0].toLowerCase()}. In ${currentYear}, lean into these natural assets when meeting new people.
+
+**Love Languages to Explore:**
+Based on your chart, you likely appreciate:
+• ${getLoveLanguage(sunSign, 1)}
+• ${getLoveLanguage(moonSign, 2)}
+• ${getLoveLanguage(risingSign, 3)}
+
+This year is excellent for communicating these needs more clearly to your partner, or seeking partners who naturally speak these love languages.`,
+        },
+        {
+          title: 'Relationship Challenges and Growth',
+          content: `**Potential Relationship Challenges in ${currentYear}:**
+Every zodiac combination has its growth edges. For ${sunSign} Sun with ${moonSign} Moon, watch out for:
+
+• **${sunData.challenges[0]}** - This tendency can create friction in relationships, especially when you feel stressed or unappreciated
+• **${signData[moonSign].challenges[0]}** - Your emotional patterns may surface more strongly during difficult periods
+• **Compatibility tension** - ${sunData.element !== signData[moonSign].element ? `Your ${sunData.element} Sun and ${signData[moonSign].element} Moon sometimes pull in different directions` : 'Even harmonious Sun-Moon combinations face their challenges'}
+
+**Turning Challenges into Growth:**
+${currentYear} offers opportunities to transform these patterns. The planetary transits support:
+
+1. Having honest conversations during Mercury direct periods
+2. Processing emotions more constructively during the Full Moons
+3. Setting healthier boundaries when Mars aspects your natal planets
+4. Deepening intimacy during Venus transits to your relationship houses
+
+**Past Relationship Patterns:**
+As a ${sunSign}, you may have a history of ${sunData.element === 'Fire' ? 'rushing into relationships or losing interest once the initial excitement fades' : sunData.element === 'Earth' ? 'staying in relationships longer than healthy or prioritising security over passion' : sunData.element === 'Air' ? 'intellectualising emotions or struggling with commitment when things get too intense' : 'absorbing your partner\'s emotions or losing yourself in relationships'}. ${currentYear} invites you to recognise these patterns and make different choices.
+
+**Healing and Forgiveness:**
+If you are carrying wounds from past relationships, ${currentYear}'s planetary alignments support healing work. Consider:
+• Journaling about relationship patterns during the reflective retrograde periods
+• Seeking support from a counsellor or trusted friend during challenging transits
+• Practicing self-compassion when old patterns resurface`,
+        },
+        {
+          title: 'Deepening Connection in ' + currentYear,
+          content: `**For Long-Term Partnerships:**
+If you are in a committed relationship, ${currentYear} offers opportunities to deepen your bond through:
+
+• **Shared Adventures:** Your ${sunSign} nature thrives when you experience ${sunData.element === 'Fire' ? 'new, exciting experiences together' : sunData.element === 'Earth' ? 'building projects or achieving goals as a team' : sunData.element === 'Air' ? 'learning new things or travelling to new places together' : 'emotional and creative experiences that bond you more deeply'}.
+
+• **Quality Time:** With your ${moonSign} Moon, you feel closest to your partner when you ${signData[moonSign].element === 'Fire' ? 'are actively doing things together and celebrating each other' : signData[moonSign].element === 'Earth' ? 'share quiet, comfortable moments and physical closeness' : signData[moonSign].element === 'Air' ? 'have deep conversations and respect each other\'s need for space' : 'share vulnerable moments and truly see each other'}.
+
+• **Handling Conflict:** When disagreements arise (and they will), remember that your ${sunSign} way of handling conflict is ${sunData.element === 'Fire' ? 'direct and immediate - you prefer to clear the air quickly' : sunData.element === 'Earth' ? 'slow and methodical - you need time to process before discussing' : sunData.element === 'Air' ? 'logical and fair - you want to understand all perspectives' : 'emotional and intuitive - you need to feel heard first'}. Communicate this to your partner.
+
+**Relationship Milestones:**
+${currentYear} is particularly favourable for:
+${getRelationshipMilestones(sunSign, moonSign, currentYear)}
+
+**Keeping the Spark Alive:**
+Your ${sunSign} passion needs ${sunData.element === 'Fire' ? 'regular excitement and novelty' : sunData.element === 'Earth' ? 'sensual experiences and quality time' : sunData.element === 'Air' ? 'mental stimulation and playful banter' : 'deep emotional connection and romantic gestures'}. Make conscious effort to nurture this, especially during busy periods.`,
+        },
+      ],
+    },
+    {
+      id: 'finance',
+      title: 'Finances & Abundance',
+      icon: '💰',
+      subsections: [
+        {
+          title: 'Your Financial Year Ahead',
+          content: `**Financial Overview for ${currentYear}:**
+As a ${sunSign}, your relationship with money reflects your ${sunData.element} nature. You tend to ${sunData.element === 'Fire' ? 'be generous and sometimes impulsive with spending, following your passions' : sunData.element === 'Earth' ? 'be practical and security-focused, building wealth steadily over time' : sunData.element === 'Air' ? 'value experiences and ideas over material goods, sometimes forgetting to save' : 'follow emotional impulses with money, spending on things that make you feel secure or loved'}.
+
+**Best Months for Financial Decisions:**
+${getFinanceBestMonths(sunSign, currentYear)}
+
+**Income Opportunities:**
+${currentYear} brings opportunities to increase your income through ${sunData.element === 'Fire' ? 'bold initiatives, entrepreneurship, and leveraging your natural leadership' : sunData.element === 'Earth' ? 'consistent effort, asking for raises, and smart investments' : sunData.element === 'Air' ? 'networking, new ideas, and multiple income streams' : sunData.element === 'Water' ? 'creative work, helping professions, and following your intuition about opportunities' : 'your natural talents'}.
+
+**Financial Cautions:**
+Watch out for ${sunData.element === 'Fire' ? 'impulsive purchases, especially during enthusiastic periods' : sunData.element === 'Earth' ? 'being too conservative and missing growth opportunities' : sunData.element === 'Air' ? 'forgetting to track spending and overspending on experiences' : 'emotional spending, especially when stressed or sad'}. Mercury retrograde periods are particularly important times to avoid signing major financial contracts or making large purchases.
+
+**Building Long-Term Wealth:**
+Your ${moonSign} Moon influences your sense of financial security. You feel most stable when you have ${signData[moonSign].element === 'Fire' ? 'freedom to spend on what excites you while knowing basics are covered' : signData[moonSign].element === 'Earth' ? 'substantial savings, property, or tangible assets' : signData[moonSign].element === 'Air' ? 'flexibility and multiple options, not tied down to rigid budgets' : 'emotional connection to your resources and security for loved ones'}.`,
+        },
+        {
+          title: 'Abundance Mindset for ' + sunSign,
+          content: `**Your Natural Relationship with Abundance:**
+Every sign has unique gifts that can generate abundance. As a ${sunSign}, your path to prosperity flows through ${sunData.giftToWorld.split(',')[0].toLowerCase()}. When you are fully expressing your ${sunData.archetype.toLowerCase()} nature, money tends to follow naturally.
+
+**Blocks to Abundance:**
+Your ${sunData.challenges[0].toLowerCase()} tendency can sometimes block the flow of abundance. Notice when this pattern arises in financial situations, and consciously choose a different response.
+
+**Affirmations for ${sunSign} Prosperity:**
+• "My ${sunData.strengths[0].toLowerCase()} naturally attracts abundance."
+• "I deserve prosperity while honouring my ${sunSign} nature."
+• "Money flows to me easily when I express my authentic gifts."
+
+**Practical Steps for ${currentYear}:**
+1. Review your budget during the New Moon in your money houses
+2. Have salary negotiations during your power months
+3. Start savings or investment plans when Jupiter aspects your chart favourably
+4. Avoid major purchases during Mercury retrograde periods
+5. Trust your ${moonSign} Moon's instincts about financial opportunities`,
         },
       ],
     },
@@ -1987,6 +2654,56 @@ Watch your energy levels during ${getHealthChallenges(sunSign, currentYear)}. Du
 **Wellness Goals:**
 ${currentYear} is an excellent year to focus on ${getWellnessGoals(sunSign, moonSign)}.`,
         },
+        {
+          title: 'Body, Mind & Spirit Balance',
+          content: `**Physical Health for ${sunSign}:**
+Your ${sunData.element} element Sun rules certain areas of physical health. ${sunData.element === 'Fire' ? 'Fire signs tend to run hot and may experience inflammation, fevers, or burnout when stressed' : sunData.element === 'Earth' ? 'Earth signs connect strongly to the physical body and may experience tension, digestive issues, or weight fluctuations under stress' : sunData.element === 'Air' ? 'Air signs often carry stress in the nervous system, potentially experiencing anxiety, respiratory issues, or restlessness' : 'Water signs are sensitive and may experience water retention, immune issues, or emotional eating when out of balance'}.
+
+**Exercise That Works for You:**
+Your ideal ${currentYear} fitness routine should include:
+• ${getExerciseRecommendation(sunSign, 1)}
+• ${getExerciseRecommendation(moonSign, 2)}
+• ${getExerciseRecommendation(risingSign, 3)}
+
+**Mental Wellness:**
+Your ${moonSign} Moon influences your emotional wellbeing significantly. In ${currentYear}, support your mental health by:
+• Practicing ${signData[moonSign].element === 'Fire' ? 'physical outlets for emotions and celebration of achievements' : signData[moonSign].element === 'Earth' ? 'grounding exercises, nature connection, and routine' : signData[moonSign].element === 'Air' ? 'journaling, talking with friends, and mental stimulation' : 'creative expression, water-based activities, and emotional processing'}
+• Recognising your ${signData[moonSign].challenges[0].toLowerCase()} tendency and developing healthy coping strategies
+• Seeking support during challenging transits rather than isolating
+
+**Sleep and Rest:**
+${sunSign} individuals often ${sunData.element === 'Fire' ? 'struggle to wind down and may need active relaxation like evening walks' : sunData.element === 'Earth' ? 'do well with consistent sleep schedules and comfortable sleep environments' : sunData.element === 'Air' ? 'have active minds at night and benefit from reading or meditation before bed' : 'are affected by the Moon phases in their sleep and may need extra rest around Full Moons'}. Pay attention to your sleep quality during major transits.
+
+**Nutrition Insights:**
+Based on your elemental balance, you may benefit from ${sunData.element === 'Fire' ? 'cooling foods, adequate hydration, and anti-inflammatory ingredients' : sunData.element === 'Earth' ? 'warming foods, variety in diet, and mindful eating practices' : sunData.element === 'Air' ? 'grounding foods, regular meal times, and nerve-supporting nutrients' : 'warming, grounding foods and limiting excessive fluids'}.`,
+        },
+        {
+          title: 'Stress Management & Self-Care',
+          content: `**Your Stress Signature:**
+When stressed, ${sunSign} individuals typically ${sunData.element === 'Fire' ? 'become irritable, impulsive, or burn themselves out trying to push through' : sunData.element === 'Earth' ? 'become rigid, stubborn, or develop physical tension and health complaints' : sunData.element === 'Air' ? 'become anxious, scattered, or escape into mental activity to avoid feelings' : 'become moody, withdrawn, or absorb the stress of those around them'}. Your ${moonSign} Moon adds a layer of ${signData[moonSign].challenges[0].toLowerCase()} when you are under pressure.
+
+**Self-Care Essentials for ${currentYear}:**
+Build these practices into your routine:
+
+**Daily:**
+• ${getDailySelfCare(sunSign)}
+• ${getDailySelfCare(moonSign)}
+
+**Weekly:**
+• ${getWeeklySelfCare(sunSign)}
+• Time for ${signData[moonSign].element === 'Fire' ? 'passion projects and physical activity' : signData[moonSign].element === 'Earth' ? 'nature, comfort, and grounding activities' : signData[moonSign].element === 'Air' ? 'social connection and mental stimulation' : 'solitude, water, and creative expression'}
+
+**Monthly:**
+• Align activities with Moon phases - start projects at New Moon, complete at Full Moon
+• During your power months, invest extra energy in health and wellness goals
+• During challenging transit periods, prioritise rest over productivity
+
+**Crisis Self-Care:**
+When ${currentYear} throws challenges your way, remember:
+• Your ${sunSign} strength is ${sunData.strengths[0].toLowerCase()} - rely on it
+• Your ${moonSign} Moon finds comfort in ${signData[moonSign].keywords[0].toLowerCase()} - seek it out
+• Reach out to ${sunData.element === 'Fire' ? 'people who uplift and energise you' : sunData.element === 'Earth' ? 'stable, reliable people who offer practical support' : sunData.element === 'Air' ? 'friends who listen and help you process mentally' : 'people who create safe emotional space'}`,
+        },
       ],
     },
     {
@@ -2011,6 +2728,96 @@ Based on your chart, you would benefit from exploring topics related to ${getGro
 **Shadow Work This Year:**
 ${sunData.shadowSide} are tendencies to watch. ${currentYear} offers opportunities to transform these patterns.`,
         },
+        {
+          title: 'Your Soul\'s Journey This Year',
+          content: `**Understanding Your Life Purpose:**
+Your ${sunSign} Sun represents your core life purpose - to embody ${sunData.archetype.toLowerCase()} energy and share your ${sunData.giftToWorld.toLowerCase()} with the world. In ${currentYear}, the planetary alignments support you in taking significant steps toward this purpose.
+
+**The Three Pillars of Your ${currentYear} Growth:**
+
+**1. Sun Sign Mastery:**
+This year invites you to more fully embody the positive expression of ${sunSign}:
+• Develop your ${sunData.strengths.slice(0, 2).join(' and ').toLowerCase()}
+• Transform your ${sunData.challenges[0].toLowerCase()} into a strength
+• Share your ${sunData.keywords[0]} gifts more boldly with the world
+
+**2. Moon Sign Integration:**
+Your ${moonSign} Moon represents your inner world and emotional needs. ${currentYear}'s growth includes:
+• Honouring your need for ${signData[moonSign].keywords.slice(0, 2).join(' and ')}
+• Healing patterns related to ${signData[moonSign].challenges[0].toLowerCase()}
+• Developing greater ${signData[moonSign].strengths[0].toLowerCase()}
+
+**3. Rising Sign Refinement:**
+Your ${risingSign} Rising is your interface with the world. This year focus on:
+• Presenting your ${signData[risingSign].keywords[0]} qualities more authentically
+• Balancing your Rising sign persona with your Sun sign truth
+• Using your ${risingSign} first impression to open doors aligned with your purpose
+
+**Karmic Themes:**
+Every chart carries karmic lessons. For ${sunSign} with ${moonSign} Moon, ${currentYear} offers opportunities to work on ${sunData.lifeLesson.toLowerCase()} while integrating ${signData[moonSign].lifeLesson.toLowerCase()}.`,
+        },
+        {
+          title: 'Spiritual Practices for ' + currentYear,
+          content: `**Meditation Suited to Your Chart:**
+Your ${sunData.element}-${signData[moonSign].element} Sun-Moon combination thrives with:
+• ${getMeditationStyle(sunSign)}
+• ${getMeditationStyle(moonSign)}
+• Practices that balance your ${sunData.element} fire with ${signData[moonSign].element === sunData.element ? 'deeper immersion in this element' : signData[moonSign].element + ' receptivity'}
+
+**Moon Rituals:**
+As someone with Moon in ${moonSign}, you are particularly sensitive to lunar cycles. In ${currentYear}, enhance your connection to the Moon through:
+
+**New Moon Practices:**
+• Set intentions aligned with your ${sunSign} goals
+• Journal about ${sunData.keywords[0]} themes
+• Plant seeds for new ${signData[moonSign].keywords[0]} experiences
+
+**Full Moon Practices:**
+• Release ${sunData.challenges[0].toLowerCase()} patterns
+• Celebrate ${sunData.strengths[0].toLowerCase()} achievements
+• Allow ${signData[moonSign].keywords[0]} emotions to surface and clear
+
+**Spiritual Reading List for ${currentYear}:**
+Based on your chart, you would benefit from exploring:
+• ${getBookRecommendation(sunSign)}
+• ${getBookRecommendation(moonSign)}
+• Topics related to ${sunData.archetype.toLowerCase()} wisdom
+
+**Sacred Spaces and Practices:**
+Your ${sunData.element} Sun finds the sacred in ${sunData.element === 'Fire' ? 'movement, passion, and creative expression' : sunData.element === 'Earth' ? 'nature, the body, and tangible rituals' : sunData.element === 'Air' ? 'ideas, conversation, and mental exploration' : 'emotional connection, water, and intuitive practices'}. Create or visit spaces that nourish this connection throughout ${currentYear}.`,
+        },
+        {
+          title: 'Transformation and Shadow Work',
+          content: `**Understanding Your Shadow:**
+Every zodiac sign has a shadow side - the unconscious patterns that emerge when we are stressed, triggered, or unaware. For ${sunSign}, the shadow includes ${sunData.shadowSide.toLowerCase()}.
+
+Your ${moonSign} Moon adds another layer: when emotionally triggered, you may also experience ${signData[moonSign].shadowSide.toLowerCase()}.
+
+**Shadow Work Opportunities in ${currentYear}:**
+The planetary transits this year will likely bring these shadow patterns to the surface, particularly during:
+• Eclipse seasons (opportunities for rapid transformation)
+• Saturn transits (confronting limitations and responsibilities)
+• Pluto aspects (deep psychological transformation)
+
+**Working with Your Shadow:**
+Rather than suppressing these tendencies, ${currentYear} invites you to:
+
+1. **Notice without judgment** - When you see yourself acting from shadow, simply observe
+2. **Trace to the root** - What fear or wound drives this pattern?
+3. **Find the gift** - Every shadow contains a hidden strength. Your ${sunData.challenges[0].toLowerCase()} contains ${getHiddenGift(sunSign)}
+4. **Integrate consciously** - Practice expressing this energy in healthy ways
+
+**Journal Prompts for ${currentYear}:**
+• "When does my ${sunData.challenges[0].toLowerCase()} tendency emerge, and what am I really needing in those moments?"
+• "How can my ${sunData.strengths[0].toLowerCase()} serve others while honouring my ${moonSign} emotional needs?"
+• "What would my ${sunSign} self look like at its highest expression?"
+
+**Support for Deep Work:**
+Some transits in ${currentYear} may bring intense transformational experiences. During these times, consider:
+• Working with a therapist or coach who understands your growth edge
+• Joining groups focused on ${sunData.archetype.toLowerCase()} development
+• Practicing extra self-compassion as old patterns surface for healing`,
+        },
       ],
     },
     {
@@ -2018,8 +2825,8 @@ ${sunData.shadowSide} are tendencies to watch. ${currentYear} offers opportuniti
       title: 'Month-by-Month Breakdown',
       icon: '📅',
       subsections: months.map((month, i) => ({
-        title: month,
-        content: getMonthForecast(month, i, sunSign, moonSign, currentYear),
+        title: month + ' ' + currentYear,
+        content: getDetailedMonthForecast(month, i, sunSign, moonSign, risingSign, sunData, currentYear),
       })),
     },
     {
@@ -2044,6 +2851,64 @@ The planets don't make things happen - they create conditions. ${currentYear} of
 
 Your ${sunSign} courage, ${moonSign} intuition, and ${risingSign} presence are perfectly designed for the journey ahead. Trust your chart, trust yourself, and make ${currentYear} a year of meaningful growth.`,
           tip: 'Revisit this report at the start of each month to remind yourself of the themes and opportunities ahead.',
+        },
+        {
+          title: 'Your ${currentYear} Action Plan',
+          content: `**Quarterly Overview:**
+
+**Q1 (January - March):**
+Focus on ${getQuarterFocus(sunSign, moonSign, 1)}. This is an excellent time to ${getQuarterAction(sunSign, 1)}.
+
+**Q2 (April - June):**
+Energy shifts toward ${getQuarterFocus(sunSign, moonSign, 2)}. Prioritise ${getQuarterAction(sunSign, 2)}.
+
+**Q3 (July - September):**
+The middle of the year brings ${getQuarterFocus(sunSign, moonSign, 3)}. Use this time for ${getQuarterAction(sunSign, 3)}.
+
+**Q4 (October - December):**
+The year closes with ${getQuarterFocus(sunSign, moonSign, 4)}. Complete ${getQuarterAction(sunSign, 4)}.
+
+**Your Top 5 Priorities for ${currentYear}:**
+Based on your unique ${sunSign}-${moonSign}-${risingSign} combination, make these your non-negotiables:
+
+1. ${getTopPriority(sunSign, moonSign, 1)}
+2. ${getTopPriority(sunSign, moonSign, 2)}
+3. ${getTopPriority(sunSign, moonSign, 3)}
+4. ${getTopPriority(sunSign, moonSign, 4)}
+5. ${getTopPriority(sunSign, moonSign, 5)}
+
+**Power Dates to Mark in Your Calendar:**
+${getPowerDates(sunSign, moonSign, currentYear)}
+
+**Monthly Check-In Questions:**
+At the start of each month, ask yourself:
+• Am I honouring my ${sunSign} need for ${sunData.keywords[0]}?
+• Am I meeting my ${moonSign} emotional need for ${signData[moonSign].keywords[0]}?
+• Am I growing in my ${sunData.lifeLesson.toLowerCase()} journey?
+• What cosmic support is available to me this month?`,
+        },
+        {
+          title: 'Closing Blessing for ' + currentYear,
+          content: `**A Message for Your Year Ahead:**
+
+Dear ${userName},
+
+As ${currentYear} unfolds, remember that you carry within you the combined wisdom of your ${sunSign} Sun, the emotional depth of your ${moonSign} Moon, and the worldly presence of your ${risingSign} Rising. This unique combination has been preparing you for exactly this year.
+
+The challenges you may face are not punishments but opportunities dressed in difficult clothing. Your ${sunData.challenges[0].toLowerCase()} tendency, which sometimes feels like a burden, is actually your growth edge - the place where your greatest evolution awaits.
+
+Your ${sunData.strengths[0].toLowerCase()} is not just a personal gift but something the world needs from you. When you express your ${sunData.archetype.toLowerCase()} nature authentically, you give permission to others to do the same.
+
+**Trust your ${moonSign} Moon** when it tells you something feels right or wrong. Your emotional intelligence is more accurate than you sometimes believe.
+
+**Lean into your ${risingSign} Rising** when you need to make an impression or start something new. The world responds to this energy from you.
+
+**Express your ${sunSign} Sun** fully this year. Do not dim your light to make others comfortable.
+
+The planets are aligned to support your journey. May ${currentYear} bring you closer to the person you came here to become.
+
+With cosmic blessings for your path ahead,
+*Your Astrological Guide*`,
         },
       ],
     },
@@ -2261,6 +3126,1922 @@ function getYearOffer(sun: Sign, moon: Sign): string {
   return `a chance to grow more fully into your ${sun} potential while honoring your ${moon} emotional truth`
 }
 
+// Additional Year Ahead Helper Functions
+
+function getSkillDevelopment(sign: Sign, index: number): string {
+  const skills: Record<string, string[]> = {
+    Aries: ['Leadership presence', 'Strategic patience', 'Collaborative working'],
+    Taurus: ['Adaptability', 'Risk assessment', 'Innovation mindset'],
+    Gemini: ['Deep focus', 'Follow-through', 'Expertise building'],
+    Cancer: ['Boundary setting', 'Emotional regulation', 'Professional assertiveness'],
+    Leo: ['Active listening', 'Team recognition', 'Humility in leadership'],
+    Virgo: ['Big picture thinking', 'Delegation', 'Self-compassion'],
+    Libra: ['Decision making', 'Conflict navigation', 'Independent action'],
+    Scorpio: ['Trust building', 'Transparency', 'Letting go'],
+    Sagittarius: ['Detail orientation', 'Commitment follow-through', 'Practical planning'],
+    Capricorn: ['Work-life balance', 'Playfulness', 'Emotional expression'],
+    Aquarius: ['Emotional connection', 'One-on-one relating', 'Grounding practices'],
+    Pisces: ['Boundaries', 'Practical organization', 'Self-advocacy'],
+  }
+  return skills[sign]?.[index - 1] || 'Personal development'
+}
+
+function getLoveLanguage(sign: Sign, index: number): string {
+  const languages: Record<string, string[]> = {
+    Aries: ['Acts of service that show initiative', 'Physical affection', 'Words of admiration'],
+    Taurus: ['Physical touch and sensual experiences', 'Quality time together', 'Thoughtful gifts'],
+    Gemini: ['Stimulating conversation', 'Sharing new experiences', 'Playful banter'],
+    Cancer: ['Quality time at home', 'Acts of nurturing care', 'Emotional availability'],
+    Leo: ['Words of affirmation', 'Grand romantic gestures', 'Undivided attention'],
+    Virgo: ['Acts of thoughtful service', 'Practical support', 'Words of appreciation'],
+    Libra: ['Quality time in beautiful settings', 'Thoughtful gifts', 'Romantic gestures'],
+    Scorpio: ['Deep emotional intimacy', 'Physical connection', 'Unwavering loyalty'],
+    Sagittarius: ['Shared adventures', 'Freedom and trust', 'Philosophical connection'],
+    Capricorn: ['Acts of commitment', 'Practical support', 'Respect for achievements'],
+    Aquarius: ['Intellectual connection', 'Respecting independence', 'Unique experiences'],
+    Pisces: ['Emotional attunement', 'Creative expressions of love', 'Spiritual connection'],
+  }
+  return languages[sign]?.[index - 1] || 'Heartfelt connection'
+}
+
+function getRelationshipMilestones(sun: Sign, moon: Sign, year: number): string {
+  return `• Moving in together or discussing shared living
+• Having important conversations about the future
+• Deepening commitment or clarifying relationship direction
+• Meeting each other's important people
+• Travelling together or planning significant experiences`
+}
+
+function getFinanceBestMonths(sun: Sign, year: number): string {
+  const element = signData[sun].element
+  return element === 'Fire' ? 'Spring months when your energy for new ventures is highest. Avoid impulsive decisions in summer heat.' :
+         element === 'Earth' ? 'Late spring and autumn when your practical wisdom is strongest. Good for negotiations and investments.' :
+         element === 'Air' ? 'Early year for new ideas and late year for implementing them. Network in spring for opportunities.' :
+         'Trust your intuition in February, June, and October. Avoid major decisions when emotionally unsettled.'
+}
+
+function getExerciseRecommendation(sign: Sign, index: number): string {
+  const exercises: Record<string, string[]> = {
+    Aries: ['High-intensity interval training', 'Competitive sports', 'Boxing or martial arts'],
+    Taurus: ['Yoga and stretching', 'Nature walks', 'Weight training'],
+    Gemini: ['Dance classes', 'Tennis or badminton', 'Circuit training'],
+    Cancer: ['Swimming', 'Home workouts', 'Gentle yoga'],
+    Leo: ['Group fitness classes', 'Dance', 'Performance sports'],
+    Virgo: ['Pilates', 'Running with tracking', 'Functional fitness'],
+    Libra: ['Partner exercises', 'Barre classes', 'Cycling'],
+    Scorpio: ['Intense cardio', 'Transformation programs', 'Solo training'],
+    Sagittarius: ['Outdoor adventures', 'Team sports', 'Hiking'],
+    Capricorn: ['Mountain climbing', 'Structured programs', 'Endurance training'],
+    Aquarius: ['Unique fitness trends', 'Group activities', 'Tech-based training'],
+    Pisces: ['Swimming', 'Dance', 'Mind-body practices'],
+  }
+  return exercises[sign]?.[index - 1] || 'Regular movement practice'
+}
+
+function getDailySelfCare(sign: Sign): string {
+  const care: Record<string, string> = {
+    Aries: 'Morning movement to channel your fire energy constructively',
+    Taurus: 'Moments of sensory pleasure - good food, comfortable spaces',
+    Gemini: 'Mental stimulation through reading or learning something new',
+    Cancer: 'Connection with home or loved ones, even briefly',
+    Leo: 'Creative expression or acknowledgment of your efforts',
+    Virgo: 'Time to organize or complete small tasks for satisfaction',
+    Libra: 'Beauty in your environment and harmonious interactions',
+    Scorpio: 'Moments of solitude to process and regenerate',
+    Sagittarius: 'Learning something new or planning future adventures',
+    Capricorn: 'Progress on meaningful goals and structured time',
+    Aquarius: 'Mental freedom and space for innovative thinking',
+    Pisces: 'Creative or spiritual practice and moments of quiet',
+  }
+  return care[sign] || 'Moments aligned with your nature'
+}
+
+function getWeeklySelfCare(sign: Sign): string {
+  const care: Record<string, string> = {
+    Aries: 'Physical adventure or competition that lets you expend energy',
+    Taurus: 'Extended time in nature or enjoying sensual pleasures',
+    Gemini: 'Social time with stimulating friends or new experiences',
+    Cancer: 'Quality time at home or with close family/friends',
+    Leo: 'Recognition, celebration, or creative projects',
+    Virgo: 'Organizing, planning, and crossing items off your list',
+    Libra: 'Cultural experiences, art, or quality time with a partner',
+    Scorpio: 'Deep conversation, transformation work, or intimate time',
+    Sagittarius: 'Exploration, adventure, or philosophical discussion',
+    Capricorn: 'Meaningful work progress and quality rest afterwards',
+    Aquarius: 'Community connection or pursuing unusual interests',
+    Pisces: 'Creative expression, spiritual practice, or time near water',
+  }
+  return care[sign] || 'Activities that restore your particular energy'
+}
+
+function getMeditationStyle(sign: Sign): string {
+  const styles: Record<string, string> = {
+    Aries: 'Active meditation like walking meditation or dynamic practices',
+    Taurus: 'Body-based practices like body scans or sensory awareness',
+    Gemini: 'Guided meditations that engage the mind with visualisation',
+    Cancer: 'Loving-kindness meditation and practices focused on the heart',
+    Leo: 'Heart-centered meditation with visualisation of light and warmth',
+    Virgo: 'Focused attention practices like breath counting or mantra',
+    Libra: 'Balance-oriented practices and meditation on beauty or harmony',
+    Scorpio: 'Deep transformational practices and shadow meditation',
+    Sagittarius: 'Expansive practices like sky gazing or journey meditation',
+    Capricorn: 'Structured, goal-oriented practices with measurable progress',
+    Aquarius: 'Innovative practices and meditation on interconnectedness',
+    Pisces: 'Open awareness, ocean meditation, or merging practices',
+  }
+  return styles[sign] || 'Meditation suited to your nature'
+}
+
+function getBookRecommendation(sign: Sign): string {
+  const books: Record<string, string> = {
+    Aries: 'Books on courageous leadership and pioneering spirit',
+    Taurus: 'Works on abundance, embodiment, and sensory wisdom',
+    Gemini: 'Multiple books on varied topics to satisfy your curiosity',
+    Cancer: 'Books on emotional intelligence and nurturing the soul',
+    Leo: 'Inspiring biographies and works on authentic self-expression',
+    Virgo: 'Practical wisdom and books on refinement and craft',
+    Libra: 'Books on relationships, aesthetics, and balanced living',
+    Scorpio: 'Deep psychological works and transformational literature',
+    Sagittarius: 'Philosophy, travel memoirs, and wisdom traditions',
+    Capricorn: 'Works on mastery, legacy, and sustainable success',
+    Aquarius: 'Innovative thinking, future vision, and humanitarian topics',
+    Pisces: 'Spiritual texts, poetry, and books on the creative process',
+  }
+  return books[sign] || 'Wisdom literature aligned with your path'
+}
+
+function getHiddenGift(sign: Sign): string {
+  const gifts: Record<string, string> = {
+    Aries: 'the gift of protective courage and the ability to initiate change when others cannot',
+    Taurus: 'the gift of unwavering presence and the ability to create lasting value',
+    Gemini: 'the gift of mental agility and the ability to see connections others miss',
+    Cancer: 'the gift of emotional wisdom and the ability to create sanctuary for others',
+    Leo: 'the gift of radiant authenticity and the ability to encourage others to shine',
+    Virgo: 'the gift of discernment and the ability to improve and refine situations',
+    Libra: 'the gift of harmony and the ability to bring balance to chaotic situations',
+    Scorpio: 'the gift of depth and the ability to transform pain into wisdom',
+    Sagittarius: 'the gift of faith and the ability to inspire hope in difficult times',
+    Capricorn: 'the gift of endurance and the ability to build structures that last',
+    Aquarius: 'the gift of vision and the ability to see possibilities others cannot imagine',
+    Pisces: 'the gift of compassion and the ability to heal through unconditional presence',
+  }
+  return gifts[sign] || 'gifts waiting to be discovered'
+}
+
+function getDetailedMonthForecast(month: string, index: number, sun: Sign, moon: Sign, rising: Sign, sunData: typeof signData[Sign], year: number): string {
+  const energies = ['initiating', 'stabilising', 'connecting', 'nurturing', 'expressing', 'refining', 'relating', 'transforming', 'expanding', 'achieving', 'innovating', 'transcending']
+  const themes = ['new beginnings and fresh starts', 'building resources and stability', 'communication and learning', 'home, family, and emotional security', 'creativity, romance, and self-expression', 'health, work, and daily routines', 'partnerships and relationships', 'deep transformation and shared resources', 'adventure, learning, and expansion', 'career, reputation, and achievement', 'community, friendship, and future vision', 'spirituality, rest, and completion']
+  const advice = ['take initiative on important projects', 'focus on what truly matters and build patiently', 'reach out, learn, and share your ideas', 'nurture your home life and emotional bonds', 'express yourself creatively and enjoy life', 'attend to health and optimize your routines', 'focus on important relationships', 'embrace change and release what no longer serves', 'expand your horizons through travel or learning', 'step into greater responsibility and visibility', 'connect with your community and envision the future', 'rest, reflect, and prepare for a new cycle']
+
+  const energy = energies[index]
+  const theme = themes[index]
+  const monthAdvice = advice[index]
+
+  return `**${month} ${year} Overview:**
+${month} carries ${energy} energy for ${sun} individuals. The cosmic weather this month focuses on ${theme}, creating opportunities aligned with your natural ${sunData.element} nature.
+
+**What ${month} Means for Your Sun Sign:**
+As a ${sun}, you will feel this month's energy through your ${sunData.keywords[0]} lens. The planetary movements support you in ${monthAdvice}. Your ${sunData.strengths[0].toLowerCase()} will be an asset, while ${sunData.challenges[0].toLowerCase()} tendencies may be triggered - stay aware.
+
+**Your Moon Sign This Month:**
+With your ${moon} Moon, the emotional tone of ${month} will be coloured by ${signData[moon].keywords[0]} needs. You will feel most balanced when you honour your need for ${signData[moon].keywords.slice(0, 2).join(' and ')}. Full Moon energy around mid-month will be particularly significant for emotional processing.
+
+**Your Rising Sign This Month:**
+Your ${rising} Rising influences how you meet the world's energy. In ${month}, present yourself through your natural ${signData[rising].keywords[0]} qualities. First impressions and social situations flow best when you lean into your Rising sign strengths.
+
+**Key Opportunities:**
+• ${getMonthOpportunity(sun, index, 1)}
+• ${getMonthOpportunity(sun, index, 2)}
+• ${getMonthOpportunity(moon, index, 3)}
+
+**Challenges to Navigate:**
+• ${getMonthChallenge(sun, index)}
+• Managing the tension between ${sunData.keywords[0]} needs and ${signData[moon].keywords[0]} emotions
+
+**Best Days:**
+The New Moon is ideal for setting intentions around ${theme}. Full Moon brings culmination of efforts. Days when the Moon transits fellow ${sunData.element} signs will feel most energising.
+
+**Self-Care Focus:**
+This month, prioritise ${sunData.element === 'Fire' ? 'physical activity and creative outlets' : sunData.element === 'Earth' ? 'grounding practices and sensory pleasure' : sunData.element === 'Air' ? 'mental stimulation and social connection' : 'emotional processing and time near water'}.`
+}
+
+function getMonthOpportunity(sign: Sign, monthIndex: number, oppIndex: number): string {
+  const opportunities = [
+    ['Starting bold new projects', 'Taking leadership positions', 'Expressing your authentic self'],
+    ['Building financial security', 'Deepening valuable relationships', 'Creating lasting structures'],
+    ['Expanding your network', 'Learning new skills', 'Sharing your ideas'],
+    ['Strengthening family bonds', 'Creating emotional security', 'Nurturing important relationships'],
+    ['Creative self-expression', 'Romance and pleasure', 'Stepping into the spotlight'],
+    ['Improving health habits', 'Organizing your life', 'Being of service'],
+    ['Partnership opportunities', 'Collaborative ventures', 'Finding balance'],
+    ['Deep transformation', 'Financial partnerships', 'Psychological insights'],
+    ['Travel and adventure', 'Educational pursuits', 'Philosophical growth'],
+    ['Career advancement', 'Public recognition', 'Stepping into authority'],
+    ['Community involvement', 'Future planning', 'Innovative projects'],
+    ['Spiritual development', 'Rest and healing', 'Creative inspiration'],
+  ]
+  return opportunities[monthIndex]?.[oppIndex - 1] || 'Growth opportunities'
+}
+
+function getMonthChallenge(sign: Sign, monthIndex: number): string {
+  const challenges = [
+    'Impulsiveness and rushing ahead without planning',
+    'Resistance to necessary changes',
+    'Scattered focus and overcommitment',
+    'Moodiness and emotional sensitivity',
+    'Ego conflicts and need for recognition',
+    'Perfectionism and self-criticism',
+    'Indecision and people-pleasing',
+    'Control issues and power struggles',
+    'Overextending and impractical plans',
+    'Work-life imbalance and pressure',
+    'Emotional detachment and rebelliousness',
+    'Escapism and boundary confusion',
+  ]
+  return challenges[monthIndex] || 'Navigating challenges with awareness'
+}
+
+function getQuarterFocus(sun: Sign, moon: Sign, quarter: number): string {
+  const focuses = [
+    `initiating new ${signData[sun].keywords[0]}-aligned projects and setting the tone for the year`,
+    `building on first quarter momentum and deepening ${signData[moon].keywords[0]} connections`,
+    `harvesting results of your efforts and adjusting course where needed`,
+    `completing the year's work and preparing for the next cycle of growth`,
+  ]
+  return focuses[quarter - 1] || 'growth and evolution'
+}
+
+function getQuarterAction(sun: Sign, quarter: number): string {
+  const actions = [
+    'setting clear intentions and taking bold first steps',
+    'nurturing relationships and enjoying the fruits of spring energy',
+    'reviewing progress, releasing what does not work, and celebrating wins',
+    'tying up loose ends, expressing gratitude, and visioning for the year ahead',
+  ]
+  return actions[quarter - 1] || 'meaningful action'
+}
+
+function getTopPriority(sun: Sign, moon: Sign, index: number): string {
+  const sunPriorities: Record<string, string[]> = {
+    Aries: ['Take bold action on something you have been postponing', 'Lead a project or initiative', 'Address conflict directly rather than avoiding it', 'Channel your competitive energy productively', 'Start a new physical fitness practice'],
+    Taurus: ['Build financial security through consistent action', 'Create beauty and comfort in your environment', 'Develop a valuable skill or resource', 'Strengthen your most important relationships', 'Connect regularly with nature'],
+    Gemini: ['Learn something that excites you deeply', 'Write, teach, or share your ideas publicly', 'Improve your communication in relationships', 'Explore new places or experiences', 'Stay curious and ask more questions'],
+    Cancer: ['Strengthen your home and family foundations', 'Set healthier emotional boundaries', 'Express your nurturing nature in sustainable ways', 'Build financial security for peace of mind', 'Trust your intuition more fully'],
+    Leo: ['Create something that expresses your authentic self', 'Step into leadership with confidence', 'Receive recognition for your contributions', 'Nurture your inner child through play', 'Share your warmth more generously'],
+    Virgo: ['Establish routines that support your wellbeing', 'Offer your skills in service to others', 'Release perfectionism and embrace progress', 'Organize an area of your life that feels chaotic', 'Accept help and delegate where possible'],
+    Libra: ['Bring balance to an imbalanced relationship', 'Create more beauty in your daily life', 'Make decisions more quickly and trust them', 'Address conflict rather than avoiding it', 'Partner on a meaningful project'],
+    Scorpio: ['Transform a pattern that no longer serves you', 'Deepen intimacy in an important relationship', 'Release old resentments or grievances', 'Trust others more and control less', 'Use your intensity for positive creation'],
+    Sagittarius: ['Expand your horizons through travel or learning', 'Share your wisdom and optimism with others', 'Follow through on commitments fully', 'Ground your visions in practical action', 'Cultivate faith during uncertain times'],
+    Capricorn: ['Build something of lasting value', 'Take on greater responsibility in your career', 'Balance work with rest and play', 'Express emotions more freely', 'Celebrate your achievements along the way'],
+    Aquarius: ['Contribute to a cause larger than yourself', 'Innovate in your field or community', 'Deepen personal emotional connections', 'Ground your visions in practical reality', 'Embrace your uniqueness fully'],
+    Pisces: ['Express your creativity in tangible form', 'Set and maintain healthy boundaries', 'Trust your intuition and act on it', 'Balance spiritual life with practical needs', 'Heal old emotional wounds'],
+  }
+  return sunPriorities[sun]?.[index - 1] || 'Focus on meaningful growth'
+}
+
+function getPowerDates(sun: Sign, moon: Sign, year: number): string {
+  const element = signData[sun].element
+  return `**Your Solar Return:** When the Sun returns to your exact birth position, marking your personal new year
+**New Moon in ${sun}:** Powerful time for setting intentions aligned with your core nature
+**Full Moon in ${sun}:** Culmination of ${sun} themes - great for completion and celebration
+**Power Months:** ${element === 'Fire' ? 'March, July, November' : element === 'Earth' ? 'April, August, December' : element === 'Air' ? 'January, May, September' : 'February, June, October'} when the Sun energises fellow ${element} signs`
+}
+
+// ============================================
+// MONTHLY FORECAST GENERATOR
+// ============================================
+
+export function generateMonthlyForecastV2(
+  chart: NatalChart,
+  userName: string
+): GeneratedReportV2 {
+  const sun = getPlacement(chart, 'sun')
+  const moon = getPlacement(chart, 'moon')
+  const mercury = getPlacement(chart, 'mercury')
+  const venus = getPlacement(chart, 'venus')
+  const mars = getPlacement(chart, 'mars')
+  const jupiter = getPlacement(chart, 'jupiter')
+  const saturn = getPlacement(chart, 'saturn')
+
+  const sunSign = capitalizeSign(sun?.sign || 'Aries')
+  const moonSign = capitalizeSign(moon?.sign || 'Cancer')
+  const risingSign = capitalizeSign(chart.ascendant?.sign || 'Aries')
+  const mercurySign = capitalizeSign(mercury?.sign || 'Aries')
+  const venusSign = capitalizeSign(venus?.sign || 'Libra')
+  const marsSign = capitalizeSign(mars?.sign || 'Aries')
+
+  const sunData = signData[sunSign]
+  const moonData = signData[moonSign]
+  const venusData = signData[venusSign]
+  const marsData = signData[marsSign]
+
+  const elements = calculateElementBalance(chart)
+  const modalities = calculateModalityBalance(chart)
+  const dominantElement = getDominantElement(elements)
+
+  const now = new Date()
+  const currentMonth = now.toLocaleString('en-GB', { month: 'long' })
+  const currentYear = now.getFullYear()
+  const daysInMonth = new Date(currentYear, now.getMonth() + 1, 0).getDate()
+
+  // Get moon phases for the month
+  const moonPhases = getMonthMoonPhases(now.getMonth(), currentYear)
+
+  // Generate daily energy ratings
+  const dailyEnergies = generateDailyEnergies(sunSign, moonSign, daysInMonth)
+
+  const sections: ReportSectionV2[] = [
+    {
+      id: 'overview',
+      title: `Your ${currentMonth} ${currentYear} Overview`,
+      icon: '🌟',
+      subsections: [
+        {
+          title: 'Welcome to Your Monthly Cosmic Guide',
+          content: `${userName}, welcome to your personalised astrological forecast for ${currentMonth} ${currentYear}. This comprehensive guide is specifically calculated for YOUR birth chart, not a generic horoscope that applies to millions of people. The planetary transits this month form unique relationships with your natal planets, creating a cosmic landscape that is entirely your own.
+
+This month brings a distinctive blend of energies that will particularly affect you as a ${sunSign} Sun with ${moonSign} Moon and ${risingSign} Rising. The interplay between the current planetary positions and your birth chart reveals specific windows of opportunity, times requiring extra care, and areas where growth is especially supported.
+
+**Your Astrological Profile:**
+As we navigate ${currentMonth} together, keep in mind your core cosmic makeup:
+
+• **Sun in ${sunSign}:** Your fundamental identity operates through ${sunData.keywords.slice(0, 3).join(', ')} energy. This month's transits will interact with this core essence, sometimes amplifying your natural strengths, sometimes challenging you to grow beyond comfortable patterns.
+
+• **Moon in ${moonSign}:** Your emotional needs centre around ${moonData.keywords.slice(0, 3).join(', ')} experiences. The lunar phases this month will particularly activate your emotional landscape, with the ${moonPhases.newMoon.sign} New Moon and ${moonPhases.fullMoon.sign} Full Moon offering distinct emotional turning points.
+
+• **Rising in ${risingSign}:** The world meets your ${signData[risingSign].keywords[0]} exterior first. How you navigate social situations and new experiences this month will be coloured by transits to your Ascendant.
+
+**What Makes This Month Unique for You:**
+${currentMonth} ${currentYear} offers ${sunSign} natives a particularly ${getMonthQuality(sunSign, now.getMonth())} period. The cosmic weather supports ${getMonthSupport(sunSign, moonSign, now.getMonth())} while asking you to be mindful of ${getMonthCaution(sunSign, now.getMonth())}. Your ${dominantElement} elemental dominance means you'll feel the month's energies most strongly through ${dominantElement === 'Fire' ? 'action, passion, and creative drive' : dominantElement === 'Earth' ? 'practical matters, finances, and physical wellbeing' : dominantElement === 'Air' ? 'communication, ideas, and social connections' : 'emotional experiences, intuition, and relationships'}.`,
+          terms: [
+            { term: 'Transit', definition: 'When a current planet\'s position forms an angle (aspect) to a planet in your birth chart, activating that area of your life.' },
+            { term: 'Natal Chart', definition: 'Your birth chart - the map of the sky at your exact moment of birth, showing where all the planets were positioned.' },
+          ],
+          tip: 'Bookmark this report and refer back to it weekly. The guidance becomes more valuable when you track how the cosmic weather actually plays out in your life.',
+        },
+        {
+          title: 'The Cosmic Weather This Month',
+          content: `**Major Planetary Movements in ${currentMonth}:**
+
+The celestial bodies are in constant motion, and this month brings several significant shifts that will affect your chart directly:
+
+${getDetailedTransits(sunSign, moonSign, risingSign, now.getMonth(), currentYear)}
+
+**How These Transits Affect YOUR Chart:**
+
+With your ${sunSign} Sun, you'll feel ${getSunTransitEffect(sunSign, now.getMonth())}. Your ${moonSign} Moon means the emotional undercurrents will be ${getMoonTransitEffect(moonSign, now.getMonth())}. Meanwhile, your ${risingSign} Rising suggests that socially and professionally, you'll experience ${getRisingTransitEffect(risingSign, now.getMonth())}.
+
+**The Month's Elemental Balance:**
+
+${currentMonth} carries a ${getMonthElementalEnergy(now.getMonth())} elemental signature. For you, with your ${dominantElement}-dominant chart, this means ${getElementalInteraction(dominantElement, now.getMonth())}.
+
+**Mercury's Influence This Month:**
+${getMercuryMonthlyInfluence(mercurySign, now.getMonth(), currentYear)}
+
+**Venus's Influence This Month:**
+${getVenusMonthlyInfluence(venusSign, now.getMonth(), currentYear)}
+
+**Mars's Influence This Month:**
+${getMarsMonthlyInfluence(marsSign, now.getMonth(), currentYear)}`,
+          visual: {
+            type: 'element-balance',
+            title: 'Your Elemental Energy This Month',
+            data: elements,
+          },
+        },
+        {
+          title: 'Your Energy Forecast at a Glance',
+          content: `**Monthly Energy Overview:**
+
+${userName}, here's your personalised energy map for ${currentMonth}. This shows how the cosmic weather interacts specifically with your chart:
+
+**Overall Energy Level:** ${getOverallMonthEnergy(sunSign, now.getMonth())}/10
+**Best Days:** ${getBestDaysOfMonth(sunSign, moonSign, daysInMonth).join(', ')}
+**Challenging Days:** ${getChallengingDaysOfMonth(sunSign, moonSign, daysInMonth).join(', ')}
+**Power Day:** ${getPowerDayOfMonth(sunSign, now.getMonth(), daysInMonth)}
+
+**Weekly Energy Pattern:**
+• Week 1 (Days 1-7): ${getWeeklyEnergyRating(sunSign, 1, now.getMonth())}/10 - ${getWeeklyEnergyDescription(sunSign, moonSign, 1, now.getMonth())}
+• Week 2 (Days 8-14): ${getWeeklyEnergyRating(sunSign, 2, now.getMonth())}/10 - ${getWeeklyEnergyDescription(sunSign, moonSign, 2, now.getMonth())}
+• Week 3 (Days 15-21): ${getWeeklyEnergyRating(sunSign, 3, now.getMonth())}/10 - ${getWeeklyEnergyDescription(sunSign, moonSign, 3, now.getMonth())}
+• Week 4 (Days 22-${daysInMonth}): ${getWeeklyEnergyRating(sunSign, 4, now.getMonth())}/10 - ${getWeeklyEnergyDescription(sunSign, moonSign, 4, now.getMonth())}
+
+**Daily Energy Highlights:**
+${getDailyEnergyHighlights(sunSign, moonSign, dailyEnergies, daysInMonth)}`,
+          visual: {
+            type: 'planetary-strength',
+            title: 'Daily Energy Chart',
+            data: dailyEnergies,
+          },
+        },
+      ],
+    },
+    {
+      id: 'week1',
+      title: 'Week 1: Foundation & Intention',
+      icon: '🌱',
+      subsections: [
+        {
+          title: 'Week 1 Overview (Days 1-7)',
+          content: `**The Energy of Week One:**
+
+The first week of ${currentMonth} sets the tone for everything that follows. For you as a ${sunSign}, this opening period brings ${getWeek1Energy(sunSign, moonSign, now.getMonth())}.
+
+**Day-by-Day Breakdown:**
+
+${getWeek1DailyBreakdown(sunSign, moonSign, venusSign, marsSign, now.getMonth(), currentYear)}
+
+**Your Focus This Week:**
+
+With your ${sunData.modality} ${sunData.element} nature, Week 1 asks you to ${getWeek1Focus(sunSign, sunData)}. Your ${moonSign} Moon will be particularly activated around ${getWeek1MoonActivation(moonSign, now.getMonth())}, so pay attention to emotional signals during this time.
+
+**Key Themes:**
+• ${getWeek1Theme1(sunSign, moonSign)}
+• ${getWeek1Theme2(sunSign, venusSign)}
+• ${getWeek1Theme3(sunSign, marsSign)}
+
+**Advice for the Week:**
+${getWeek1Advice(sunSign, moonSign, sunData, moonData)}`,
+          tip: 'The first week of any month is ideal for setting intentions. Write down 3 specific goals for ${currentMonth} and review them weekly.',
+        },
+        {
+          title: 'Week 1 - Love & Relationships',
+          content: `**Romantic Energy This Week:**
+
+${getWeek1RomanticEnergy(sunSign, venusSign, moonSign, now.getMonth())}
+
+**For Singles:**
+${getWeek1SinglesAdvice(sunSign, venusSign, now.getMonth())}
+
+**For Those in Relationships:**
+${getWeek1CouplesAdvice(sunSign, venusSign, moonSign, now.getMonth())}
+
+**Best Days for Romance:** ${getWeek1RomanceDays(venusSign, now.getMonth())}
+
+**Communication in Relationships:**
+With your Mercury in ${mercurySign}, your communication style this week will be ${getWeek1CommunicationStyle(mercurySign, now.getMonth())}. Be mindful of ${getWeek1CommunicationCaution(mercurySign)}.`,
+        },
+        {
+          title: 'Week 1 - Career & Finances',
+          content: `**Professional Energy This Week:**
+
+${getWeek1CareerEnergy(sunSign, marsSign, now.getMonth())}
+
+**Key Career Opportunities:**
+${getWeek1CareerOpportunities(sunSign, sunData, now.getMonth())}
+
+**Financial Outlook:**
+${getWeek1FinancialOutlook(sunSign, venusSign, now.getMonth())}
+
+**Best Days for Career Moves:** ${getWeek1CareerDays(marsSign, now.getMonth())}
+**Best Days for Financial Decisions:** ${getWeek1FinanceDays(venusSign, now.getMonth())}
+
+**Networking & Professional Relationships:**
+Your ${risingSign} Rising projects ${signData[risingSign].keywords[0]} energy in professional settings. This week, leverage this by ${getWeek1NetworkingAdvice(risingSign)}.`,
+        },
+      ],
+    },
+    {
+      id: 'week2',
+      title: 'Week 2: Building Momentum',
+      icon: '🚀',
+      subsections: [
+        {
+          title: 'Week 2 Overview (Days 8-14)',
+          content: `**The Energy of Week Two:**
+
+Week 2 of ${currentMonth} typically brings increased momentum as you've established your rhythm. For ${sunSign}, this period offers ${getWeek2Energy(sunSign, moonSign, now.getMonth())}.
+
+**Day-by-Day Breakdown:**
+
+${getWeek2DailyBreakdown(sunSign, moonSign, venusSign, marsSign, now.getMonth(), currentYear)}
+
+**Your Focus This Week:**
+
+The cosmic energy shifts to favour ${getWeek2Focus(sunSign, sunData)}. With your ${moonData.element} Moon element, you'll find emotional sustenance through ${getWeek2EmotionalFocus(moonSign, moonData)}.
+
+**Key Themes:**
+• ${getWeek2Theme1(sunSign, moonSign)}
+• ${getWeek2Theme2(sunSign, venusSign)}
+• ${getWeek2Theme3(sunSign, marsSign)}
+
+**Special Planetary Alignments:**
+${getWeek2SpecialAlignments(sunSign, moonSign, now.getMonth(), currentYear)}
+
+**Advice for the Week:**
+${getWeek2Advice(sunSign, moonSign, sunData, moonData)}`,
+        },
+        {
+          title: 'Week 2 - Love & Relationships',
+          content: `**Romantic Energy This Week:**
+
+${getWeek2RomanticEnergy(sunSign, venusSign, moonSign, now.getMonth())}
+
+**Venus Influence:**
+Venus in its current position particularly affects your ${venusSign} natal Venus, creating ${getWeek2VenusInfluence(venusSign, now.getMonth())}. This is a powerful time for ${getWeek2VenusPower(venusSign)}.
+
+**For Singles:**
+${getWeek2SinglesAdvice(sunSign, venusSign, now.getMonth())}
+
+**For Those in Relationships:**
+${getWeek2CouplesAdvice(sunSign, venusSign, moonSign, now.getMonth())}
+
+**Best Days for Romance:** ${getWeek2RomanceDays(venusSign, now.getMonth())}
+
+**Intimacy & Connection:**
+With Mars in your ${marsSign} natal position being activated, ${getWeek2IntimacyAdvice(marsSign, venusSign)}.`,
+        },
+        {
+          title: 'Week 2 - Career & Finances',
+          content: `**Professional Energy This Week:**
+
+${getWeek2CareerEnergy(sunSign, marsSign, now.getMonth())}
+
+**Key Career Opportunities:**
+${getWeek2CareerOpportunities(sunSign, sunData, now.getMonth())}
+
+**Mars Drive:**
+Your Mars in ${marsSign} is ${getWeek2MarsInfluence(marsSign, now.getMonth())}, giving you ${getWeek2MarsPower(marsSign)} energy in professional pursuits.
+
+**Financial Outlook:**
+${getWeek2FinancialOutlook(sunSign, venusSign, now.getMonth())}
+
+**Best Days for Career Moves:** ${getWeek2CareerDays(marsSign, now.getMonth())}
+**Best Days for Financial Decisions:** ${getWeek2FinanceDays(venusSign, now.getMonth())}
+
+**Projects & Initiatives:**
+This is the optimal week to ${getWeek2ProjectAdvice(sunSign, marsSign)}.`,
+        },
+      ],
+    },
+    {
+      id: 'week3',
+      title: 'Week 3: Peak & Culmination',
+      icon: '⭐',
+      subsections: [
+        {
+          title: 'Week 3 Overview (Days 15-21)',
+          content: `**The Energy of Week Three:**
+
+Week 3 often represents the peak of monthly energy - things come to a head, reach completion, or demand decisive action. For ${sunSign}, this period brings ${getWeek3Energy(sunSign, moonSign, now.getMonth())}.
+
+**The Full Moon Effect:**
+The Full Moon in ${moonPhases.fullMoon.sign} on the ${moonPhases.fullMoon.day}${getOrdinalSuffix(moonPhases.fullMoon.day)} illuminates your ${getFullMoonHouseTheme(sunSign, moonPhases.fullMoon.sign)}. This lunar peak will particularly highlight ${getFullMoonPersonalEffect(sunSign, moonSign, moonPhases.fullMoon.sign)}.
+
+**Day-by-Day Breakdown:**
+
+${getWeek3DailyBreakdown(sunSign, moonSign, venusSign, marsSign, now.getMonth(), currentYear, moonPhases)}
+
+**Your Focus This Week:**
+
+${getWeek3Focus(sunSign, sunData, moonPhases.fullMoon.sign)}
+
+**Key Themes:**
+• ${getWeek3Theme1(sunSign, moonSign, moonPhases.fullMoon.sign)}
+• ${getWeek3Theme2(sunSign, venusSign)}
+• ${getWeek3Theme3(sunSign, marsSign)}
+
+**Advice for the Week:**
+${getWeek3Advice(sunSign, moonSign, sunData, moonData, moonPhases.fullMoon.sign)}`,
+          tip: 'Full Moons are times of culmination. What was planted at the New Moon often reaches a turning point now. Practice release rituals if something needs to end.',
+        },
+        {
+          title: 'Week 3 - Love & Relationships',
+          content: `**Romantic Energy This Week:**
+
+The Full Moon in ${moonPhases.fullMoon.sign} intensifies all relationship dynamics. For your ${venusSign} Venus nature, this means ${getWeek3RomanticEnergy(sunSign, venusSign, moonSign, moonPhases.fullMoon.sign)}.
+
+**Full Moon Relationship Effects:**
+Full Moons often bring relationship revelations. With your ${moonSign} Moon, you may experience ${getWeek3MoonRelationshipEffect(moonSign, moonPhases.fullMoon.sign)}. This is a powerful time for ${getWeek3RelationshipPower(sunSign, moonSign, moonPhases.fullMoon.sign)}.
+
+**For Singles:**
+${getWeek3SinglesAdvice(sunSign, venusSign, moonPhases.fullMoon.sign)}
+
+**For Those in Relationships:**
+${getWeek3CouplesAdvice(sunSign, venusSign, moonSign, moonPhases.fullMoon.sign)}
+
+**Best Days for Romance:** ${getWeek3RomanceDays(venusSign, now.getMonth())}
+
+**Emotional Intensity:**
+Be prepared for heightened emotions around the Full Moon. Your ${moonSign} Moon processes through ${moonData.element} energy, so ${getWeek3EmotionalAdvice(moonSign, moonData)}.`,
+        },
+        {
+          title: 'Week 3 - Career & Finances',
+          content: `**Professional Energy This Week:**
+
+${getWeek3CareerEnergy(sunSign, marsSign, moonPhases.fullMoon.sign)}
+
+**Full Moon Career Effects:**
+The Full Moon in ${moonPhases.fullMoon.sign} may bring ${getWeek3FullMoonCareerEffect(sunSign, moonPhases.fullMoon.sign)}. Projects initiated earlier in the month may ${getWeek3ProjectStatus(sunSign)}.
+
+**Key Career Opportunities:**
+${getWeek3CareerOpportunities(sunSign, sunData, moonPhases.fullMoon.sign)}
+
+**Financial Outlook:**
+${getWeek3FinancialOutlook(sunSign, venusSign, moonPhases.fullMoon.sign)}
+
+**Best Days for Career Moves:** ${getWeek3CareerDays(marsSign, now.getMonth())}
+**Best Days for Financial Decisions:** ${getWeek3FinanceDays(venusSign, now.getMonth())}
+
+**Visibility & Recognition:**
+Full Moons illuminate. Your professional efforts may be more visible now. Use your ${sunSign} ${sunData.strengths[0].toLowerCase()} to ${getWeek3VisibilityAdvice(sunSign, sunData)}.`,
+        },
+      ],
+    },
+    {
+      id: 'week4',
+      title: 'Week 4: Integration & Preparation',
+      icon: '🌙',
+      subsections: [
+        {
+          title: 'Week 4 Overview (Days 22-${daysInMonth})',
+          content: `**The Energy of Week Four:**
+
+The final week of ${currentMonth} is a time for integration, reflection, and preparation for the month ahead. For ${sunSign}, this closing period brings ${getWeek4Energy(sunSign, moonSign, now.getMonth())}.
+
+**The Waning Moon Phase:**
+As the Moon wanes after the Full Moon, energy naturally turns inward. Your ${moonSign} Moon will feel this shift as ${getWaningMoonEffect(moonSign, moonData)}.
+
+**Day-by-Day Breakdown:**
+
+${getWeek4DailyBreakdown(sunSign, moonSign, venusSign, marsSign, now.getMonth(), currentYear, daysInMonth)}
+
+**Your Focus This Week:**
+
+${getWeek4Focus(sunSign, sunData)}
+
+**Key Themes:**
+• ${getWeek4Theme1(sunSign, moonSign)}
+• ${getWeek4Theme2(sunSign, venusSign)}
+• ${getWeek4Theme3(sunSign, marsSign)}
+
+**Preparing for Next Month:**
+${getNextMonthPreparation(sunSign, moonSign, now.getMonth())}
+
+**Advice for the Week:**
+${getWeek4Advice(sunSign, moonSign, sunData, moonData)}`,
+        },
+        {
+          title: 'Week 4 - Love & Relationships',
+          content: `**Romantic Energy This Week:**
+
+${getWeek4RomanticEnergy(sunSign, venusSign, moonSign, now.getMonth())}
+
+**Relationship Reflection:**
+The waning Moon phase supports relationship review. Consider ${getWeek4RelationshipReflection(sunSign, venusSign, moonSign)}.
+
+**For Singles:**
+${getWeek4SinglesAdvice(sunSign, venusSign, now.getMonth())}
+
+**For Those in Relationships:**
+${getWeek4CouplesAdvice(sunSign, venusSign, moonSign, now.getMonth())}
+
+**Best Days for Romance:** ${getWeek4RomanceDays(venusSign, now.getMonth())}
+
+**Deepening Bonds:**
+The reflective energy of Week 4 is perfect for ${getWeek4BondingAdvice(moonSign, venusSign)}.`,
+        },
+        {
+          title: 'Week 4 - Career & Finances',
+          content: `**Professional Energy This Week:**
+
+${getWeek4CareerEnergy(sunSign, marsSign, now.getMonth())}
+
+**Month-End Review:**
+Take stock of what you've accomplished this month. Your ${sunSign} nature has likely made progress on ${getWeek4AccomplishmentReview(sunSign, sunData)}.
+
+**Key Career Focus:**
+${getWeek4CareerFocus(sunSign, sunData, now.getMonth())}
+
+**Financial Outlook:**
+${getWeek4FinancialOutlook(sunSign, venusSign, now.getMonth())}
+
+**Planning Ahead:**
+Use this week's reflective energy to plan next month's career moves. As a ${sunSign}, you'll benefit from ${getWeek4PlanningAdvice(sunSign, sunData)}.
+
+**Best Days for Career Moves:** ${getWeek4CareerDays(marsSign, now.getMonth())}
+**Best Days for Financial Decisions:** ${getWeek4FinanceDays(venusSign, now.getMonth())}`,
+        },
+      ],
+    },
+    {
+      id: 'moon-phases',
+      title: 'Moon Phase Guide',
+      icon: '🌗',
+      subsections: [
+        {
+          title: 'Understanding This Month\'s Lunar Cycle',
+          content: `**The Moon\'s Journey Through ${currentMonth}:**
+
+The Moon moves through the zodiac approximately every 2.5 days, changing the emotional backdrop of our lives. For your ${moonSign} Moon, this lunar dance is particularly significant.
+
+**New Moon in ${moonPhases.newMoon.sign} (${moonPhases.newMoon.day}${getOrdinalSuffix(moonPhases.newMoon.day)}):**
+
+${getNewMoonDetailedGuidance(sunSign, moonSign, moonPhases.newMoon.sign)}
+
+**Intentions to Set:**
+With your ${sunSign} Sun and ${moonSign} Moon, the ideal New Moon intentions involve:
+${getNewMoonIntentions(sunSign, moonSign, moonPhases.newMoon.sign)}
+
+**New Moon Ritual for ${sunSign}:**
+${getNewMoonRitual(sunSign, moonSign, moonPhases.newMoon.sign)}
+
+**Full Moon in ${moonPhases.fullMoon.sign} (${moonPhases.fullMoon.day}${getOrdinalSuffix(moonPhases.fullMoon.day)}):**
+
+${getFullMoonDetailedGuidance(sunSign, moonSign, moonPhases.fullMoon.sign)}
+
+**What May Culminate:**
+${getFullMoonCulmination(sunSign, moonSign, moonPhases.fullMoon.sign)}
+
+**Full Moon Release Ritual for ${sunSign}:**
+${getFullMoonRitual(sunSign, moonSign, moonPhases.fullMoon.sign)}`,
+          terms: [
+            { term: 'New Moon', definition: 'When the Moon is between Earth and Sun, invisible from Earth. A time for new beginnings and setting intentions.' },
+            { term: 'Full Moon', definition: 'When Earth is between Moon and Sun, fully illuminating the Moon. A time of culmination, revelation, and release.' },
+          ],
+        },
+        {
+          title: 'Moon Through the Signs This Month',
+          content: `**Daily Lunar Energies:**
+
+As the Moon travels through each zodiac sign, it colours our emotional experience. Here's how each lunar transit affects your ${moonSign} Moon this month:
+
+${getMoonThroughSignsGuidance(moonSign, moonData)}
+
+**Best Moon Signs for Your Activities:**
+
+• **For important decisions:** Moon in ${getBestMoonSignForDecisions(sunSign, moonSign)}
+• **For starting projects:** Moon in ${getBestMoonSignForProjects(sunSign, marsSign)}
+• **For romance:** Moon in ${getBestMoonSignForRomance(venusSign, moonSign)}
+• **For rest and self-care:** Moon in ${getBestMoonSignForRest(moonSign)}
+• **For socialising:** Moon in ${getBestMoonSignForSocial(sunSign, risingSign)}
+• **For financial matters:** Moon in ${getBestMoonSignForFinance(sunSign, venusSign)}`,
+          tip: 'Track how you feel when the Moon is in your natal Moon sign (${moonSign}). This is your monthly emotional reset point.',
+        },
+      ],
+    },
+    {
+      id: 'love',
+      title: 'Love & Relationships This Month',
+      icon: '💕',
+      subsections: [
+        {
+          title: 'Your Romantic Forecast',
+          content: `**Love Energy in ${currentMonth}:**
+
+${userName}, your romantic life this month is shaped by the dance between your natal Venus in ${venusSign} and the transiting planets. Here's your comprehensive love forecast:
+
+**Overall Romantic Energy:** ${getOverallRomanticEnergy(venusSign, now.getMonth())}/10
+
+**Your Love Language This Month:**
+With Venus in ${venusSign}, you naturally express and receive love through ${venusData.keywords.slice(0, 2).join(' and ')}. This month, ${getVenusMonthlyLoveLanguage(venusSign, now.getMonth())}.
+
+**What You're Attracted To:**
+The cosmic weather heightens your attraction to ${getMonthlyAttractionPattern(venusSign, sunSign, now.getMonth())}. Your ${moonSign} Moon adds an emotional layer, drawing you toward partners who ${getMoonAttractionPattern(moonSign, moonData)}.
+
+**Best Days for Romance:**
+${getBestRomanceDaysDetailed(venusSign, moonSign, now.getMonth(), daysInMonth)}
+
+**Days Requiring Care:**
+${getRomanceCautionDays(venusSign, marsSign, now.getMonth(), daysInMonth)}
+
+**Venus Retrograde Check:**
+${getVenusRetrogradeStatus(now.getMonth(), currentYear)}`,
+        },
+        {
+          title: 'Guidance for Singles',
+          content: `**Your Single Life This Month:**
+
+${currentMonth} offers ${sunSign} singles ${getSinglesMonthlyOutlook(sunSign, venusSign, now.getMonth())}.
+
+**Where to Meet People:**
+Your ${risingSign} Rising attracts through ${signData[risingSign].keywords[0]} energy. This month, consider ${getSinglesVenueAdvice(risingSign, venusSign, now.getMonth())}.
+
+**Your Dating Superpower This Month:**
+${getSinglesSuperpower(sunSign, venusSign, now.getMonth())}
+
+**What to Watch For:**
+${getSinglesWatchOut(sunSign, venusSign, moonSign, now.getMonth())}
+
+**Week-by-Week Singles Guide:**
+• **Week 1:** ${getSinglesWeekGuide(sunSign, venusSign, 1, now.getMonth())}
+• **Week 2:** ${getSinglesWeekGuide(sunSign, venusSign, 2, now.getMonth())}
+• **Week 3:** ${getSinglesWeekGuide(sunSign, venusSign, 3, now.getMonth())}
+• **Week 4:** ${getSinglesWeekGuide(sunSign, venusSign, 4, now.getMonth())}
+
+**Self-Love Focus:**
+${getSelfLoveAdvice(sunSign, moonSign, venusSign)}`,
+        },
+        {
+          title: 'Guidance for Couples',
+          content: `**Your Relationship This Month:**
+
+For ${sunSign} in committed relationships, ${currentMonth} brings ${getCouplesMonthlyOutlook(sunSign, venusSign, moonSign, now.getMonth())}.
+
+**Communication Forecast:**
+With Mercury in ${mercurySign}, your communication style is ${signData[mercurySign].keywords[0]}. This month, ${getCouplesCommunicationAdvice(mercurySign, now.getMonth())}.
+
+**Intimacy & Connection:**
+Your Mars in ${marsSign} drives physical expression through ${marsData.keywords.slice(0, 2).join(' and ')}. The cosmic weather supports ${getCouplesIntimacyAdvice(marsSign, venusSign, now.getMonth())}.
+
+**Potential Friction Points:**
+${getCouplesFrictionPoints(sunSign, moonSign, venusSign, now.getMonth())}
+
+**How to Navigate Challenges:**
+${getCouplesNavigationAdvice(sunSign, moonSign, now.getMonth())}
+
+**Date Night Ideas for ${sunSign}:**
+${getDateNightIdeas(sunSign, venusSign, now.getMonth())}
+
+**Week-by-Week Couples Guide:**
+• **Week 1:** ${getCouplesWeekGuide(sunSign, venusSign, moonSign, 1, now.getMonth())}
+• **Week 2:** ${getCouplesWeekGuide(sunSign, venusSign, moonSign, 2, now.getMonth())}
+• **Week 3:** ${getCouplesWeekGuide(sunSign, venusSign, moonSign, 3, now.getMonth())}
+• **Week 4:** ${getCouplesWeekGuide(sunSign, venusSign, moonSign, 4, now.getMonth())}`,
+        },
+      ],
+    },
+    {
+      id: 'career',
+      title: 'Career & Finances This Month',
+      icon: '💼',
+      subsections: [
+        {
+          title: 'Your Professional Forecast',
+          content: `**Career Energy in ${currentMonth}:**
+
+${userName}, your professional life this month is influenced by the interplay between your natal Mars in ${marsSign} (your drive), Saturn's position (your discipline), and the transiting planets. Here's your comprehensive career forecast:
+
+**Overall Career Energy:** ${getOverallCareerEnergy(marsSign, sunSign, now.getMonth())}/10
+
+**Your Professional Strengths This Month:**
+As a ${sunSign} (${sunData.archetype}), you naturally bring ${sunData.strengths.slice(0, 2).join(' and ')} to your work. This month, ${getMonthlyCareerStrengths(sunSign, sunData, now.getMonth())}.
+
+**Areas for Professional Growth:**
+${getMonthlyCareerGrowth(sunSign, sunData, now.getMonth())}
+
+**Best Days for Career Moves:**
+${getBestCareerDaysDetailed(marsSign, sunSign, now.getMonth(), daysInMonth)}
+
+**Days Requiring Caution:**
+${getCareerCautionDays(marsSign, mercurySign, now.getMonth(), daysInMonth)}
+
+**Mercury Retrograde Career Check:**
+${getMercuryRetrogradeCareerStatus(mercurySign, now.getMonth(), currentYear)}`,
+        },
+        {
+          title: 'Financial Forecast',
+          content: `**Money Energy This Month:**
+
+Your financial life is influenced by your Venus in ${venusSign} (what you value and attract) and the 2nd/8th house transits. Here's what to expect:
+
+**Overall Financial Energy:** ${getOverallFinancialEnergy(venusSign, sunSign, now.getMonth())}/10
+
+**Income Potential:**
+${getIncomeOutlook(sunSign, venusSign, now.getMonth())}
+
+**Spending Tendencies:**
+With your ${venusSign} Venus, you're naturally drawn to spend on ${getSpendingTendencies(venusSign)}. This month, ${getMonthlySpendingAdvice(venusSign, now.getMonth())}.
+
+**Investment & Saving:**
+${getInvestmentAdvice(sunSign, venusSign, now.getMonth())}
+
+**Best Days for Financial Decisions:**
+${getBestFinanceDaysDetailed(venusSign, now.getMonth(), daysInMonth)}
+
+**Week-by-Week Financial Guide:**
+• **Week 1:** ${getFinanceWeekGuide(sunSign, venusSign, 1, now.getMonth())}
+• **Week 2:** ${getFinanceWeekGuide(sunSign, venusSign, 2, now.getMonth())}
+• **Week 3:** ${getFinanceWeekGuide(sunSign, venusSign, 3, now.getMonth())}
+• **Week 4:** ${getFinanceWeekGuide(sunSign, venusSign, 4, now.getMonth())}`,
+        },
+        {
+          title: 'Projects & Goals',
+          content: `**Professional Projects This Month:**
+
+Your ${sunSign} nature excels at ${sunData.strengths[0].toLowerCase()}. Here's how to channel that energy into your ${currentMonth} projects:
+
+**Ideal Projects to Start:**
+${getIdealProjectsToStart(sunSign, marsSign, now.getMonth())}
+
+**Projects to Complete:**
+${getProjectsToComplete(sunSign, now.getMonth())}
+
+**Projects to Put on Hold:**
+${getProjectsToPause(sunSign, mercurySign, now.getMonth())}
+
+**Your Productivity Style This Month:**
+${getProductivityStyle(sunSign, marsSign, now.getMonth())}
+
+**Collaboration Forecast:**
+${getCollaborationForecast(sunSign, risingSign, now.getMonth())}
+
+**Networking Opportunities:**
+${getNetworkingOpportunities(sunSign, risingSign, now.getMonth())}`,
+        },
+      ],
+    },
+    {
+      id: 'health',
+      title: 'Health & Wellness This Month',
+      icon: '💪',
+      subsections: [
+        {
+          title: 'Your Vitality Forecast',
+          content: `**Physical Energy in ${currentMonth}:**
+
+${userName}, your physical vitality is influenced by your Sun sign element (${sunData.element}), Mars position (${marsSign}), and the current cosmic weather. Here's your wellness guide:
+
+**Overall Energy Level:** ${getOverallHealthEnergy(sunSign, marsSign, now.getMonth())}/10
+
+**Your Body's Needs This Month:**
+As a ${sunData.element} sign, you thrive when ${getElementWellness(sunData.element)}. This month specifically calls for ${getMonthlyWellnessNeed(sunSign, sunData, now.getMonth())}.
+
+**Exercise Recommendations:**
+${getExerciseRecommendations(sunSign, marsSign, now.getMonth())}
+
+**Energy Peaks & Dips:**
+${getEnergyPeaksDips(sunSign, now.getMonth())}
+
+**Watch Points:**
+${sunSign} can be vulnerable to ${getHealthWatchPoints(sunSign, sunData)}. Pay extra attention to ${getMonthlyHealthAttention(sunSign, now.getMonth())}.
+
+**Best Days for:**
+• **Starting new fitness routines:** ${getBestDaysForFitness(marsSign, now.getMonth())}
+• **Rest and recovery:** ${getBestDaysForRest(moonSign, now.getMonth())}
+• **Health appointments:** ${getBestDaysForHealth(now.getMonth())}`,
+        },
+        {
+          title: 'Emotional & Mental Wellness',
+          content: `**Emotional Health This Month:**
+
+Your ${moonSign} Moon processes emotions through ${moonData.element} energy. This month's emotional weather brings ${getEmotionalWeather(moonSign, moonData, now.getMonth())}.
+
+**Mental Energy:**
+${getMentalEnergyForecast(mercurySign, now.getMonth())}
+
+**Stress Management:**
+When stressed, your ${sunSign} Sun may resort to ${sunData.shadowSide.split(',')[0].toLowerCase()}. Counter this by ${getStressManagement(sunSign, moonSign)}.
+
+**Self-Care Practices for ${sunSign}:**
+${getSelfCarePractices(sunSign, moonSign, now.getMonth())}
+
+**Emotional Triggers This Month:**
+Be aware of ${getEmotionalTriggers(moonSign, now.getMonth())}. Your ${moonSign} Moon can navigate these by ${getMoonNavigationAdvice(moonSign, moonData)}.
+
+**Mindfulness Focus:**
+${getMindfulnessFocus(sunSign, moonSign, now.getMonth())}`,
+        },
+        {
+          title: 'Sleep & Rest',
+          content: `**Sleep Forecast:**
+
+Your ${moonSign} Moon significantly influences your sleep patterns. This month, ${getSleepForecast(moonSign, now.getMonth())}.
+
+**Optimal Sleep Practices:**
+${getOptimalSleepPractices(moonSign, moonData)}
+
+**Dream Activity:**
+With the Moon phases this month, expect ${getDreamForecast(moonSign, moonPhases)}.
+
+**Rest & Recovery:**
+The waning Moon phase (after the ${moonPhases.fullMoon.day}${getOrdinalSuffix(moonPhases.fullMoon.day)}) is ideal for ${getRestRecoveryAdvice(sunSign, moonSign)}.
+
+**Energy Management Tips:**
+${getEnergyManagementTips(sunSign, marsSign, moonSign)}`,
+        },
+      ],
+    },
+    {
+      id: 'growth',
+      title: 'Personal Growth This Month',
+      icon: '🌱',
+      subsections: [
+        {
+          title: 'Your Growth Journey',
+          content: `**Personal Evolution in ${currentMonth}:**
+
+${userName}, every month offers unique opportunities for growth. As a ${sunSign}, your ongoing life lesson is ${sunData.lifeLesson.toLowerCase()}. Here's how ${currentMonth} supports your evolution:
+
+**This Month's Growth Theme:**
+${getMonthlyGrowthTheme(sunSign, moonSign, now.getMonth())}
+
+**Shadow Work Opportunity:**
+Your ${sunSign} shadow includes ${sunData.shadowSide.split(',')[0].toLowerCase()}. This month provides an opportunity to ${getShadowWorkOpportunity(sunSign, sunData, now.getMonth())}.
+
+**Strengths to Develop:**
+${getStrengthsDevelopment(sunSign, sunData, now.getMonth())}
+
+**Growth Challenges:**
+${getGrowthChallenges(sunSign, moonSign, now.getMonth())}
+
+**Affirmations for ${sunSign} This Month:**
+${getMonthlyAffirmations(sunSign, sunData, now.getMonth())}`,
+          tip: 'Growth happens in small moments. Notice when you respond differently than you would have a month ago - that\'s progress.',
+        },
+        {
+          title: 'Spiritual & Intuitive Development',
+          content: `**Spiritual Energy This Month:**
+
+Your ${moonSign} Moon connects you to intuitive wisdom through ${moonData.element} energy. This month's cosmic weather supports ${getSpiritualSupport(moonSign, moonData, now.getMonth())}.
+
+**Intuition Forecast:**
+${getIntuitionForecast(moonSign, now.getMonth())}
+
+**Meditation & Contemplation:**
+${getMeditationGuidance(sunSign, moonSign, now.getMonth())}
+
+**Journaling Prompts for ${currentMonth}:**
+${getJournalingPrompts(sunSign, moonSign, now.getMonth())}
+
+**Books/Topics to Explore:**
+Based on your ${sunSign} growth edge, consider exploring ${getGrowthTopics(sunSign, moonSign)}.
+
+**Practices for ${sunData.element} Signs:**
+${getElementalPractices(sunSign, sunData)}`,
+        },
+      ],
+    },
+    {
+      id: 'summary',
+      title: 'Your ${currentMonth} Summary',
+      icon: '✨',
+      subsections: [
+        {
+          title: 'Key Takeaways',
+          content: `**${userName}, Your ${currentMonth} at a Glance:**
+
+As we close this comprehensive guide to your ${currentMonth} ${currentYear}, here are the essential insights to carry with you:
+
+**Your Power Days:** ${getBestDaysOfMonth(sunSign, moonSign, daysInMonth).slice(0, 3).join(', ')}
+**Your Caution Days:** ${getChallengingDaysOfMonth(sunSign, moonSign, daysInMonth).slice(0, 2).join(', ')}
+**Your Theme:** ${getMonthlyGrowthTheme(sunSign, moonSign, now.getMonth()).split('.')[0]}
+
+**The Big Picture:**
+${currentMonth} asks ${sunSign} to embrace ${getMonthlyBigPicture(sunSign, moonSign, now.getMonth())}. With your ${moonSign} Moon guiding your emotional journey and ${risingSign} Rising shaping your interactions, you're equipped to ${getMonthlyEquipment(sunSign, moonSign, risingSign)}.
+
+**Final Wisdom:**
+${getFinalWisdom(sunSign, moonSign, now.getMonth())}
+
+**Remember:**
+The stars incline; they do not compel. This forecast illuminates the cosmic weather, but you always have the power to choose how you navigate it. Your ${sunSign} ${sunData.giftToWorld.split(',')[0].toLowerCase()} is needed in the world - let ${currentMonth} be a month where you share it fully.`,
+          tip: 'Revisit this report at the start of each week to remind yourself of the themes and energies ahead.',
+        },
+        {
+          title: 'Quick Reference Calendar',
+          content: `**${currentMonth} ${currentYear} Key Dates for ${sunSign}:**
+
+**Moon Phases:**
+• New Moon: ${moonPhases.newMoon.day}${getOrdinalSuffix(moonPhases.newMoon.day)} in ${moonPhases.newMoon.sign} - ${getNewMoonQuickRef(sunSign, moonPhases.newMoon.sign)}
+• Full Moon: ${moonPhases.fullMoon.day}${getOrdinalSuffix(moonPhases.fullMoon.day)} in ${moonPhases.fullMoon.sign} - ${getFullMoonQuickRef(sunSign, moonPhases.fullMoon.sign)}
+
+**Best Days by Activity:**
+• **Career:** ${getBestDaysOfMonth(sunSign, moonSign, daysInMonth).slice(0, 3).join(', ')}
+• **Romance:** ${getBestRomanceDaysSimple(venusSign, daysInMonth)}
+• **Finance:** ${getBestFinanceDaysSimple(venusSign, daysInMonth)}
+• **Health:** ${getBestHealthDaysSimple(marsSign, daysInMonth)}
+• **Rest:** ${getBestRestDaysSimple(moonSign, daysInMonth)}
+
+**Mercury Status:** ${getMercuryStatusSimple(now.getMonth(), currentYear)}
+
+**Your Mantra for ${currentMonth}:**
+"${getMonthlyMantra(sunSign, moonSign, now.getMonth())}"
+
+May this month bring you growth, joy, and alignment with your highest path.`,
+        },
+      ],
+    },
+  ]
+
+  // Calculate word count
+  let wordCount = 0
+  sections.forEach(section => {
+    section.subsections.forEach(subsection => {
+      wordCount += subsection.content.split(/\s+/).length
+    })
+  })
+
+  // Collect all glossary terms
+  const allTerms: ReportTerm[] = []
+  sections.forEach(section => {
+    section.subsections.forEach(subsection => {
+      if (subsection.terms) {
+        allTerms.push(...subsection.terms)
+      }
+    })
+  })
+
+  return {
+    id: `monthly-forecast-${Date.now()}`,
+    slug: 'monthly-forecast',
+    title: `${currentMonth} ${currentYear} Forecast for ${userName}`,
+    generatedAt: new Date().toISOString(),
+    userName,
+    birthData: {
+      date: '',
+      place: '',
+      sunSign,
+      moonSign,
+      risingSign,
+    },
+    summary: {
+      headline: `${sunSign} Sun | ${moonSign} Moon | ${risingSign} Rising`,
+      overview: `Your personalized guide to ${currentMonth} ${currentYear}`,
+      keyStrengths: [
+        `Power Days: ${getBestDaysOfMonth(sunSign, moonSign, daysInMonth).slice(0, 2).join(', ')}`,
+        `Best for Romance: ${getBestRomanceDaysSimple(venusSign, daysInMonth)}`,
+      ],
+      growthAreas: [
+        `Growth Focus: ${getMonthlyGrowthTheme(sunSign, moonSign, now.getMonth()).split('.')[0]}`,
+      ],
+    },
+    visuals: [
+      { type: 'chart-wheel', title: 'Your Birth Chart', data: { sun: sunSign, moon: moonSign, rising: risingSign } },
+      { type: 'element-balance', title: 'Your Elemental Balance', data: elements },
+      { type: 'planetary-strength', title: 'Daily Energy Forecast', data: dailyEnergies },
+    ],
+    sections,
+    glossary: allTerms,
+    wordCount,
+  }
+}
+
+// ============================================
+// MONTHLY FORECAST HELPER FUNCTIONS
+// ============================================
+
+function getMonthMoonPhases(month: number, year: number): { newMoon: { day: number; sign: Sign }; fullMoon: { day: number; sign: Sign } } {
+  // Simplified moon phase calculation - in production would use astronomical data
+  const moonPhaseData: Record<number, { newMoon: { day: number; sign: Sign }; fullMoon: { day: number; sign: Sign } }> = {
+    0: { newMoon: { day: 13, sign: 'Capricorn' }, fullMoon: { day: 28, sign: 'Cancer' } },
+    1: { newMoon: { day: 11, sign: 'Aquarius' }, fullMoon: { day: 26, sign: 'Leo' } },
+    2: { newMoon: { day: 13, sign: 'Pisces' }, fullMoon: { day: 28, sign: 'Virgo' } },
+    3: { newMoon: { day: 11, sign: 'Aries' }, fullMoon: { day: 26, sign: 'Libra' } },
+    4: { newMoon: { day: 11, sign: 'Taurus' }, fullMoon: { day: 26, sign: 'Scorpio' } },
+    5: { newMoon: { day: 9, sign: 'Gemini' }, fullMoon: { day: 24, sign: 'Sagittarius' } },
+    6: { newMoon: { day: 9, sign: 'Cancer' }, fullMoon: { day: 24, sign: 'Capricorn' } },
+    7: { newMoon: { day: 7, sign: 'Leo' }, fullMoon: { day: 22, sign: 'Aquarius' } },
+    8: { newMoon: { day: 6, sign: 'Virgo' }, fullMoon: { day: 21, sign: 'Pisces' } },
+    9: { newMoon: { day: 5, sign: 'Libra' }, fullMoon: { day: 20, sign: 'Aries' } },
+    10: { newMoon: { day: 4, sign: 'Scorpio' }, fullMoon: { day: 19, sign: 'Taurus' } },
+    11: { newMoon: { day: 3, sign: 'Sagittarius' }, fullMoon: { day: 18, sign: 'Gemini' } },
+  }
+  return moonPhaseData[month] || moonPhaseData[0]
+}
+
+function generateDailyEnergies(sun: Sign, moon: Sign, days: number): Record<string, number> {
+  const energies: Record<string, number> = {}
+  const baseEnergy = signData[sun].element === 'Fire' ? 7 : signData[sun].element === 'Air' ? 6 : 5
+  for (let i = 1; i <= days; i++) {
+    const variance = Math.sin(i * 0.5) * 2 + Math.cos(i * 0.3) * 1.5
+    energies[`day${i}`] = Math.max(3, Math.min(10, Math.round(baseEnergy + variance)))
+  }
+  return energies
+}
+
+function getOrdinalSuffix(day: number): string {
+  if (day > 3 && day < 21) return 'th'
+  switch (day % 10) {
+    case 1: return 'st'
+    case 2: return 'nd'
+    case 3: return 'rd'
+    default: return 'th'
+  }
+}
+
+function getMonthQuality(sun: Sign, month: number): string {
+  const qualities = ['transformative', 'expansive', 'dynamic', 'nurturing', 'creative', 'analytical', 'harmonious', 'intense', 'adventurous', 'ambitious', 'innovative', 'reflective']
+  return qualities[month]
+}
+
+function getMonthSupport(sun: Sign, moon: Sign, month: number): string {
+  return `${signData[sun].strengths[0].toLowerCase()} and ${signData[moon].strengths[0].toLowerCase()}`
+}
+
+function getMonthCaution(sun: Sign, month: number): string {
+  return signData[sun].challenges[0].toLowerCase()
+}
+
+function getDetailedTransits(sun: Sign, moon: Sign, rising: Sign, month: number, year: number): string {
+  return `**Sun Transit:** The Sun moves through ${['Capricorn/Aquarius', 'Aquarius/Pisces', 'Pisces/Aries', 'Aries/Taurus', 'Taurus/Gemini', 'Gemini/Cancer', 'Cancer/Leo', 'Leo/Virgo', 'Virgo/Libra', 'Libra/Scorpio', 'Scorpio/Sagittarius', 'Sagittarius/Capricorn'][month]}, illuminating themes of ${['structure and innovation', 'dreams and new beginnings', 'intuition and action', 'initiative and stability', 'security and communication', 'communication and emotion', 'emotion and creativity', 'creativity and service', 'service and partnership', 'partnership and transformation', 'transformation and expansion', 'expansion and achievement'][month]}.
+
+**Venus Transit:** Venus's position this month emphasises ${['committed relationships', 'unconventional love', 'compassionate connection', 'passionate pursuit', 'sensual pleasure', 'intellectual attraction', 'emotional bonding', 'romantic expression', 'practical love', 'balanced partnership', 'deep intimacy', 'adventurous romance'][month]}.
+
+**Mars Transit:** Mars fuels your ${['disciplined ambition', 'innovative action', 'intuitive drive', 'pioneering spirit', 'determined effort', 'versatile energy', 'protective action', 'confident initiative', 'precise execution', 'strategic moves', 'transformative power', 'expansive drive'][month]} this month.`
+}
+
+function getSunTransitEffect(sun: Sign, month: number): string {
+  return `the cosmic spotlight on ${['your ambitions', 'your individuality', 'your dreams', 'your identity', 'your values', 'your communication', 'your home life', 'your creativity', 'your routines', 'your relationships', 'your transformation', 'your expansion'][month]}`
+}
+
+function getMoonTransitEffect(moon: Sign, month: number): string {
+  return `particularly ${['grounding', 'liberating', 'intuitive', 'assertive', 'stabilising', 'stimulating', 'nurturing', 'expressive', 'refining', 'balancing', 'deepening', 'expanding'][month]}`
+}
+
+function getRisingTransitEffect(rising: Sign, month: number): string {
+  return `${['increased responsibility', 'fresh perspectives', 'heightened sensitivity', 'new beginnings', 'material focus', 'busy communications', 'domestic changes', 'creative opportunities', 'health awareness', 'partnership dynamics', 'deep encounters', 'broadening horizons'][month]}`
+}
+
+function getMonthElementalEnergy(month: number): string {
+  const elements = ['Earth/Air', 'Air/Water', 'Water/Fire', 'Fire/Earth', 'Earth/Air', 'Air/Water', 'Water/Fire', 'Fire/Earth', 'Earth/Air', 'Air/Water', 'Water/Fire', 'Fire/Earth']
+  return elements[month]
+}
+
+function getElementalInteraction(dominant: string, month: number): string {
+  return `you'll find natural flow when the month's energy aligns with your ${dominant} nature, and growth opportunities when it challenges you`
+}
+
+function getMercuryMonthlyInfluence(mercury: Sign, month: number, year: number): string {
+  return `Mercury's position affects your ${signData[mercury].element}-style thinking this month. Communication flows best when you honour your ${signData[mercury].keywords[0]} nature. Be mindful of ${signData[mercury].challenges[0].toLowerCase()} in conversations.`
+}
+
+function getVenusMonthlyInfluence(venus: Sign, month: number, year: number): string {
+  return `Venus activates your ${signData[venus].keywords[0]} love nature. Relationships benefit from your natural ${signData[venus].strengths[0].toLowerCase()}. Watch for ${signData[venus].challenges[0].toLowerCase()} in romantic matters.`
+}
+
+function getMarsMonthlyInfluence(mars: Sign, month: number, year: number): string {
+  return `Mars energises your ${signData[mars].keywords[0]} drive. Take action with ${signData[mars].strengths[0].toLowerCase()} while being aware of ${signData[mars].challenges[0].toLowerCase()} tendencies.`
+}
+
+function getOverallMonthEnergy(sun: Sign, month: number): number {
+  const base = signData[sun].element === 'Fire' ? 7 : signData[sun].element === 'Air' ? 6 : signData[sun].element === 'Earth' ? 6 : 5
+  const variance = ((month + 1) % 3)
+  return Math.min(10, base + variance)
+}
+
+function getBestDaysOfMonth(sun: Sign, moon: Sign, days: number): string[] {
+  const element = signData[sun].element
+  const baseDays = element === 'Fire' ? [3, 11, 19, 27] : element === 'Earth' ? [4, 12, 20, 28] : element === 'Air' ? [5, 13, 21, 29] : [2, 10, 18, 26]
+  return baseDays.filter(d => d <= days).map(d => d.toString())
+}
+
+function getChallengingDaysOfMonth(sun: Sign, moon: Sign, days: number): string[] {
+  const element = signData[sun].element
+  const baseDays = element === 'Fire' ? [7, 14, 21] : element === 'Earth' ? [8, 15, 22] : element === 'Air' ? [9, 16, 23] : [6, 13, 20]
+  return baseDays.filter(d => d <= days).map(d => d.toString())
+}
+
+function getPowerDayOfMonth(sun: Sign, month: number, days: number): string {
+  const day = ((month + 1) * 3) % days + 1
+  return `${day}${getOrdinalSuffix(day)}`
+}
+
+function getWeeklyEnergyRating(sun: Sign, week: number, month: number): number {
+  const base = signData[sun].element === 'Fire' ? 7 : 6
+  const weekBonus = [0, 1, 2, -1][week - 1]
+  return Math.min(10, Math.max(4, base + weekBonus + (month % 2)))
+}
+
+function getWeeklyEnergyDescription(sun: Sign, moon: Sign, week: number, month: number): string {
+  const descriptions = [
+    `Setting foundations with ${signData[sun].keywords[0]} intention`,
+    `Building momentum through ${signData[sun].strengths[0].toLowerCase()}`,
+    `Peak energy for ${signData[moon].keywords[0]} experiences`,
+    `Integration and ${signData[sun].keywords[1]} reflection`,
+  ]
+  return descriptions[week - 1]
+}
+
+function getDailyEnergyHighlights(sun: Sign, moon: Sign, energies: Record<string, number>, days: number): string {
+  const highDays: number[] = []
+  const lowDays: number[] = []
+  for (let i = 1; i <= days; i++) {
+    if (energies[`day${i}`] >= 8) highDays.push(i)
+    if (energies[`day${i}`] <= 4) lowDays.push(i)
+  }
+  return `**High Energy Days:** ${highDays.slice(0, 5).join(', ') || 'Varies by week'}\n**Lower Energy Days:** ${lowDays.slice(0, 3).join(', ') || 'Generally stable'}`
+}
+
+// Week 1 Helpers
+function getWeek1Energy(sun: Sign, moon: Sign, month: number): string {
+  return `fresh ${signData[sun].element} energy for new beginnings, supported by your ${signData[moon].keywords[0]} emotional intuition`
+}
+
+function getWeek1DailyBreakdown(sun: Sign, moon: Sign, venus: Sign, mars: Sign, month: number, year: number): string {
+  return `**Day 1:** Fresh start energy - set intentions aligned with your ${sun} nature
+**Day 2:** Building momentum - ${signData[sun].keywords[1]} qualities emerge
+**Day 3:** Social energy peaks - your ${signData[venus].keywords[0]} Venus shines
+**Day 4:** Action-oriented - ${signData[mars].element} Mars energy supports initiative
+**Day 5:** Creative flow - express your ${signData[sun].archetype} nature
+**Day 6:** Relationship focus - connect with ${signData[moon].keywords[0]} depth
+**Day 7:** Rest and reflect - honour your ${signData[moon].element} Moon's needs`
+}
+
+function getWeek1Focus(sun: Sign, data: typeof signData[Sign]): string {
+  return `channel your ${data.keywords[0]} nature into concrete intentions for the month`
+}
+
+function getWeek1MoonActivation(moon: Sign, month: number): string {
+  return `the ${(month + 3) % 7 + 1}${getOrdinalSuffix((month + 3) % 7 + 1)}-${(month + 5) % 7 + 1}${getOrdinalSuffix((month + 5) % 7 + 1)}`
+}
+
+function getWeek1Theme1(sun: Sign, moon: Sign): string {
+  return `Establishing ${signData[sun].keywords[0]} foundations`
+}
+
+function getWeek1Theme2(sun: Sign, venus: Sign): string {
+  return `Opening to ${signData[venus].keywords[0]} connections`
+}
+
+function getWeek1Theme3(sun: Sign, mars: Sign): string {
+  return `Taking ${signData[mars].keywords[0]} action`
+}
+
+function getWeek1Advice(sun: Sign, moon: Sign, sunData: typeof signData[Sign], moonData: typeof signData[Sign]): string {
+  return `Begin the month by honouring both your ${sunData.archetype} identity and your ${moonData.keywords[0]} emotional needs. Set 2-3 clear intentions that align with your ${sunData.strengths[0].toLowerCase()}. Don't rush - your ${moonData.element} Moon needs time to attune to the month's energy.`
+}
+
+// Continue with all remaining helper functions (abbreviated for length - in full implementation, each returns substantial content)
+
+function getWeek1RomanticEnergy(sun: Sign, venus: Sign, moon: Sign, month: number): string {
+  return `The opening week brings ${signData[venus].keywords[0]} romantic energy. Your ${venus} Venus naturally attracts through ${signData[venus].strengths[0].toLowerCase()}, while your ${moon} Moon seeks ${signData[moon].keywords[0]} emotional connection. This combination creates an atmosphere of ${signData[venus].element === signData[moon].element ? 'natural flow' : 'interesting tension'} in love matters.`
+}
+
+function getWeek1SinglesAdvice(sun: Sign, venus: Sign, month: number): string {
+  return `Put yourself in environments that honour your ${signData[venus].keywords[0]} Venus nature. Your natural ${signData[venus].strengths[0].toLowerCase()} is particularly magnetic this week. Avoid ${signData[venus].challenges[0].toLowerCase()} patterns that might sabotage connections.`
+}
+
+function getWeek1CouplesAdvice(sun: Sign, venus: Sign, moon: Sign, month: number): string {
+  return `Focus on ${signData[venus].keywords[0]} expressions of love. Your partner responds well when you show your ${signData[moon].keywords[0]} emotional side. Plan activities that honour both your ${signData[sun].element} Sun's need for ${signData[sun].keywords[0]} experiences and your partner's preferences.`
+}
+
+function getWeek1RomanceDays(venus: Sign, month: number): string {
+  return `${(month + 2) % 7 + 1}${getOrdinalSuffix((month + 2) % 7 + 1)}, ${(month + 5) % 7 + 1}${getOrdinalSuffix((month + 5) % 7 + 1)}`
+}
+
+function getWeek1CommunicationStyle(mercury: Sign, month: number): string {
+  return `${signData[mercury].keywords[0]} and ${signData[mercury].keywords[1]}`
+}
+
+function getWeek1CommunicationCaution(mercury: Sign): string {
+  return signData[mercury].challenges[0].toLowerCase()
+}
+
+function getWeek1CareerEnergy(sun: Sign, mars: Sign, month: number): string {
+  return `Week 1 career energy is ${signData[mars].keywords[0]}, fueled by your ${mars} Mars. Take ${signData[mars].modality.toLowerCase()} approaches to new projects and lead with your ${signData[sun].strengths[0].toLowerCase()}.`
+}
+
+function getWeek1CareerOpportunities(sun: Sign, sunData: typeof signData[Sign], month: number): string {
+  return `Your ${sunData.archetype} nature excels at ${sunData.strengths.slice(0, 2).join(' and ')}. Look for opportunities that let you demonstrate these qualities. The cosmic energy supports ${sunData.keywords[0]} initiatives.`
+}
+
+function getWeek1FinancialOutlook(sun: Sign, venus: Sign, month: number): string {
+  return `Financial energy is ${signData[venus].modality.toLowerCase()} this week. Your ${venus} Venus influences spending toward ${signData[venus].keywords[0]} items. Practice ${signData[sun].element === 'Earth' ? 'your natural prudence' : 'conscious awareness'} with larger purchases.`
+}
+
+function getWeek1CareerDays(mars: Sign, month: number): string {
+  return `${(month + 1) % 7 + 1}${getOrdinalSuffix((month + 1) % 7 + 1)}, ${(month + 4) % 7 + 1}${getOrdinalSuffix((month + 4) % 7 + 1)}`
+}
+
+function getWeek1FinanceDays(venus: Sign, month: number): string {
+  return `${(month + 3) % 7 + 1}${getOrdinalSuffix((month + 3) % 7 + 1)}`
+}
+
+function getWeek1NetworkingAdvice(rising: Sign): string {
+  return `leading with your ${signData[rising].strengths[0].toLowerCase()} while being mindful of ${signData[rising].challenges[0].toLowerCase()}`
+}
+
+// Week 2 Helpers (abbreviated - full implementations follow same pattern)
+function getWeek2Energy(sun: Sign, moon: Sign, month: number): string {
+  return `increasing momentum and ${signData[sun].keywords[1]} expression as you build on Week 1's foundations`
+}
+
+function getWeek2DailyBreakdown(sun: Sign, moon: Sign, venus: Sign, mars: Sign, month: number, year: number): string {
+  return `**Day 8:** Momentum builds - ${signData[mars].keywords[0]} energy supports action
+**Day 9:** Social opportunities - your ${signData[venus].archetype} shines
+**Day 10:** Deep focus day - honour your ${signData[moon].element} Moon's depth
+**Day 11:** Creative expression - ${signData[sun].keywords[1]} energy flows
+**Day 12:** Partnership focus - collaborate with ${signData[venus].keywords[0]} energy
+**Day 13:** Practical progress - ${signData[sun].element} grounding helps
+**Day 14:** Integration day - process the week's experiences`
+}
+
+function getWeek2Focus(sun: Sign, sunData: typeof signData[Sign]): string {
+  return `${sunData.keywords[1]} expression and building on established foundations`
+}
+
+function getWeek2EmotionalFocus(moon: Sign, moonData: typeof signData[Sign]): string {
+  return `${moonData.keywords[0]} activities and ${moonData.element.toLowerCase()} element experiences`
+}
+
+function getWeek2Theme1(sun: Sign, moon: Sign): string { return `Building ${signData[sun].keywords[1]} momentum` }
+function getWeek2Theme2(sun: Sign, venus: Sign): string { return `Deepening ${signData[venus].keywords[0]} connections` }
+function getWeek2Theme3(sun: Sign, mars: Sign): string { return `Sustaining ${signData[mars].keywords[0]} drive` }
+function getWeek2SpecialAlignments(sun: Sign, moon: Sign, month: number, year: number): string {
+  return `Mid-month alignments support ${signData[sun].element}-style progress. Your ${moon} Moon harmonises with these energies around day 10-12.`
+}
+function getWeek2Advice(sun: Sign, moon: Sign, sunData: typeof signData[Sign], moonData: typeof signData[Sign]): string {
+  return `Capitalise on the momentum you've built. Your ${sunData.strengths[1].toLowerCase()} serves you well now. Let your ${moonData.keywords[0]} emotional intelligence guide decisions.`
+}
+function getWeek2RomanticEnergy(sun: Sign, venus: Sign, moon: Sign, month: number): string {
+  return `Romance deepens as Venus energy settles. Your ${venus} Venus nature seeks ${signData[venus].keywords[1]} expression. Emotional intimacy grows through ${signData[moon].keywords[0]} connection.`
+}
+function getWeek2VenusInfluence(venus: Sign, month: number): string { return `${signData[venus].keywords[0]} romantic opportunities` }
+function getWeek2VenusPower(venus: Sign): string { return `${signData[venus].strengths[0].toLowerCase()} in love` }
+function getWeek2SinglesAdvice(sun: Sign, venus: Sign, month: number): string {
+  return `Build on connections from Week 1. Your ${venus} Venus is finding its rhythm. Be authentically ${signData[venus].keywords[0]} - this attracts compatible partners.`
+}
+function getWeek2CouplesAdvice(sun: Sign, venus: Sign, moon: Sign, month: number): string {
+  return `Deepen your bond through ${signData[venus].keywords[0]} experiences. Your ${moon} Moon appreciates ${signData[moon].keywords[1]} emotional gestures from your partner.`
+}
+function getWeek2RomanceDays(venus: Sign, month: number): string { return `${(month + 9) % 7 + 8}${getOrdinalSuffix((month + 9) % 7 + 8)}, ${(month + 12) % 7 + 8}${getOrdinalSuffix((month + 12) % 7 + 8)}` }
+function getWeek2IntimacyAdvice(mars: Sign, venus: Sign): string {
+  return `combine your ${signData[mars].keywords[0]} Mars passion with your ${signData[venus].keywords[0]} Venus tenderness`
+}
+function getWeek2CareerEnergy(sun: Sign, mars: Sign, month: number): string {
+  return `Career momentum builds with ${signData[mars].keywords[0]} Mars energy. Your ${sun} professional presence strengthens.`
+}
+function getWeek2CareerOpportunities(sun: Sign, sunData: typeof signData[Sign], month: number): string {
+  return `Opportunities align with your ${sunData.strengths[1].toLowerCase()}. Projects benefit from your ${sunData.archetype} approach.`
+}
+function getWeek2MarsInfluence(mars: Sign, month: number): string { return `particularly activated` }
+function getWeek2MarsPower(mars: Sign): string { return `${signData[mars].keywords[0]}` }
+function getWeek2FinancialOutlook(sun: Sign, venus: Sign, month: number): string {
+  return `Financial flow steadies. Your ${venus} Venus values guide smart decisions. Consider investments in ${signData[venus].keywords[0]} areas.`
+}
+function getWeek2CareerDays(mars: Sign, month: number): string { return `${(month + 8) % 7 + 8}${getOrdinalSuffix((month + 8) % 7 + 8)}, ${(month + 11) % 7 + 8}${getOrdinalSuffix((month + 11) % 7 + 8)}` }
+function getWeek2FinanceDays(venus: Sign, month: number): string { return `${(month + 10) % 7 + 8}${getOrdinalSuffix((month + 10) % 7 + 8)}` }
+function getWeek2ProjectAdvice(sun: Sign, mars: Sign): string {
+  return `push forward on projects requiring ${signData[sun].keywords[0]} vision and ${signData[mars].keywords[0]} execution`
+}
+
+// Week 3 Helpers (Full Moon week)
+function getWeek3Energy(sun: Sign, moon: Sign, month: number): string {
+  return `peak intensity as the Full Moon illuminates your path, bringing ${signData[sun].keywords[0]} matters to culmination`
+}
+function getFullMoonHouseTheme(sun: Sign, fullMoonSign: Sign): string {
+  return `${signData[fullMoonSign].keywords[0]} matters`
+}
+function getFullMoonPersonalEffect(sun: Sign, moon: Sign, fullMoonSign: Sign): string {
+  return `themes of ${signData[fullMoonSign].keywords[0]} and ${signData[fullMoonSign].keywords[1]} in your ${signData[moon].element} emotional landscape`
+}
+function getWeek3DailyBreakdown(sun: Sign, moon: Sign, venus: Sign, mars: Sign, month: number, year: number, moonPhases: { fullMoon: { day: number; sign: Sign } }): string {
+  return `**Day 15:** Energy intensifies - prepare for Full Moon peak
+**Day 16:** Illumination builds - insights emerge
+**Day 17:** Full Moon approaches - emotions heighten
+**Day ${moonPhases.fullMoon.day}:** FULL MOON in ${moonPhases.fullMoon.sign} - culmination and release
+**Day ${moonPhases.fullMoon.day + 1}:** Post-Full Moon - integration begins
+**Day ${moonPhases.fullMoon.day + 2}:** Processing insights - honour your ${signData[moon].keywords[0]} needs
+**Day 21:** Week closes - waning energy supports release`
+}
+function getWeek3Focus(sun: Sign, sunData: typeof signData[Sign], fullMoonSign: Sign): string {
+  return `Allow the Full Moon in ${fullMoonSign} to reveal what needs attention. Your ${sunData.archetype} nature processes this through ${sunData.element.toLowerCase()} awareness.`
+}
+function getWeek3Theme1(sun: Sign, moon: Sign, fullMoonSign: Sign): string { return `Full Moon revelations in ${signData[fullMoonSign].keywords[0]} matters` }
+function getWeek3Theme2(sun: Sign, venus: Sign): string { return `Relationship clarity and ${signData[venus].keywords[0]} truths` }
+function getWeek3Theme3(sun: Sign, mars: Sign): string { return `Peak ${signData[mars].keywords[0]} energy and decisive action` }
+function getWeek3Advice(sun: Sign, moon: Sign, sunData: typeof signData[Sign], moonData: typeof signData[Sign], fullMoonSign: Sign): string {
+  return `The Full Moon in ${fullMoonSign} peaks your ${sunData.element} energy. Release what no longer serves your ${sunData.archetype} path. Your ${moonData.keywords[0]} Moon may feel extra sensitive - practise self-compassion.`
+}
+function getWeek3RomanticEnergy(sun: Sign, venus: Sign, moon: Sign, fullMoonSign: Sign): string {
+  return `Full Moon intensity amplifies romantic feelings. Your ${venus} Venus nature experiences ${signData[venus].keywords[0]} emotions more powerfully. Relationship truths may surface.`
+}
+function getWeek3MoonRelationshipEffect(moon: Sign, fullMoonSign: Sign): string {
+  return `heightened ${signData[moon].keywords[0]} emotional awareness and ${signData[fullMoonSign].keywords[0]} revelations`
+}
+function getWeek3RelationshipPower(sun: Sign, moon: Sign, fullMoonSign: Sign): string {
+  return `honest conversations and ${signData[moon].element.toLowerCase()}-level emotional connection`
+}
+function getWeek3SinglesAdvice(sun: Sign, venus: Sign, fullMoonSign: Sign): string {
+  return `The Full Moon illuminates what you truly want. Your ${venus} Venus may reveal ${signData[venus].keywords[0]} desires you hadn't fully acknowledged. Trust these insights.`
+}
+function getWeek3CouplesAdvice(sun: Sign, venus: Sign, moon: Sign, fullMoonSign: Sign): string {
+  return `Major relationship insights are possible. Approach conversations with ${signData[moon].keywords[0]} emotional intelligence. What needs to be released? What needs celebrating?`
+}
+function getWeek3RomanceDays(venus: Sign, month: number): string { return `${(month + 15) % 7 + 15}${getOrdinalSuffix((month + 15) % 7 + 15)}, ${(month + 18) % 7 + 15}${getOrdinalSuffix((month + 18) % 7 + 15)}` }
+function getWeek3EmotionalAdvice(moon: Sign, moonData: typeof signData[Sign]): string {
+  return `give yourself ${moonData.element === 'Water' ? 'plenty of alone time to process' : moonData.element === 'Fire' ? 'outlets for emotional expression' : moonData.element === 'Earth' ? 'grounding activities' : 'space to discuss and analyze'}`
+}
+function getWeek3CareerEnergy(sun: Sign, mars: Sign, fullMoonSign: Sign): string {
+  return `Peak career energy coincides with Full Moon visibility. Your ${mars} Mars drive is at maximum ${signData[mars].keywords[0]} power.`
+}
+function getWeek3FullMoonCareerEffect(sun: Sign, fullMoonSign: Sign): string {
+  return `culmination of projects, recognition for efforts, or clarity about direction`
+}
+function getWeek3ProjectStatus(sun: Sign): string { return `reach completion or a significant milestone` }
+function getWeek3CareerOpportunities(sun: Sign, sunData: typeof signData[Sign], fullMoonSign: Sign): string {
+  return `Your ${sunData.strengths[0].toLowerCase()} is most visible now. Take credit for achievements. The Full Moon in ${fullMoonSign} supports ${signData[fullMoonSign].keywords[0]} career moves.`
+}
+function getWeek3FinancialOutlook(sun: Sign, venus: Sign, fullMoonSign: Sign): string {
+  return `Financial matters may reach resolution. The Full Moon illuminates ${signData[fullMoonSign].keywords[0]} money patterns. Good time for ${signData[venus].keywords[0]} financial decisions.`
+}
+function getWeek3CareerDays(mars: Sign, month: number): string { return `${(month + 16) % 7 + 15}${getOrdinalSuffix((month + 16) % 7 + 15)}, ${(month + 19) % 7 + 15}${getOrdinalSuffix((month + 19) % 7 + 15)}` }
+function getWeek3FinanceDays(venus: Sign, month: number): string { return `${(month + 17) % 7 + 15}${getOrdinalSuffix((month + 17) % 7 + 15)}` }
+function getWeek3VisibilityAdvice(sun: Sign, sunData: typeof signData[Sign]): string {
+  return `showcase your ${sunData.giftToWorld.split(',')[0].toLowerCase()}`
+}
+
+// Week 4 Helpers
+function getWeek4Energy(sun: Sign, moon: Sign, month: number): string {
+  return `winding down energy supporting integration of this month's lessons and preparation for the month ahead`
+}
+function getWaningMoonEffect(moon: Sign, moonData: typeof signData[Sign]): string {
+  return `a natural pull toward ${moonData.keywords[0]} introspection and ${moonData.element.toLowerCase()} processing`
+}
+function getWeek4DailyBreakdown(sun: Sign, moon: Sign, venus: Sign, mars: Sign, month: number, year: number, days: number): string {
+  return `**Day 22:** Waning energy - focus on completion
+**Day 23:** Reflection day - review the month's progress
+**Day 24:** Tie up loose ends - ${signData[mars].keywords[1]} follow-through
+**Day 25:** Relationship appreciation - express ${signData[venus].keywords[0]} gratitude
+**Day 26:** Self-care focus - honour your ${signData[moon].element} Moon
+**Day 27:** Planning ahead - set intentions for next month
+**Day ${days}:** Month closes - release and prepare`
+}
+function getWeek4Focus(sun: Sign, sunData: typeof signData[Sign]): string {
+  return `Complete what can be completed, release what needs releasing, and prepare your ${sunData.archetype} self for a new cycle.`
+}
+function getWeek4Theme1(sun: Sign, moon: Sign): string { return `Integration of ${signData[sun].keywords[0]} growth` }
+function getWeek4Theme2(sun: Sign, venus: Sign): string { return `${signData[venus].keywords[0]} relationship appreciation` }
+function getWeek4Theme3(sun: Sign, mars: Sign): string { return `Sustainable ${signData[mars].keywords[1]} energy management` }
+function getNextMonthPreparation(sun: Sign, moon: Sign, month: number): string {
+  return `As this month closes, set intentions for next month that honour your ${signData[sun].archetype} nature and ${signData[moon].keywords[0]} emotional needs. What worked this month? What needs adjustment?`
+}
+function getWeek4Advice(sun: Sign, moon: Sign, sunData: typeof signData[Sign], moonData: typeof signData[Sign]): string {
+  return `Allow the waning Moon to support release. Your ${sunData.archetype} self benefits from reflection. Your ${moonData.keywords[0]} Moon appreciates gentler pacing. Don't force new beginnings - that energy returns with the New Moon.`
+}
+function getWeek4RomanticEnergy(sun: Sign, venus: Sign, moon: Sign, month: number): string {
+  return `Softer romantic energy supports deepening existing bonds. Your ${venus} Venus expresses through ${signData[venus].keywords[1]} gestures. Quality time over grand gestures.`
+}
+function getWeek4RelationshipReflection(sun: Sign, venus: Sign, moon: Sign): string {
+  return `what the month revealed about your ${signData[venus].keywords[0]} needs and your ${signData[moon].keywords[0]} emotional patterns in love`
+}
+function getWeek4SinglesAdvice(sun: Sign, venus: Sign, month: number): string {
+  return `Use this reflective energy to clarify what you want. Your ${venus} Venus has learned something this month - what is it? Prepare your ${signData[sun].archetype} self for fresh opportunities next month.`
+}
+function getWeek4CouplesAdvice(sun: Sign, venus: Sign, moon: Sign, month: number): string {
+  return `Express appreciation for your partner. Your ${moon} Moon values ${signData[moon].keywords[0]} acknowledgment. Plan something nurturing together rather than adventurous.`
+}
+function getWeek4RomanceDays(venus: Sign, month: number): string { return `${(month + 23) % 7 + 22}${getOrdinalSuffix((month + 23) % 7 + 22)}, ${(month + 26) % 7 + 22}${getOrdinalSuffix((month + 26) % 7 + 22)}` }
+function getWeek4BondingAdvice(moon: Sign, venus: Sign): string {
+  return `${signData[moon].keywords[0]} conversations and ${signData[venus].keywords[0]} activities that don't require high energy`
+}
+function getWeek4CareerEnergy(sun: Sign, mars: Sign, month: number): string {
+  return `Career energy winds down naturally. Focus on completing rather than starting. Your ${mars} Mars does well with ${signData[mars].keywords[1]} follow-through this week.`
+}
+function getWeek4AccomplishmentReview(sun: Sign, sunData: typeof signData[Sign]): string {
+  return `areas aligned with your ${sunData.strengths[0].toLowerCase()} and ${sunData.strengths[1].toLowerCase()}`
+}
+function getWeek4CareerFocus(sun: Sign, sunData: typeof signData[Sign], month: number): string {
+  return `Completion, documentation, and preparation. Your ${sunData.archetype} nature benefits from seeing what's been accomplished before rushing into new projects.`
+}
+function getWeek4FinancialOutlook(sun: Sign, venus: Sign, month: number): string {
+  return `Financial energy stabilises. Good time for reviewing budgets and financial goals. Your ${venus} Venus appreciates ${signData[venus].keywords[0]} but conservative approaches.`
+}
+function getWeek4PlanningAdvice(sun: Sign, sunData: typeof signData[Sign]): string {
+  return `strategic reflection that honours your ${sunData.keywords[0]} vision while grounding it in realistic steps`
+}
+function getWeek4CareerDays(mars: Sign, month: number): string { return `${(month + 24) % 7 + 22}${getOrdinalSuffix((month + 24) % 7 + 22)}` }
+function getWeek4FinanceDays(venus: Sign, month: number): string { return `${(month + 25) % 7 + 22}${getOrdinalSuffix((month + 25) % 7 + 22)}` }
+
+// Moon Phase Helpers
+function getNewMoonDetailedGuidance(sun: Sign, moon: Sign, newMoonSign: Sign): string {
+  return `The New Moon in ${newMoonSign} marks a powerful fresh start in ${signData[newMoonSign].keywords[0]} matters. For your ${sun} Sun, this lunar reset activates themes of ${signData[newMoonSign].keywords.slice(0, 2).join(' and ')}. Your ${moon} Moon will feel this as an invitation to ${signData[moon].element === signData[newMoonSign].element ? 'flow naturally with new emotional currents' : 'stretch into new emotional territory'}.
+
+This is the ideal time to plant seeds for ${signData[newMoonSign].keywords[0]} goals. The dark Moon supports inner reflection before external action. What do you want to create in the coming lunar cycle? Let your ${signData[sun].archetype} vision guide your intentions.`
+}
+function getNewMoonIntentions(sun: Sign, moon: Sign, newMoonSign: Sign): string {
+  return `• Intentions related to ${signData[newMoonSign].keywords[0]} and ${signData[newMoonSign].keywords[1]}
+• Goals that express your ${signData[sun].keywords[0]} core nature
+• Emotional growth in ${signData[moon].keywords[0]} areas
+• ${signData[newMoonSign].archetype}-style beginnings`
+}
+function getNewMoonRitual(sun: Sign, moon: Sign, newMoonSign: Sign): string {
+  return `Create sacred space that honours your ${signData[sun].element} Sun element (${signData[sun].element === 'Fire' ? 'candles, warmth' : signData[sun].element === 'Earth' ? 'crystals, plants' : signData[sun].element === 'Air' ? 'incense, open windows' : 'water, moonlight'}). Write 3 intentions for the coming cycle. Speak them aloud. Trust your ${signData[moon].keywords[0]} Moon to guide implementation.`
+}
+function getFullMoonDetailedGuidance(sun: Sign, moon: Sign, fullMoonSign: Sign): string {
+  return `The Full Moon in ${fullMoonSign} brings illumination and culmination to ${signData[fullMoonSign].keywords[0]} matters. For your ${sun} Sun, this lunar peak reveals truths about ${signData[fullMoonSign].keywords.slice(0, 2).join(' and ')}. Your ${moon} Moon will experience ${signData[moon].element === signData[fullMoonSign].element ? 'intensified' : 'contrasting'} emotional energy.
+
+This is not the time for starting - it's for seeing clearly, celebrating completion, and releasing what no longer serves. What has reached its peak? What needs to be let go? The Full Moon's light shows you what your ${signData[sun].archetype} self needs to acknowledge.`
+}
+function getFullMoonCulmination(sun: Sign, moon: Sign, fullMoonSign: Sign): string {
+  return `Matters related to ${signData[fullMoonSign].keywords[0]} may reach a turning point. Projects begun at the last New Moon may complete. Relationship dynamics become clear. Your ${signData[sun].keywords[0]} path forward is illuminated.`
+}
+function getFullMoonRitual(sun: Sign, moon: Sign, fullMoonSign: Sign): string {
+  return `Under the Full Moon, write down what you're releasing - habits, beliefs, situations that no longer serve your ${signData[sun].archetype} nature. Safely burn or tear up the paper. Thank the Full Moon in ${fullMoonSign} for the clarity. Let your ${signData[moon].keywords[0]} Moon release emotional weight.`
+}
+function getMoonThroughSignsGuidance(moon: Sign, moonData: typeof signData[Sign]): string {
+  const signs: Sign[] = ['Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo', 'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces']
+  return signs.map(sign => {
+    const harmony = signData[sign].element === moonData.element ? 'harmonious' :
+                   (signData[sign].element === 'Fire' && moonData.element === 'Air') ||
+                   (signData[sign].element === 'Air' && moonData.element === 'Fire') ||
+                   (signData[sign].element === 'Earth' && moonData.element === 'Water') ||
+                   (signData[sign].element === 'Water' && moonData.element === 'Earth') ? 'supportive' : 'challenging but growth-oriented'
+    return `**Moon in ${sign}:** ${harmony} for your ${moon} Moon - ${signData[sign].keywords[0]} emotional energy`
+  }).join('\n')
+}
+function getBestMoonSignForDecisions(sun: Sign, moon: Sign): string { return `${moon} (your natal Moon), ${sun}, or earth signs for practical matters` }
+function getBestMoonSignForProjects(sun: Sign, mars: Sign): string { return `${signData[mars].element} signs, especially ${mars}` }
+function getBestMoonSignForRomance(venus: Sign, moon: Sign): string { return `${venus}, ${moon}, or ${signData[venus].element} signs` }
+function getBestMoonSignForRest(moon: Sign): string { return `${moon} (your comfort zone), Cancer, or Pisces` }
+function getBestMoonSignForSocial(sun: Sign, rising: Sign): string { return `${rising}, air signs, or ${sun}` }
+function getBestMoonSignForFinance(sun: Sign, venus: Sign): string { return `Taurus, Capricorn, or ${venus}` }
+
+// Love Section Helpers
+function getOverallRomanticEnergy(venus: Sign, month: number): number {
+  const base = signData[venus].element === 'Water' || signData[venus].element === 'Fire' ? 7 : 6
+  return Math.min(10, base + (month % 3))
+}
+function getVenusMonthlyLoveLanguage(venus: Sign, month: number): string {
+  return `this is heightened, making ${signData[venus].strengths[0].toLowerCase()} particularly important in your romantic expression`
+}
+function getMonthlyAttractionPattern(venus: Sign, sun: Sign, month: number): string {
+  return `${signData[venus].keywords.slice(0, 2).join(', ')} qualities, especially those who complement your ${sun} Sun nature`
+}
+function getMoonAttractionPattern(moon: Sign, moonData: typeof signData[Sign]): string {
+  return `can provide ${moonData.keywords.slice(0, 2).join(' and ')} emotional connection`
+}
+function getBestRomanceDaysDetailed(venus: Sign, moon: Sign, month: number, days: number): string {
+  const venusDays = [(month + 3) % days + 1, (month + 11) % days + 1, (month + 19) % days + 1, (month + 25) % days + 1]
+  return `**${venusDays[0]}${getOrdinalSuffix(venusDays[0])}:** Venus energy peaks - ideal for dates and declarations
+**${venusDays[1]}${getOrdinalSuffix(venusDays[1])}:** Emotional connection deepens
+**${venusDays[2]}${getOrdinalSuffix(venusDays[2])}:** Romantic opportunities arise
+**${venusDays[3]}${getOrdinalSuffix(venusDays[3])}:** Appreciation and bonding`
+}
+function getRomanceCautionDays(venus: Sign, mars: Sign, month: number, days: number): string {
+  const cautionDays = [(month + 7) % days + 1, (month + 14) % days + 1]
+  return `**${cautionDays[0]}${getOrdinalSuffix(cautionDays[0])} & ${cautionDays[1]}${getOrdinalSuffix(cautionDays[1])}:** Potential friction - be mindful of ${signData[venus].challenges[0].toLowerCase()} patterns`
+}
+function getVenusRetrogradeStatus(month: number, year: number): string {
+  return `Venus is direct this month, supporting healthy relationship progress and clear romantic perception.`
+}
+function getSinglesMonthlyOutlook(sun: Sign, venus: Sign, month: number): string {
+  return `good opportunities for ${signData[venus].keywords[0]} connections, especially when you lead with your ${signData[sun].archetype} authenticity`
+}
+function getSinglesVenueAdvice(rising: Sign, venus: Sign, month: number): string {
+  return `${signData[venus].element === 'Fire' ? 'active social events, fitness classes, or adventure activities' : signData[venus].element === 'Earth' ? 'quality restaurants, museums, or nature settings' : signData[venus].element === 'Air' ? 'intellectual gatherings, book clubs, or networking events' : 'intimate gatherings, artistic venues, or spiritual communities'}`
+}
+function getSinglesSuperpower(sun: Sign, venus: Sign, month: number): string {
+  return `Your ${signData[sun].giftToWorld.split(',')[0].toLowerCase()} combined with ${signData[venus].keywords[0]} charm creates magnetic attraction this month.`
+}
+function getSinglesWatchOut(sun: Sign, venus: Sign, moon: Sign, month: number): string {
+  return `Be aware of ${signData[venus].challenges[0].toLowerCase()} patterns that might sabotage promising connections. Your ${moon} Moon may create ${signData[moon].challenges[0].toLowerCase()} defenses - stay open.`
+}
+function getSinglesWeekGuide(sun: Sign, venus: Sign, week: number, month: number): string {
+  const guides = [
+    `Set intentions for what you want; be authentically ${signData[sun].keywords[0]}`,
+    `Actively engage - your ${signData[venus].keywords[0]} energy is building`,
+    `Peak attraction energy around Full Moon - put yourself out there`,
+    `Reflect on learnings; prepare for next month's opportunities`,
+  ]
+  return guides[week - 1]
+}
+function getSelfLoveAdvice(sun: Sign, moon: Sign, venus: Sign): string {
+  return `Practise ${signData[venus].keywords[0]} self-care that honours both your ${signData[sun].archetype} identity and your ${signData[moon].keywords[0]} emotional needs. Self-love attracts the right partners.`
+}
+function getCouplesMonthlyOutlook(sun: Sign, venus: Sign, moon: Sign, month: number): string {
+  return `opportunities for ${signData[venus].keywords[0]} deepening, especially when you honour your partner's need for ${signData[moon].keywords[0]} emotional connection`
+}
+function getCouplesCommunicationAdvice(mercury: Sign, month: number): string {
+  return `lean into your ${signData[mercury].strengths[0].toLowerCase()} while being mindful of ${signData[mercury].challenges[0].toLowerCase()} tendencies in important conversations`
+}
+function getCouplesIntimacyAdvice(mars: Sign, venus: Sign, month: number): string {
+  return `${signData[mars].keywords[0]} physical connection balanced with ${signData[venus].keywords[0]} emotional intimacy`
+}
+function getCouplesFrictionPoints(sun: Sign, moon: Sign, venus: Sign, month: number): string {
+  return `Watch for ${signData[sun].challenges[0].toLowerCase()} triggers. Your ${moon} Moon may react to ${signData[moon].challenges[0].toLowerCase()} patterns. Your ${venus} Venus can smooth things with ${signData[venus].strengths[0].toLowerCase()}.`
+}
+function getCouplesNavigationAdvice(sun: Sign, moon: Sign, month: number): string {
+  return `Lead with your ${signData[sun].strengths[0].toLowerCase()}. Listen with your ${signData[moon].keywords[0]} emotional intelligence. Remember you're on the same team.`
+}
+function getDateNightIdeas(sun: Sign, venus: Sign, month: number): string {
+  const element = signData[venus].element
+  return element === 'Fire' ? `Adventure date, dancing, competitive games, or exciting new restaurant` :
+         element === 'Earth' ? `Luxury dining, spa experience, nature walk, or cooking together` :
+         element === 'Air' ? `Cultural event, gallery opening, interesting documentary, or lively social gathering` :
+         `Romantic movie, meaningful conversation spot, art-making together, or stargazing`
+}
+function getCouplesWeekGuide(sun: Sign, venus: Sign, moon: Sign, week: number, month: number): string {
+  const guides = [
+    `Set shared intentions for the month; have the "what do we want?" conversation`,
+    `Build momentum together; support each other's ${signData[sun].keywords[0]} goals`,
+    `Full Moon intensity - be extra gentle; celebrate your bond`,
+    `Appreciate and reflect; plan next month's adventures together`,
+  ]
+  return guides[week - 1]
+}
+
+// Career Section Helpers
+function getOverallCareerEnergy(mars: Sign, sun: Sign, month: number): number {
+  const base = signData[mars].element === 'Fire' || signData[mars].modality === 'Cardinal' ? 7 : 6
+  return Math.min(10, base + (month % 3))
+}
+function getMonthlyCareerStrengths(sun: Sign, sunData: typeof signData[Sign], month: number): string {
+  return `these qualities are especially valuable as the cosmic weather supports ${sunData.keywords[0]} professional expression`
+}
+function getMonthlyCareerGrowth(sun: Sign, sunData: typeof signData[Sign], month: number): string {
+  return `Work on ${sunData.challenges[0].toLowerCase()} patterns that might limit professional growth. This month supports developing your ${sunData.keywords[1]} approach.`
+}
+function getBestCareerDaysDetailed(mars: Sign, sun: Sign, month: number, days: number): string {
+  const marsDays = [(month + 2) % days + 1, (month + 9) % days + 1, (month + 16) % days + 1, (month + 23) % days + 1]
+  return `**${marsDays[0]}${getOrdinalSuffix(marsDays[0])}:** High drive - ideal for challenging projects
+**${marsDays[1]}${getOrdinalSuffix(marsDays[1])}:** Strategic action - good for negotiations
+**${marsDays[2]}${getOrdinalSuffix(marsDays[2])}:** Peak visibility - present your work
+**${marsDays[3]}${getOrdinalSuffix(marsDays[3])}:** Completion energy - finish outstanding tasks`
+}
+function getCareerCautionDays(mars: Sign, mercury: Sign, month: number, days: number): string {
+  const cautionDays = [(month + 6) % days + 1, (month + 20) % days + 1]
+  return `**${cautionDays[0]}${getOrdinalSuffix(cautionDays[0])} & ${cautionDays[1]}${getOrdinalSuffix(cautionDays[1])}:** Lower energy - avoid major presentations or confrontations if possible`
+}
+function getMercuryRetrogradeCareerStatus(mercury: Sign, month: number, year: number): string {
+  return `Mercury is direct, supporting clear professional communication and smooth project progress.`
+}
+function getOverallFinancialEnergy(venus: Sign, sun: Sign, month: number): number {
+  const base = signData[venus].element === 'Earth' ? 7 : 6
+  return Math.min(10, base + (month % 3))
+}
+function getIncomeOutlook(sun: Sign, venus: Sign, month: number): string {
+  return `Income potential aligns with your ${signData[sun].strengths[0].toLowerCase()} expressions. Your ${venus} Venus attracts resources through ${signData[venus].keywords[0]} channels.`
+}
+function getSpendingTendencies(venus: Sign): string {
+  return `${signData[venus].keywords.slice(0, 2).join(', ')} items and experiences`
+}
+function getMonthlySpendingAdvice(venus: Sign, month: number): string {
+  return `balance your ${signData[venus].keywords[0]} desires with practical considerations`
+}
+function getInvestmentAdvice(sun: Sign, venus: Sign, month: number): string {
+  return `Good month for ${signData[venus].element === 'Earth' ? 'conservative investments' : 'research and planning'}. Your ${sun} strategic sense supports long-term thinking.`
+}
+function getBestFinanceDaysDetailed(venus: Sign, month: number, days: number): string {
+  const venusDays = [(month + 4) % days + 1, (month + 12) % days + 1, (month + 20) % days + 1, (month + 26) % days + 1]
+  return `**${venusDays[0]}${getOrdinalSuffix(venusDays[0])}:** Good for negotiations and deals
+**${venusDays[1]}${getOrdinalSuffix(venusDays[1])}:** Positive for investments
+**${venusDays[2]}${getOrdinalSuffix(venusDays[2])}:** Review finances at Full Moon
+**${venusDays[3]}${getOrdinalSuffix(venusDays[3])}:** Plan next month's budget`
+}
+function getFinanceWeekGuide(sun: Sign, venus: Sign, week: number, month: number): string {
+  const guides = [
+    `Set financial intentions; review last month's spending`,
+    `Act on opportunities; your ${signData[venus].keywords[0]} judgment is sound`,
+    `Full Moon financial review; release unhelpful money patterns`,
+    `Plan and prepare; conservative approach serves you`,
+  ]
+  return guides[week - 1]
+}
+function getIdealProjectsToStart(sun: Sign, mars: Sign, month: number): string {
+  return `Projects requiring ${signData[sun].strengths[0].toLowerCase()} and ${signData[mars].keywords[0]} execution. Your ${signData[sun].archetype} nature excels at ${signData[sun].keywords.slice(0, 2).join(' and ')} initiatives.`
+}
+function getProjectsToComplete(sun: Sign, month: number): string {
+  return `Anything started in previous months that aligns with your ${signData[sun].keywords[0]} strengths. The cosmic weather supports ${signData[sun].modality.toLowerCase()} completion energy.`
+}
+function getProjectsToPause(sun: Sign, mercury: Sign, month: number): string {
+  return `Projects requiring extensive communication during lower ${signData[mercury].element} mental energy periods. Wait for better timing on complex negotiations.`
+}
+function getProductivityStyle(sun: Sign, mars: Sign, month: number): string {
+  return `Your ${sun} Sun works best with ${signData[sun].element === 'Fire' ? 'bursts of passionate focus' : signData[sun].element === 'Earth' ? 'steady, methodical progress' : signData[sun].element === 'Air' ? 'variety and mental stimulation' : 'emotionally meaningful work'}. Your ${mars} Mars adds ${signData[mars].keywords[0]} drive.`
+}
+function getCollaborationForecast(sun: Sign, rising: Sign, month: number): string {
+  return `Your ${rising} Rising makes you ${signData[rising].keywords[0]} in team settings. Collaborate with those who complement your ${signData[sun].element} energy - ${signData[sun].element === 'Fire' ? 'Earth signs for grounding' : signData[sun].element === 'Earth' ? 'Water signs for intuition' : signData[sun].element === 'Air' ? 'Fire signs for action' : 'Air signs for objectivity'}.`
+}
+function getNetworkingOpportunities(sun: Sign, rising: Sign, month: number): string {
+  return `Lead with your ${signData[rising].strengths[0].toLowerCase()}. Your ${signData[sun].archetype} authenticity attracts valuable professional connections.`
+}
+
+// Health Section Helpers
+function getOverallHealthEnergy(sun: Sign, mars: Sign, month: number): number {
+  const base = signData[mars].element === 'Fire' || signData[sun].element === 'Fire' ? 7 : 6
+  return Math.min(10, base + (month % 3))
+}
+function getMonthlyWellnessNeed(sun: Sign, sunData: typeof signData[Sign], month: number): string {
+  return `${sunData.element === 'Fire' ? 'outlets for physical energy and passion' : sunData.element === 'Earth' ? 'grounding routines and nature connection' : sunData.element === 'Air' ? 'mental stimulation and social activity' : 'emotional processing and creative expression'}`
+}
+function getExerciseRecommendations(sun: Sign, mars: Sign, month: number): string {
+  const marsElement = signData[mars].element
+  return marsElement === 'Fire' ? `High-intensity workouts, competitive sports, martial arts, dance cardio` :
+         marsElement === 'Earth' ? `Strength training, hiking, yoga, Pilates, outdoor activities` :
+         marsElement === 'Air' ? `Group fitness classes, cycling, tennis, interval training` :
+         `Swimming, water aerobics, restorative yoga, tai chi`
+}
+function getEnergyPeaksDips(sun: Sign, month: number): string {
+  return `**Energy Peaks:** Around New Moon and when Moon transits ${sun} or compatible signs
+**Energy Dips:** Around Full Moon emotional intensity and when Moon squares your Sun sign
+**Best Exercise Times:** Morning for ${signData[sun].element === 'Fire' || signData[sun].element === 'Air' ? 'capitalising on natural energy' : 'building momentum before the day'}`
+}
+function getHealthWatchPoints(sun: Sign, sunData: typeof signData[Sign]): string {
+  return `${sunData.element === 'Fire' ? 'burnout, inflammation, head/face issues' : sunData.element === 'Earth' ? 'stubborn health habits, throat/neck issues, weight' : sunData.element === 'Air' ? 'nervous system stress, respiratory issues, overthinking' : 'emotional eating, digestive issues, boundary problems'}`
+}
+function getMonthlyHealthAttention(sun: Sign, month: number): string {
+  return `stress management and ${signData[sun].element === 'Fire' ? 'not overextending' : signData[sun].element === 'Earth' ? 'flexibility' : signData[sun].element === 'Air' ? 'grounding' : 'emotional boundaries'}`
+}
+function getBestDaysForFitness(mars: Sign, month: number): string { return `${(month + 3) % 28 + 1}${getOrdinalSuffix((month + 3) % 28 + 1)}, ${(month + 10) % 28 + 1}${getOrdinalSuffix((month + 10) % 28 + 1)}` }
+function getBestDaysForRest(moon: Sign, month: number): string { return `${(month + 5) % 28 + 1}${getOrdinalSuffix((month + 5) % 28 + 1)}, ${(month + 12) % 28 + 1}${getOrdinalSuffix((month + 12) % 28 + 1)}` }
+function getBestDaysForHealth(month: number): string { return `${(month + 7) % 28 + 1}${getOrdinalSuffix((month + 7) % 28 + 1)}` }
+function getEmotionalWeather(moon: Sign, moonData: typeof signData[Sign], month: number): string {
+  return `${moonData.keywords.slice(0, 2).join(' and ')} emotional currents, with particular intensity around the lunar phases`
+}
+function getMentalEnergyForecast(mercury: Sign, month: number): string {
+  return `Your ${mercury} Mercury brings ${signData[mercury].keywords[0]} mental energy. Thought processes are ${signData[mercury].element === 'Air' ? 'quick and multifaceted' : signData[mercury].element === 'Fire' ? 'intuitive and confident' : signData[mercury].element === 'Earth' ? 'practical and thorough' : 'imaginative and feeling-based'}.`
+}
+function getStressManagement(sun: Sign, moon: Sign): string {
+  return `${signData[sun].element === 'Fire' ? 'physical activity and creative outlets' : signData[sun].element === 'Earth' ? 'nature time and sensory pleasures' : signData[sun].element === 'Air' ? 'talking it out and intellectual engagement' : 'solitude and artistic expression'}`
+}
+function getSelfCarePractices(sun: Sign, moon: Sign, month: number): string {
+  return `**${signData[sun].element} Sun Practices:** ${signData[sun].element === 'Fire' ? 'Active rest, passion projects, sunny outdoor time' : signData[sun].element === 'Earth' ? 'Massage, quality food, garden time, comfortable spaces' : signData[sun].element === 'Air' ? 'Social time, learning, journaling, fresh air' : 'Baths, music, creative expression, moon gazing'}
+
+**${signData[moon].element} Moon Practices:** ${signData[moon].element === 'Fire' ? 'Emotional expression through movement' : signData[moon].element === 'Earth' ? 'Comfort items and routines' : signData[moon].element === 'Air' ? 'Processing through conversation' : 'Emotional release rituals'}`
+}
+function getEmotionalTriggers(moon: Sign, month: number): string {
+  return signData[moon].challenges.slice(0, 2).join(' and ').toLowerCase()
+}
+function getMoonNavigationAdvice(moon: Sign, moonData: typeof signData[Sign]): string {
+  return `leaning into your ${moonData.strengths[0].toLowerCase()} while being gentle with your ${moonData.challenges[0].toLowerCase()} tendencies`
+}
+function getMindfulnessFocus(sun: Sign, moon: Sign, month: number): string {
+  return `This month, practise ${signData[sun].element === 'Fire' ? 'present-moment awareness through action' : signData[sun].element === 'Earth' ? 'body-based mindfulness' : signData[sun].element === 'Air' ? 'breath work and meditation' : 'emotional mindfulness and compassion practices'}. Your ${moon} Moon responds well to ${signData[moon].element.toLowerCase()} element practices.`
+}
+function getSleepForecast(moon: Sign, month: number): string {
+  return `expect ${signData[moon].element === 'Water' ? 'vivid dreams and emotional processing during sleep' : signData[moon].element === 'Fire' ? 'active sleep and morning energy' : signData[moon].element === 'Earth' ? 'steady sleep patterns when routine is maintained' : 'variable sleep depending on mental activity'}`
+}
+function getOptimalSleepPractices(moon: Sign, moonData: typeof signData[Sign]): string {
+  return `Your ${moon} Moon rests best with ${moonData.element === 'Water' ? 'calming rituals, water sounds, and emotional closure before bed' : moonData.element === 'Fire' ? 'physical tiredness, cooler rooms, and minimal stimulation' : moonData.element === 'Earth' ? 'consistent bedtime, comfortable bedding, and no screens' : 'wind-down conversations, reading, and mental clearing'}.`
+}
+function getDreamForecast(moon: Sign, moonPhases: { fullMoon: { sign: Sign } }): string {
+  return `more vivid and potentially significant dreams around the Full Moon in ${moonPhases.fullMoon.sign}. Your ${moon} Moon may process ${signData[moon].keywords[0]} themes through dream imagery.`
+}
+function getRestRecoveryAdvice(sun: Sign, moon: Sign): string {
+  return `${signData[sun].element === 'Fire' ? 'allowing yourself to slow down without guilt' : signData[sun].element === 'Earth' ? 'restorative activities that feel productive' : signData[sun].element === 'Air' ? 'quiet mental space without over-analysis' : 'emotional release and gentle self-compassion'}`
+}
+function getEnergyManagementTips(sun: Sign, mars: Sign, moon: Sign): string {
+  return `**Morning:** Align with your ${signData[mars].element} Mars for optimal activity
+**Midday:** Use your ${signData[sun].keywords[0]} Sun strengths
+**Evening:** Honour your ${signData[moon].element} Moon's emotional needs
+**Key:** Don't fight your natural rhythm - work with your ${signData[sun].archetype} nature`
+}
+
+// Growth Section Helpers
+function getMonthlyGrowthTheme(sun: Sign, moon: Sign, month: number): string {
+  return `Integrating your ${signData[sun].keywords[0]} Sun expression with your ${signData[moon].keywords[0]} emotional authenticity. This month supports growth in ${signData[sun].lifeLesson.split(',')[0].toLowerCase()}.`
+}
+function getShadowWorkOpportunity(sun: Sign, sunData: typeof signData[Sign], month: number): string {
+  return `notice when this pattern arises and consciously choose your ${sunData.strengths[0].toLowerCase()} response instead`
+}
+function getStrengthsDevelopment(sun: Sign, sunData: typeof signData[Sign], month: number): string {
+  return `This month particularly supports developing your ${sunData.strengths.slice(0, 2).join(' and ')}. Look for opportunities to practise these in new contexts.`
+}
+function getGrowthChallenges(sun: Sign, moon: Sign, month: number): string {
+  return `Watch for ${signData[sun].challenges[0].toLowerCase()} patterns that might emerge, especially when your ${moon} Moon feels ${signData[moon].challenges[0].toLowerCase()}. These are growth opportunities, not failures.`
+}
+function getMonthlyAffirmations(sun: Sign, sunData: typeof signData[Sign], month: number): string {
+  return `• "I honour my ${sunData.archetype} nature"
+• "My ${sunData.strengths[0].toLowerCase()} serves me well"
+• "I am growing beyond ${sunData.challenges[0].toLowerCase()}"
+• "I share my ${sunData.giftToWorld.split(',')[0].toLowerCase()} generously"`
+}
+function getSpiritualSupport(moon: Sign, moonData: typeof signData[Sign], month: number): string {
+  return `${moonData.keywords[0]} spiritual practices and ${moonData.element.toLowerCase()} element connections`
+}
+function getIntuitionForecast(moon: Sign, month: number): string {
+  return `Your ${moon} Moon's intuition is particularly strong around the lunar phases. Trust your ${signData[moon].element === 'Water' ? 'gut feelings and dreams' : signData[moon].element === 'Fire' ? 'sudden knowings and hunches' : signData[moon].element === 'Earth' ? 'body wisdom and practical insights' : 'mental patterns and synchronicities'}.`
+}
+function getMeditationGuidance(sun: Sign, moon: Sign, month: number): string {
+  return `Try ${signData[sun].element === 'Fire' ? 'active meditation, walking meditation, or candle gazing' : signData[sun].element === 'Earth' ? 'body scan, grounding meditation, or nature meditation' : signData[sun].element === 'Air' ? 'breath work, guided visualisation, or mantra meditation' : 'water meditation, emotional release meditation, or moon meditation'}.`
+}
+function getJournalingPrompts(sun: Sign, moon: Sign, month: number): string {
+  return `• "How is my ${signData[sun].archetype} nature expressing this month?"
+• "What is my ${moon} Moon teaching me about my emotional needs?"
+• "Where am I growing beyond ${signData[sun].challenges[0].toLowerCase()}?"
+• "What does my ${signData[sun].giftToWorld.split(',')[0].toLowerCase()} look like in action?"`
+}
+function getElementalPractices(sun: Sign, sunData: typeof signData[Sign]): string {
+  return `**${sunData.element} Element Practices:**
+${sunData.element === 'Fire' ? '• Work with actual fire (candles, fireplaces, sun exposure)\n• Movement practices that generate internal heat\n• Creative expression and passion projects' : sunData.element === 'Earth' ? '• Grounding exercises and nature connection\n• Working with crystals, plants, or earth\n• Practical manifestation practices' : sunData.element === 'Air' ? '• Breathwork and pranayama\n• Sound healing and mantra\n• Intellectual study of spiritual topics' : '• Water rituals (baths, swimming, rain walks)\n• Emotional release practices\n• Moon ceremonies and dream work'}`
+}
+
+// Summary Section Helpers
+function getMonthlyBigPicture(sun: Sign, moon: Sign, month: number): string {
+  return `${signData[sun].keywords.slice(0, 2).join(' and ')} expression while honouring ${signData[moon].keywords[0]} emotional truth`
+}
+function getMonthlyEquipment(sun: Sign, moon: Sign, rising: Sign): string {
+  return `navigate both challenges and opportunities with ${signData[sun].strengths[0].toLowerCase()}, ${signData[moon].strengths[0].toLowerCase()}, and ${signData[rising].strengths[0].toLowerCase()}`
+}
+function getFinalWisdom(sun: Sign, moon: Sign, month: number): string {
+  return `Remember that as a ${sun}, your ${signData[sun].lifeLesson.split(',')[0].toLowerCase()} journey is ongoing. Each month offers new chances to grow. Trust your ${moon} Moon's emotional wisdom and lead with your ${signData[sun].archetype} authenticity.`
+}
+function getNewMoonQuickRef(sun: Sign, newMoonSign: Sign): string {
+  return `Set ${signData[newMoonSign].keywords[0]} intentions`
+}
+function getFullMoonQuickRef(sun: Sign, fullMoonSign: Sign): string {
+  return `Release ${signData[fullMoonSign].challenges[0].toLowerCase()} patterns`
+}
+function getBestRomanceDaysSimple(venus: Sign, days: number): string {
+  return `${(Math.floor(days / 4)) + 3}${getOrdinalSuffix((Math.floor(days / 4)) + 3)}, ${(Math.floor(days / 2)) + 2}${getOrdinalSuffix((Math.floor(days / 2)) + 2)}`
+}
+function getBestFinanceDaysSimple(venus: Sign, days: number): string {
+  return `${(Math.floor(days / 4)) + 5}${getOrdinalSuffix((Math.floor(days / 4)) + 5)}, ${(Math.floor(days / 2)) + 4}${getOrdinalSuffix((Math.floor(days / 2)) + 4)}`
+}
+function getBestHealthDaysSimple(mars: Sign, days: number): string {
+  return `${(Math.floor(days / 4)) + 1}${getOrdinalSuffix((Math.floor(days / 4)) + 1)}, ${(Math.floor(days / 2)) + 6}${getOrdinalSuffix((Math.floor(days / 2)) + 6)}`
+}
+function getBestRestDaysSimple(moon: Sign, days: number): string {
+  return `${(Math.floor(days / 4)) + 7}${getOrdinalSuffix((Math.floor(days / 4)) + 7)}, ${Math.floor(days / 2)}${getOrdinalSuffix(Math.floor(days / 2))}`
+}
+function getMercuryStatusSimple(month: number, year: number): string {
+  return `Direct - clear communication supported`
+}
+function getMonthlyMantra(sun: Sign, moon: Sign, month: number): string {
+  return `I trust my ${signData[sun].archetype} path and honour my ${signData[moon].keywords[0]} heart.`
+}
+
 // Export the main generator function
 export function generateReportV2(
   slug: ReportSlug,
@@ -2280,6 +5061,8 @@ export function generateReportV2(
       return generatePersonalityReportV2(chart, userName)
     case 'year-ahead-forecast':
       return generateYearAheadReportV2(chart, userName)
+    case 'monthly-forecast':
+      return generateMonthlyForecastV2(chart, userName)
     default:
       return generatePersonalityReportV2(chart, userName)
   }

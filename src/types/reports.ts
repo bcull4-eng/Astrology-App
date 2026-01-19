@@ -4,7 +4,7 @@
  * Defines types for purchasable astrology reports
  */
 
-export type ReportSlug = 'personality-deep-dive' | 'relationship-compatibility' | 'year-ahead-forecast'
+export type ReportSlug = 'personality-deep-dive' | 'relationship-compatibility' | 'year-ahead-forecast' | 'monthly-forecast'
 
 export interface ReportDefinition {
   slug: ReportSlug

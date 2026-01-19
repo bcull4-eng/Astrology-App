@@ -45,7 +45,7 @@ export function ChatInput({ onSend, isLoading, placeholder = 'Ask about your sta
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex items-end gap-2 p-4 border-t border-slate-700 bg-slate-900/50">
+    <form onSubmit={handleSubmit} className="flex items-end gap-2 p-4 border-t border-indigo-500/10 bg-indigo-950/30">
       <textarea
         ref={textareaRef}
         value={input}
@@ -54,12 +54,12 @@ export function ChatInput({ onSend, isLoading, placeholder = 'Ask about your sta
         placeholder={placeholder}
         disabled={isLoading}
         rows={1}
-        className="flex-1 bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 resize-none focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent disabled:opacity-50"
+        className="flex-1 bg-indigo-950/50 border border-indigo-500/20 rounded-xl px-4 py-3 text-sm text-white placeholder-indigo-300/40 resize-none focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent disabled:opacity-50"
       />
       <button
         type="submit"
         disabled={!input.trim() || isLoading}
-        className="p-3 bg-indigo-600 hover:bg-indigo-700 disabled:bg-slate-700 disabled:cursor-not-allowed rounded-xl transition-colors"
+        className="p-3 bg-indigo-600 hover:bg-indigo-500 disabled:bg-indigo-900/50 disabled:cursor-not-allowed rounded-xl transition-colors"
       >
         <PaperAirplaneIcon className="w-5 h-5 text-white" />
       </button>

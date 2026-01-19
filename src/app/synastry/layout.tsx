@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { requireUser } from '@/lib/auth'
+import { StaticStarfield } from '@/components/ui/starfield-background'
 
 export default async function SynastryLayout({
   children,
@@ -9,9 +10,10 @@ export default async function SynastryLayout({
   await requireUser()
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-900 to-slate-950">
+    <div className="min-h-screen bg-[#1a1a2e] relative overflow-hidden">
+      <StaticStarfield />
       {/* Header */}
-      <header className="border-b border-slate-800">
+      <header className="border-b border-indigo-500/10 bg-[#1a1a2e]/80 backdrop-blur-md relative z-10">
         <div className="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
           <Link href="/dashboard" className="text-white font-semibold text-xl">
             Astro
@@ -19,19 +21,19 @@ export default async function SynastryLayout({
           <nav className="flex items-center gap-6">
             <Link
               href="/dashboard"
-              className="text-slate-300 hover:text-white transition-colors text-sm"
+              className="text-indigo-200/50 hover:text-white transition-colors text-sm"
             >
               Dashboard
             </Link>
             <Link
               href="/learn"
-              className="text-slate-300 hover:text-white transition-colors text-sm"
+              className="text-indigo-200/50 hover:text-white transition-colors text-sm"
             >
               Learn
             </Link>
             <Link
               href="/reports"
-              className="text-slate-300 hover:text-white transition-colors text-sm"
+              className="text-indigo-200/50 hover:text-white transition-colors text-sm"
             >
               Reports
             </Link>
@@ -43,13 +45,13 @@ export default async function SynastryLayout({
             </Link>
             <Link
               href="/astrologist"
-              className="text-slate-300 hover:text-white transition-colors text-sm"
+              className="text-indigo-200/50 hover:text-white transition-colors text-sm"
             >
               Astrologist
             </Link>
             <Link
               href="/settings"
-              className="text-slate-300 hover:text-white transition-colors text-sm"
+              className="text-indigo-200/50 hover:text-white transition-colors text-sm"
             >
               Account
             </Link>
@@ -58,7 +60,7 @@ export default async function SynastryLayout({
       </header>
 
       {/* Main content */}
-      <main className="max-w-4xl mx-auto px-4 py-8">{children}</main>
+      <main className="max-w-4xl mx-auto px-4 py-8 relative z-10">{children}</main>
     </div>
   )
 }

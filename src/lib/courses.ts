@@ -28,6 +28,20 @@ export const COURSES: Course[] = [
             content: [
               { type: 'heading', content: 'The Celestial Blueprint', level: 2 },
               {
+                type: 'chat',
+                messages: [
+                  { role: 'student', content: "I keep hearing about zodiac signs, but what actually is the zodiac?" },
+                  { role: 'guide', content: "Great question! Imagine a giant belt wrapped around the Earth, like a cosmic highway. The Sun, Moon, and planets travel along this highway throughout the year." },
+                  { role: 'student', content: "So it's like a path in space?" },
+                  { role: 'guide', content: "Exactly! And we've divided this path into 12 sections - those are the zodiac signs. Each section has its own personality and energy." }
+                ]
+              },
+              {
+                type: 'zodiacWheel',
+                highlight: ['aries', 'cancer', 'libra', 'capricorn'],
+                showUserPlacements: false
+              },
+              {
                 type: 'text',
                 content: 'The zodiac is a belt of the heavens divided into twelve equal parts, each named after a constellation. Think of it as a cosmic clock that the Sun, Moon, and planets move through over time.'
               },
@@ -38,8 +52,21 @@ export const COURSES: Course[] = [
                 icon: '🌞'
               },
               {
+                type: 'funFact',
+                content: 'The word "zodiac" comes from the Greek "zodiakos kyklos" meaning "circle of animals." Most zodiac signs are represented by animals or mythological creatures!'
+              },
+              {
                 type: 'text',
                 content: 'When we say someone is a "Leo" or "Pisces," we\'re referring to where the Sun was positioned in the zodiac at the moment of their birth. But that\'s just the beginning - every planet occupies a zodiac sign, creating a unique celestial fingerprint.'
+              },
+              {
+                type: 'interactive',
+                question: 'If someone was born on July 25th, where would their Sun be?',
+                options: [
+                  { label: 'Cancer', response: 'Close! Cancer runs from June 21 to July 22. July 25th falls just after Cancer ends.', isCorrect: false },
+                  { label: 'Leo', response: 'Correct! Leo season runs from July 23 to August 22, so someone born July 25th is a Leo Sun.', isCorrect: true },
+                  { label: 'Virgo', response: 'Not quite - Virgo season starts on August 23. July 25th is earlier in the summer.', isCorrect: false }
+                ]
               },
               {
                 type: 'callout',
@@ -47,9 +74,19 @@ export const COURSES: Course[] = [
                 variant: 'tip'
               },
               {
+                type: 'yourChart',
+                highlight: 'sun',
+                description: 'This is where your Sun was at the moment you were born - your core identity.'
+              },
+              {
                 type: 'personalized',
                 dataKey: 'sunSign',
                 template: 'Your Sun is in {value}, which represents your core identity and life purpose.'
+              },
+              {
+                type: 'reflection',
+                prompt: 'Think about your Sun sign. What traits of that sign do you recognize in yourself? What surprises you?',
+                placeholder: 'I notice that I...'
               }
             ],
             quiz: [
@@ -77,8 +114,21 @@ export const COURSES: Course[] = [
             content: [
               { type: 'heading', content: 'Fire, Earth, Air & Water', level: 2 },
               {
+                type: 'animation',
+                variant: 'zodiac-cycle'
+              },
+              {
                 type: 'text',
                 content: 'Every zodiac sign belongs to one of four elements. Understanding elements gives you immediate insight into how signs express themselves.'
+              },
+              {
+                type: 'comparison',
+                title: 'The Four Elements at a Glance',
+                items: [
+                  { label: 'Energy', left: 'Fire: Action & Passion', right: 'Water: Emotion & Intuition' },
+                  { label: 'Nature', left: 'Air: Ideas & Connection', right: 'Earth: Structure & Stability' },
+                  { label: 'Focus', left: 'Fire/Air: Outward', right: 'Water/Earth: Inward' }
+                ]
               },
               {
                 type: 'concept',
@@ -87,10 +137,18 @@ export const COURSES: Course[] = [
                 icon: '🔥'
               },
               {
+                type: 'signCard',
+                sign: 'aries'
+              },
+              {
                 type: 'concept',
                 title: 'Earth Signs',
                 content: 'Taurus, Virgo, Capricorn - Practical, grounded, and reliable. Earth signs build, maintain, and create tangible results.',
                 icon: '🌍'
+              },
+              {
+                type: 'signCard',
+                sign: 'taurus'
               },
               {
                 type: 'concept',
@@ -99,10 +157,37 @@ export const COURSES: Course[] = [
                 icon: '💨'
               },
               {
+                type: 'signCard',
+                sign: 'gemini'
+              },
+              {
                 type: 'concept',
                 title: 'Water Signs',
                 content: 'Cancer, Scorpio, Pisces - Emotional, intuitive, and empathetic. Water signs feel deeply and navigate the emotional realm.',
                 icon: '💧'
+              },
+              {
+                type: 'signCard',
+                sign: 'cancer'
+              },
+              {
+                type: 'funFact',
+                content: 'The elements follow an ancient pattern: Fire and Air are considered "masculine" (active, outward), while Earth and Water are "feminine" (receptive, inward). This has nothing to do with gender - it describes energy flow!'
+              },
+              {
+                type: 'interactive',
+                question: 'Which element would you expect to be the best at handling a crisis?',
+                options: [
+                  { label: 'Fire', response: 'Fire signs are quick to act! They jump into action, though sometimes without a full plan.', isCorrect: false },
+                  { label: 'Earth', response: 'Great answer! Earth signs stay calm and practical, creating step-by-step solutions.', isCorrect: true },
+                  { label: 'Air', response: 'Air signs analyze the situation well but might get stuck in their head during emergencies.', isCorrect: false },
+                  { label: 'Water', response: 'Water signs can sense the emotional needs of others but may get overwhelmed in chaos.', isCorrect: false }
+                ]
+              },
+              { type: 'heading', content: 'Your Elemental Balance', level: 3 },
+              {
+                type: 'elementChart',
+                showUserDistribution: true
               },
               {
                 type: 'personalized',
@@ -113,6 +198,11 @@ export const COURSES: Course[] = [
                 type: 'callout',
                 content: 'A balanced chart has placements across multiple elements, but most people have one or two dominant elements.',
                 variant: 'info'
+              },
+              {
+                type: 'reflection',
+                prompt: 'Based on your dominant element, how do you typically respond when facing a challenge or decision?',
+                placeholder: 'When I face challenges, I tend to...'
               }
             ],
             quiz: [
@@ -140,8 +230,22 @@ export const COURSES: Course[] = [
             content: [
               { type: 'heading', content: 'Cardinal, Fixed & Mutable', level: 2 },
               {
+                type: 'chat',
+                messages: [
+                  { role: 'student', content: "So all Fire signs are the same?" },
+                  { role: 'guide', content: "Not at all! Aries, Leo, and Sagittarius are all Fire signs, but they express that fire differently. That's where modalities come in." },
+                  { role: 'student', content: "What do you mean?" },
+                  { role: 'guide', content: "Aries STARTS the fire (Cardinal), Leo MAINTAINS the fire (Fixed), and Sagittarius SPREADS the fire (Mutable). Same element, different approaches!" }
+                ]
+              },
+              {
                 type: 'text',
                 content: 'Beyond elements, each sign has a modality (or quality) that describes how it takes action and responds to change.'
+              },
+              {
+                type: 'zodiacWheel',
+                highlight: ['aries', 'cancer', 'libra', 'capricorn'],
+                showUserPlacements: false
               },
               {
                 type: 'concept',
@@ -150,16 +254,48 @@ export const COURSES: Course[] = [
                 icon: '🚀'
               },
               {
+                type: 'zodiacWheel',
+                highlight: ['taurus', 'leo', 'scorpio', 'aquarius'],
+                showUserPlacements: false
+              },
+              {
                 type: 'concept',
                 title: 'Fixed Signs',
                 content: 'Taurus, Leo, Scorpio, Aquarius - The stabilizers. Fixed signs occur in the middle of seasons and excel at maintaining, persisting, and seeing things through.',
                 icon: '⚓'
               },
               {
+                type: 'zodiacWheel',
+                highlight: ['gemini', 'virgo', 'sagittarius', 'pisces'],
+                showUserPlacements: false
+              },
+              {
                 type: 'concept',
                 title: 'Mutable Signs',
                 content: 'Gemini, Virgo, Sagittarius, Pisces - The adapters. Mutable signs end seasons and are flexible, versatile, and comfortable with change.',
                 icon: '🌊'
+              },
+              {
+                type: 'comparison',
+                title: 'Modalities in Action',
+                items: [
+                  { label: 'Project Start', left: 'Cardinal: Launches it', right: 'Fixed: Plans thoroughly' },
+                  { label: 'Mid-Project', left: 'Fixed: Keeps going', right: 'Mutable: Adapts as needed' },
+                  { label: 'Challenges', left: 'Cardinal: Finds new direction', right: 'Mutable: Goes with the flow' }
+                ]
+              },
+              {
+                type: 'funFact',
+                content: 'The modalities align with the seasons! Cardinal signs begin each season (spring equinox = Aries), Fixed signs are mid-season stability, and Mutable signs transition us to the next season.'
+              },
+              {
+                type: 'interactive',
+                question: 'A team needs someone to adapt a failing project. Which modality would be ideal?',
+                options: [
+                  { label: 'Cardinal', response: 'Cardinal signs are great starters, but might just want to scrap it and begin fresh rather than adapt.', isCorrect: false },
+                  { label: 'Fixed', response: 'Fixed signs have perseverance but can be resistant to the changes a failing project needs.', isCorrect: false },
+                  { label: 'Mutable', response: 'Exactly! Mutable signs excel at flexibility and can pivot, adjust, and adapt to save a struggling project.', isCorrect: true }
+                ]
               },
               {
                 type: 'callout',
@@ -170,6 +306,11 @@ export const COURSES: Course[] = [
                 type: 'personalized',
                 dataKey: 'dominantModality',
                 template: 'Your chart shows strong {value} energy, influencing how you approach projects and handle change.'
+              },
+              {
+                type: 'reflection',
+                prompt: 'Think about a recent project or goal. Did you find it easier to start, maintain, or adapt? What does this tell you about your dominant modality?',
+                placeholder: 'When working on projects, I notice that I...'
               }
             ],
             quiz: [
@@ -261,8 +402,25 @@ export const COURSES: Course[] = [
             content: [
               { type: 'heading', content: 'Your Inner World', level: 2 },
               {
+                type: 'animation',
+                variant: 'planets-orbit'
+              },
+              {
                 type: 'text',
                 content: 'Personal planets move quickly through the zodiac and represent your day-to-day personality, desires, and habits.'
+              },
+              {
+                type: 'chat',
+                messages: [
+                  { role: 'student', content: "Why are some planets called 'personal' planets?" },
+                  { role: 'guide', content: "Great question! Personal planets move fast - they change signs within days to weeks. So your placements are unique to YOU, not shared by everyone born that year." },
+                  { role: 'student', content: "That makes sense. So they're more about individual personality?" },
+                  { role: 'guide', content: "Exactly! They shape your daily life - how you think, feel, love, and act. They're the planets you 'feel' most directly." }
+                ]
+              },
+              {
+                type: 'planetCard',
+                planet: 'sun'
               },
               {
                 type: 'concept',
@@ -276,15 +434,27 @@ export const COURSES: Course[] = [
                 template: 'Your Sun in {value} shows your essential nature and what brings you a sense of purpose.'
               },
               {
+                type: 'planetCard',
+                planet: 'moon'
+              },
+              {
                 type: 'concept',
                 title: 'The Moon',
                 content: 'Your emotional nature, instincts, and inner needs. The Moon shows how you nurture yourself and what makes you feel safe.',
                 icon: '🌙'
               },
               {
+                type: 'animation',
+                variant: 'moon-phases'
+              },
+              {
                 type: 'personalized',
                 dataKey: 'moonSign',
                 template: 'Your Moon in {value} reveals your emotional needs and how you process feelings.'
+              },
+              {
+                type: 'planetCard',
+                planet: 'mercury'
               },
               {
                 type: 'concept',
@@ -293,9 +463,17 @@ export const COURSES: Course[] = [
                 icon: '☿️'
               },
               {
+                type: 'funFact',
+                content: 'Mercury retrograde happens 3-4 times per year when Mercury appears to move backward in the sky. It\'s notorious for communication mix-ups, but it\'s also a great time for reflection and review!'
+              },
+              {
                 type: 'personalized',
                 dataKey: 'mercurySign',
                 template: 'Your Mercury in {value} shapes how you communicate and learn.'
+              },
+              {
+                type: 'planetCard',
+                planet: 'venus'
               },
               {
                 type: 'concept',
@@ -309,6 +487,10 @@ export const COURSES: Course[] = [
                 template: 'Your Venus in {value} influences your relationship style and what you find attractive.'
               },
               {
+                type: 'planetCard',
+                planet: 'mars'
+              },
+              {
                 type: 'concept',
                 title: 'Mars',
                 content: 'Your drive, ambition, and how you take action. Mars represents your energy, assertiveness, and what motivates you.',
@@ -318,6 +500,25 @@ export const COURSES: Course[] = [
                 type: 'personalized',
                 dataKey: 'marsSign',
                 template: 'Your Mars in {value} shows how you pursue goals and express your energy.'
+              },
+              {
+                type: 'interactive',
+                question: 'If someone has Mars in a Fire sign, how might they approach conflict?',
+                options: [
+                  { label: 'Avoid it entirely', response: 'Not quite - Fire Mars tends to meet conflict head-on rather than avoid it.', isCorrect: false },
+                  { label: 'Address it directly and passionately', response: 'Correct! Fire Mars (Aries, Leo, Sagittarius) tends to be direct, passionate, and action-oriented in conflict.', isCorrect: true },
+                  { label: 'Analyze it intellectually', response: 'That sounds more like Air Mars! Fire Mars acts on instinct rather than analysis.', isCorrect: false }
+                ]
+              },
+              {
+                type: 'yourChart',
+                highlight: 'all',
+                description: 'Here are your personal planet placements - the foundation of your unique astrological profile.'
+              },
+              {
+                type: 'reflection',
+                prompt: 'Look at your Sun and Moon signs. How do your conscious identity (Sun) and emotional needs (Moon) work together? Do they complement or challenge each other?',
+                placeholder: 'My Sun wants... but my Moon needs...'
               }
             ],
             quiz: [
@@ -349,15 +550,36 @@ export const COURSES: Course[] = [
                 content: 'Jupiter and Saturn take longer to move through the zodiac and represent how we engage with society and develop over time.'
               },
               {
+                type: 'chat',
+                messages: [
+                  { role: 'student', content: "Why are Jupiter and Saturn called 'social' planets?" },
+                  { role: 'guide', content: "They move slower than personal planets - Jupiter takes 12 years to orbit the Sun, Saturn takes 29 years. So people born within a year or two share these placements." },
+                  { role: 'student', content: "So they affect groups of people?" },
+                  { role: 'guide', content: "Exactly! They shape how your generation approaches growth (Jupiter) and responsibility (Saturn). They bridge your personal world and society." }
+                ]
+              },
+              {
+                type: 'planetCard',
+                planet: 'jupiter'
+              },
+              {
                 type: 'concept',
                 title: 'Jupiter',
                 content: 'The planet of expansion, luck, and wisdom. Jupiter shows where you find opportunity, growth, and meaning. It expands whatever it touches.',
                 icon: '♃'
               },
               {
+                type: 'funFact',
+                content: 'Jupiter is the largest planet in our solar system - over 1,300 Earths could fit inside! Astrologically, it embodies this bigness through expansion, generosity, and abundance.'
+              },
+              {
                 type: 'personalized',
                 dataKey: 'jupiterSign',
                 template: 'Your Jupiter in {value} reveals where you naturally attract abundance and seek growth.'
+              },
+              {
+                type: 'planetCard',
+                planet: 'saturn'
               },
               {
                 type: 'concept',
@@ -366,14 +588,42 @@ export const COURSES: Course[] = [
                 icon: '♄'
               },
               {
+                type: 'funFact',
+                content: 'The "Saturn Return" happens around ages 28-30 and 57-60 when Saturn returns to its birth position. These are major life milestones for most people - times of growing up and taking on new responsibilities.'
+              },
+              {
                 type: 'personalized',
                 dataKey: 'saturnSign',
                 template: 'Your Saturn in {value} indicates the areas where you\'re building mastery through effort and patience.'
               },
               {
+                type: 'comparison',
+                title: 'Jupiter vs Saturn',
+                items: [
+                  { label: 'Energy', left: 'Jupiter: Expansion', right: 'Saturn: Contraction' },
+                  { label: 'Message', left: '"Yes! Go for it!"', right: '"Slow down, do the work"' },
+                  { label: 'Gifts', left: 'Luck, abundance, faith', right: 'Mastery, discipline, wisdom' },
+                  { label: 'Challenge', left: 'Excess, overconfidence', right: 'Fear, limitation, delay' }
+                ]
+              },
+              {
+                type: 'interactive',
+                question: 'Someone with Jupiter conjunct (next to) Saturn in their chart might experience:',
+                options: [
+                  { label: 'Constant inner conflict', response: 'Not necessarily! While these energies differ, they can work together constructively.', isCorrect: false },
+                  { label: 'Disciplined growth and realistic optimism', response: 'Exactly! Jupiter-Saturn contacts often produce measured, sustainable success - optimism grounded in hard work.', isCorrect: true },
+                  { label: 'Pure luck with no effort', response: 'Saturn would never allow that! Even lucky Jupiter needs Saturn\'s structure to manifest lasting results.', isCorrect: false }
+                ]
+              },
+              {
                 type: 'callout',
                 content: 'Jupiter and Saturn work as a pair - Jupiter expands and says "yes" while Saturn contracts and says "not yet." Both are necessary for balanced growth.',
                 variant: 'tip'
+              },
+              {
+                type: 'reflection',
+                prompt: 'Think of a time you had to balance enthusiasm (Jupiter) with patience and discipline (Saturn). How did that play out?',
+                placeholder: 'I remember when I wanted to...'
               }
             ],
             quiz: [
@@ -405,10 +655,31 @@ export const COURSES: Course[] = [
                 content: 'The outer planets move very slowly and influence entire generations. Their house placement in your chart is more personally significant than their sign.'
               },
               {
+                type: 'comparison',
+                title: 'Outer Planet Orbit Times',
+                items: [
+                  { label: 'Uranus', left: '84 years per orbit', right: '~7 years per sign' },
+                  { label: 'Neptune', left: '165 years per orbit', right: '~14 years per sign' },
+                  { label: 'Pluto', left: '248 years per orbit', right: '12-31 years per sign' }
+                ]
+              },
+              {
+                type: 'planetCard',
+                planet: 'uranus'
+              },
+              {
                 type: 'concept',
                 title: 'Uranus',
                 content: 'Revolution, innovation, and sudden change. Uranus breaks patterns and brings unexpected awakenings. It rules originality and the urge for freedom.',
                 icon: '♅'
+              },
+              {
+                type: 'funFact',
+                content: 'Uranus rotates on its side - it literally rolls around the Sun! Astrologically, it represents the unexpected, the eccentric, and the revolutionary.'
+              },
+              {
+                type: 'planetCard',
+                planet: 'neptune'
               },
               {
                 type: 'concept',
@@ -417,15 +688,41 @@ export const COURSES: Course[] = [
                 icon: '♆'
               },
               {
+                type: 'funFact',
+                content: 'Neptune was discovered in 1846 - around the same time photography, film, and anesthesia were developed. All Neptune themes: capturing dreams, illusion, and transcending physical reality.'
+              },
+              {
+                type: 'planetCard',
+                planet: 'pluto'
+              },
+              {
                 type: 'concept',
                 title: 'Pluto',
                 content: 'Transformation, power, and rebirth. Pluto takes us through death-and-rebirth cycles, destroying what no longer serves so something new can emerge.',
                 icon: '♇'
               },
               {
+                type: 'funFact',
+                content: 'Pluto was "demoted" to dwarf planet status in 2006, but astrologers still honor its powerful influence. Its energy is about power struggles, transformation, and what lies beneath the surface.'
+              },
+              {
+                type: 'interactive',
+                question: 'Which outer planet would most likely be activated during a sudden career change or technological breakthrough?',
+                options: [
+                  { label: 'Uranus', response: 'Correct! Uranus rules sudden changes, innovation, and breaking free from old patterns. Technology and unexpected shifts are very Uranian.', isCorrect: true },
+                  { label: 'Neptune', response: 'Neptune is more about gradual dissolution, dreams, and spirituality - not sudden, concrete changes.', isCorrect: false },
+                  { label: 'Pluto', response: 'Pluto brings deep transformation, but it\'s usually a longer, more intense process rather than sudden breakthroughs.', isCorrect: false }
+                ]
+              },
+              {
                 type: 'callout',
                 content: 'Because outer planets move so slowly, everyone born within several years shares the same outer planet signs. The houses they occupy make them personal.',
                 variant: 'info'
+              },
+              {
+                type: 'reflection',
+                prompt: 'Outer planets often correlate with generational themes. Think about your generation - what collective experiences (technology, social movements, crises) might reflect your outer planet placements?',
+                placeholder: 'My generation has experienced...'
               }
             ],
             quiz: [
@@ -460,13 +757,36 @@ export const COURSES: Course[] = [
             content: [
               { type: 'heading', content: 'The Stage of Life', level: 2 },
               {
+                type: 'chat',
+                messages: [
+                  { role: 'student', content: "I understand signs and planets, but what are houses?" },
+                  { role: 'guide', content: "Great question! Think of it like a play: planets are the ACTORS (what's happening), signs are HOW they act, and houses are WHERE the scene takes place." },
+                  { role: 'student', content: "So my Venus in Libra in the 7th house means..." },
+                  { role: 'guide', content: "Your love nature (Venus) expresses harmoniously (Libra) in the area of partnerships (7th house). The house tells you where that energy shows up in your life!" }
+                ]
+              },
+              {
                 type: 'text',
                 content: 'If planets are the actors and signs are how they perform, houses are where the action takes place. The 12 houses represent different areas of life.'
+              },
+              {
+                type: 'zodiacWheel',
+                showUserPlacements: true
               },
               {
                 type: 'callout',
                 content: 'Your houses are determined by your exact birth time and location. This is why knowing your birth time matters!',
                 variant: 'info'
+              },
+              {
+                type: 'comparison',
+                title: 'Houses by Theme',
+                items: [
+                  { label: 'Self', left: '1st: Identity', right: '12th: Unconscious self' },
+                  { label: 'Resources', left: '2nd: Personal money', right: '8th: Shared resources' },
+                  { label: 'Relationships', left: '7th: One-on-one', right: '11th: Groups & friends' },
+                  { label: 'Direction', left: '4th: Private life', right: '10th: Public life' }
+                ]
               },
               {
                 type: 'list',
@@ -487,9 +807,33 @@ export const COURSES: Course[] = [
                 ]
               },
               {
+                type: 'funFact',
+                content: 'Opposite houses are always connected! The 1st/7th axis is Self vs. Other. The 4th/10th is Private vs. Public. The 2nd/8th is Mine vs. Ours. Understanding these polarities is key to chart interpretation.'
+              },
+              {
+                type: 'interactive',
+                question: 'If someone wanted to understand their communication style and relationship with siblings, which house would you look at?',
+                options: [
+                  { label: '1st House', response: 'Close! The 1st house is about overall self-presentation, but for communication specifically, look elsewhere.', isCorrect: false },
+                  { label: '3rd House', response: 'Correct! The 3rd house rules communication, siblings, short journeys, and how we learn and share information.', isCorrect: true },
+                  { label: '7th House', response: 'The 7th house is about partnerships and marriage - important relationships, but not specifically siblings.', isCorrect: false },
+                  { label: '9th House', response: 'The 9th house is about higher learning and long-distance travel, not everyday communication.', isCorrect: false }
+                ]
+              },
+              {
+                type: 'yourChart',
+                highlight: 'all',
+                description: 'Here are your house placements - see how the planets are distributed across different life areas.'
+              },
+              {
                 type: 'personalized',
                 dataKey: 'sunHouse',
                 template: 'Your Sun is in the {value} house, meaning your identity and purpose shine most brightly in this life area.'
+              },
+              {
+                type: 'reflection',
+                prompt: 'Which house seems most active in your life right now? (Career = 10th, relationships = 7th, home = 4th, self-discovery = 1st, etc.)',
+                placeholder: 'The life area I\'m most focused on right now is...'
               }
             ],
             quiz: [
@@ -521,10 +865,32 @@ export const COURSES: Course[] = [
                 content: 'The angular houses (1st, 4th, 7th, 10th) are the most powerful positions in a chart. Planets here have strong, visible influence.'
               },
               {
+                type: 'zodiacWheel',
+                highlight: ['aries', 'cancer', 'libra', 'capricorn'],
+                showUserPlacements: false
+              },
+              {
+                type: 'funFact',
+                content: 'The four angles form a cross in your chart. They mark the horizon (Ascendant/Descendant) and the meridian (IC/Midheaven). These are the most sensitive points - transiting planets here often trigger major life events!'
+              },
+              {
+                type: 'comparison',
+                title: 'The Four Angles',
+                items: [
+                  { label: 'Horizon', left: 'Ascendant (1st): Self', right: 'Descendant (7th): Other' },
+                  { label: 'Meridian', left: 'IC (4th): Private', right: 'MC (10th): Public' }
+                ]
+              },
+              {
                 type: 'concept',
                 title: '1st House / Ascendant',
                 content: 'Your rising sign and how you present yourself to the world. This is your "front door" - the first impression others have of you.',
                 icon: '👤'
+              },
+              {
+                type: 'yourChart',
+                highlight: 'rising',
+                description: 'Your Rising sign shapes your appearance, demeanor, and how you instinctively react to new situations.'
               },
               {
                 type: 'personalized',
@@ -544,15 +910,38 @@ export const COURSES: Course[] = [
                 icon: '🤝'
               },
               {
+                type: 'chat',
+                messages: [
+                  { role: 'student', content: "Wait, if my Rising is Aries, my Descendant is the opposite sign?" },
+                  { role: 'guide', content: "Exactly! With Aries rising, your 7th house cusp is Libra. You present as bold and independent, but you're drawn to partners who are diplomatic and harmonious." },
+                  { role: 'student', content: "So we attract what we need to balance ourselves?" },
+                  { role: 'guide', content: "That's a beautiful way to put it! The Descendant shows qualities we often project onto others or need to develop in ourselves through relationships." }
+                ]
+              },
+              {
                 type: 'concept',
                 title: '10th House / Midheaven',
                 content: 'Your career, public image, and legacy. This is your most visible point - how the world sees your achievements and contributions.',
                 icon: '⭐'
               },
               {
+                type: 'interactive',
+                question: 'If someone has Mars exactly on their Midheaven, how might it manifest?',
+                options: [
+                  { label: 'Hidden anger issues', response: 'Actually, planets on the Midheaven are very visible - not hidden at all!', isCorrect: false },
+                  { label: 'A bold, action-oriented career', response: 'Correct! Mars on the MC often indicates careers involving action, competition, leadership, or physical activity. Very visible drive and ambition.', isCorrect: true },
+                  { label: 'Difficulty in relationships', response: 'That would be more related to planets in the 7th house or aspecting Venus. The MC is about career and public image.', isCorrect: false }
+                ]
+              },
+              {
                 type: 'callout',
                 content: 'Any planet conjunct (near) an angle becomes especially prominent in your life and personality.',
                 variant: 'tip'
+              },
+              {
+                type: 'reflection',
+                prompt: 'Think about how you come across to strangers (Ascendant) versus how you are at home (IC). How different are these two sides of you?',
+                placeholder: 'When I first meet people, I seem... but at home, I\'m more...'
               }
             ],
             quiz: [
@@ -569,6 +958,154 @@ export const COURSES: Course[] = [
                 options: ['2nd, 5th, 8th, 11th', '3rd, 6th, 9th, 12th', '1st, 4th, 7th, 10th', '1st, 2nd, 3rd, 4th'],
                 correctIndex: 2,
                 explanation: 'The angular houses are 1st, 4th, 7th, and 10th - the four cardinal points of the chart where planets have the strongest expression.'
+              }
+            ]
+          },
+          {
+            id: 'succedent-houses',
+            title: 'The Succedent Houses',
+            description: 'The resource houses: 2nd, 5th, 8th, and 11th.',
+            estimatedMinutes: 8,
+            content: [
+              { type: 'heading', content: 'The Houses of Resources', level: 2 },
+              {
+                type: 'text',
+                content: 'Following each angular house is a succedent house. These "fixed" houses deal with security, resources, and what we accumulate. They stabilize what the angular houses initiate.'
+              },
+              {
+                type: 'concept',
+                title: '2nd House: Personal Resources',
+                content: 'Following the 1st house of self, the 2nd house governs what you have: money, possessions, values, and self-worth. It\'s how you sustain yourself.',
+                icon: '💰'
+              },
+              {
+                type: 'concept',
+                title: '5th House: Creative Resources',
+                content: 'Following the 4th house of home, the 5th governs what brings you joy: creativity, romance, children, hobbies, and self-expression. It\'s your inner child.',
+                icon: '🎨'
+              },
+              {
+                type: 'concept',
+                title: '8th House: Shared Resources',
+                content: 'Following the 7th house of partnership, the 8th governs what you share: joint finances, intimacy, transformation, inheritance, and psychological depth.',
+                icon: '🔮'
+              },
+              {
+                type: 'concept',
+                title: '11th House: Collective Resources',
+                content: 'Following the 10th house of career, the 11th governs your place in the collective: friendships, groups, hopes, dreams, and humanitarian causes.',
+                icon: '🌐'
+              },
+              {
+                type: 'callout',
+                content: 'Succedent houses are associated with fixed signs (Taurus, Leo, Scorpio, Aquarius) and share their stabilizing, accumulating quality.',
+                variant: 'info'
+              }
+            ],
+            quiz: [
+              {
+                id: 'q1-succedent',
+                question: 'What theme connects all succedent houses?',
+                options: ['Action and initiation', 'Resources and stability', 'Learning and communication', 'Endings and transitions'],
+                correctIndex: 1,
+                explanation: 'Succedent houses (2nd, 5th, 8th, 11th) all deal with resources, security, and what we accumulate in different areas of life.'
+              }
+            ]
+          },
+          {
+            id: 'cadent-houses',
+            title: 'The Cadent Houses',
+            description: 'The learning houses: 3rd, 6th, 9th, and 12th.',
+            estimatedMinutes: 8,
+            content: [
+              { type: 'heading', content: 'The Houses of Learning & Transition', level: 2 },
+              {
+                type: 'text',
+                content: 'The cadent houses prepare us for the next cycle. These "mutable" houses deal with learning, adaptation, service, and preparing for change. They process and integrate experience.'
+              },
+              {
+                type: 'concept',
+                title: '3rd House: Immediate Learning',
+                content: 'The 3rd house governs communication, siblings, short trips, and early education. It\'s how we gather information from our immediate environment.',
+                icon: '💬'
+              },
+              {
+                type: 'concept',
+                title: '6th House: Service & Health',
+                content: 'The 6th house governs daily work, health routines, and service to others. It\'s how we refine ourselves and contribute through practical means.',
+                icon: '⚕️'
+              },
+              {
+                type: 'concept',
+                title: '9th House: Higher Learning',
+                content: 'The 9th house governs philosophy, higher education, long journeys, and meaning-making. It\'s how we expand beyond our immediate world.',
+                icon: '🎓'
+              },
+              {
+                type: 'concept',
+                title: '12th House: Spiritual Learning',
+                content: 'The 12th house governs the unconscious, spirituality, isolation, and endings. It\'s where we dissolve ego to prepare for rebirth in the 1st house.',
+                icon: '🌌'
+              },
+              {
+                type: 'callout',
+                content: 'Cadent houses are associated with mutable signs (Gemini, Virgo, Sagittarius, Pisces) and share their adaptable, transitional quality.',
+                variant: 'info'
+              }
+            ],
+            quiz: [
+              {
+                id: 'q1-cadent',
+                question: 'What connects the cadent houses (3rd, 6th, 9th, 12th)?',
+                options: ['Starting new things', 'Building resources', 'Learning and transition', 'Relationship themes'],
+                correctIndex: 2,
+                explanation: 'Cadent houses deal with learning, adaptation, and preparing for the next phase. They process experience and facilitate growth.'
+              }
+            ]
+          },
+          {
+            id: 'house-rulers',
+            title: 'House Rulers & Rulerships',
+            description: 'Understanding who rules each house in your chart.',
+            estimatedMinutes: 8,
+            content: [
+              { type: 'heading', content: 'Finding the House Ruler', level: 2 },
+              {
+                type: 'chat',
+                messages: [
+                  { role: 'student', content: "What's a house ruler?" },
+                  { role: 'guide', content: "Each house cusp falls in a sign, and each sign has a ruling planet. That planet becomes the ruler of that house. For example, if Leo is on your 10th house cusp, the Sun rules your 10th house." },
+                  { role: 'student', content: "Why does that matter?" },
+                  { role: 'guide', content: "The house ruler connects different life areas. If the Sun rules your 10th house and sits in your 7th house, your career (10th) and partnerships (7th) are linked. You might achieve through partnerships or have a partner-focused career." }
+                ]
+              },
+              {
+                type: 'text',
+                content: 'House rulers create a web of connections in your chart, showing how different life areas influence each other. The condition and placement of a house ruler tells you a lot about that house\'s themes.'
+              },
+              {
+                type: 'list',
+                style: 'bullet',
+                items: [
+                  'The sign on the house cusp colors how that life area operates',
+                  'The ruling planet carries that house\'s energy wherever it sits',
+                  'Aspects to the ruler affect the house\'s expression',
+                  'The ruler\'s house placement shows where those themes play out'
+                ]
+              },
+              {
+                type: 'callout',
+                content: 'Example: Cancer on the 2nd house cusp? The Moon rules your 2nd house. Your finances fluctuate with your moods, and security is emotionally important.',
+                variant: 'tip'
+              }
+            ],
+            quiz: [
+              {
+                id: 'q1-house-ruler',
+                question: 'If Scorpio is on your 7th house cusp, what planet rules your 7th house?',
+                options: ['Venus', 'Mars', 'Pluto (modern) or Mars (traditional)', 'Saturn'],
+                correctIndex: 2,
+                explanation: 'Scorpio is ruled by Pluto (modern) or Mars (traditional), so either would be considered your 7th house ruler.'
               }
             ]
           }
@@ -591,10 +1128,42 @@ export const COURSES: Course[] = [
                 content: 'Your "Big Three" - Sun, Moon, and Rising - form the foundation of who you are. Understanding these three placements gives you a surprisingly complete picture of your personality.'
               },
               {
+                type: 'chat',
+                messages: [
+                  { role: 'student', content: "Why do people always ask about Sun, Moon, and Rising?" },
+                  { role: 'guide', content: "These three placements are like your personality's triple crown! Together they explain about 70% of your astrological makeup." },
+                  { role: 'student', content: "But I only know my Sun sign..." },
+                  { role: 'guide', content: "That's like knowing just the main character of a story! Your Moon is your emotional subplot, and your Rising is how the story opens. All three together tell YOUR story." }
+                ]
+              },
+              {
+                type: 'yourChart',
+                highlight: 'all',
+                description: 'Your Big Three form the core of your astrological identity.'
+              },
+              {
+                type: 'comparison',
+                title: 'The Big Three at a Glance',
+                items: [
+                  { label: 'Who', left: 'Sun: Who you ARE', right: 'Core identity, ego' },
+                  { label: 'Feel', left: 'Moon: What you NEED', right: 'Emotions, comfort' },
+                  { label: 'Show', left: 'Rising: How you APPEAR', right: 'First impressions' }
+                ]
+              },
+              {
+                type: 'planetCard',
+                planet: 'sun'
+              },
+              {
                 type: 'concept',
                 title: 'The Sun: Your Core Self',
                 content: 'Your Sun sign represents your conscious identity, ego, and life purpose. It\'s who you\'re becoming and what makes you feel vital. This is your "character" in the story of your life.',
                 icon: '☀️'
+              },
+              {
+                type: 'yourChart',
+                highlight: 'sun',
+                description: 'Your Sun placement - the heart of your chart.'
               },
               {
                 type: 'personalized',
@@ -602,10 +1171,23 @@ export const COURSES: Course[] = [
                 template: 'With your Sun in {value}, your core identity is expressed through {value} qualities.'
               },
               {
+                type: 'planetCard',
+                planet: 'moon'
+              },
+              {
                 type: 'concept',
                 title: 'The Moon: Your Inner Self',
                 content: 'Your Moon sign reveals your emotional nature, instincts, and what you need to feel safe. It\'s the "private you" that comes out with those you trust. Your Moon shows how you recharge.',
                 icon: '🌙'
+              },
+              {
+                type: 'animation',
+                variant: 'moon-phases'
+              },
+              {
+                type: 'yourChart',
+                highlight: 'moon',
+                description: 'Your Moon placement - your emotional compass.'
               },
               {
                 type: 'personalized',
@@ -619,14 +1201,37 @@ export const COURSES: Course[] = [
                 icon: '🌅'
               },
               {
+                type: 'yourChart',
+                highlight: 'rising',
+                description: 'Your Rising sign - your window to the world.'
+              },
+              {
                 type: 'personalized',
                 dataKey: 'risingSign',
                 template: 'With {value} Rising, you approach life and present yourself with {value} energy.'
               },
               {
+                type: 'funFact',
+                content: 'Your Rising sign changes every 2 hours! That\'s why birth time matters so much. Two people born on the same day but at different times could have completely different Rising signs.'
+              },
+              {
+                type: 'interactive',
+                question: 'If someone seems shy at first but becomes the life of the party once comfortable, which placements might explain this?',
+                options: [
+                  { label: 'Fire Sun, Fire Rising', response: 'Fire energy in both places would likely make someone outgoing right away, not shy at first.', isCorrect: false },
+                  { label: 'Fire Sun, Earth or Water Rising', response: 'Exactly! A reserved Rising (Earth/Water) creates a quieter first impression, while the bold Fire Sun emerges once they feel comfortable.', isCorrect: true },
+                  { label: 'Earth Sun, Earth Rising', response: 'Double Earth would make someone consistently reserved rather than transforming into the life of the party.', isCorrect: false }
+                ]
+              },
+              {
                 type: 'callout',
                 content: 'Think of it this way: Sun = who you are, Moon = what you need, Rising = how you appear.',
                 variant: 'tip'
+              },
+              {
+                type: 'reflection',
+                prompt: 'How do your Sun, Moon, and Rising work together? Do they complement each other, or do you sometimes feel internal tension between different parts of yourself?',
+                placeholder: 'My Sun makes me want to... but my Moon needs... and my Rising makes me come across as...'
               }
             ],
             quiz: [
@@ -737,8 +1342,21 @@ export const COURSES: Course[] = [
             content: [
               { type: 'heading', content: 'The Conversation Between Planets', level: 2 },
               {
+                type: 'chat',
+                messages: [
+                  { role: 'student', content: "I understand signs and houses, but what are aspects?" },
+                  { role: 'guide', content: "Think of planets as people at a party. Aspects describe HOW they're interacting - are they standing close together whispering secrets? Across the room staring each other down? Or comfortably chatting from different corners?" },
+                  { role: 'student', content: "So it's about the relationship between planets?" },
+                  { role: 'guide', content: "Exactly! And the angle between them determines if they're allies, rivals, or something in between. This is where charts get really interesting!" }
+                ]
+              },
+              {
                 type: 'text',
                 content: 'Aspects are the geometric angles formed between planets in your chart. They show how different parts of your personality interact - whether they work together harmoniously or create tension that drives growth.'
+              },
+              {
+                type: 'aspectDiagram',
+                pattern: 'conjunction'
               },
               {
                 type: 'concept',
@@ -747,13 +1365,33 @@ export const COURSES: Course[] = [
                 icon: '📐'
               },
               {
+                type: 'comparison',
+                title: 'The Major Aspects',
+                items: [
+                  { label: '0°', left: 'Conjunction', right: 'Fusion - planets merge' },
+                  { label: '60°', left: 'Sextile', right: 'Opportunity - potential support' },
+                  { label: '90°', left: 'Square', right: 'Tension - growth through friction' },
+                  { label: '120°', left: 'Trine', right: 'Harmony - natural flow' },
+                  { label: '180°', left: 'Opposition', right: 'Polarity - awareness & balance' }
+                ]
+              },
+              {
                 type: 'text',
                 content: 'Aspects are perhaps the most important factor in chart interpretation. A planet\'s sign and house tell you what and where, but aspects reveal the dynamic tensions and harmonies that shape how that energy actually manifests.'
+              },
+              {
+                type: 'funFact',
+                content: 'Ancient astrologers called trines and sextiles "soft" aspects (easy, flowing) and squares and oppositions "hard" aspects (challenging, dynamic). Modern astrologers recognize that both types are valuable - easy aspects give talents, while hard aspects give drive!'
               },
               {
                 type: 'callout',
                 content: 'Orbs allow some flexibility - planets don\'t need to be at exact angles. Most astrologers use 8-10° orbs for major aspects involving the Sun and Moon, and tighter orbs (4-6°) for other planets.',
                 variant: 'info'
+              },
+              {
+                type: 'reflection',
+                prompt: 'Think about different relationships in your life. Some are easy and harmonious, others create friction but push you to grow. Aspects in your chart work the same way!',
+                placeholder: 'The relationships that have pushed me to grow most are...'
               }
             ],
             quiz: [
@@ -785,10 +1423,24 @@ export const COURSES: Course[] = [
                 content: 'These five aspects form the foundation of chart interpretation. Each creates a different type of relationship between planets.'
               },
               {
+                type: 'aspectDiagram',
+                pattern: 'conjunction'
+              },
+              {
                 type: 'concept',
                 title: 'Conjunction (0°)',
                 content: 'Planets merge their energies - they\'re so close they become a unified force. This intensifies both planets, creating a powerful focal point. The nature depends on the planets involved.',
                 icon: '⚫'
+              },
+              {
+                type: 'chat',
+                messages: [
+                  { role: 'guide', content: "A conjunction is like two people standing so close they're practically one. Venus conjunct Mars? Your love nature and drive are fused - passionate and direct in romance!" }
+                ]
+              },
+              {
+                type: 'aspectDiagram',
+                pattern: 'opposition'
               },
               {
                 type: 'concept',
@@ -797,10 +1449,30 @@ export const COURSES: Course[] = [
                 icon: '↔️'
               },
               {
+                type: 'chat',
+                messages: [
+                  { role: 'guide', content: "Oppositions are like two people on opposite ends of a seesaw. Sun opposite Moon? Your identity and emotional needs are in a constant balancing act." }
+                ]
+              },
+              {
+                type: 'aspectDiagram',
+                pattern: 'trine'
+              },
+              {
                 type: 'concept',
                 title: 'Trine (120°)',
                 content: 'The most harmonious aspect - planets in the same element flow together naturally. Trines represent talents and ease, but can lead to complacency if not consciously developed.',
                 icon: '△'
+              },
+              {
+                type: 'chat',
+                messages: [
+                  { role: 'guide', content: "Trines are like best friends who just 'get' each other. Mercury trine Jupiter? Ideas flow easily, learning feels natural, and communication is expansive." }
+                ]
+              },
+              {
+                type: 'aspectDiagram',
+                pattern: 'square'
               },
               {
                 type: 'concept',
@@ -809,15 +1481,43 @@ export const COURSES: Course[] = [
                 icon: '◻️'
               },
               {
+                type: 'chat',
+                messages: [
+                  { role: 'guide', content: "Squares are like colleagues who push each other's buttons - frustrating, but you end up producing your best work. Mars square Saturn? Discipline clashes with drive, but builds incredible determination." }
+                ]
+              },
+              {
+                type: 'aspectDiagram',
+                pattern: 'sextile'
+              },
+              {
                 type: 'concept',
                 title: 'Sextile (60°)',
                 content: 'Opportunity aspects - planets support each other but require effort to activate. Sextiles offer potential that you must consciously choose to develop.',
                 icon: '✶'
               },
               {
+                type: 'interactive',
+                question: 'Someone with a Grand Trine (three planets all trine each other) might need to watch out for:',
+                options: [
+                  { label: 'Too much conflict', response: 'Actually, trines create ease, not conflict. The challenge is different.', isCorrect: false },
+                  { label: 'Complacency and taking talents for granted', response: 'Exactly! Grand Trines give tremendous natural ability but can lead to coasting. Without some squares to provide drive, talents may go undeveloped.', isCorrect: true },
+                  { label: 'Difficulty communicating', response: 'Trines actually support easy flow - communication wouldn\'t be the issue here.', isCorrect: false }
+                ]
+              },
+              {
                 type: 'callout',
                 content: 'Squares are often feared but they\'re incredibly valuable - they provide the motivation and drive that trines lack. The most successful people often have prominent squares in their charts.',
                 variant: 'tip'
+              },
+              {
+                type: 'funFact',
+                content: 'Michael Jordan has Sun square Mars - that competitive fire and relentless drive to improve came from friction, not ease! His "failure" story (cut from high school team) activated his squares to push him to greatness.'
+              },
+              {
+                type: 'reflection',
+                prompt: 'Think about your own successes. Did they come easily (trine energy) or through overcoming challenges (square energy)? Which type of accomplishment feels more meaningful to you?',
+                placeholder: 'My most meaningful achievements came from...'
               }
             ],
             quiz: [
@@ -3137,6 +3837,2222 @@ export const COURSES: Course[] = [
                 options: ['Means you\'re a bad astrologer', 'Is responsible practice that protects everyone', 'Should never happen', 'Makes you legally liable'],
                 correctIndex: 1,
                 explanation: 'Knowing your limits and referring appropriately is a sign of ethical, responsible practice.'
+              }
+            ]
+          },
+          {
+            id: 'structuring-readings',
+            title: 'Structuring a Reading',
+            description: 'How to organize and pace an effective reading.',
+            estimatedMinutes: 8,
+            content: [
+              { type: 'heading', content: 'The Flow of a Reading', level: 2 },
+              {
+                type: 'text',
+                content: 'A well-structured reading feels like a journey. You guide the person from broad overview to specific details, creating a coherent narrative rather than a random list of placements.'
+              },
+              {
+                type: 'concept',
+                title: 'Opening: Set the Container',
+                content: 'Start by asking what they want to focus on. Clarify what astrology can and can\'t do. Set the tone: curious exploration, not fortune-telling.',
+                icon: '🚪'
+              },
+              {
+                type: 'concept',
+                title: 'Overview: The Big Picture',
+                content: 'Begin with the Big Three (Sun, Moon, Rising). Give them the "headline" of their chart. This orients them before diving into details.',
+                icon: '🗺️'
+              },
+              {
+                type: 'concept',
+                title: 'Focus Area: Go Deep',
+                content: 'Based on their questions, explore relevant planets, houses, and aspects. Connect everything back to their life. Ask questions to confirm relevance.',
+                icon: '🔍'
+              },
+              {
+                type: 'concept',
+                title: 'Integration: Tie It Together',
+                content: 'Summarize the key themes. Offer practical suggestions. End with encouragement and empowerment. Ask if they have questions.',
+                icon: '🎁'
+              },
+              {
+                type: 'list',
+                style: 'bullet',
+                items: [
+                  'Allow 60-90 minutes for a full reading',
+                  'Check in regularly: "Does this resonate?"',
+                  'Leave time for questions at the end',
+                  'Provide written notes or recording if possible'
+                ]
+              }
+            ],
+            quiz: [
+              {
+                id: 'q1-structure',
+                question: 'A well-structured reading should:',
+                options: ['Jump around randomly between placements', 'Move from big picture to specific details', 'Only discuss positive things', 'Last exactly 30 minutes'],
+                correctIndex: 1,
+                explanation: 'Good readings flow from overview to specifics, creating a coherent narrative the person can follow and remember.'
+              }
+            ]
+          },
+          {
+            id: 'practice-skills',
+            title: 'Building Your Reading Skills',
+            description: 'How to practice and improve your chart reading abilities.',
+            estimatedMinutes: 7,
+            content: [
+              { type: 'heading', content: 'Practice Makes Progress', level: 2 },
+              {
+                type: 'text',
+                content: 'Reading charts well requires practice. The good news: there are many ways to practice without pressure, building your confidence and skill over time.'
+              },
+              {
+                type: 'concept',
+                title: 'Practice on Yourself',
+                content: 'Your own chart is your best teacher. Keep returning to it. Notice how transits feel. Track when themes from your chart show up in life.',
+                icon: '🪞'
+              },
+              {
+                type: 'concept',
+                title: 'Study Famous Charts',
+                content: 'Celebrity and historical figure charts let you see how placements manifest in known lives. Compare what you\'d predict with what actually happened.',
+                icon: '⭐'
+              },
+              {
+                type: 'concept',
+                title: 'Practice with Friends',
+                content: 'Ask friends if you can read their charts for practice. Be honest that you\'re learning. Their feedback is invaluable for understanding how your words land.',
+                icon: '👥'
+              },
+              {
+                type: 'concept',
+                title: 'Keep a Learning Journal',
+                content: 'Write down insights, questions, and "aha" moments. Note which techniques work best for you. Track your progress over time.',
+                icon: '📓'
+              },
+              {
+                type: 'callout',
+                content: 'Every astrologer was once a beginner. Give yourself permission to learn. The chart will teach you if you stay curious.',
+                variant: 'tip'
+              }
+            ],
+            quiz: [
+              {
+                id: 'q1-practice',
+                question: 'The best way to improve at chart reading is to:',
+                options: ['Only read your own chart', 'Never practice until you\'re perfect', 'Practice regularly on various charts with curiosity', 'Memorize every astrology book'],
+                correctIndex: 2,
+                explanation: 'Regular practice on various charts - your own, friends\', and famous people\'s - builds skill and confidence over time.'
+              }
+            ]
+          },
+          {
+            id: 'getting-feedback',
+            title: 'Getting & Using Feedback',
+            description: 'How to learn from the people you read for.',
+            estimatedMinutes: 6,
+            content: [
+              { type: 'heading', content: 'Feedback as a Teacher', level: 2 },
+              {
+                type: 'text',
+                content: 'The people you read for are your greatest teachers. Their feedback shows you what lands, what misses, and how to communicate more effectively.'
+              },
+              {
+                type: 'concept',
+                title: 'Ask During the Reading',
+                content: '"Does this resonate?" "How does this show up for you?" "What part of this feels most true?" Real-time feedback keeps you on track.',
+                icon: '❓'
+              },
+              {
+                type: 'concept',
+                title: 'Follow Up Later',
+                content: 'Check in weeks or months later. Did the themes prove relevant? Were your predictions accurate? Long-term feedback is the most valuable.',
+                icon: '📅'
+              },
+              {
+                type: 'concept',
+                title: 'Handle Misses Gracefully',
+                content: 'Not everything will land. When something doesn\'t resonate, get curious rather than defensive. "Tell me more about how you experience that."',
+                icon: '🎯'
+              },
+              {
+                type: 'list',
+                style: 'bullet',
+                items: [
+                  'Ask what was most helpful in the reading',
+                  'Ask what they\'ll remember most',
+                  'Ask if anything didn\'t fit',
+                  'Use misses as learning opportunities'
+                ]
+              },
+              {
+                type: 'callout',
+                content: 'A "miss" isn\'t failure - it\'s data. Maybe the placement manifests differently than expected, or you need to refine your interpretation.',
+                variant: 'info'
+              }
+            ],
+            quiz: [
+              {
+                id: 'q1-feedback',
+                question: 'When something in a reading doesn\'t resonate:',
+                options: ['Insist you\'re right', 'Get curious and explore why', 'Blame the client', 'Never try again'],
+                correctIndex: 1,
+                explanation: 'When something doesn\'t land, getting curious helps you understand the placement better and improve future readings.'
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    id: 'professional-practice',
+    title: 'Professional Astrology Practice',
+    description: 'Everything you need to launch and run a successful astrology practice - from pricing and marketing to client management and teaching.',
+    difficulty: 'advanced',
+    estimatedMinutes: 180,
+    icon: '🏆',
+    modules: [
+      {
+        id: 'building-practice',
+        title: 'Building Your Practice',
+        description: 'Set up and grow your astrology business.',
+        lessons: [
+          {
+            id: 'going-professional',
+            title: 'Going Professional',
+            description: 'Making the transition from hobbyist to professional astrologer.',
+            estimatedMinutes: 10,
+            content: [
+              { type: 'heading', content: 'From Passion to Profession', level: 2 },
+              {
+                type: 'chat',
+                messages: [
+                  { role: 'student', content: "I love doing readings for friends. How do I know if I'm ready to go professional?" },
+                  { role: 'guide', content: "Great question! There's no official certification required, but there are signs of readiness: consistent accuracy, positive feedback, people seeking you out, and a genuine desire to help others through this work." },
+                  { role: 'student', content: "But I don't feel like an expert yet..." },
+                  { role: 'guide', content: "Here's a secret: most professionals don't either! Astrology is so vast that even lifetime practitioners keep learning. What matters is being skilled enough to help clients AND honest about what you don't know." }
+                ]
+              },
+              {
+                type: 'text',
+                content: 'Going professional means taking responsibility for the quality and ethics of your work. It means showing up consistently, honoring your commitments, and treating each reading as sacred.'
+              },
+              {
+                type: 'concept',
+                title: 'Signs You\'re Ready',
+                content: 'You\'ve done 50+ readings with positive feedback. You have a consistent interpretation method. You handle sensitive topics gracefully. You know when to refer out. You\'re excited to do this work.',
+                icon: '✅'
+              },
+              {
+                type: 'concept',
+                title: 'Minimum Viable Skills',
+                content: 'Solid natal chart interpretation. Basic transit understanding. Clear communication skills. Ethical framework. Ability to structure a reading. Some specialty focus helps too.',
+                icon: '📚'
+              },
+              {
+                type: 'list',
+                style: 'bullet',
+                items: [
+                  'You don\'t need to know everything - specialization is okay',
+                  'Continuous learning is part of the job',
+                  'Confidence comes from practice, not perfection',
+                  'Imposter syndrome is normal - work through it'
+                ]
+              },
+              {
+                type: 'callout',
+                content: 'Being professional doesn\'t mean being perfect. It means being skilled, ethical, and committed to serving your clients well.',
+                variant: 'tip'
+              }
+            ],
+            quiz: [
+              {
+                id: 'q1-ready',
+                question: 'To go professional, you need:',
+                options: ['To know absolutely everything about astrology', 'Solid skills, ethical practice, and commitment to learning', 'An official certification', 'At least 10 years of experience'],
+                correctIndex: 1,
+                explanation: 'Professionalism comes from solid skills, ethical practice, and ongoing learning - not from knowing everything or having decades of experience.'
+              }
+            ]
+          },
+          {
+            id: 'pricing-services',
+            title: 'Pricing Your Services',
+            description: 'How to set prices that value your work and attract clients.',
+            estimatedMinutes: 10,
+            content: [
+              { type: 'heading', content: 'The Money Conversation', level: 2 },
+              {
+                type: 'text',
+                content: 'Many astrologers struggle with pricing. We love helping people and may feel awkward charging for spiritual work. But undervaluing your services hurts both you and the profession.'
+              },
+              {
+                type: 'concept',
+                title: 'Factors That Determine Pricing',
+                content: 'Your experience level. Your local market. Your specialty. Session length. Preparation time. Your cost of living. What similar practitioners charge.',
+                icon: '💰'
+              },
+              {
+                type: 'concept',
+                title: 'Starting Rates (UK Guidelines)',
+                content: 'New professionals: £40-70/hour. Established readers: £80-150/hour. Specialists/experts: £150-300+/hour. These vary by location and specialty.',
+                icon: '💷'
+              },
+              {
+                type: 'list',
+                style: 'bullet',
+                items: [
+                  'Include preparation time in your pricing - chart analysis takes time',
+                  'Offer different session lengths (30min/60min/90min)',
+                  'Consider package deals for returning clients',
+                  'Review and raise prices annually as you grow',
+                  'Don\'t apologize for your prices'
+                ]
+              },
+              {
+                type: 'concept',
+                title: 'Sliding Scale Options',
+                content: 'Some practitioners offer sliding scale or scholarship slots to ensure accessibility. This can be 10-20% of your practice at reduced rates. It\'s generous AND sustainable.',
+                icon: '❤️'
+              },
+              {
+                type: 'callout',
+                content: 'If you\'re fully booked at your current rate, it\'s time to raise prices. If you have no clients, you may be priced too high for your market/experience level.',
+                variant: 'info'
+              }
+            ],
+            quiz: [
+              {
+                id: 'q1-pricing',
+                question: 'When setting prices, you should:',
+                options: ['Always be the cheapest option', 'Never charge for spiritual work', 'Consider experience, market, and sustainability', 'Copy exactly what others charge'],
+                correctIndex: 2,
+                explanation: 'Good pricing considers your experience, local market, and what\'s sustainable for you - while remaining accessible and fair.'
+              }
+            ]
+          },
+          {
+            id: 'service-offerings',
+            title: 'Designing Your Service Menu',
+            description: 'Creating offerings that serve clients and showcase your skills.',
+            estimatedMinutes: 10,
+            content: [
+              { type: 'heading', content: 'What Will You Offer?', level: 2 },
+              {
+                type: 'text',
+                content: 'Most astrologers offer multiple services at different price points. This serves different client needs and creates multiple entry points to your work.'
+              },
+              {
+                type: 'concept',
+                title: 'Core Reading Types',
+                content: 'Natal Chart Reading: Your foundational offering. Birth Time Rectification: For clients with unknown birth times. Transit/Forecast Readings: What\'s coming up. Solar Return: Birthday year ahead readings.',
+                icon: '📋'
+              },
+              {
+                type: 'concept',
+                title: 'Relationship Services',
+                content: 'Synastry Readings: Comparing two charts. Composite Chart Analysis: The relationship itself. Family Dynamics: Multiple family members. Business Partnership Compatibility.',
+                icon: '💕'
+              },
+              {
+                type: 'concept',
+                title: 'Specialty Services',
+                content: 'Career/Vocational Astrology. Relocation Astrology. Electional Astrology (choosing dates). Children\'s Charts. Past Life/Karmic Focus. Medical Astrology (with appropriate disclaimers).',
+                icon: '⭐'
+              },
+              {
+                type: 'list',
+                style: 'bullet',
+                items: [
+                  'Start with 2-3 offerings, expand as you grow',
+                  'Consider a "signature" reading that showcases your unique approach',
+                  'Written reports can be passive income',
+                  'Packages and bundles increase client commitment',
+                  'Follow-up sessions should be discounted from full readings'
+                ]
+              },
+              {
+                type: 'callout',
+                content: 'You don\'t have to offer everything. Specializing in 2-3 areas makes you more memorable and referable.',
+                variant: 'tip'
+              }
+            ],
+            quiz: [
+              {
+                id: 'q1-services',
+                question: 'When designing your service menu:',
+                options: ['Offer every possible type of reading', 'Focus on 2-3 areas you do well', 'Only offer free readings', 'Copy another astrologer\'s menu exactly'],
+                correctIndex: 1,
+                explanation: 'Focusing on a few offerings you excel at makes you more memorable and builds expertise faster than trying to do everything.'
+              }
+            ]
+          },
+          {
+            id: 'finding-clients',
+            title: 'Finding & Attracting Clients',
+            description: 'Marketing strategies that feel authentic.',
+            estimatedMinutes: 12,
+            content: [
+              { type: 'heading', content: 'Building Your Client Base', level: 2 },
+              {
+                type: 'text',
+                content: 'Marketing yourself as an astrologer doesn\'t mean being salesy or inauthentic. The best marketing is simply sharing your genuine passion and expertise in ways that reach people who need it.'
+              },
+              {
+                type: 'concept',
+                title: 'Word of Mouth',
+                content: 'The most powerful marketing. Do excellent work and ask satisfied clients to refer friends. Make it easy: "If you know anyone who might benefit from this, I\'d appreciate the referral."',
+                icon: '🗣️'
+              },
+              {
+                type: 'concept',
+                title: 'Social Media Presence',
+                content: 'Share insights about current transits. Post educational content. Show your personality. Engage authentically. You don\'t need to be everywhere - pick 1-2 platforms you enjoy.',
+                icon: '📱'
+              },
+              {
+                type: 'concept',
+                title: 'Content Marketing',
+                content: 'Blog posts, YouTube videos, podcasts, newsletters. Free content showcases your knowledge and builds trust. People hire astrologers they feel they already know.',
+                icon: '✍️'
+              },
+              {
+                type: 'concept',
+                title: 'Collaborations',
+                content: 'Partner with therapists, coaches, yoga studios. Guest on podcasts. Teach workshops at bookshops or wellness centers. Cross-promotion expands your reach.',
+                icon: '🤝'
+              },
+              {
+                type: 'list',
+                style: 'bullet',
+                items: [
+                  'Consistency matters more than perfection',
+                  'Show your unique perspective - don\'t just repeat basics',
+                  'Respond to comments and messages promptly',
+                  'Collect testimonials (with permission)',
+                  'Make booking easy and obvious'
+                ]
+              },
+              {
+                type: 'callout',
+                content: 'The best marketing doesn\'t feel like marketing. It\'s sharing what you love with people who want to hear it.',
+                variant: 'tip'
+              }
+            ],
+            quiz: [
+              {
+                id: 'q1-marketing',
+                question: 'The most effective marketing for astrologers is usually:',
+                options: ['Paid advertising', 'Cold calling', 'Word of mouth and authentic content sharing', 'Aggressive sales tactics'],
+                correctIndex: 2,
+                explanation: 'Word of mouth and genuine content sharing build trust and attract clients who resonate with your specific approach.'
+              }
+            ]
+          },
+          {
+            id: 'online-vs-inperson',
+            title: 'Online vs. In-Person Readings',
+            description: 'Choosing and optimizing your delivery method.',
+            estimatedMinutes: 8,
+            content: [
+              { type: 'heading', content: 'How Will You Deliver Readings?', level: 2 },
+              {
+                type: 'text',
+                content: 'The rise of video calls has made astrology more accessible than ever. Most practitioners now work primarily online, but in-person readings have their own magic.'
+              },
+              {
+                type: 'comparison',
+                title: 'Online vs In-Person',
+                items: [
+                  { label: 'Reach', left: 'Online: Global client base', right: 'In-Person: Local only' },
+                  { label: 'Convenience', left: 'Online: Easy scheduling', right: 'In-Person: Travel required' },
+                  { label: 'Connection', left: 'Online: Good with practice', right: 'In-Person: Natural intimacy' },
+                  { label: 'Tools', left: 'Online: Screen share charts', right: 'In-Person: Printed charts' }
+                ]
+              },
+              {
+                type: 'concept',
+                title: 'Online Best Practices',
+                content: 'Use reliable video software (Zoom, Google Meet). Have good lighting and audio. Test technology before sessions. Have backup plan if tech fails. Screen share the chart. Record for clients (with consent).',
+                icon: '💻'
+              },
+              {
+                type: 'concept',
+                title: 'In-Person Considerations',
+                content: 'Choose a quiet, private space. Consider meeting in public for safety. Have printed charts ready. Create ambiance (lighting, comfort). Be mindful of scents (some are sensitive).',
+                icon: '🏠'
+              },
+              {
+                type: 'callout',
+                content: 'Many astrologers offer both options. Online for convenience and reach, in-person for local clients who prefer it.',
+                variant: 'info'
+              }
+            ],
+            quiz: [
+              {
+                id: 'q1-delivery',
+                question: 'Online readings compared to in-person:',
+                options: ['Are always inferior', 'Offer global reach and convenience', 'Don\'t work for astrology', 'Require no preparation'],
+                correctIndex: 1,
+                explanation: 'Online readings offer global reach and convenience while still allowing meaningful connection with proper setup and practice.'
+              }
+            ]
+          }
+        ]
+      },
+      {
+        id: 'advanced-client-skills',
+        title: 'Advanced Client Skills',
+        description: 'Handle any client situation with grace and skill.',
+        lessons: [
+          {
+            id: 'difficult-questions',
+            title: 'Handling Difficult Questions',
+            description: 'What to do when clients ask about death, illness, or other sensitive topics.',
+            estimatedMinutes: 10,
+            content: [
+              { type: 'heading', content: 'The Hard Questions', level: 2 },
+              {
+                type: 'text',
+                content: 'Clients will ask difficult questions: "When will I die?" "Will my marriage last?" "Will I get the job?" How you handle these reveals your professionalism and ethics.'
+              },
+              {
+                type: 'concept',
+                title: 'Questions About Death',
+                content: 'Never predict death. Even if you see challenging transits, death is not predictable from a chart. Redirect: "Astrology shows life themes, not death timing. Let\'s focus on living fully."',
+                icon: '⚠️'
+              },
+              {
+                type: 'concept',
+                title: 'Health Questions',
+                content: 'You are not a doctor. Point out 6th house themes or health-related transits, but always defer to medical professionals. "I see a focus on health this year - it\'s a good time to prioritize check-ups."',
+                icon: '🏥'
+              },
+              {
+                type: 'concept',
+                title: 'Outcome Questions',
+                content: '"Will I get the job/partner/house?" Astrology shows timing and themes, not guaranteed outcomes. Redirect to empowerment: "The energy supports taking action. What you do with it matters."',
+                icon: '🔮'
+              },
+              {
+                type: 'list',
+                style: 'bullet',
+                items: [
+                  'Never claim to predict specific outcomes with certainty',
+                  'Redirect doom-seeking to empowerment',
+                  'It\'s okay to say "I don\'t know" or "That\'s beyond what astrology can answer"',
+                  'Focus on what they CAN influence, not what they fear',
+                  'If someone is obsessively seeking predictions, explore why'
+                ]
+              },
+              {
+                type: 'callout',
+                content: 'The goal is insight and empowerment, not fortune-telling. If a client wants certainty about the future, gently explain what astrology can and cannot do.',
+                variant: 'warning'
+              }
+            ],
+            quiz: [
+              {
+                id: 'q1-death',
+                question: 'If a client asks when they will die, you should:',
+                options: ['Make a prediction based on difficult transits', 'Refuse to answer and redirect to living fully', 'Tell them to ask someone else', 'Make something up to reassure them'],
+                correctIndex: 1,
+                explanation: 'Never predict death. Redirect the conversation toward living fully and making the most of their time.'
+              }
+            ]
+          },
+          {
+            id: 'emotional-sessions',
+            title: 'Managing Emotional Sessions',
+            description: 'What to do when clients cry, get angry, or have strong reactions.',
+            estimatedMinutes: 10,
+            content: [
+              { type: 'heading', content: 'When Emotions Run High', level: 2 },
+              {
+                type: 'text',
+                content: 'Readings often touch deep places. Clients may cry, express anger, or have powerful realizations. Your job is to hold space, not fix them.'
+              },
+              {
+                type: 'concept',
+                title: 'When Clients Cry',
+                content: 'This is normal and often healing. Pause. Offer tissues. Say "Take your time." Don\'t rush to fill silence. Crying often means something important is being processed.',
+                icon: '💧'
+              },
+              {
+                type: 'concept',
+                title: 'When Clients Get Defensive',
+                content: 'Sometimes truth hits a nerve. If they push back, don\'t argue. "I hear that this doesn\'t resonate for you. Let\'s explore it differently." Their resistance is data, not failure.',
+                icon: '🛡️'
+              },
+              {
+                type: 'concept',
+                title: 'When Clients Seek Validation',
+                content: 'Some clients want you to confirm what they\'ve already decided. Your job is truth, not agreement. "I understand you want X. Here\'s what the chart shows..."',
+                icon: '✓'
+              },
+              {
+                type: 'concept',
+                title: 'Your Own Regulation',
+                content: 'You must stay regulated to help them. If you\'re absorbing their emotions, you can\'t serve them. Ground yourself before sessions. Take breaks between clients.',
+                icon: '🧘'
+              },
+              {
+                type: 'list',
+                style: 'bullet',
+                items: [
+                  'Silence is okay - don\'t rush to fill it',
+                  'You\'re not their therapist - hold space, don\'t process their trauma',
+                  'End sessions on an empowering note when possible',
+                  'Check in after intense sessions',
+                  'Protect your own energy with clear boundaries'
+                ]
+              }
+            ],
+            quiz: [
+              {
+                id: 'q1-crying',
+                question: 'When a client cries during a reading:',
+                options: ['Rush to change the subject', 'Hold space and let them process', 'Tell them to stop being emotional', 'End the session immediately'],
+                correctIndex: 1,
+                explanation: 'Crying often indicates deep processing. Hold space, pause, and let them take the time they need.'
+              }
+            ]
+          },
+          {
+            id: 'managing-expectations',
+            title: 'Managing Client Expectations',
+            description: 'Setting up readings for success from the start.',
+            estimatedMinutes: 8,
+            content: [
+              { type: 'heading', content: 'Starting Right', level: 2 },
+              {
+                type: 'text',
+                content: 'Many reading problems stem from mismatched expectations. Setting clear expectations upfront prevents disappointment and creates better outcomes.'
+              },
+              {
+                type: 'concept',
+                title: 'Before the Session',
+                content: 'Send an intake form asking what they want to focus on. Explain what your reading includes (and doesn\'t). Confirm logistics: time, platform, payment.',
+                icon: '📝'
+              },
+              {
+                type: 'concept',
+                title: 'Opening the Session',
+                content: 'Briefly explain your approach. Ask what\'s most important to them. Clarify what astrology can and can\'t do. Set the container for the work.',
+                icon: '🚪'
+              },
+              {
+                type: 'list',
+                style: 'bullet',
+                items: [
+                  'Be clear about what you offer in your marketing',
+                  'Have a pre-session questionnaire',
+                  'Don\'t promise what you can\'t deliver',
+                  'Explain your style before diving in',
+                  'Check their main question/intention at the start'
+                ]
+              },
+              {
+                type: 'callout',
+                content: '"Before we begin, I want you to know that I focus on [your approach]. I won\'t [thing you don\'t do]. Is there anything specific you\'re hoping to explore today?"',
+                variant: 'tip'
+              }
+            ],
+            quiz: [
+              {
+                id: 'q1-expectations',
+                question: 'Managing expectations should happen:',
+                options: ['Only if there\'s a problem', 'Before and at the start of the reading', 'Never - just wing it', 'Only with difficult clients'],
+                correctIndex: 1,
+                explanation: 'Setting expectations before and at the start of every reading prevents misunderstandings and creates better outcomes.'
+              }
+            ]
+          },
+          {
+            id: 'client-retention',
+            title: 'Building Long-Term Client Relationships',
+            description: 'Turn one-time clients into returning ones.',
+            estimatedMinutes: 8,
+            content: [
+              { type: 'heading', content: 'Beyond the First Reading', level: 2 },
+              {
+                type: 'text',
+                content: 'A thriving practice is built on returning clients. People who trust you come back for transit readings, solar returns, and new life questions. Nurture these relationships.'
+              },
+              {
+                type: 'concept',
+                title: 'Follow-Up System',
+                content: 'Email after readings to thank them and share notes/recording. Check in around significant transits you discussed. Birthday emails with solar return highlights.',
+                icon: '📬'
+              },
+              {
+                type: 'concept',
+                title: 'Suggest Future Sessions',
+                content: 'At the end of readings, mention natural follow-up points: "Your Saturn return peaks in March - that would be a good time for a follow-up" or "Many clients return annually for solar return readings."',
+                icon: '📅'
+              },
+              {
+                type: 'concept',
+                title: 'Loyalty Incentives',
+                content: 'Returning client discounts. Package deals (3 sessions). Priority booking. These reward loyalty and increase commitment.',
+                icon: '🎁'
+              },
+              {
+                type: 'list',
+                style: 'bullet',
+                items: [
+                  'Keep notes on each client for future reference',
+                  'Remember personal details they\'ve shared',
+                  'Be genuinely interested in their journey',
+                  'Make rebooking easy',
+                  'Send relevant content between sessions'
+                ]
+              }
+            ],
+            quiz: [
+              {
+                id: 'q1-retention',
+                question: 'Building long-term client relationships involves:',
+                options: ['Only focusing on new clients', 'Follow-up, genuine interest, and making rebooking easy', 'Never contacting them again', 'Pressuring them to rebook'],
+                correctIndex: 1,
+                explanation: 'Long-term relationships are built through genuine care, helpful follow-up, and making it easy for satisfied clients to return.'
+              }
+            ]
+          }
+        ]
+      },
+      {
+        id: 'teaching-astrology',
+        title: 'Teaching Astrology',
+        description: 'Share your knowledge through workshops, courses, and mentoring.',
+        lessons: [
+          {
+            id: 'why-teach',
+            title: 'Why Teach Astrology?',
+            description: 'The rewards and responsibilities of astrological education.',
+            estimatedMinutes: 8,
+            content: [
+              { type: 'heading', content: 'Becoming a Teacher', level: 2 },
+              {
+                type: 'text',
+                content: 'Teaching astrology is deeply rewarding. You help others access this profound tool while deepening your own understanding. Teaching also diversifies your income and expands your impact.'
+              },
+              {
+                type: 'concept',
+                title: 'Benefits of Teaching',
+                content: 'Passive/scalable income (recorded courses). Positions you as an expert. Deepens your own knowledge. Creates community. Different energy than 1:1 readings.',
+                icon: '🌟'
+              },
+              {
+                type: 'concept',
+                title: 'Teaching vs Reading',
+                content: 'Reading is personal and intuitive. Teaching requires structure and clarity. Good readers aren\'t automatically good teachers - it\'s a different skill set.',
+                icon: '⚖️'
+              },
+              {
+                type: 'concept',
+                title: 'Are You Ready?',
+                content: 'You should have solid foundational knowledge. You don\'t need to know everything - you can teach what you\'ve mastered while being honest about your learning edges.',
+                icon: '✅'
+              },
+              {
+                type: 'list',
+                style: 'bullet',
+                items: [
+                  'Teaching forces you to articulate what you know intuitively',
+                  'Students\' questions reveal gaps in your own understanding',
+                  'Start small - a workshop or single topic - before creating a full curriculum',
+                  'Teaching is also learning'
+                ]
+              }
+            ],
+            quiz: [
+              {
+                id: 'q1-teach',
+                question: 'To teach astrology, you should:',
+                options: ['Know absolutely everything', 'Have solid knowledge and willingness to keep learning', 'Never teach until you have 20 years experience', 'Only teach if you have a degree'],
+                correctIndex: 1,
+                explanation: 'Good teachers have solid foundational knowledge and stay honest about their learning edges - they don\'t need to know everything.'
+              }
+            ]
+          },
+          {
+            id: 'curriculum-design',
+            title: 'Designing Your Curriculum',
+            description: 'How to structure effective astrology lessons.',
+            estimatedMinutes: 12,
+            content: [
+              { type: 'heading', content: 'Creating a Learning Path', level: 2 },
+              {
+                type: 'text',
+                content: 'Good curriculum design means meeting students where they are and building knowledge progressively. Random information dumps don\'t create real understanding.'
+              },
+              {
+                type: 'concept',
+                title: 'Know Your Audience',
+                content: 'Complete beginners? Students with some knowledge? Practitioners wanting to deepen? Each audience needs different content, pace, and depth.',
+                icon: '👥'
+              },
+              {
+                type: 'concept',
+                title: 'Progressive Building',
+                content: 'Each lesson should build on the last. Planets before aspects (can\'t understand Sun-Moon square without knowing Sun and Moon). Simple before complex.',
+                icon: '🏗️'
+              },
+              {
+                type: 'concept',
+                title: 'Beginner Curriculum',
+                content: '1) What is astrology? 2) The zodiac signs 3) The planets 4) The houses 5) Basic aspects 6) Putting it together. This can be a 6-week course or weekend intensive.',
+                icon: '📚'
+              },
+              {
+                type: 'concept',
+                title: 'Intermediate Topics',
+                content: 'Chart patterns. Transits. Progressions. Synastry. Specialized techniques. Each could be its own workshop or module.',
+                icon: '📈'
+              },
+              {
+                type: 'list',
+                style: 'bullet',
+                items: [
+                  'Clear learning objectives for each lesson',
+                  'Mix of theory and practice in every session',
+                  'Use students\' own charts when possible',
+                  'Build in review and integration time',
+                  'Create handouts and reference materials'
+                ]
+              }
+            ],
+            quiz: [
+              {
+                id: 'q1-curriculum',
+                question: 'Effective curriculum design:',
+                options: ['Dumps all information at once', 'Builds progressively from simple to complex', 'Skips fundamentals for advanced students', 'Uses the same content for everyone'],
+                correctIndex: 1,
+                explanation: 'Good curriculum builds progressively, with each lesson building on previous ones, moving from simple to complex.'
+              }
+            ]
+          },
+          {
+            id: 'teaching-methods',
+            title: 'Teaching Methods & Styles',
+            description: 'How to accommodate different learning styles.',
+            estimatedMinutes: 10,
+            content: [
+              { type: 'heading', content: 'How People Learn', level: 2 },
+              {
+                type: 'text',
+                content: 'People learn differently. Some need to see it. Some need to hear it. Some need to do it. Good teaching incorporates multiple methods.'
+              },
+              {
+                type: 'concept',
+                title: 'Visual Learners',
+                content: 'Use chart images, diagrams, and visual aids. Color-coding. Charts on screen or paper. Videos. Mind maps. These learners need to SEE concepts.',
+                icon: '👁️'
+              },
+              {
+                type: 'concept',
+                title: 'Auditory Learners',
+                content: 'Clear verbal explanations. Discussion and Q&A. Stories and examples. Podcasts. These learners need to HEAR concepts explained.',
+                icon: '👂'
+              },
+              {
+                type: 'concept',
+                title: 'Kinesthetic Learners',
+                content: 'Hands-on chart reading practice. Exercises. Writing and note-taking. Movement (acting out planetary energies). These learners need to DO to understand.',
+                icon: '✋'
+              },
+              {
+                type: 'list',
+                style: 'bullet',
+                items: [
+                  'Include all three modes in each lesson when possible',
+                  'Start with explanation, show examples, then have them practice',
+                  'Allow questions throughout, not just at the end',
+                  'Use real charts (their own when possible)',
+                  'Provide materials for later reference'
+                ]
+              },
+              {
+                type: 'callout',
+                content: 'The classic teaching formula: Tell them what you\'ll teach. Teach it. Then tell them what you taught. Repetition aids retention.',
+                variant: 'tip'
+              }
+            ],
+            quiz: [
+              {
+                id: 'q1-methods',
+                question: 'To reach all learners, you should:',
+                options: ['Only lecture verbally', 'Only show images', 'Use visual, auditory, and hands-on methods', 'Let them figure it out themselves'],
+                correctIndex: 2,
+                explanation: 'Different people learn differently. Incorporating visual, auditory, and hands-on methods reaches more students effectively.'
+              }
+            ]
+          },
+          {
+            id: 'workshops-courses',
+            title: 'Creating Workshops & Courses',
+            description: 'From single workshops to comprehensive programs.',
+            estimatedMinutes: 10,
+            content: [
+              { type: 'heading', content: 'Formats for Teaching', level: 2 },
+              {
+                type: 'text',
+                content: 'There are many formats for teaching astrology, from one-time workshops to year-long certification programs. Start with what feels manageable and grow from there.'
+              },
+              {
+                type: 'concept',
+                title: 'Single Workshops (1-3 hours)',
+                content: 'Great for specific topics: "Understanding Your Saturn Return" or "Mercury Retrograde Survival." Lower commitment for students and you. Good entry point.',
+                icon: '📍'
+              },
+              {
+                type: 'concept',
+                title: 'Short Courses (4-8 weeks)',
+                content: 'Beginner series. Single topic deep dives. Enough time to build real skill. Weekly meetings create momentum and community.',
+                icon: '📅'
+              },
+              {
+                type: 'concept',
+                title: 'Comprehensive Programs (3-12 months)',
+                content: 'Full astrology training. Multiple modules. Certification possible. Higher price point. Transforms students into practitioners.',
+                icon: '🎓'
+              },
+              {
+                type: 'concept',
+                title: 'Self-Paced Online Courses',
+                content: 'Record once, sell forever. More accessible pricing. Reaches global audience. Requires good production quality. Can supplement with live Q&A calls.',
+                icon: '💻'
+              },
+              {
+                type: 'list',
+                style: 'bullet',
+                items: [
+                  'Start with a single workshop to test your material',
+                  'Get feedback before scaling up',
+                  'Live teaching builds community; recorded scales better',
+                  'Consider cohort-based courses for accountability',
+                  'Price reflects depth and your expertise'
+                ]
+              }
+            ],
+            quiz: [
+              {
+                id: 'q1-formats',
+                question: 'The best format to START teaching is:',
+                options: ['A year-long certification program', 'A single workshop on a topic you know well', 'A self-paced course with 50 hours of content', 'Nothing until you\'re an expert'],
+                correctIndex: 1,
+                explanation: 'Starting with a single workshop lets you test your material and build confidence before creating larger programs.'
+              }
+            ]
+          },
+          {
+            id: 'building-educational-practice',
+            title: 'Building an Educational Practice',
+            description: 'Turn teaching into a sustainable part of your business.',
+            estimatedMinutes: 10,
+            content: [
+              { type: 'heading', content: 'Teaching as Business', level: 2 },
+              {
+                type: 'text',
+                content: 'Teaching can become a significant part of your income. It requires different marketing than readings, but the fundamentals of building trust and demonstrating value remain the same.'
+              },
+              {
+                type: 'concept',
+                title: 'Marketing Your Teaching',
+                content: 'Free workshops or webinars as lead magnets. Testimonials from students. Preview content (YouTube, blog). Clear learning outcomes in marketing.',
+                icon: '📣'
+              },
+              {
+                type: 'concept',
+                title: 'Pricing Education',
+                content: 'Workshops: £25-75. Short courses: £150-400. Comprehensive programs: £500-2000+. Consider what transformation you\'re offering.',
+                icon: '💰'
+              },
+              {
+                type: 'concept',
+                title: 'Platforms & Tools',
+                content: 'Zoom for live teaching. Teachable/Kajabi for self-paced courses. Email list for nurturing leads. Calendar tool for scheduling. Payment processor.',
+                icon: '🛠️'
+              },
+              {
+                type: 'concept',
+                title: 'The Teaching Ladder',
+                content: 'Free content → Low-cost workshop → Multi-week course → Comprehensive program → Mentorship. Each step builds trust for the next.',
+                icon: '📶'
+              },
+              {
+                type: 'list',
+                style: 'bullet',
+                items: [
+                  'Your teaching reflects your unique perspective - don\'t just copy others',
+                  'Gather testimonials and success stories',
+                  'Create a clear student journey',
+                  'Balance live teaching with scalable content',
+                  'Teaching and readings can feed each other'
+                ]
+              }
+            ],
+            quiz: [
+              {
+                id: 'q1-edu-business',
+                question: 'Building a teaching practice involves:',
+                options: ['Giving everything away free', 'Marketing, clear offerings, and building trust over time', 'Only teaching in person', 'Charging the highest prices possible immediately'],
+                correctIndex: 1,
+                explanation: 'Building a sustainable teaching practice requires marketing, clear offerings at appropriate prices, and building trust over time.'
+              }
+            ]
+          }
+        ]
+      },
+      {
+        id: 'business-operations',
+        title: 'Business Operations',
+        description: 'The practical side of running an astrology practice.',
+        lessons: [
+          {
+            id: 'legal-setup',
+            title: 'Legal & Business Setup',
+            description: 'Protecting yourself and running a legitimate business.',
+            estimatedMinutes: 10,
+            content: [
+              { type: 'heading', content: 'The Business Side', level: 2 },
+              {
+                type: 'text',
+                content: 'Running an astrology practice means running a business. Taking care of legal and administrative fundamentals protects you and gives clients confidence.'
+              },
+              {
+                type: 'concept',
+                title: 'Business Structure (UK)',
+                content: 'Most astrologers start as sole traders (simple, register with HMRC). As you grow, limited company may offer benefits. Consult an accountant for your situation.',
+                icon: '🏢'
+              },
+              {
+                type: 'concept',
+                title: 'Insurance',
+                content: 'Professional liability insurance (errors & omissions) is wise even if not required. Public liability if seeing clients in person. Relatively affordable peace of mind.',
+                icon: '🛡️'
+              },
+              {
+                type: 'concept',
+                title: 'Disclaimers',
+                content: 'Clear disclaimer that astrology is for entertainment/personal growth, not medical/legal/financial advice. Include in contracts and on website. Protects both parties.',
+                icon: '📋'
+              },
+              {
+                type: 'concept',
+                title: 'Record Keeping',
+                content: 'Track income and expenses for taxes. Keep client notes securely (GDPR compliance if in UK/EU). Save contracts and communications.',
+                icon: '📁'
+              },
+              {
+                type: 'callout',
+                content: 'Consider consulting with an accountant familiar with self-employment. The investment pays for itself in peace of mind and tax optimization.',
+                variant: 'tip'
+              }
+            ],
+            quiz: [
+              {
+                id: 'q1-legal',
+                question: 'For legal protection, astrologers should:',
+                options: ['Ignore business requirements', 'Register their business, use disclaimers, and consider insurance', 'Only work for free', 'Avoid all paperwork'],
+                correctIndex: 1,
+                explanation: 'Proper business setup, disclaimers, and insurance protect both you and your clients and create a professional foundation.'
+              }
+            ]
+          },
+          {
+            id: 'scheduling-booking',
+            title: 'Scheduling & Booking Systems',
+            description: 'Make booking easy and manage your time well.',
+            estimatedMinutes: 8,
+            content: [
+              { type: 'heading', content: 'Smooth Scheduling', level: 2 },
+              {
+                type: 'text',
+                content: 'A smooth booking process makes a professional impression and saves you countless back-and-forth emails. The right systems let you focus on what you do best: astrology.'
+              },
+              {
+                type: 'concept',
+                title: 'Booking Software',
+                content: 'Calendly, Acuity, or similar tools let clients see your availability and book themselves. Automatic confirmations and reminders. Integrates with your calendar.',
+                icon: '📅'
+              },
+              {
+                type: 'concept',
+                title: 'Payment Integration',
+                content: 'Collect payment at booking (reduces no-shows). PayPal, Stripe, or Square. Automatic invoices. Clear refund/cancellation policy.',
+                icon: '💳'
+              },
+              {
+                type: 'concept',
+                title: 'Intake Forms',
+                content: 'Collect birth data accurately (date, exact time, city). Ask about focus areas. Health conditions relevant to your practice. Consent acknowledgment.',
+                icon: '📝'
+              },
+              {
+                type: 'list',
+                style: 'bullet',
+                items: [
+                  'Buffer time between sessions (at least 15-30 min)',
+                  'Set clear working hours - don\'t be available 24/7',
+                  'Send reminder 24-48 hours before session',
+                  'Have a cancellation/rescheduling policy',
+                  'Require birth data before the session, not during'
+                ]
+              }
+            ],
+            quiz: [
+              {
+                id: 'q1-booking',
+                question: 'Collecting payment at booking:',
+                options: ['Is rude to clients', 'Reduces no-shows and is standard practice', 'Should never be done', 'Only works for expensive readings'],
+                correctIndex: 1,
+                explanation: 'Collecting payment at booking is professional, reduces no-shows, and is standard practice for service providers.'
+              }
+            ]
+          },
+          {
+            id: 'client-records',
+            title: 'Client Records & Notes',
+            description: 'What to track and how to keep information secure.',
+            estimatedMinutes: 8,
+            content: [
+              { type: 'heading', content: 'Professional Record Keeping', level: 2 },
+              {
+                type: 'text',
+                content: 'Good records help you serve clients better and protect you professionally. But client information is sensitive - handle it with care.'
+              },
+              {
+                type: 'concept',
+                title: 'What to Keep',
+                content: 'Birth data. Reading date. Key themes discussed. Any predictions or timing mentioned. Follow-up notes. Client feedback.',
+                icon: '📋'
+              },
+              {
+                type: 'concept',
+                title: 'Security (GDPR)',
+                content: 'If you\'re in the UK/EU, GDPR applies. Store data securely (encrypted, password-protected). Only collect necessary data. Have a privacy policy. Allow clients to request data deletion.',
+                icon: '🔒'
+              },
+              {
+                type: 'concept',
+                title: 'Recording Sessions',
+                content: 'Many clients appreciate session recordings. Always get consent first. Store securely. Define how long you\'ll keep them. Consider auto-deletion after 30-90 days.',
+                icon: '🎙️'
+              },
+              {
+                type: 'list',
+                style: 'bullet',
+                items: [
+                  'Use secure systems (not just a notebook anyone could find)',
+                  'Back up your data regularly',
+                  'Don\'t share client information without consent',
+                  'Have a policy for what happens to data if you stop practicing',
+                  'Review and clean up old records periodically'
+                ]
+              }
+            ],
+            quiz: [
+              {
+                id: 'q1-records',
+                question: 'Client records should be:',
+                options: ['Shared publicly to show your experience', 'Kept secure with appropriate privacy protections', 'Deleted immediately after every session', 'Only kept in your head'],
+                correctIndex: 1,
+                explanation: 'Client records are sensitive and should be kept secure with appropriate privacy protections (GDPR compliance in UK/EU).'
+              }
+            ]
+          },
+          {
+            id: 'continuing-education',
+            title: 'Continuing Education & Growth',
+            description: 'Never stop learning and evolving as a practitioner.',
+            estimatedMinutes: 8,
+            content: [
+              { type: 'heading', content: 'Lifelong Learning', level: 2 },
+              {
+                type: 'text',
+                content: 'Astrology is vast. Even after decades, there\'s more to learn. The best practitioners stay curious and continue developing their skills throughout their careers.'
+              },
+              {
+                type: 'concept',
+                title: 'Formal Study',
+                content: 'Take courses in areas you want to develop. Attend conferences. Study with teachers whose work you admire. Many online options exist now.',
+                icon: '🎓'
+              },
+              {
+                type: 'concept',
+                title: 'Peer Learning',
+                content: 'Study groups with other astrologers. Practice reading each other\'s charts. Discuss difficult cases. Community prevents isolation.',
+                icon: '👥'
+              },
+              {
+                type: 'concept',
+                title: 'Self-Study',
+                content: 'Read classic and contemporary texts. Study historical events astrologically. Track transits and observe their effects. Your own chart is an endless teacher.',
+                icon: '📚'
+              },
+              {
+                type: 'concept',
+                title: 'Specialization',
+                content: 'As you grow, you might develop specialties. Medical astrology. Horary. Mundane. Financial. Specialized knowledge makes you more valuable and referable.',
+                icon: '⭐'
+              },
+              {
+                type: 'list',
+                style: 'bullet',
+                items: [
+                  'Set a learning goal each year',
+                  'Budget time and money for education',
+                  'Learn from diverse traditions and approaches',
+                  'Stay humble - there\'s always more to know',
+                  'Share what you learn - teaching deepens understanding'
+                ]
+              }
+            ],
+            quiz: [
+              {
+                id: 'q1-learning',
+                question: 'Professional astrologers should:',
+                options: ['Stop learning once they\'re earning money', 'Continue learning throughout their career', 'Only learn from one teacher', 'Avoid other astrologers'],
+                correctIndex: 1,
+                explanation: 'The best astrologers remain lifelong learners, continuously developing their skills and exploring new areas of astrology.'
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    id: 'synastry-compatibility',
+    title: 'Synastry & Compatibility',
+    description: 'Master relationship astrology - understand romantic compatibility, friendship dynamics, and how charts interact.',
+    difficulty: 'intermediate',
+    estimatedMinutes: 120,
+    icon: '💕',
+    modules: [
+      {
+        id: 'synastry-basics',
+        title: 'Synastry Fundamentals',
+        description: 'Learn the basics of chart comparison and relationship astrology.',
+        lessons: [
+          {
+            id: 'what-is-synastry',
+            title: 'What is Synastry?',
+            description: 'An introduction to comparing birth charts for relationship insights.',
+            estimatedMinutes: 8,
+            content: [
+              { type: 'heading', content: 'The Art of Chart Comparison', level: 2 },
+              {
+                type: 'chat',
+                messages: [
+                  { role: 'student', content: "I've heard of synastry for compatibility. What exactly is it?" },
+                  { role: 'guide', content: "Synastry is the art of comparing two birth charts to understand how two people's energies interact. It's like seeing how two melodies harmonize - or create tension - when played together." },
+                  { role: 'student', content: "So it's not just about Sun sign compatibility?" },
+                  { role: 'guide', content: "Exactly! Sun sign compatibility is just one tiny piece. True synastry looks at how all planets in one chart aspect planets in another. Your Moon might love their Venus, even if your Sun signs are supposedly 'incompatible.'" }
+                ]
+              },
+              {
+                type: 'text',
+                content: 'Synastry goes far beyond simple Sun sign matching. When we overlay two charts, we see which planets form aspects (connections) between them. These inter-chart aspects reveal the dynamics of any relationship - romantic, friendship, family, or business.'
+              },
+              {
+                type: 'concept',
+                title: 'The Overlay Technique',
+                content: 'In synastry, we place one person\'s planets around the other\'s chart wheel to see which houses they activate. Your partner\'s Venus might fall in your 7th house of partnership - or your 12th house of hidden matters. Location matters!',
+                icon: '🔄'
+              },
+              {
+                type: 'funFact',
+                content: 'Ancient astrologers used synastry to arrange marriages! While we don\'t recommend this today, synastry can reveal why certain people feel instantly familiar while others feel challenging.'
+              },
+              {
+                type: 'callout',
+                content: 'No synastry is "perfect." Every relationship has easy flowing aspects AND challenging ones. The goal is understanding, not judgment.',
+                variant: 'tip'
+              }
+            ],
+            quiz: [
+              {
+                id: 'q1-synastry-def',
+                question: 'What is synastry?',
+                options: ['Reading one person\'s chart', 'Comparing two birth charts', 'Predicting the future', 'Sun sign matching'],
+                correctIndex: 1,
+                explanation: 'Synastry is the comparison of two birth charts to understand relationship dynamics.'
+              }
+            ]
+          },
+          {
+            id: 'key-synastry-planets',
+            title: 'Key Planets in Synastry',
+            description: 'Which planets matter most for different types of relationships.',
+            estimatedMinutes: 10,
+            content: [
+              { type: 'heading', content: 'The Relationship Planets', level: 2 },
+              {
+                type: 'text',
+                content: 'While all planets play a role in synastry, certain planets are especially significant for relationship dynamics. Understanding their roles helps you focus on what matters most.'
+              },
+              {
+                type: 'concept',
+                title: 'The Luminaries: Sun & Moon',
+                content: 'Sun-Moon contacts are vital. The Sun represents core identity while the Moon represents emotional needs. When these connect, there\'s fundamental recognition and emotional attunement.',
+                icon: '☀️'
+              },
+              {
+                type: 'concept',
+                title: 'Venus & Mars: Attraction',
+                content: 'Venus-Mars aspects generate romantic and physical attraction. Venus shows what we find beautiful and how we express love. Mars shows desire and how we pursue what we want.',
+                icon: '💫'
+              },
+              {
+                type: 'concept',
+                title: 'Mercury: Communication',
+                content: 'Mercury aspects determine how well you communicate and understand each other\'s thinking style. Good Mercury connections mean conversations flow naturally.',
+                icon: '💬'
+              },
+              {
+                type: 'concept',
+                title: 'Saturn: Longevity',
+                content: 'Saturn aspects indicate commitment potential and staying power. Challenging Saturn contacts can feel restrictive, but supportive ones provide structure for lasting bonds.',
+                icon: '🪐'
+              },
+              {
+                type: 'comparison',
+                title: 'Planet Priorities by Relationship Type',
+                items: [
+                  { label: 'Romantic', left: 'Venus-Mars, Sun-Moon', right: 'Essential for attraction & bonding' },
+                  { label: 'Friendship', left: 'Mercury, Jupiter', right: 'Communication & shared enjoyment' },
+                  { label: 'Business', left: 'Saturn, Mercury', right: 'Structure & clear communication' }
+                ]
+              }
+            ],
+            quiz: [
+              {
+                id: 'q1-venus-mars',
+                question: 'Venus-Mars aspects in synastry indicate:',
+                options: ['Communication style', 'Romantic and physical attraction', 'Career compatibility', 'Intellectual connection'],
+                correctIndex: 1,
+                explanation: 'Venus represents love and attraction while Mars represents desire and pursuit - together they generate romantic chemistry.'
+              }
+            ]
+          },
+          {
+            id: 'synastry-aspects',
+            title: 'Understanding Synastry Aspects',
+            description: 'How different aspect types manifest in relationships.',
+            estimatedMinutes: 12,
+            content: [
+              { type: 'heading', content: 'Aspects Between Charts', level: 2 },
+              {
+                type: 'text',
+                content: 'Just as aspects within a single chart show how planetary energies combine, synastry aspects show how your energies combine with another person\'s. Each aspect type creates a different dynamic.'
+              },
+              {
+                type: 'concept',
+                title: 'Conjunctions (0°)',
+                content: 'The most powerful synastry aspect. When planets conjunct across charts, those energies merge and amplify each other. A Venus conjunct someone\'s Moon creates deep affection and emotional comfort.',
+                icon: '⚡'
+              },
+              {
+                type: 'concept',
+                title: 'Trines (120°) & Sextiles (60°)',
+                content: 'These flowing aspects create ease and natural compatibility. You "get" each other without trying. However, too many easy aspects can mean lack of growth or taking each other for granted.',
+                icon: '🌊'
+              },
+              {
+                type: 'concept',
+                title: 'Squares (90°)',
+                content: 'Squares create friction and tension - but also passion and growth. Square aspects keep relationships dynamic. The key is learning to work with the tension productively.',
+                icon: '⚔️'
+              },
+              {
+                type: 'concept',
+                title: 'Oppositions (180°)',
+                content: 'Oppositions can feel like looking in a mirror - you see qualities you lack or have suppressed. They create strong attraction through polarity but require balance and compromise.',
+                icon: '🪞'
+              },
+              {
+                type: 'callout',
+                content: 'The healthiest relationships usually have a mix of easy and challenging aspects. All trines can be boring; all squares exhausting. Balance is key.',
+                variant: 'tip'
+              }
+            ],
+            quiz: [
+              {
+                id: 'q1-squares',
+                question: 'Square aspects in synastry:',
+                options: ['Always doom a relationship', 'Create friction but also passion and growth', 'Are the best aspects to have', 'Have no effect'],
+                correctIndex: 1,
+                explanation: 'Squares create tension but also keep relationships dynamic and can promote growth when handled well.'
+              }
+            ]
+          }
+        ]
+      },
+      {
+        id: 'house-overlays',
+        title: 'House Overlays',
+        description: 'Understanding where someone\'s planets land in your chart.',
+        lessons: [
+          {
+            id: 'overlay-meaning',
+            title: 'What House Overlays Mean',
+            description: 'How planetary overlays activate different life areas.',
+            estimatedMinutes: 10,
+            content: [
+              { type: 'heading', content: 'Planets in Your Houses', level: 2 },
+              {
+                type: 'chat',
+                messages: [
+                  { role: 'student', content: "I understand aspects, but what are house overlays?" },
+                  { role: 'guide', content: "When someone's planet falls into one of your houses, it 'activates' that area of your life. If their Jupiter lands in your 10th house, they might boost your career or public image." },
+                  { role: 'student', content: "So they literally affect certain parts of my life?" },
+                  { role: 'guide', content: "They influence how you experience that life area when you're with them. Their Sun in your 5th house might make you feel more creative and playful together. Their Saturn in your 7th might bring up commitment themes." }
+                ]
+              },
+              {
+                type: 'text',
+                content: 'House overlays show where someone impacts your life most directly. Even without strong aspects, a planet falling in a key house creates significant influence in that area.'
+              },
+              {
+                type: 'concept',
+                title: 'Angular House Overlays (1, 4, 7, 10)',
+                content: 'Planets in angular houses have the strongest impact. Their planets on your angles represent major life influence - identity (1st), home (4th), partnership (7th), career (10th).',
+                icon: '🎯'
+              },
+              {
+                type: 'concept',
+                title: 'Romantic House Overlays',
+                content: 'For romance, pay attention to the 5th house (romance, fun), 7th house (partnership), and 8th house (intimacy, deep bonding). Planets here indicate relationship significance.',
+                icon: '💕'
+              },
+              {
+                type: 'funFact',
+                content: 'If someone\'s Sun, Moon, or Venus falls in your 7th house, you might feel they\'re "partner material" even before getting to know them well - that house is literally your partnership sector!'
+              }
+            ],
+            quiz: [
+              {
+                id: 'q1-overlay',
+                question: 'If someone\'s Jupiter falls in your 2nd house, it might:',
+                options: ['Affect your communication', 'Boost your finances or self-worth', 'Change your appearance', 'Impact your siblings'],
+                correctIndex: 1,
+                explanation: 'The 2nd house rules money, resources, and self-worth - Jupiter there could bring expansion in these areas.'
+              }
+            ]
+          },
+          {
+            id: 'venus-mars-houses',
+            title: 'Venus & Mars House Overlays',
+            description: 'Where attraction and desire show up in charts.',
+            estimatedMinutes: 8,
+            content: [
+              { type: 'heading', content: 'The Attraction Houses', level: 2 },
+              {
+                type: 'text',
+                content: 'Venus and Mars overlays are especially telling for romantic relationships. Where someone\'s Venus or Mars lands shows how and where attraction manifests between you.'
+              },
+              {
+                type: 'concept',
+                title: 'Venus in Your Houses',
+                content: 'Their Venus shows where they bring love, beauty, and harmony to your life. Venus in your 1st house - they adore your appearance. Venus in your 9th - they love your mind and beliefs.',
+                icon: '💗'
+              },
+              {
+                type: 'concept',
+                title: 'Mars in Your Houses',
+                content: 'Their Mars shows where they activate, motivate, or potentially challenge you. Mars in your 6th - they might push your daily routines. Mars in your 5th - passionate creative or romantic energy.',
+                icon: '🔥'
+              },
+              {
+                type: 'list',
+                style: 'bullet',
+                items: [
+                  'Venus/Mars in 1st: Strong physical attraction',
+                  'Venus/Mars in 5th: Romantic, playful chemistry',
+                  'Venus/Mars in 7th: Partnership-oriented attraction',
+                  'Venus/Mars in 8th: Intense, transformative connection',
+                  'Venus/Mars in 12th: Spiritual or karmic attraction'
+                ]
+              }
+            ],
+            quiz: [
+              {
+                id: 'q1-venus-overlay',
+                question: 'Someone\'s Venus in your 7th house suggests:',
+                options: ['Career conflicts', 'They see you as partner material', 'Communication issues', 'Family drama'],
+                correctIndex: 1,
+                explanation: 'The 7th house is the partnership sector - Venus here indicates they find you lovable in a committed partnership way.'
+              }
+            ]
+          }
+        ]
+      },
+      {
+        id: 'composite-charts',
+        title: 'The Composite Chart',
+        description: 'Understanding the relationship as its own entity.',
+        lessons: [
+          {
+            id: 'composite-intro',
+            title: 'Introduction to Composite Charts',
+            description: 'How a relationship has its own birth chart.',
+            estimatedMinutes: 10,
+            content: [
+              { type: 'heading', content: 'The Relationship\'s Chart', level: 2 },
+              {
+                type: 'chat',
+                messages: [
+                  { role: 'student', content: "What's the difference between synastry and a composite chart?" },
+                  { role: 'guide', content: "Synastry compares two separate charts. A composite chart creates one chart for the relationship itself - by finding the midpoints between each pair of planets. It's like the relationship has its own birth chart!" },
+                  { role: 'student', content: "So it shows the relationship as a separate thing?" },
+                  { role: 'guide', content: "Exactly! The composite shows the relationship's personality, strengths, challenges, and purpose. It's especially useful for understanding what you create TOGETHER, beyond what each person brings individually." }
+                ]
+              },
+              {
+                type: 'text',
+                content: 'A composite chart is calculated by finding the midpoint between each planet in both charts. The result is a single chart representing the relationship entity - showing its nature, purpose, and dynamics.'
+              },
+              {
+                type: 'concept',
+                title: 'Composite Sun',
+                content: 'The composite Sun shows the relationship\'s core identity and purpose. Its sign and house reveal what the relationship is "about" and what it helps both people develop.',
+                icon: '☀️'
+              },
+              {
+                type: 'concept',
+                title: 'Composite Moon',
+                content: 'The composite Moon reveals the emotional tone and needs of the relationship. Is it nurturing (Cancer)? Intense (Scorpio)? Independent (Aquarius)?',
+                icon: '🌙'
+              },
+              {
+                type: 'funFact',
+                content: 'A relationship can have challenging individual synastry but a beautiful composite chart - meaning the relationship itself becomes greater than the sum of its parts!'
+              }
+            ],
+            quiz: [
+              {
+                id: 'q1-composite',
+                question: 'A composite chart represents:',
+                options: ['One person\'s chart', 'The comparison of two charts', 'The relationship as its own entity', 'Future predictions'],
+                correctIndex: 2,
+                explanation: 'The composite chart is a single chart representing the relationship itself, created from the midpoints of both people\'s charts.'
+              }
+            ]
+          },
+          {
+            id: 'reading-composite',
+            title: 'Reading a Composite Chart',
+            description: 'How to interpret the relationship chart.',
+            estimatedMinutes: 10,
+            content: [
+              { type: 'heading', content: 'Interpreting the Composite', level: 2 },
+              {
+                type: 'text',
+                content: 'Reading a composite chart is similar to reading a natal chart, but you\'re looking at the relationship\'s characteristics rather than an individual\'s. Focus on key factors that reveal the relationship\'s nature.'
+              },
+              {
+                type: 'concept',
+                title: 'Key Composite Factors',
+                content: 'Start with the composite Sun, Moon, and Ascendant - these form the "Big Three" of the relationship. Then look at Venus and Mars for love/desire dynamics, and Saturn for longevity.',
+                icon: '🔑'
+              },
+              {
+                type: 'list',
+                style: 'bullet',
+                items: [
+                  'Composite Sun: The relationship\'s purpose and identity',
+                  'Composite Moon: Emotional needs and feeling tone',
+                  'Composite Ascendant: How others see the relationship',
+                  'Composite Venus: How love is expressed together',
+                  'Composite Saturn: Challenges and staying power'
+                ]
+              },
+              {
+                type: 'concept',
+                title: 'Composite Aspects',
+                content: 'Aspects within the composite show the relationship\'s internal dynamics. Sun-Moon aspects reveal how well identity and emotions work together. Venus-Saturn might indicate commitment challenges or serious love.',
+                icon: '🔗'
+              },
+              {
+                type: 'callout',
+                content: 'A strong composite doesn\'t guarantee success - it shows the relationship\'s potential. Both people still need to do the work!',
+                variant: 'info'
+              }
+            ],
+            quiz: [
+              {
+                id: 'q1-comp-sun',
+                question: 'The composite Sun represents:',
+                options: ['One person\'s ego', 'The relationship\'s purpose and identity', 'Physical attraction', 'Past life karma'],
+                correctIndex: 1,
+                explanation: 'The composite Sun shows what the relationship is fundamentally "about" - its core identity and purpose.'
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    id: 'twelve-signs-deep',
+    title: 'The Twelve Signs in Depth',
+    description: 'A comprehensive exploration of each zodiac sign - psychology, motivations, strengths, shadows, and growth paths.',
+    difficulty: 'beginner',
+    estimatedMinutes: 150,
+    icon: '♈',
+    modules: [
+      {
+        id: 'fire-signs',
+        title: 'The Fire Signs',
+        description: 'Deep dive into Aries, Leo, and Sagittarius.',
+        lessons: [
+          {
+            id: 'aries-deep',
+            title: 'Aries: The Pioneer',
+            description: 'Understanding the sign of initiation and courage.',
+            estimatedMinutes: 10,
+            content: [
+              { type: 'heading', content: 'The Ram\'s Journey', level: 2 },
+              {
+                type: 'signCard',
+                sign: 'aries'
+              },
+              {
+                type: 'text',
+                content: 'Aries is the first sign of the zodiac, representing new beginnings, raw energy, and the courage to be first. Ruled by Mars, Aries embodies the warrior spirit - direct, assertive, and unafraid to forge ahead.'
+              },
+              {
+                type: 'concept',
+                title: 'Core Psychology',
+                content: 'Aries needs to feel alive through action and challenge. They\'re driven by the question "What can I initiate?" and thrive when they have something to conquer or build from scratch.',
+                icon: '🔥'
+              },
+              {
+                type: 'comparison',
+                title: 'Aries Light vs Shadow',
+                items: [
+                  { label: 'Energy', left: 'Courageous, pioneering', right: 'Impulsive, reckless' },
+                  { label: 'Drive', left: 'Independent, self-motivated', right: 'Selfish, inconsiderate' },
+                  { label: 'Style', left: 'Direct, honest', right: 'Aggressive, impatient' }
+                ]
+              },
+              {
+                type: 'concept',
+                title: 'Aries Growth Path',
+                content: 'Aries grows by learning patience and considering others. Their challenge is moving from "me first" to "we together" without losing their vital spark and initiative.',
+                icon: '📈'
+              },
+              {
+                type: 'callout',
+                content: 'Consider where Aries-like energy shows up in your life. Where do you feel most pioneering and independent?',
+                variant: 'tip'
+              }
+            ],
+            quiz: [
+              {
+                id: 'q1-aries-ruler',
+                question: 'Aries is ruled by:',
+                options: ['Venus', 'Mars', 'Jupiter', 'Saturn'],
+                correctIndex: 1,
+                explanation: 'Mars, the planet of action, drive, and desire, rules Aries - giving this sign its assertive, warrior-like nature.'
+              }
+            ]
+          },
+          {
+            id: 'leo-deep',
+            title: 'Leo: The Sovereign',
+            description: 'Understanding the sign of creativity and self-expression.',
+            estimatedMinutes: 10,
+            content: [
+              { type: 'heading', content: 'The Lion\'s Heart', level: 2 },
+              {
+                type: 'signCard',
+                sign: 'leo'
+              },
+              {
+                type: 'text',
+                content: 'Leo is the sign of creative self-expression, leadership, and heartfelt generosity. Ruled by the Sun, Leo radiates warmth and seeks to shine their unique light into the world.'
+              },
+              {
+                type: 'concept',
+                title: 'Core Psychology',
+                content: 'Leo needs to feel special and recognized for their unique gifts. They\'re driven by the question "What can I create?" and thrive when they can express their creativity and receive appreciation.',
+                icon: '👑'
+              },
+              {
+                type: 'comparison',
+                title: 'Leo Light vs Shadow',
+                items: [
+                  { label: 'Expression', left: 'Creative, generous, warm', right: 'Attention-seeking, dramatic' },
+                  { label: 'Leadership', left: 'Inspiring, confident', right: 'Domineering, prideful' },
+                  { label: 'Love', left: 'Loyal, big-hearted', right: 'Demanding constant praise' }
+                ]
+              },
+              {
+                type: 'concept',
+                title: 'Leo Growth Path',
+                content: 'Leo grows by learning to shine without needing constant external validation. Their challenge is finding inner confidence that doesn\'t depend on applause.',
+                icon: '📈'
+              },
+              {
+                type: 'callout',
+                content: 'Reflect on where Leo energy shows up in your life. Where do you need to express creativity and receive recognition?',
+                variant: 'tip'
+              }
+            ],
+            quiz: [
+              {
+                id: 'q1-leo-ruler',
+                question: 'Leo is ruled by:',
+                options: ['The Moon', 'The Sun', 'Mars', 'Mercury'],
+                correctIndex: 1,
+                explanation: 'The Sun, representing our core identity and life force, rules Leo - giving this sign its radiant, expressive nature.'
+              }
+            ]
+          },
+          {
+            id: 'sagittarius-deep',
+            title: 'Sagittarius: The Seeker',
+            description: 'Understanding the sign of exploration and meaning.',
+            estimatedMinutes: 10,
+            content: [
+              { type: 'heading', content: 'The Archer\'s Quest', level: 2 },
+              {
+                type: 'signCard',
+                sign: 'sagittarius'
+              },
+              {
+                type: 'text',
+                content: 'Sagittarius is the sign of exploration, higher learning, and the search for meaning. Ruled by Jupiter, Sagittarius seeks to expand horizons through travel, philosophy, and adventure.'
+              },
+              {
+                type: 'concept',
+                title: 'Core Psychology',
+                content: 'Sagittarius needs freedom and meaning. They\'re driven by the question "What does it all mean?" and thrive when exploring new territories - physical, intellectual, or spiritual.',
+                icon: '🏹'
+              },
+              {
+                type: 'comparison',
+                title: 'Sagittarius Light vs Shadow',
+                items: [
+                  { label: 'Mind', left: 'Philosophical, optimistic', right: 'Preachy, know-it-all' },
+                  { label: 'Spirit', left: 'Adventurous, honest', right: 'Restless, tactless' },
+                  { label: 'Goals', left: 'Visionary, inspiring', right: 'Unrealistic, irresponsible' }
+                ]
+              },
+              {
+                type: 'concept',
+                title: 'Sagittarius Growth Path',
+                content: 'Sagittarius grows by learning to find meaning in the everyday, not just the extraordinary. Their challenge is committing to depth rather than always seeking the next horizon.',
+                icon: '📈'
+              },
+              {
+                type: 'callout',
+                content: 'Consider where Sagittarian energy shows up in your life. Where do you seek freedom, growth, and meaning?',
+                variant: 'tip'
+              }
+            ],
+            quiz: [
+              {
+                id: 'q1-sag-ruler',
+                question: 'Sagittarius is ruled by:',
+                options: ['Saturn', 'Mars', 'Jupiter', 'Neptune'],
+                correctIndex: 2,
+                explanation: 'Jupiter, the planet of expansion, luck, and higher wisdom, rules Sagittarius - giving this sign its optimistic, growth-oriented nature.'
+              }
+            ]
+          }
+        ]
+      },
+      {
+        id: 'earth-signs',
+        title: 'The Earth Signs',
+        description: 'Deep dive into Taurus, Virgo, and Capricorn.',
+        lessons: [
+          {
+            id: 'taurus-deep',
+            title: 'Taurus: The Builder',
+            description: 'Understanding the sign of values and stability.',
+            estimatedMinutes: 10,
+            content: [
+              { type: 'heading', content: 'The Bull\'s Garden', level: 2 },
+              {
+                type: 'signCard',
+                sign: 'taurus'
+              },
+              {
+                type: 'text',
+                content: 'Taurus is the sign of stability, sensuality, and lasting value. Ruled by Venus, Taurus appreciates beauty, comfort, and the pleasures of the physical world.'
+              },
+              {
+                type: 'concept',
+                title: 'Core Psychology',
+                content: 'Taurus needs security and sensory satisfaction. They\'re driven by the question "What is worth keeping?" and thrive when building something of lasting value.',
+                icon: '🌿'
+              },
+              {
+                type: 'comparison',
+                title: 'Taurus Light vs Shadow',
+                items: [
+                  { label: 'Values', left: 'Dependable, patient', right: 'Stubborn, resistant to change' },
+                  { label: 'Senses', left: 'Appreciative, sensual', right: 'Indulgent, materialistic' },
+                  { label: 'Resources', left: 'Resourceful, practical', right: 'Possessive, greedy' }
+                ]
+              },
+              {
+                type: 'concept',
+                title: 'Taurus Growth Path',
+                content: 'Taurus grows by learning flexibility and embracing necessary change. Their challenge is knowing when to hold on and when to let go.',
+                icon: '📈'
+              },
+              {
+                type: 'callout',
+                content: 'Reflect on where Taurus energy shows up in your life. Where do you seek stability and sensory pleasure?',
+                variant: 'tip'
+              }
+            ],
+            quiz: [
+              {
+                id: 'q1-taurus-ruler',
+                question: 'Taurus is ruled by:',
+                options: ['Mars', 'Venus', 'Mercury', 'The Moon'],
+                correctIndex: 1,
+                explanation: 'Venus, the planet of love, beauty, and values, rules Taurus - giving this sign its appreciation for comfort and lasting worth.'
+              }
+            ]
+          },
+          {
+            id: 'virgo-deep',
+            title: 'Virgo: The Analyst',
+            description: 'Understanding the sign of service and improvement.',
+            estimatedMinutes: 10,
+            content: [
+              { type: 'heading', content: 'The Maiden\'s Craft', level: 2 },
+              {
+                type: 'signCard',
+                sign: 'virgo'
+              },
+              {
+                type: 'text',
+                content: 'Virgo is the sign of analysis, service, and practical improvement. Ruled by Mercury, Virgo applies mental energy to perfecting systems and helping others.'
+              },
+              {
+                type: 'concept',
+                title: 'Core Psychology',
+                content: 'Virgo needs to be useful and to improve things. They\'re driven by the question "How can this be better?" and thrive when their skills serve a meaningful purpose.',
+                icon: '🔍'
+              },
+              {
+                type: 'comparison',
+                title: 'Virgo Light vs Shadow',
+                items: [
+                  { label: 'Mind', left: 'Analytical, helpful', right: 'Critical, anxious' },
+                  { label: 'Work', left: 'Dedicated, skillful', right: 'Perfectionist, workaholic' },
+                  { label: 'Service', left: 'Humble, practical', right: 'Self-critical, martyring' }
+                ]
+              },
+              {
+                type: 'concept',
+                title: 'Virgo Growth Path',
+                content: 'Virgo grows by accepting imperfection - in themselves and others. Their challenge is using their critical eye to improve, not judge.',
+                icon: '📈'
+              },
+              {
+                type: 'callout',
+                content: 'Reflect on where Virgo energy shows up in your life. Where do you analyze, refine, and seek to be of service?',
+                variant: 'tip'
+              }
+            ],
+            quiz: [
+              {
+                id: 'q1-virgo-ruler',
+                question: 'Virgo is ruled by:',
+                options: ['Mercury', 'Venus', 'Saturn', 'The Moon'],
+                correctIndex: 0,
+                explanation: 'Mercury, the planet of communication and analysis, rules Virgo - giving this sign its detail-oriented, practical nature.'
+              }
+            ]
+          },
+          {
+            id: 'capricorn-deep',
+            title: 'Capricorn: The Achiever',
+            description: 'Understanding the sign of ambition and mastery.',
+            estimatedMinutes: 10,
+            content: [
+              { type: 'heading', content: 'The Mountain Climber', level: 2 },
+              {
+                type: 'signCard',
+                sign: 'capricorn'
+              },
+              {
+                type: 'text',
+                content: 'Capricorn is the sign of ambition, discipline, and mastery. Ruled by Saturn, Capricorn understands that lasting achievement requires patience, structure, and hard work.'
+              },
+              {
+                type: 'concept',
+                title: 'Core Psychology',
+                content: 'Capricorn needs to achieve and be respected. They\'re driven by the question "What can I accomplish?" and thrive when working toward meaningful, long-term goals.',
+                icon: '🏔️'
+              },
+              {
+                type: 'comparison',
+                title: 'Capricorn Light vs Shadow',
+                items: [
+                  { label: 'Work', left: 'Disciplined, responsible', right: 'Workaholic, cold' },
+                  { label: 'Goals', left: 'Ambitious, strategic', right: 'Status-obsessed, ruthless' },
+                  { label: 'Time', left: 'Patient, wise', right: 'Pessimistic, rigid' }
+                ]
+              },
+              {
+                type: 'concept',
+                title: 'Capricorn Growth Path',
+                content: 'Capricorn grows by learning to value the journey, not just the summit. Their challenge is balancing ambition with emotional connection and play.',
+                icon: '📈'
+              },
+              {
+                type: 'callout',
+                content: 'Consider where Capricorn energy shows up in your life. Where are you ambitious and willing to work for mastery?',
+                variant: 'tip'
+              }
+            ],
+            quiz: [
+              {
+                id: 'q1-cap-ruler',
+                question: 'Capricorn is ruled by:',
+                options: ['Jupiter', 'Mars', 'Saturn', 'Pluto'],
+                correctIndex: 2,
+                explanation: 'Saturn, the planet of structure, discipline, and time, rules Capricorn - giving this sign its achievement-oriented nature.'
+              }
+            ]
+          }
+        ]
+      },
+      {
+        id: 'air-signs',
+        title: 'The Air Signs',
+        description: 'Deep dive into Gemini, Libra, and Aquarius.',
+        lessons: [
+          {
+            id: 'gemini-deep',
+            title: 'Gemini: The Messenger',
+            description: 'Understanding the sign of communication and curiosity.',
+            estimatedMinutes: 10,
+            content: [
+              { type: 'heading', content: 'The Twins\' Dance', level: 2 },
+              {
+                type: 'signCard',
+                sign: 'gemini'
+              },
+              {
+                type: 'text',
+                content: 'Gemini is the sign of communication, curiosity, and mental agility. Ruled by Mercury, Gemini thrives on information exchange, learning, and variety.'
+              },
+              {
+                type: 'concept',
+                title: 'Core Psychology',
+                content: 'Gemini needs mental stimulation and variety. They\'re driven by the question "What else is there to know?" and thrive when connecting ideas and people.',
+                icon: '💨'
+              },
+              {
+                type: 'comparison',
+                title: 'Gemini Light vs Shadow',
+                items: [
+                  { label: 'Mind', left: 'Curious, quick-witted', right: 'Scattered, superficial' },
+                  { label: 'Communication', left: 'Articulate, connecting', right: 'Gossip-prone, inconsistent' },
+                  { label: 'Interests', left: 'Versatile, adaptable', right: 'Unreliable, two-faced' }
+                ]
+              },
+              {
+                type: 'concept',
+                title: 'Gemini Growth Path',
+                content: 'Gemini grows by developing depth alongside breadth. Their challenge is committing to fewer things more fully rather than skimming many surfaces.',
+                icon: '📈'
+              },
+              {
+                type: 'callout',
+                content: 'Reflect on where Gemini energy shows up in your life. Where do you communicate, learn, and seek variety?',
+                variant: 'tip'
+              }
+            ],
+            quiz: [
+              {
+                id: 'q1-gemini-ruler',
+                question: 'Gemini is ruled by:',
+                options: ['Venus', 'Mercury', 'Uranus', 'The Moon'],
+                correctIndex: 1,
+                explanation: 'Mercury, the planet of communication and mental activity, rules Gemini - giving this sign its quick, curious, communicative nature.'
+              }
+            ]
+          },
+          {
+            id: 'libra-deep',
+            title: 'Libra: The Harmonizer',
+            description: 'Understanding the sign of balance and relationships.',
+            estimatedMinutes: 10,
+            content: [
+              { type: 'heading', content: 'The Scales of Balance', level: 2 },
+              {
+                type: 'signCard',
+                sign: 'libra'
+              },
+              {
+                type: 'text',
+                content: 'Libra is the sign of relationship, balance, and beauty. Ruled by Venus, Libra seeks harmony in all things and understands life through partnership and fairness.'
+              },
+              {
+                type: 'concept',
+                title: 'Core Psychology',
+                content: 'Libra needs harmony and partnership. They\'re driven by the question "What is fair?" and thrive when creating balance and beautiful connections.',
+                icon: '⚖️'
+              },
+              {
+                type: 'comparison',
+                title: 'Libra Light vs Shadow',
+                items: [
+                  { label: 'Relationships', left: 'Diplomatic, fair', right: 'People-pleasing, codependent' },
+                  { label: 'Decisions', left: 'Thoughtful, balanced', right: 'Indecisive, fence-sitting' },
+                  { label: 'Style', left: 'Graceful, aesthetic', right: 'Superficial, conflict-avoidant' }
+                ]
+              },
+              {
+                type: 'concept',
+                title: 'Libra Growth Path',
+                content: 'Libra grows by developing a strong sense of self that doesn\'t depend on others\' approval. Their challenge is choosing themselves sometimes, even when it creates temporary disharmony.',
+                icon: '📈'
+              },
+              {
+                type: 'callout',
+                content: 'Consider where Libra energy shows up in your life. Where do you seek harmony, partnership, and fairness?',
+                variant: 'tip'
+              }
+            ],
+            quiz: [
+              {
+                id: 'q1-libra-ruler',
+                question: 'Libra is ruled by:',
+                options: ['Mercury', 'Venus', 'Saturn', 'Mars'],
+                correctIndex: 1,
+                explanation: 'Venus, the planet of love and harmony, rules Libra - giving this sign its relationship-focused, aesthetic nature.'
+              }
+            ]
+          },
+          {
+            id: 'aquarius-deep',
+            title: 'Aquarius: The Visionary',
+            description: 'Understanding the sign of innovation and humanity.',
+            estimatedMinutes: 10,
+            content: [
+              { type: 'heading', content: 'The Water Bearer\'s Vision', level: 2 },
+              {
+                type: 'signCard',
+                sign: 'aquarius'
+              },
+              {
+                type: 'text',
+                content: 'Aquarius is the sign of innovation, humanity, and future vision. Ruled by Uranus (and traditionally Saturn), Aquarius thinks beyond conventions to imagine new possibilities.'
+              },
+              {
+                type: 'concept',
+                title: 'Core Psychology',
+                content: 'Aquarius needs intellectual freedom and a sense of contributing to humanity. They\'re driven by the question "What could be different?" and thrive when innovating for the collective good.',
+                icon: '⚡'
+              },
+              {
+                type: 'comparison',
+                title: 'Aquarius Light vs Shadow',
+                items: [
+                  { label: 'Mind', left: 'Innovative, humanitarian', right: 'Contrarian, detached' },
+                  { label: 'Social', left: 'Friendly, accepting', right: 'Aloof, emotionally distant' },
+                  { label: 'Vision', left: 'Progressive, original', right: 'Stubborn in beliefs, eccentric' }
+                ]
+              },
+              {
+                type: 'concept',
+                title: 'Aquarius Growth Path',
+                content: 'Aquarius grows by connecting intellect with emotion. Their challenge is learning that true progress includes emotional intelligence, not just intellectual advancement.',
+                icon: '📈'
+              },
+              {
+                type: 'callout',
+                content: 'Reflect on where Aquarius energy shows up in your life. Where do you think independently and seek to innovate?',
+                variant: 'tip'
+              }
+            ],
+            quiz: [
+              {
+                id: 'q1-aqua-ruler',
+                question: 'Aquarius is ruled by (modern):',
+                options: ['Neptune', 'Uranus', 'Jupiter', 'Mercury'],
+                correctIndex: 1,
+                explanation: 'Uranus, the planet of innovation and sudden change, rules Aquarius in modern astrology - giving this sign its revolutionary, unconventional nature.'
+              }
+            ]
+          }
+        ]
+      },
+      {
+        id: 'water-signs',
+        title: 'The Water Signs',
+        description: 'Deep dive into Cancer, Scorpio, and Pisces.',
+        lessons: [
+          {
+            id: 'cancer-deep',
+            title: 'Cancer: The Nurturer',
+            description: 'Understanding the sign of emotion and care.',
+            estimatedMinutes: 10,
+            content: [
+              { type: 'heading', content: 'The Crab\'s Shell', level: 2 },
+              {
+                type: 'signCard',
+                sign: 'cancer'
+              },
+              {
+                type: 'text',
+                content: 'Cancer is the sign of emotion, nurturing, and protection. Ruled by the Moon, Cancer experiences life through feelings and seeks to create safe, caring environments.'
+              },
+              {
+                type: 'concept',
+                title: 'Core Psychology',
+                content: 'Cancer needs emotional security and belonging. They\'re driven by the question "Who can I care for?" and thrive when nurturing loved ones and creating home.',
+                icon: '🦀'
+              },
+              {
+                type: 'comparison',
+                title: 'Cancer Light vs Shadow',
+                items: [
+                  { label: 'Emotion', left: 'Nurturing, protective', right: 'Clingy, smothering' },
+                  { label: 'Home', left: 'Creating safety', right: 'Unable to let go' },
+                  { label: 'Care', left: 'Deeply empathetic', right: 'Moody, manipulative' }
+                ]
+              },
+              {
+                type: 'concept',
+                title: 'Cancer Growth Path',
+                content: 'Cancer grows by learning to nurture themselves, not just others. Their challenge is developing emotional independence while maintaining their caring nature.',
+                icon: '📈'
+              },
+              {
+                type: 'callout',
+                content: 'Consider where Cancer energy shows up in your life. Where do you feel deeply and seek emotional security?',
+                variant: 'tip'
+              }
+            ],
+            quiz: [
+              {
+                id: 'q1-cancer-ruler',
+                question: 'Cancer is ruled by:',
+                options: ['The Sun', 'The Moon', 'Venus', 'Neptune'],
+                correctIndex: 1,
+                explanation: 'The Moon, representing emotions and instincts, rules Cancer - giving this sign its deeply feeling, nurturing nature.'
+              }
+            ]
+          },
+          {
+            id: 'scorpio-deep',
+            title: 'Scorpio: The Transformer',
+            description: 'Understanding the sign of intensity and depth.',
+            estimatedMinutes: 10,
+            content: [
+              { type: 'heading', content: 'The Scorpion\'s Depths', level: 2 },
+              {
+                type: 'signCard',
+                sign: 'scorpio'
+              },
+              {
+                type: 'text',
+                content: 'Scorpio is the sign of transformation, intensity, and hidden depths. Ruled by Pluto (and traditionally Mars), Scorpio understands life\'s shadows and the power of change.'
+              },
+              {
+                type: 'concept',
+                title: 'Core Psychology',
+                content: 'Scorpio needs depth and authentic connection. They\'re driven by the question "What lies beneath?" and thrive when engaging with life\'s deeper mysteries and transformations.',
+                icon: '🦂'
+              },
+              {
+                type: 'comparison',
+                title: 'Scorpio Light vs Shadow',
+                items: [
+                  { label: 'Depth', left: 'Perceptive, transformative', right: 'Suspicious, obsessive' },
+                  { label: 'Power', left: 'Empowering, healing', right: 'Controlling, manipulative' },
+                  { label: 'Emotion', left: 'Loyal, passionate', right: 'Jealous, vengeful' }
+                ]
+              },
+              {
+                type: 'concept',
+                title: 'Scorpio Growth Path',
+                content: 'Scorpio grows by learning to trust and release control. Their challenge is transforming themselves rather than trying to control or transform others.',
+                icon: '📈'
+              },
+              {
+                type: 'callout',
+                content: 'Reflect on where Scorpio energy shows up in your life. Where do you go deep and seek transformation?',
+                variant: 'tip'
+              }
+            ],
+            quiz: [
+              {
+                id: 'q1-scorp-ruler',
+                question: 'Scorpio is ruled by (modern):',
+                options: ['Mars', 'Pluto', 'Neptune', 'Saturn'],
+                correctIndex: 1,
+                explanation: 'Pluto, the planet of transformation and hidden power, rules Scorpio in modern astrology - giving this sign its intense, transformative nature.'
+              }
+            ]
+          },
+          {
+            id: 'pisces-deep',
+            title: 'Pisces: The Mystic',
+            description: 'Understanding the sign of spirituality and compassion.',
+            estimatedMinutes: 10,
+            content: [
+              { type: 'heading', content: 'The Fish\'s Ocean', level: 2 },
+              {
+                type: 'signCard',
+                sign: 'pisces'
+              },
+              {
+                type: 'text',
+                content: 'Pisces is the sign of spirituality, compassion, and transcendence. Ruled by Neptune (and traditionally Jupiter), Pisces connects with the infinite and feels the unity of all things.'
+              },
+              {
+                type: 'concept',
+                title: 'Core Psychology',
+                content: 'Pisces needs spiritual connection and creative expression. They\'re driven by the question "What exists beyond?" and thrive when accessing imagination, compassion, and the transcendent.',
+                icon: '🐟'
+              },
+              {
+                type: 'comparison',
+                title: 'Pisces Light vs Shadow',
+                items: [
+                  { label: 'Spirit', left: 'Compassionate, intuitive', right: 'Escapist, victim mentality' },
+                  { label: 'Boundaries', left: 'Empathetic, healing', right: 'Boundary-less, absorbing' },
+                  { label: 'Reality', left: 'Imaginative, artistic', right: 'Delusional, avoiding' }
+                ]
+              },
+              {
+                type: 'concept',
+                title: 'Pisces Growth Path',
+                content: 'Pisces grows by grounding their spirituality in practical reality. Their challenge is maintaining healthy boundaries while keeping their heart open.',
+                icon: '📈'
+              },
+              {
+                type: 'callout',
+                content: 'Consider where Pisces energy shows up in your life. Where do you connect with the spiritual and transcendent?',
+                variant: 'tip'
+              }
+            ],
+            quiz: [
+              {
+                id: 'q1-pisces-ruler',
+                question: 'Pisces is ruled by (modern):',
+                options: ['Jupiter', 'Neptune', 'The Moon', 'Venus'],
+                correctIndex: 1,
+                explanation: 'Neptune, the planet of spirituality and imagination, rules Pisces in modern astrology - giving this sign its mystical, compassionate nature.'
               }
             ]
           }

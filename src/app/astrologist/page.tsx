@@ -32,8 +32,8 @@ export default function AstrologistPage() {
 
   if (!mounted) {
     return (
-      <div className="min-h-screen bg-slate-900 flex items-center justify-center">
-        <div className="animate-pulse text-slate-400">Loading...</div>
+      <div className="min-h-screen bg-[#1a1a2e] flex items-center justify-center">
+        <div className="animate-pulse text-indigo-200/50">Loading...</div>
       </div>
     )
   }

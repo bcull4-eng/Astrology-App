@@ -3,6 +3,18 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+
+  /* Cosmic color palette */
+  --cosmic-bg-start: #1a1a2e;
+  --cosmic-bg-end: #16162a;
+  --cosmic-card: rgba(35, 35, 60, 0.5);
+  --cosmic-card-hover: rgba(45, 45, 75, 0.6);
+  --cosmic-border: rgba(80, 80, 120, 0.3);
+  --cosmic-accent: #6366f1;
+  --cosmic-accent-light: #818cf8;
+  --cosmic-text-primary: #ffffff;
+  --cosmic-text-secondary: #a5a5c0;
+  --cosmic-text-tertiary: #6b6b8d;
 }
 
 @theme inline {
@@ -10,11 +22,20 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-inter), system-ui, sans-serif;
   --font-serif: var(--font-fraunces), Georgia, serif;
+
+  /* Custom cosmic colors */
+  --color-cosmic-bg-start: var(--cosmic-bg-start);
+  --color-cosmic-bg-end: var(--cosmic-bg-end);
+  --color-cosmic-card: var(--cosmic-card);
+  --color-cosmic-card-hover: var(--cosmic-card-hover);
+  --color-cosmic-border: var(--cosmic-border);
+  --color-cosmic-accent: var(--cosmic-accent);
+  --color-cosmic-accent-light: var(--cosmic-accent-light);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
+    --background: #1a1a2e;
     --foreground: #ededed;
   }
 }
@@ -35,6 +56,30 @@ h1, h2, h3 {
   font-family: var(--font-serif);
 }
 
+/* Cosmic gradient background */
+.cosmic-bg {
+  background: linear-gradient(180deg, var(--cosmic-bg-start) 0%, var(--cosmic-bg-end) 100%);
+}
+
+/* Seamless card styling */
+.cosmic-card {
+  background: var(--cosmic-card);
+  border: 1px solid var(--cosmic-border);
+  border-radius: 1rem;
+  backdrop-filter: blur(10px);
+}
+
+.cosmic-card-seamless {
+  background: var(--cosmic-card);
+  border: none;
+  border-radius: 1rem;
+  backdrop-filter: blur(10px);
+}
+
+.cosmic-card:hover {
+  background: var(--cosmic-card-hover);
+}
+
 /* Custom animations */
 @keyframes spin-slow {
   from {
@@ -47,4 +92,47 @@ h1, h2, h3 {
 
 .animate-spin-slow {
   animation: spin-slow 8s linear infinite;
+}
+
+@keyframes twinkle {
+  0%, 100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.animate-twinkle {
+  animation: twinkle 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+/* Glow effects */
+.glow-indigo {
+  box-shadow: 0 0 20px rgba(99, 102, 241, 0.3);
+}
+
+.glow-purple {
+  box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
+}
+
+/* Text gradients */
+.text-gradient-cosmic {
+  background: linear-gradient(135deg, #818cf8 0%, #c084fc 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }

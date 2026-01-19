@@ -24,7 +24,7 @@ const intensityLabels: Record<IntensityLevel, string> = {
 export function ThemeHeader({ theme }: ThemeHeaderProps) {
   return (
     <div className="mb-8">
-      <div className="flex items-center gap-2 text-slate-400 text-sm mb-2">
+      <div className="flex items-center gap-2 text-indigo-200/50 text-sm mb-2">
         <span>Today</span>
         <span>•</span>
         <span>Updated {format(new Date(theme.last_updated_at), 'MMM d')}</span>
@@ -40,18 +40,18 @@ export function ThemeHeader({ theme }: ThemeHeaderProps) {
               <div
                 key={level}
                 className={`w-2.5 h-2.5 rounded-full ${
-                  level <= theme.intensity_today ? 'bg-indigo-500' : 'bg-slate-700'
+                  level <= theme.intensity_today ? 'bg-indigo-500' : 'bg-indigo-900/50'
                 }`}
               />
             ))}
           </div>
-          <span className="text-slate-400 text-sm">
+          <span className="text-indigo-200/50 text-sm">
             {intensityLabels[theme.intensity_today]}
           </span>
         </div>
 
         {/* Date range */}
-        <div className="text-slate-400 text-sm">
+        <div className="text-indigo-200/50 text-sm">
           Active until {format(new Date(theme.end_date), 'MMM d')}
         </div>
       </div>

@@ -29,7 +29,7 @@ const trendIcons: Record<string, string> = {
 
 export function UpcomingPreview({ windows }: UpcomingPreviewProps) {
   return (
-    <div className="bg-slate-800/50 border border-slate-700 rounded-2xl p-6">
+    <div className="bg-indigo-950/30 rounded-2xl p-6">
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-white font-semibold">Coming Up</h2>
         <Link
@@ -44,7 +44,7 @@ export function UpcomingPreview({ windows }: UpcomingPreviewProps) {
         {windows.slice(0, 3).map((window, index) => (
           <div
             key={index}
-            className="flex items-start gap-3 p-3 bg-slate-900/50 rounded-xl"
+            className="flex items-start gap-3 p-3 bg-indigo-950/40 rounded-xl"
           >
             <div
               className={`w-2 h-2 rounded-full mt-1.5 ${
@@ -57,11 +57,11 @@ export function UpcomingPreview({ windows }: UpcomingPreviewProps) {
                   {format(new Date(window.start_date), 'MMM d')} –{' '}
                   {format(new Date(window.end_date), 'MMM d')}
                 </span>
-                <span className="text-slate-500 text-xs">
+                <span className="text-indigo-300/40 text-xs">
                   {trendIcons[window.intensity_trend]}
                 </span>
               </div>
-              <p className="text-slate-400 text-sm truncate">{window.summary}</p>
+              <p className="text-indigo-200/50 text-sm truncate">{window.summary}</p>
             </div>
           </div>
         ))}

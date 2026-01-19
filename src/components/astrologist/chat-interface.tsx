@@ -140,14 +140,14 @@ export function ChatInterface({ characterId, onBack }: ChatInterfaceProps) {
   return (
     <div className="flex flex-col h-full">
       {/* Header */}
-      <div className="flex items-center justify-between p-4 border-b border-slate-700 bg-slate-900/50">
+      <div className="flex items-center justify-between p-4 border-b border-indigo-500/10 bg-indigo-950/30">
         <div className="flex items-center gap-3">
           <button
             onClick={onBack}
-            className="p-2 hover:bg-slate-800 rounded-lg transition-colors"
+            className="p-2 hover:bg-indigo-900/30 rounded-lg transition-colors"
             aria-label="Go back"
           >
-            <svg className="w-5 h-5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg className="w-5 h-5 text-indigo-300/50" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
           </button>
@@ -156,13 +156,13 @@ export function ChatInterface({ characterId, onBack }: ChatInterfaceProps) {
           </div>
           <div>
             <h2 className="font-semibold text-white">{character.name}</h2>
-            <p className="text-xs text-slate-400">{character.tagline}</p>
+            <p className="text-xs text-indigo-200/50">{character.tagline}</p>
           </div>
         </div>
 
         <button
           onClick={handleClearChat}
-          className="text-xs text-slate-500 hover:text-slate-300 transition-colors"
+          className="text-xs text-indigo-300/40 hover:text-indigo-200 transition-colors"
         >
           Clear chat
         </button>
@@ -176,7 +176,7 @@ export function ChatInterface({ characterId, onBack }: ChatInterfaceProps) {
               {character.avatar}
             </div>
             <h3 className="text-lg font-medium text-white mb-2">Chat with {character.name}</h3>
-            <p className="text-sm text-slate-400 max-w-sm">
+            <p className="text-sm text-indigo-200/50 max-w-sm">
               {character.id === 'celeste' &&
                 "I'm here to guide you with gentle wisdom from the stars. What's on your mind, dear one?"}
               {character.id === 'nova' &&
@@ -203,7 +203,7 @@ export function ChatInterface({ characterId, onBack }: ChatInterfaceProps) {
                   >
                     {character.avatar}
                   </div>
-                  <div className="bg-slate-800/70 border border-slate-700 rounded-2xl rounded-bl-md">
+                  <div className="bg-indigo-950/50 rounded-2xl rounded-bl-md">
                     <TypingIndicator />
                   </div>
                 </div>

@@ -1,6 +1,20 @@
 'use client'
 
 import type { LessonBlock, NatalChart, PersonalizedDataKey } from '@/types'
+import {
+  ZodiacWheelVisual,
+  ElementChartVisual,
+  AspectDiagramVisual,
+  SignCardVisual,
+  PlanetCardVisual,
+  ChatVisual,
+  ComparisonVisual,
+  InteractiveVisual,
+  ReflectionVisual,
+  YourChartVisual,
+  FunFactVisual,
+  AnimationVisual,
+} from './visual-elements'
 
 interface LessonContentRendererProps {
   content: LessonBlock[]
@@ -73,6 +87,60 @@ function ContentBlock({ block, natalChart }: { block: LessonBlock; natalChart: N
     case 'quiz':
       // Quiz blocks are handled separately at the lesson level
       return null
+
+    // New interactive and visual types
+    case 'chat':
+      return <ChatVisual messages={block.messages} />
+
+    case 'zodiacWheel':
+      return (
+        <ZodiacWheelVisual
+          highlight={block.highlight}
+          showUserPlacements={block.showUserPlacements}
+          natalChart={natalChart}
+        />
+      )
+
+    case 'elementChart':
+      return (
+        <ElementChartVisual
+          showUserDistribution={block.showUserDistribution}
+          natalChart={natalChart}
+        />
+      )
+
+    case 'aspectDiagram':
+      return <AspectDiagramVisual pattern={block.pattern} />
+
+    case 'signCard':
+      return <SignCardVisual sign={block.sign} />
+
+    case 'planetCard':
+      return <PlanetCardVisual planet={block.planet} />
+
+    case 'comparison':
+      return <ComparisonVisual title={block.title} items={block.items} />
+
+    case 'interactive':
+      return <InteractiveVisual question={block.question} options={block.options} />
+
+    case 'reflection':
+      return <ReflectionVisual prompt={block.prompt} placeholder={block.placeholder} />
+
+    case 'yourChart':
+      return (
+        <YourChartVisual
+          highlight={block.highlight}
+          description={block.description}
+          natalChart={natalChart}
+        />
+      )
+
+    case 'funFact':
+      return <FunFactVisual content={block.content} />
+
+    case 'animation':
+      return <AnimationVisual variant={block.variant} />
 
     default:
       return null

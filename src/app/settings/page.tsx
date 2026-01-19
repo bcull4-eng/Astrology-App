@@ -47,24 +47,24 @@ export default function AccountPage() {
   ]
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-900 to-slate-950">
+    <div className="min-h-screen bg-[#1a1a2e]">
       {/* Header */}
-      <header className="border-b border-slate-800">
+      <header className="border-b border-indigo-900/30 bg-[#1a1a2e]/80 backdrop-blur-md">
         <div className="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
           <Link href="/dashboard" className="text-white font-semibold text-xl">
-            Astro
+            <span className="text-indigo-400">Astro</span>
           </Link>
           <nav className="flex items-center gap-6">
-            <Link href="/dashboard" className="text-slate-300 hover:text-white transition-colors text-sm">
+            <Link href="/dashboard" className="text-indigo-200/70 hover:text-white transition-colors text-sm">
               Dashboard
             </Link>
-            <Link href="/learn" className="text-slate-300 hover:text-white transition-colors text-sm">
+            <Link href="/learn" className="text-indigo-200/70 hover:text-white transition-colors text-sm">
               Learn
             </Link>
-            <Link href="/reports" className="text-slate-300 hover:text-white transition-colors text-sm">
+            <Link href="/reports" className="text-indigo-200/70 hover:text-white transition-colors text-sm">
               Reports
             </Link>
-            <Link href="/synastry" className="text-slate-300 hover:text-white transition-colors text-sm">
+            <Link href="/synastry" className="text-indigo-200/70 hover:text-white transition-colors text-sm">
               Synastry
             </Link>
             <Link href="/settings" className="text-white transition-colors text-sm font-medium">
@@ -86,7 +86,7 @@ export default function AccountPage() {
               className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors whitespace-nowrap ${
                 activeTab === tab.id
                   ? 'bg-indigo-600 text-white'
-                  : 'bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white'
+                  : 'bg-indigo-950/40 text-indigo-200/70 hover:bg-indigo-900/30 hover:text-white'
               }`}
             >
               <TabIcon icon={tab.icon} />
@@ -99,23 +99,23 @@ export default function AccountPage() {
         {activeTab === 'account' && (
           <div className="space-y-6">
             {/* Profile */}
-            <div className="bg-slate-800/50 border border-slate-700 rounded-2xl p-6">
+            <div className="bg-indigo-950/30 rounded-2xl p-6">
               <h2 className="text-white font-semibold mb-4">Profile</h2>
               <div className="space-y-4">
                 <div>
-                  <label className="block text-slate-400 text-sm mb-1">Email</label>
+                  <label className="block text-indigo-200/50 text-sm mb-1">Email</label>
                   <p className="text-white">{user?.email || 'Loading...'}</p>
                 </div>
               </div>
             </div>
 
             {/* Sign Out */}
-            <div className="bg-slate-800/50 border border-slate-700 rounded-2xl p-6">
+            <div className="bg-indigo-950/30 rounded-2xl p-6">
               <h2 className="text-white font-semibold mb-4">Session</h2>
               <button
                 onClick={handleSignOut}
                 disabled={signingOut}
-                className="px-4 py-2 bg-red-600/20 hover:bg-red-600/30 border border-red-600/50 text-red-400 text-sm font-medium rounded-lg transition-colors disabled:opacity-50"
+                className="px-4 py-2 bg-red-600/20 hover:bg-red-600/30 text-red-400 text-sm font-medium rounded-lg transition-colors disabled:opacity-50"
               >
                 {signingOut ? 'Signing out...' : 'Sign out'}
               </button>
@@ -125,7 +125,7 @@ export default function AccountPage() {
 
         {activeTab === 'reports' && (
           <div className="space-y-6">
-            <div className="bg-slate-800/50 border border-slate-700 rounded-2xl p-6">
+            <div className="bg-indigo-950/30 rounded-2xl p-6">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-white font-semibold">Purchased Reports</h2>
                 <Link
@@ -138,8 +138,8 @@ export default function AccountPage() {
 
               {mockPurchasedReports.length === 0 ? (
                 <div className="text-center py-12">
-                  <div className="w-16 h-16 bg-slate-700/50 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <svg className="w-8 h-8 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="w-16 h-16 bg-indigo-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg className="w-8 h-8 text-indigo-300/40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path
                         strokeLinecap="round"
                         strokeLinejoin="round"
@@ -149,12 +149,12 @@ export default function AccountPage() {
                     </svg>
                   </div>
                   <h3 className="text-white font-medium mb-2">No reports yet</h3>
-                  <p className="text-slate-400 text-sm mb-4">
+                  <p className="text-indigo-200/50 text-sm mb-4">
                     Purchase a report to get deep insights into your chart
                   </p>
                   <Link
                     href="/reports"
-                    className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-lg transition-colors"
+                    className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-medium rounded-lg transition-colors"
                   >
                     Browse Reports
                   </Link>
@@ -168,7 +168,7 @@ export default function AccountPage() {
                     return (
                       <div
                         key={purchased.id}
-                        className="flex items-center gap-4 p-4 bg-slate-800/50 border border-slate-700/50 rounded-xl"
+                        className="flex items-center gap-4 p-4 bg-indigo-950/40 rounded-xl"
                       >
                         <div
                           className={`w-12 h-12 rounded-lg bg-gradient-to-br ${reportDef.gradient} flex items-center justify-center text-2xl flex-shrink-0`}
@@ -177,7 +177,7 @@ export default function AccountPage() {
                         </div>
                         <div className="flex-1 min-w-0">
                           <h3 className="text-white font-medium truncate">{reportDef.title}</h3>
-                          <p className="text-slate-400 text-sm">
+                          <p className="text-indigo-200/50 text-sm">
                             Purchased{' '}
                             {new Date(purchased.purchasedAt).toLocaleDateString('en-US', {
                               year: 'numeric',
@@ -188,7 +188,7 @@ export default function AccountPage() {
                         </div>
                         <Link
                           href={`/reports/${purchased.slug}/view`}
-                          className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-lg transition-colors flex-shrink-0"
+                          className="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-medium rounded-lg transition-colors flex-shrink-0"
                         >
                           View Report
                         </Link>
@@ -203,22 +203,22 @@ export default function AccountPage() {
 
         {activeTab === 'subscription' && (
           <div className="space-y-6">
-            <div className="bg-slate-800/50 border border-slate-700 rounded-2xl p-6">
+            <div className="bg-indigo-950/30 rounded-2xl p-6">
               <h2 className="text-white font-semibold mb-4">Current Plan</h2>
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-white font-medium">Pro Plan</p>
-                  <p className="text-slate-400 text-sm">£20/month</p>
+                  <p className="text-indigo-200/50 text-sm">£20/month</p>
                 </div>
-                <button className="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white text-sm font-medium rounded-lg transition-colors">
+                <button className="px-4 py-2 bg-indigo-900/50 hover:bg-indigo-800/50 text-white text-sm font-medium rounded-lg transition-colors">
                   Manage Subscription
                 </button>
               </div>
             </div>
 
-            <div className="bg-slate-800/50 border border-slate-700 rounded-2xl p-6">
+            <div className="bg-indigo-950/30 rounded-2xl p-6">
               <h2 className="text-white font-semibold mb-4">Billing History</h2>
-              <div className="text-slate-400 text-sm">
+              <div className="text-indigo-200/50 text-sm">
                 Your billing history will appear here once you have active subscriptions.
               </div>
             </div>
@@ -227,56 +227,56 @@ export default function AccountPage() {
 
         {activeTab === 'notifications' && (
           <div className="space-y-6">
-            <div className="bg-slate-800/50 border border-slate-700 rounded-2xl p-6">
+            <div className="bg-indigo-950/30 rounded-2xl p-6">
               <h2 className="text-white font-semibold mb-4">Email Notifications</h2>
               <div className="space-y-4">
                 <label className="flex items-center justify-between cursor-pointer">
                   <div>
                     <p className="text-white">Daily guidance emails</p>
-                    <p className="text-slate-400 text-sm">Get your daily do/avoid list by email</p>
+                    <p className="text-indigo-200/50 text-sm">Get your daily do/avoid list by email</p>
                   </div>
                   <input
                     type="checkbox"
                     defaultChecked
-                    className="w-5 h-5 rounded bg-slate-700 border-slate-600 text-indigo-500 focus:ring-indigo-500"
+                    className="w-5 h-5 rounded bg-indigo-900/50 border-indigo-500/30 text-indigo-500 focus:ring-indigo-500"
                   />
                 </label>
                 <label className="flex items-center justify-between cursor-pointer">
                   <div>
                     <p className="text-white">Theme change alerts</p>
-                    <p className="text-slate-400 text-sm">Get notified when your primary theme changes</p>
+                    <p className="text-indigo-200/50 text-sm">Get notified when your primary theme changes</p>
                   </div>
                   <input
                     type="checkbox"
                     defaultChecked
-                    className="w-5 h-5 rounded bg-slate-700 border-slate-600 text-indigo-500 focus:ring-indigo-500"
+                    className="w-5 h-5 rounded bg-indigo-900/50 border-indigo-500/30 text-indigo-500 focus:ring-indigo-500"
                   />
                 </label>
                 <label className="flex items-center justify-between cursor-pointer">
                   <div>
                     <p className="text-white">New report available</p>
-                    <p className="text-slate-400 text-sm">Get notified when new report types are released</p>
+                    <p className="text-indigo-200/50 text-sm">Get notified when new report types are released</p>
                   </div>
                   <input
                     type="checkbox"
                     defaultChecked
-                    className="w-5 h-5 rounded bg-slate-700 border-slate-600 text-indigo-500 focus:ring-indigo-500"
+                    className="w-5 h-5 rounded bg-indigo-900/50 border-indigo-500/30 text-indigo-500 focus:ring-indigo-500"
                   />
                 </label>
               </div>
             </div>
 
-            <div className="bg-slate-800/50 border border-slate-700 rounded-2xl p-6">
+            <div className="bg-indigo-950/30 rounded-2xl p-6">
               <h2 className="text-white font-semibold mb-4">Push Notifications</h2>
               <div className="space-y-4">
                 <label className="flex items-center justify-between cursor-pointer">
                   <div>
                     <p className="text-white">Daily reminders</p>
-                    <p className="text-slate-400 text-sm">Remind me to check my daily guidance</p>
+                    <p className="text-indigo-200/50 text-sm">Remind me to check my daily guidance</p>
                   </div>
                   <input
                     type="checkbox"
-                    className="w-5 h-5 rounded bg-slate-700 border-slate-600 text-indigo-500 focus:ring-indigo-500"
+                    className="w-5 h-5 rounded bg-indigo-900/50 border-indigo-500/30 text-indigo-500 focus:ring-indigo-500"
                   />
                 </label>
               </div>
@@ -286,7 +286,7 @@ export default function AccountPage() {
 
         {/* Back link */}
         <div className="mt-8 text-center">
-          <Link href="/dashboard" className="text-slate-400 hover:text-white text-sm transition-colors">
+          <Link href="/dashboard" className="text-indigo-200/50 hover:text-white text-sm transition-colors">
             Back to Dashboard
           </Link>
         </div>

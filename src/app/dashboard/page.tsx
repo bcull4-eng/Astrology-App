@@ -3,50 +3,32 @@
 /**
  * Dashboard Main Page
  *
- * Displays the primary theme, intensity timeline, daily guidance,
- * secondary influences, and upcoming preview.
+ * FREE: Natal chart visualization + Daily horoscope
+ * PREMIUM: Daily insights, Weekly forecast, Monthly forecast
  */
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import {
-  ThemeHeader,
-  PrimaryInsightCard,
-  IntensityTimeline,
-  DailyGuidance,
-  SecondaryInfluences,
-  UpcomingPreview,
   NatalChartWheel,
   DailyHoroscope,
+  DailyInsightsLocked,
+  WeeklyForecastLocked,
+  MonthlyForecastLocked,
+  DailyInsights,
+  WeeklyForecast,
 } from '@/components/dashboard'
+import { useSubscription } from '@/hooks/use-subscription'
 import { generateDailyHoroscope } from '@/lib/daily-horoscope'
 import type { DailyHoroscope as DailyHoroscopeType } from '@/lib/daily-horoscope'
-import {
-  mockPrimaryTheme,
-  mockSecondaryThemes,
-  mockDailyGuidance,
-  mockUpcomingWindows,
-} from '@/lib/mock-data'
-import type { FocusArea, SynthesisedTheme, DailyGuidance as DailyGuidanceType, UpcomingWindow, NatalChart } from '@/types'
-
-const filterOptions: { value: FocusArea | 'all'; label: string }[] = [
-  { value: 'all', label: 'All' },
-  { value: 'career', label: 'Career' },
-  { value: 'relationships', label: 'Relationships' },
-  { value: 'money', label: 'Money' },
-  { value: 'growth', label: 'Growth' },
-]
+import type { NatalChart } from '@/types'
 
 export default function DashboardPage() {
-  const [activeFilter, setActiveFilter] = useState<FocusArea | 'all'>('all')
   const [loading, setLoading] = useState(true)
   const [natalChart, setNatalChart] = useState<NatalChart | null>(null)
-  const [primaryTheme, setPrimaryTheme] = useState<SynthesisedTheme>(mockPrimaryTheme)
-  const [secondaryThemes, setSecondaryThemes] = useState<SynthesisedTheme[]>(mockSecondaryThemes)
-  const [dailyGuidance, setDailyGuidance] = useState<DailyGuidanceType>(mockDailyGuidance)
-  const [upcomingWindows, setUpcomingWindows] = useState<UpcomingWindow[]>(mockUpcomingWindows)
-  const [dataSource, setDataSource] = useState<'mock' | 'calculated'>('mock')
   const [dailyHoroscope, setDailyHoroscope] = useState<DailyHoroscopeType | null>(null)
+  const [dataSource, setDataSource] = useState<'mock' | 'calculated'>('mock')
+  const { isPro, loading: subscriptionLoading } = useSubscription()
 
   useEffect(() => {
     async function fetchDashboardData() {
@@ -71,6 +53,7 @@ export default function DashboardPage() {
         if (chartData) {
           const chart = JSON.parse(chartData)
           setNatalChart(chart)
+          setDataSource('calculated')
           // Generate personalized daily horoscope
           setDailyHoroscope(generateDailyHoroscope(chart))
         } else {
@@ -85,25 +68,8 @@ export default function DashboardPage() {
           }
           setDailyHoroscope(generateDailyHoroscope(sampleChart))
         }
-
-        let url = '/api/dashboard'
-        if (chartData) {
-          url += `?chart=${encodeURIComponent(chartData)}`
-        }
-
-        const response = await fetch(url)
-        const data = await response.json()
-
-        if (response.ok) {
-          setPrimaryTheme(data.primaryTheme)
-          setSecondaryThemes(data.secondaryThemes)
-          setDailyGuidance(data.dailyGuidance)
-          setUpcomingWindows(data.upcomingWindows)
-          setDataSource(data.source)
-        }
       } catch (error) {
         console.error('Failed to fetch dashboard data:', error)
-        // Keep using mock data on error
       } finally {
         setLoading(false)
       }
@@ -112,26 +78,12 @@ export default function DashboardPage() {
     fetchDashboardData()
   }, [])
 
-  // Filter secondary themes based on active filter
-  const filteredSecondaryThemes =
-    activeFilter === 'all'
-      ? secondaryThemes
-      : secondaryThemes.filter(
-          (theme) => theme.primary_focus_area === activeFilter
-        )
-
-  // Filter upcoming windows based on active filter
-  const filteredUpcomingWindows =
-    activeFilter === 'all'
-      ? upcomingWindows
-      : upcomingWindows.filter((window) => window.key_focus === activeFilter)
-
   if (loading) {
     return (
       <div className="flex items-center justify-center py-12">
         <div className="text-center">
           <div className="w-8 h-8 border-2 border-indigo-500 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-          <p className="text-slate-400">Loading your insights...</p>
+          <p className="text-indigo-200/50">Loading your cosmic insights...</p>
         </div>
       </div>
     )
@@ -142,14 +94,14 @@ export default function DashboardPage() {
       {/* Top action bar */}
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">
-          {dataSource === 'calculated' && (
+          {dataSource === 'calculated' && natalChart && (
             <div className="px-3 py-1.5 bg-emerald-500/10 border border-emerald-500/30 rounded-lg">
-              <span className="text-emerald-400 text-xs font-medium">Live data from your chart</span>
+              <span className="text-emerald-400 text-xs font-medium">Personalized insights from your chart</span>
             </div>
           )}
-          {dataSource === 'mock' && (
+          {(!natalChart || dataSource === 'mock') && (
             <div className="px-3 py-1.5 bg-amber-500/10 border border-amber-500/30 rounded-lg">
-              <span className="text-amber-400 text-xs font-medium">Sample data - add birth details for personalized insights</span>
+              <span className="text-amber-400 text-xs font-medium">Add birth details for personalized insights</span>
             </div>
           )}
         </div>
@@ -164,48 +116,75 @@ export default function DashboardPage() {
         </Link>
       </div>
 
-      {/* Natal Chart Visualization */}
+      {/* ===== FREE SECTION ===== */}
+
+      {/* Natal Chart Visualization (FREE) */}
       {natalChart && <NatalChartWheel chart={natalChart} />}
 
-      {/* Daily Horoscope */}
+      {/* Daily Horoscope - "What this means for you" (FREE) */}
       {dailyHoroscope && (
         <DailyHoroscope horoscope={dailyHoroscope} isPersonalized={!!natalChart} />
       )}
 
-      {/* Theme Header */}
-      <ThemeHeader theme={primaryTheme} />
+      {/* ===== PREMIUM SECTION ===== */}
 
-      {/* Life Area Filters */}
-      <div className="flex gap-2 mb-6 overflow-x-auto pb-2">
-        {filterOptions.map((option) => (
-          <button
-            key={option.value}
-            onClick={() => setActiveFilter(option.value)}
-            className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors ${
-              activeFilter === option.value
-                ? 'bg-indigo-600 text-white'
-                : 'bg-slate-800 text-slate-400 hover:text-white'
-            }`}
-          >
-            {option.label}
-          </button>
-        ))}
+      {/* Section Divider */}
+      <div className="relative my-10">
+        <div className="absolute inset-0 flex items-center">
+          <div className="w-full border-t border-indigo-500/20"></div>
+        </div>
+        <div className="relative flex justify-center">
+          <span className="px-4 bg-[#1a1a2e] text-indigo-300/50 text-sm font-medium flex items-center gap-2">
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+            </svg>
+            {isPro ? 'Premium Insights' : 'Premium Insights (Upgrade to unlock)'}
+          </span>
+        </div>
       </div>
 
-      {/* Primary Insight Card */}
-      <PrimaryInsightCard theme={primaryTheme} guidance={dailyGuidance} />
+      {/* Daily Insights */}
+      {isPro && natalChart ? (
+        <DailyInsights chart={natalChart} />
+      ) : (
+        <DailyInsightsLocked />
+      )}
 
-      {/* Intensity Timeline */}
-      <IntensityTimeline theme={primaryTheme} />
+      {/* Weekly Forecast */}
+      {isPro && natalChart ? (
+        <WeeklyForecast chart={natalChart} />
+      ) : (
+        <WeeklyForecastLocked />
+      )}
 
-      {/* Daily Guidance */}
-      <DailyGuidance guidance={dailyGuidance} />
+      {/* Monthly Forecast (PREMIUM - Locked for now, uses report system) */}
+      <MonthlyForecastLocked />
 
-      {/* Secondary Influences */}
-      <SecondaryInfluences themes={filteredSecondaryThemes} />
-
-      {/* Upcoming Preview */}
-      <UpcomingPreview windows={filteredUpcomingWindows} />
+      {/* Upgrade CTA - only show for non-pro users */}
+      {!isPro && (
+        <div className="bg-gradient-to-r from-indigo-600/10 via-purple-600/10 to-pink-600/10 rounded-2xl p-6 text-center mb-8">
+          <h3 className="text-xl font-bold text-white mb-2">Unlock Your Full Cosmic Potential</h3>
+          <p className="text-indigo-200/60 mb-4 max-w-md mx-auto">
+            Get daily insights, weekly forecasts, and monthly reports delivered fresh to your inbox. Plus access to AI Astrologist, courses, and synastry analysis.
+          </p>
+          <Link
+            href="/paywall"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-semibold rounded-xl transition-all shadow-lg shadow-indigo-500/25"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+            Upgrade to Pro
+          </Link>
+          <div className="flex items-center justify-center gap-4 mt-4 text-xs text-indigo-300/40">
+            <span>From £14.99/month</span>
+            <span>•</span>
+            <span>Cancel anytime</span>
+            <span>•</span>
+            <span>30-day guarantee</span>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

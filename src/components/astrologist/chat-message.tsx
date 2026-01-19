@@ -35,7 +35,7 @@ export function ChatMessage({ message }: ChatMessageProps) {
         >
           {character.avatar}
         </div>
-        <div className="bg-slate-800/70 border border-slate-700 text-slate-200 px-4 py-3 rounded-2xl rounded-bl-md">
+        <div className="bg-indigo-950/50 text-indigo-100 px-4 py-3 rounded-2xl rounded-bl-md">
           <p className="text-sm leading-relaxed whitespace-pre-wrap">{message.content}</p>
         </div>
       </div>

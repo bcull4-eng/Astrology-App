@@ -304,11 +304,11 @@ export function TermTooltip({ term, definition, children }: TermTooltipProps) {
         {children}
       </span>
       {isOpen && (
-        <div className="absolute z-50 bottom-full left-1/2 -translate-x-1/2 mb-2 w-64 p-3 bg-slate-800 border border-slate-600 rounded-lg shadow-xl">
-          <div className="text-white font-medium text-sm mb-1">{term}</div>
-          <div className="text-slate-300 text-xs">{definition}</div>
-          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 rotate-45 w-2 h-2 bg-slate-800 border-r border-b border-slate-600" />
-        </div>
+        <span className="absolute z-50 bottom-full left-1/2 -translate-x-1/2 mb-2 w-64 p-3 bg-slate-800 border border-slate-600 rounded-lg shadow-xl block">
+          <span className="text-white font-medium text-sm mb-1 block">{term}</span>
+          <span className="text-slate-300 text-xs block">{definition}</span>
+          <span className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 rotate-45 w-2 h-2 bg-slate-800 border-r border-b border-slate-600" />
+        </span>
       )}
     </span>
   )

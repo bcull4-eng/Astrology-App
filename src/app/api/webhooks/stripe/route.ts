@@ -35,9 +35,12 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Invalid signature' }, { status: 400 })
   }
 
+  console.log(`[Stripe Webhook] Received event: ${event.type}`)
+
   try {
     switch (event.type) {
       case 'checkout.session.completed':
+        console.log('[Stripe Webhook] Processing checkout.session.completed')
         await handleCheckoutCompleted(event.data.object as Stripe.Checkout.Session)
         break
 
@@ -55,12 +58,13 @@ export async function POST(request: NextRequest) {
         break
 
       default:
-        console.log(`Unhandled event type: ${event.type}`)
+        console.log(`[Stripe Webhook] Unhandled event type: ${event.type}`)
     }
 
+    console.log(`[Stripe Webhook] Successfully processed: ${event.type}`)
     return NextResponse.json({ received: true })
   } catch (error) {
-    console.error('Webhook handler error:', error)
+    console.error('[Stripe Webhook] Handler error:', error)
     return NextResponse.json({ error: 'Webhook handler failed' }, { status: 500 })
   }
 }
@@ -74,8 +78,17 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
   const productType = session.metadata?.product_type
   const productId = session.metadata?.product_id
 
+  console.log('[Stripe Webhook] Checkout session metadata:', {
+    userId,
+    planType,
+    productType,
+    productId,
+    mode: session.mode,
+    sessionId: session.id,
+  })
+
   if (!userId) {
-    console.error('No user_id in checkout session metadata')
+    console.error('[Stripe Webhook] No user_id in checkout session metadata')
     return
   }
 
@@ -108,7 +121,9 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
       await updateUserMetadata(userId, 'pro', 'lifetime', null)
     } else if (productType && productId) {
       // One-time product purchase (report, course)
-      await supabaseAdmin.from('purchases').insert({
+      console.log('[Stripe Webhook] Inserting purchase record:', { userId, productType, productId })
+
+      const { error: insertError } = await supabaseAdmin.from('purchases').insert({
         user_id: userId,
         stripe_customer_id: customerId,
         stripe_payment_intent_id: session.payment_intent as string,
@@ -120,15 +135,29 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
         status: 'completed',
       })
 
+      if (insertError) {
+        console.error('[Stripe Webhook] Failed to insert purchase:', insertError)
+      } else {
+        console.log('[Stripe Webhook] Purchase record inserted successfully')
+      }
+
       // If purchasing report bundle, update metadata with credits
       if (productType === 'report_bundle_3' || productType === 'report_bundle_6') {
         const credits = productType === 'report_bundle_3' ? 3 : 6
-        await supabaseAdmin.auth.admin.updateUserById(userId, {
+        console.log('[Stripe Webhook] Updating user metadata with credits:', { userId, credits })
+
+        const { error: metadataError } = await supabaseAdmin.auth.admin.updateUserById(userId, {
           user_metadata: {
             report_credits: credits,
             report_bundle_purchased_at: new Date().toISOString(),
           },
         })
+
+        if (metadataError) {
+          console.error('[Stripe Webhook] Failed to update user metadata:', metadataError)
+        } else {
+          console.log('[Stripe Webhook] User metadata updated successfully')
+        }
       }
     }
   }

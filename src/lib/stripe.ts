@@ -23,17 +23,13 @@ export const STRIPE_PRICES = {
   lifetime: process.env.STRIPE_PRICE_LIFETIME || 'price_lifetime_placeholder',
 
   // One-time purchases (reports)
-  birthChartReport: process.env.STRIPE_PRICE_BIRTH_CHART_REPORT || 'price_birth_chart_placeholder',
-  yearAheadReport: process.env.STRIPE_PRICE_YEAR_AHEAD_REPORT || 'price_year_ahead_placeholder',
-  relationshipReport: process.env.STRIPE_PRICE_RELATIONSHIP_REPORT || 'price_relationship_placeholder',
-  reportBundle: process.env.STRIPE_PRICE_REPORT_BUNDLE || 'price_bundle_placeholder',
-
-  // Course
-  astrologyCourse: process.env.STRIPE_PRICE_COURSE || 'price_course_placeholder',
+  singleReport: process.env.STRIPE_PRICE_SINGLE_REPORT || 'price_single_report_placeholder',
+  reportBundle3: process.env.STRIPE_PRICE_REPORT_BUNDLE_3 || 'price_bundle_3_placeholder',
+  reportBundle6: process.env.STRIPE_PRICE_REPORT_BUNDLE_6 || 'price_bundle_6_placeholder',
 } as const
 
 export type PlanType = 'monthly' | 'annual' | 'lifetime'
-export type ProductType = 'report' | 'course' | 'report_bundle'
+export type ProductType = 'report' | 'report_bundle_3' | 'report_bundle_6'
 
 interface CreateCheckoutParams {
   userId: string

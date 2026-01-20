@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS purchases (
   stripe_checkout_session_id TEXT,
 
   -- Purchase details
-  product_type TEXT NOT NULL CHECK (product_type IN ('report', 'course', 'report_bundle')),
+  product_type TEXT NOT NULL CHECK (product_type IN ('report', 'report_bundle_3', 'report_bundle_6')),
   product_id TEXT NOT NULL, -- e.g., 'birth-chart-report', 'astrology-certification'
   amount_paid INTEGER NOT NULL, -- in pence/cents
   currency TEXT NOT NULL DEFAULT 'gbp',
@@ -84,6 +84,15 @@ CREATE INDEX idx_subscriptions_stripe_customer_id ON subscriptions(stripe_custom
 CREATE INDEX idx_subscriptions_stripe_subscription_id ON subscriptions(stripe_subscription_id);
 CREATE INDEX idx_purchases_user_id ON purchases(user_id);
 CREATE INDEX idx_purchases_stripe_customer_id ON purchases(stripe_customer_id);
+
+-- Create function for updating timestamps (if not exists)
+CREATE OR REPLACE FUNCTION update_updated_at_column()
+RETURNS TRIGGER AS $$
+BEGIN
+  NEW.updated_at = NOW();
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
 
 -- Add trigger for subscriptions updated_at
 CREATE TRIGGER update_subscriptions_updated_at

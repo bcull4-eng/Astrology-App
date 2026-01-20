@@ -120,12 +120,13 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
         status: 'completed',
       })
 
-      // If purchasing course, update metadata
-      if (productId === 'astrology-certification') {
+      // If purchasing report bundle, update metadata with credits
+      if (productType === 'report_bundle_3' || productType === 'report_bundle_6') {
+        const credits = productType === 'report_bundle_3' ? 3 : 6
         await supabaseAdmin.auth.admin.updateUserById(userId, {
           user_metadata: {
-            course_purchased: true,
-            course_purchased_at: new Date().toISOString(),
+            report_credits: credits,
+            report_bundle_purchased_at: new Date().toISOString(),
           },
         })
       }

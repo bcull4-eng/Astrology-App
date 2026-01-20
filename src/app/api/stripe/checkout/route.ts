@@ -79,6 +79,11 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    // Determine success URL based on purchase type
+    const successUrl = planType
+      ? `${appUrl}/checkout/success?session_id={CHECKOUT_SESSION_ID}`
+      : `${appUrl}/reports/purchase-success?session_id={CHECKOUT_SESSION_ID}&product=${productId}`
+
     // Create checkout session
     const session = await createCheckoutSession({
       userId: user.id,
@@ -88,7 +93,7 @@ export async function POST(request: NextRequest) {
       planType,
       productType,
       productId,
-      successUrl: `${appUrl}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
+      successUrl,
       cancelUrl: `${appUrl}/checkout/cancel`,
     })
 

@@ -59,11 +59,9 @@ export async function POST(request: NextRequest) {
 
       // Map product IDs to price IDs
       const productPriceMap: Record<string, string> = {
-        'birth-chart-report': STRIPE_PRICES.birthChartReport,
-        'year-ahead-report': STRIPE_PRICES.yearAheadReport,
-        'relationship-report': STRIPE_PRICES.relationshipReport,
-        'report-bundle': STRIPE_PRICES.reportBundle,
-        'astrology-certification': STRIPE_PRICES.astrologyCourse,
+        'single-report': STRIPE_PRICES.singleReport,
+        'report-bundle-3': STRIPE_PRICES.reportBundle3,
+        'report-bundle-6': STRIPE_PRICES.reportBundle6,
       }
 
       priceId = productPriceMap[productId]

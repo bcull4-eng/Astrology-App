@@ -27,12 +27,33 @@ export default function CoursePreviewPage() {
 
   const handlePurchase = async () => {
     setLoading(true)
-    // TODO: Implement Stripe checkout
-    await new Promise((resolve) => setTimeout(resolve, 1500))
 
-    // Store purchase in sessionStorage for demo
-    sessionStorage.setItem('course-purchased', 'true')
-    router.push('/learn')
+    try {
+      // Create Stripe checkout session
+      const response = await fetch('/api/stripe/checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          productType: 'course',
+          productId: 'course',
+        }),
+      })
+
+      const data = await response.json()
+
+      if (data.error) {
+        console.error('Checkout error:', data.error)
+        setLoading(false)
+        return
+      }
+
+      if (data.url) {
+        window.location.href = data.url
+      }
+    } catch (error) {
+      console.error('Checkout error:', error)
+      setLoading(false)
+    }
   }
 
   const getFeatureIcon = (icon: string) => {

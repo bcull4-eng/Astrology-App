@@ -26,10 +26,13 @@ export const STRIPE_PRICES = {
   singleReport: process.env.STRIPE_PRICE_SINGLE_REPORT || 'price_single_report_placeholder',
   reportBundle3: process.env.STRIPE_PRICE_REPORT_BUNDLE_3 || 'price_bundle_3_placeholder',
   reportBundle6: process.env.STRIPE_PRICE_REPORT_BUNDLE_6 || 'price_bundle_6_placeholder',
+
+  // Course
+  course: process.env.STRIPE_PRICE_COURSE || 'price_course_placeholder',
 } as const
 
 export type PlanType = 'monthly' | 'annual' | 'lifetime'
-export type ProductType = 'report' | 'report_bundle_3' | 'report_bundle_6'
+export type ProductType = 'report' | 'report_bundle_3' | 'report_bundle_6' | 'course'
 
 interface CreateCheckoutParams {
   userId: string

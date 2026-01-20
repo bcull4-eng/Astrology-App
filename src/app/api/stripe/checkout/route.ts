@@ -62,6 +62,7 @@ export async function POST(request: NextRequest) {
         'single-report': STRIPE_PRICES.singleReport,
         'report-bundle-3': STRIPE_PRICES.reportBundle3,
         'report-bundle-6': STRIPE_PRICES.reportBundle6,
+        'course': STRIPE_PRICES.course,
       }
 
       priceId = productPriceMap[productId]
@@ -80,9 +81,14 @@ export async function POST(request: NextRequest) {
     }
 
     // Determine success URL based on purchase type
-    const successUrl = planType
-      ? `${appUrl}/checkout/success?session_id={CHECKOUT_SESSION_ID}`
-      : `${appUrl}/reports/purchase-success?session_id={CHECKOUT_SESSION_ID}&product=${productId}`
+    let successUrl: string
+    if (planType) {
+      successUrl = `${appUrl}/checkout/success?session_id={CHECKOUT_SESSION_ID}`
+    } else if (productId === 'course') {
+      successUrl = `${appUrl}/learn/purchase-success?session_id={CHECKOUT_SESSION_ID}`
+    } else {
+      successUrl = `${appUrl}/reports/purchase-success?session_id={CHECKOUT_SESSION_ID}&product=${productId}`
+    }
 
     // Create checkout session
     const session = await createCheckoutSession({

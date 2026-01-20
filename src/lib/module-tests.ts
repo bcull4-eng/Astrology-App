@@ -14,7 +14,7 @@ export const MODULE_TESTS: Record<string, ModuleTest> = {
     title: 'Foundations of Astrology Test',
     description: 'Test your understanding of the fundamental building blocks of astrology.',
     passingScore: 70,
-    estimatedMinutes: 15,
+    estimatedMinutes: 4,
     questions: [
       {
         id: 'f1',
@@ -120,7 +120,7 @@ export const MODULE_TESTS: Record<string, ModuleTest> = {
     title: 'Planetary Aspects Test',
     description: 'Test your understanding of how planets communicate through geometric relationships.',
     passingScore: 70,
-    estimatedMinutes: 15,
+    estimatedMinutes: 4,
     questions: [
       {
         id: 'a1',
@@ -226,7 +226,7 @@ export const MODULE_TESTS: Record<string, ModuleTest> = {
     title: 'Mindset & Philosophy Test',
     description: 'Test your understanding of healthy approaches to astrology.',
     passingScore: 70,
-    estimatedMinutes: 10,
+    estimatedMinutes: 2,
     questions: [
       {
         id: 'm1',
@@ -298,7 +298,7 @@ export const MODULE_TESTS: Record<string, ModuleTest> = {
     title: 'History & Context Test',
     description: 'Test your knowledge of astrology\'s origins and evolution.',
     passingScore: 70,
-    estimatedMinutes: 12,
+    estimatedMinutes: 3,
     questions: [
       {
         id: 'h1',
@@ -363,7 +363,7 @@ export const MODULE_TESTS: Record<string, ModuleTest> = {
     title: 'Personal Growth & Shadow Work Test',
     description: 'Test your understanding of using astrology for personal development.',
     passingScore: 70,
-    estimatedMinutes: 10,
+    estimatedMinutes: 2,
     questions: [
       {
         id: 'g1',
@@ -430,7 +430,7 @@ export const MODULE_TESTS: Record<string, ModuleTest> = {
     title: 'Practical Daily Use Test',
     description: 'Test your knowledge of applying astrology to daily life.',
     passingScore: 70,
-    estimatedMinutes: 12,
+    estimatedMinutes: 3,
     questions: [
       {
         id: 'p1',
@@ -501,7 +501,7 @@ export const MODULE_TESTS: Record<string, ModuleTest> = {
     title: 'Ethics & Reading for Others Test',
     description: 'Test your understanding of ethical astrology practice.',
     passingScore: 70,
-    estimatedMinutes: 10,
+    estimatedMinutes: 2,
     questions: [
       {
         id: 'r1',

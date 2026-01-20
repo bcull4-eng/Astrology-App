@@ -109,8 +109,8 @@ export default function LearnPage() {
             <div className="text-indigo-200/50 text-sm">Lessons</div>
           </div>
           <div className="bg-indigo-950/30 rounded-xl p-4 text-center">
-            <div className="text-2xl font-semibold text-white">{COMPREHENSIVE_COURSE_OUTLINE.estimatedHours}+</div>
-            <div className="text-indigo-200/50 text-sm">Hours</div>
+            <div className="text-2xl font-semibold text-white">2-4</div>
+            <div className="text-indigo-200/50 text-sm">Min/Lesson</div>
           </div>
           <div className="bg-indigo-950/30 rounded-xl p-4 text-center">
             <div className="text-2xl font-semibold text-amber-400">1</div>
@@ -183,8 +183,8 @@ export default function LearnPage() {
           <p className="text-indigo-200/50 text-sm mb-4">No fluff, no filler - just a clear path from beginner to confident practitioner</p>
           <div className="grid md:grid-cols-2 gap-4">
             {[
-              { icon: '📚', text: `${COMPREHENSIVE_COURSE_OUTLINE.totalLessons} lessons (beginner → advanced)` },
-              { icon: '⏰', text: `${COMPREHENSIVE_COURSE_OUTLINE.estimatedHours}+ hours of content` },
+              { icon: '📚', text: `${COMPREHENSIVE_COURSE_OUTLINE.totalLessons} bite-sized lessons` },
+              { icon: '⏰', text: '2-4 min per lesson - easy to fit in your day' },
               { icon: '✨', text: 'Practice with your own birth chart' },
               { icon: '📝', text: 'Quizzes to check your understanding' },
               { icon: '👥', text: 'How to read for clients professionally' },

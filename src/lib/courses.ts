@@ -12,7 +12,7 @@ export const COURSES: Course[] = [
     title: 'Foundations of Astrology',
     description: 'Master the building blocks of astrology - from zodiac signs to planetary meanings to house interpretations.',
     difficulty: 'beginner',
-    estimatedMinutes: 90,
+    estimatedMinutes: 20,
     icon: '✨',
     modules: [
       {
@@ -24,7 +24,7 @@ export const COURSES: Course[] = [
             id: 'what-is-zodiac',
             title: 'What is the Zodiac?',
             description: 'An introduction to the zodiac wheel and how it forms the foundation of astrology.',
-            estimatedMinutes: 5,
+            estimatedMinutes: 1,
             content: [
               { type: 'heading', content: 'The Celestial Blueprint', level: 2 },
               {
@@ -110,7 +110,7 @@ export const COURSES: Course[] = [
             id: 'elements',
             title: 'The Four Elements',
             description: 'Discover how Fire, Earth, Air, and Water shape personality.',
-            estimatedMinutes: 8,
+            estimatedMinutes: 2,
             content: [
               { type: 'heading', content: 'Fire, Earth, Air & Water', level: 2 },
               {
@@ -226,7 +226,7 @@ export const COURSES: Course[] = [
             id: 'modalities',
             title: 'The Three Modalities',
             description: 'Learn how Cardinal, Fixed, and Mutable signs approach change.',
-            estimatedMinutes: 7,
+            estimatedMinutes: 2,
             content: [
               { type: 'heading', content: 'Cardinal, Fixed & Mutable', level: 2 },
               {
@@ -334,7 +334,7 @@ export const COURSES: Course[] = [
             id: 'sign-meanings',
             title: 'The 12 Sign Personalities',
             description: 'A brief tour through each zodiac sign\'s core traits.',
-            estimatedMinutes: 12,
+            estimatedMinutes: 4,
             content: [
               { type: 'heading', content: 'Meet the Signs', level: 2 },
               {
@@ -398,7 +398,7 @@ export const COURSES: Course[] = [
             id: 'personal-planets',
             title: 'The Personal Planets',
             description: 'Sun, Moon, Mercury, Venus, and Mars - the planets that shape your personality.',
-            estimatedMinutes: 10,
+            estimatedMinutes: 3,
             content: [
               { type: 'heading', content: 'Your Inner World', level: 2 },
               {
@@ -542,7 +542,7 @@ export const COURSES: Course[] = [
             id: 'social-planets',
             title: 'The Social Planets',
             description: 'Jupiter and Saturn - planets that bridge personal and collective.',
-            estimatedMinutes: 8,
+            estimatedMinutes: 2,
             content: [
               { type: 'heading', content: 'Bridging Inner & Outer Worlds', level: 2 },
               {
@@ -647,7 +647,7 @@ export const COURSES: Course[] = [
             id: 'outer-planets',
             title: 'The Outer Planets',
             description: 'Uranus, Neptune, and Pluto - generational and transformative forces.',
-            estimatedMinutes: 8,
+            estimatedMinutes: 2,
             content: [
               { type: 'heading', content: 'Collective & Transformative Forces', level: 2 },
               {
@@ -753,7 +753,7 @@ export const COURSES: Course[] = [
             id: 'house-basics',
             title: 'Understanding Houses',
             description: 'The 12 houses as areas of life experience.',
-            estimatedMinutes: 10,
+            estimatedMinutes: 3,
             content: [
               { type: 'heading', content: 'The Stage of Life', level: 2 },
               {
@@ -857,7 +857,7 @@ export const COURSES: Course[] = [
             id: 'angular-houses',
             title: 'The Angular Houses',
             description: 'The four most powerful houses: 1st, 4th, 7th, and 10th.',
-            estimatedMinutes: 8,
+            estimatedMinutes: 2,
             content: [
               { type: 'heading', content: 'The Four Angles', level: 2 },
               {
@@ -965,7 +965,7 @@ export const COURSES: Course[] = [
             id: 'succedent-houses',
             title: 'The Succedent Houses',
             description: 'The resource houses: 2nd, 5th, 8th, and 11th.',
-            estimatedMinutes: 8,
+            estimatedMinutes: 2,
             content: [
               { type: 'heading', content: 'The Houses of Resources', level: 2 },
               {
@@ -1016,7 +1016,7 @@ export const COURSES: Course[] = [
             id: 'cadent-houses',
             title: 'The Cadent Houses',
             description: 'The learning houses: 3rd, 6th, 9th, and 12th.',
-            estimatedMinutes: 8,
+            estimatedMinutes: 2,
             content: [
               { type: 'heading', content: 'The Houses of Learning & Transition', level: 2 },
               {
@@ -1067,7 +1067,7 @@ export const COURSES: Course[] = [
             id: 'house-rulers',
             title: 'House Rulers & Rulerships',
             description: 'Understanding who rules each house in your chart.',
-            estimatedMinutes: 8,
+            estimatedMinutes: 2,
             content: [
               { type: 'heading', content: 'Finding the House Ruler', level: 2 },
               {
@@ -1120,7 +1120,7 @@ export const COURSES: Course[] = [
             id: 'big-three-overview',
             title: 'Sun, Moon & Rising',
             description: 'The three pillars of your astrological identity.',
-            estimatedMinutes: 10,
+            estimatedMinutes: 3,
             content: [
               { type: 'heading', content: 'The Three Pillars', level: 2 },
               {
@@ -1255,7 +1255,7 @@ export const COURSES: Course[] = [
             id: 'your-chart-synthesis',
             title: 'Reading Your Own Chart',
             description: 'Putting it all together with your personal placements.',
-            estimatedMinutes: 12,
+            estimatedMinutes: 4,
             content: [
               { type: 'heading', content: 'Your Personal Blueprint', level: 2 },
               {
@@ -1326,7 +1326,7 @@ export const COURSES: Course[] = [
     title: 'Advanced Astrology',
     description: 'Master aspects, chart patterns, and transits to unlock deeper insights from any birth chart.',
     difficulty: 'advanced',
-    estimatedMinutes: 120,
+    estimatedMinutes: 30,
     icon: '🔮',
     modules: [
       {
@@ -1338,7 +1338,7 @@ export const COURSES: Course[] = [
             id: 'what-are-aspects',
             title: 'Introduction to Aspects',
             description: 'How planets communicate through angles.',
-            estimatedMinutes: 8,
+            estimatedMinutes: 2,
             content: [
               { type: 'heading', content: 'The Conversation Between Planets', level: 2 },
               {
@@ -1415,7 +1415,7 @@ export const COURSES: Course[] = [
             id: 'major-aspects',
             title: 'The Major Aspects',
             description: 'Conjunction, opposition, trine, square, and sextile.',
-            estimatedMinutes: 12,
+            estimatedMinutes: 4,
             content: [
               { type: 'heading', content: 'The Five Major Aspects', level: 2 },
               {
@@ -1541,7 +1541,7 @@ export const COURSES: Course[] = [
             id: 'aspect-interpretation',
             title: 'Interpreting Aspects',
             description: 'How to read aspects between specific planets.',
-            estimatedMinutes: 10,
+            estimatedMinutes: 3,
             content: [
               { type: 'heading', content: 'Reading Planetary Combinations', level: 2 },
               {
@@ -1604,7 +1604,7 @@ export const COURSES: Course[] = [
             id: 'stelliums',
             title: 'Stelliums',
             description: 'When multiple planets cluster together.',
-            estimatedMinutes: 8,
+            estimatedMinutes: 2,
             content: [
               { type: 'heading', content: 'Concentrated Energy', level: 2 },
               {
@@ -1647,7 +1647,7 @@ export const COURSES: Course[] = [
             id: 't-square',
             title: 'T-Squares & Grand Crosses',
             description: 'Tension patterns that drive achievement.',
-            estimatedMinutes: 10,
+            estimatedMinutes: 3,
             content: [
               { type: 'heading', content: 'Dynamic Tension Patterns', level: 2 },
               {
@@ -1690,7 +1690,7 @@ export const COURSES: Course[] = [
             id: 'grand-trines',
             title: 'Grand Trines & Kites',
             description: 'Harmonious patterns and how to activate them.',
-            estimatedMinutes: 8,
+            estimatedMinutes: 2,
             content: [
               { type: 'heading', content: 'Flowing Energy Patterns', level: 2 },
               {
@@ -1740,7 +1740,7 @@ export const COURSES: Course[] = [
             id: 'transit-basics',
             title: 'Understanding Transits',
             description: 'How planetary movements trigger your birth chart.',
-            estimatedMinutes: 10,
+            estimatedMinutes: 3,
             content: [
               { type: 'heading', content: 'The Moving Sky', level: 2 },
               {
@@ -1783,7 +1783,7 @@ export const COURSES: Course[] = [
             id: 'saturn-return',
             title: 'The Saturn Return',
             description: 'The most important transit of early adulthood.',
-            estimatedMinutes: 8,
+            estimatedMinutes: 2,
             content: [
               { type: 'heading', content: 'Coming of Age', level: 2 },
               {
@@ -1831,7 +1831,7 @@ export const COURSES: Course[] = [
             id: 'major-transits',
             title: 'Major Life Transits',
             description: 'Pluto, Neptune, and Uranus transits to natal planets.',
-            estimatedMinutes: 10,
+            estimatedMinutes: 3,
             content: [
               { type: 'heading', content: 'Transformational Transits', level: 2 },
               {
@@ -1883,7 +1883,7 @@ export const COURSES: Course[] = [
             id: 'interpretation-method',
             title: 'A Method for Interpretation',
             description: 'Step-by-step approach to reading any chart.',
-            estimatedMinutes: 12,
+            estimatedMinutes: 4,
             content: [
               { type: 'heading', content: 'Reading a Chart', level: 2 },
               {
@@ -1923,7 +1923,7 @@ export const COURSES: Course[] = [
             id: 'themes-repetition',
             title: 'Finding Repeating Themes',
             description: 'How to identify what the chart is really saying.',
-            estimatedMinutes: 10,
+            estimatedMinutes: 3,
             content: [
               { type: 'heading', content: 'The Art of Synthesis', level: 2 },
               {
@@ -1976,7 +1976,7 @@ export const COURSES: Course[] = [
     title: 'History & Context',
     description: 'Understand where astrology comes from, its different traditions, and how it has evolved over 5,000 years.',
     difficulty: 'intermediate',
-    estimatedMinutes: 35,
+    estimatedMinutes: 10,
     icon: '📜',
     modules: [
       {
@@ -1988,7 +1988,7 @@ export const COURSES: Course[] = [
             id: 'origins-of-astrology',
             title: 'The Origins of Astrology',
             description: '5,000 years of stargazing and celestial wisdom.',
-            estimatedMinutes: 8,
+            estimatedMinutes: 2,
             content: [
               { type: 'heading', content: '5,000 Years of Stargazing', level: 2 },
               {
@@ -2078,7 +2078,7 @@ export const COURSES: Course[] = [
             id: 'western-vs-vedic',
             title: 'Western vs. Vedic Astrology',
             description: 'Two great traditions with different approaches.',
-            estimatedMinutes: 8,
+            estimatedMinutes: 2,
             content: [
               { type: 'heading', content: 'Two Great Traditions', level: 2 },
               {
@@ -2153,7 +2153,7 @@ export const COURSES: Course[] = [
             id: 'house-systems',
             title: 'Why Different House Systems?',
             description: 'Understanding the house system debate.',
-            estimatedMinutes: 7,
+            estimatedMinutes: 2,
             content: [
               { type: 'heading', content: 'The House System Debate', level: 2 },
               {
@@ -2228,7 +2228,7 @@ export const COURSES: Course[] = [
             id: 'traditional-vs-modern',
             title: 'Traditional vs. Modern Astrology',
             description: 'Two approaches to the same art.',
-            estimatedMinutes: 7,
+            estimatedMinutes: 2,
             content: [
               { type: 'heading', content: 'Two Approaches to the Same Art', level: 2 },
               {
@@ -2300,7 +2300,7 @@ export const COURSES: Course[] = [
             id: 'astrology-today',
             title: 'Astrology in the Modern World',
             description: 'The current landscape and revival.',
-            estimatedMinutes: 5,
+            estimatedMinutes: 1,
             content: [
               { type: 'heading', content: 'Astrology Today', level: 2 },
               {
@@ -2368,7 +2368,7 @@ export const COURSES: Course[] = [
     title: 'Mindset & Philosophy',
     description: 'Develop a healthy, empowering approach to astrology that avoids fatalism and embraces growth.',
     difficulty: 'beginner',
-    estimatedMinutes: 40,
+    estimatedMinutes: 12,
     icon: '🧠',
     modules: [
       {
@@ -2380,7 +2380,7 @@ export const COURSES: Course[] = [
             id: 'tool-not-cage',
             title: 'Astrology as a Tool, Not a Cage',
             description: 'How to use astrology without limiting yourself.',
-            estimatedMinutes: 7,
+            estimatedMinutes: 2,
             content: [
               { type: 'heading', content: 'Liberation, Not Limitation', level: 2 },
               {
@@ -2450,7 +2450,7 @@ export const COURSES: Course[] = [
             id: 'free-will',
             title: 'Free Will vs. Cosmic Influence',
             description: 'Understanding the balance between fate and choice.',
-            estimatedMinutes: 8,
+            estimatedMinutes: 2,
             content: [
               { type: 'heading', content: 'The Ancient Question', level: 2 },
               {
@@ -2528,7 +2528,7 @@ export const COURSES: Course[] = [
             id: 'difficult-placements',
             title: 'Dealing with "Difficult" Placements',
             description: 'Transforming fear into understanding.',
-            estimatedMinutes: 8,
+            estimatedMinutes: 2,
             content: [
               { type: 'heading', content: 'No Placement Is a Death Sentence', level: 2 },
               {
@@ -2609,7 +2609,7 @@ export const COURSES: Course[] = [
             id: 'barnum-effect',
             title: 'The Barnum Effect & Critical Thinking',
             description: 'Understanding cognitive biases in astrology.',
-            estimatedMinutes: 7,
+            estimatedMinutes: 2,
             content: [
               { type: 'heading', content: 'Why Astrology Can Seem Accurate', level: 2 },
               {
@@ -2683,7 +2683,7 @@ export const COURSES: Course[] = [
             id: 'why-accuracy-varies',
             title: 'Why Accuracy Varies',
             description: 'Understanding the limits and variables of astrological practice.',
-            estimatedMinutes: 6,
+            estimatedMinutes: 2,
             content: [
               { type: 'heading', content: 'It\'s Not Always Going to "Hit"', level: 2 },
               {
@@ -2752,7 +2752,7 @@ export const COURSES: Course[] = [
             id: 'ethical-considerations',
             title: 'Ethical Considerations',
             description: 'Using astrology responsibly.',
-            estimatedMinutes: 6,
+            estimatedMinutes: 2,
             content: [
               { type: 'heading', content: 'With Knowledge Comes Responsibility', level: 2 },
               {
@@ -2826,7 +2826,7 @@ export const COURSES: Course[] = [
     title: 'Personal Growth & Shadow Work',
     description: 'Use your birth chart as a tool for self-compassion, pattern recognition, and conscious evolution.',
     difficulty: 'intermediate',
-    estimatedMinutes: 45,
+    estimatedMinutes: 14,
     icon: '🌱',
     modules: [
       {
@@ -2838,7 +2838,7 @@ export const COURSES: Course[] = [
             id: 'chart-self-compassion',
             title: 'Using Your Chart for Self-Compassion',
             description: 'How astrology can help you be kinder to yourself.',
-            estimatedMinutes: 8,
+            estimatedMinutes: 2,
             content: [
               { type: 'heading', content: 'You Came in With This', level: 2 },
               {
@@ -2910,7 +2910,7 @@ export const COURSES: Course[] = [
             id: 'growth-map',
             title: 'Your Chart as a Growth Map',
             description: 'The chart as a guide to your evolution, not a life sentence.',
-            estimatedMinutes: 7,
+            estimatedMinutes: 2,
             content: [
               { type: 'heading', content: 'A Map, Not a Sentence', level: 2 },
               {
@@ -2978,7 +2978,7 @@ export const COURSES: Course[] = [
             id: 'unconscious-patterns',
             title: 'Identifying Unconscious Patterns',
             description: 'The 12th house, Pluto, and hidden parts of the chart.',
-            estimatedMinutes: 10,
+            estimatedMinutes: 3,
             content: [
               { type: 'heading', content: 'What Lies Beneath', level: 2 },
               {
@@ -3047,7 +3047,7 @@ export const COURSES: Course[] = [
             id: 'working-with-challenges',
             title: 'Working WITH Challenging Aspects',
             description: 'Transforming difficult energies into strengths.',
-            estimatedMinutes: 8,
+            estimatedMinutes: 2,
             content: [
               { type: 'heading', content: 'With, Not Against', level: 2 },
               {
@@ -3105,7 +3105,7 @@ export const COURSES: Course[] = [
             id: 'integrating-shadow',
             title: 'Integrating Rejected Parts',
             description: 'Embracing the shadow planets in your chart.',
-            estimatedMinutes: 8,
+            estimatedMinutes: 2,
             content: [
               { type: 'heading', content: 'Bringing Shadow Into Light', level: 2 },
               {
@@ -3178,7 +3178,7 @@ export const COURSES: Course[] = [
     title: 'Practical Daily Use',
     description: 'Apply astrology to everyday life through moon phases, retrogrades, and personal timing.',
     difficulty: 'intermediate',
-    estimatedMinutes: 50,
+    estimatedMinutes: 15,
     icon: '📅',
     modules: [
       {
@@ -3190,7 +3190,7 @@ export const COURSES: Course[] = [
             id: 'moon-phase-basics',
             title: 'Moon Phase Planning',
             description: 'When to start, when to rest.',
-            estimatedMinutes: 8,
+            estimatedMinutes: 2,
             content: [
               { type: 'heading', content: 'The Lunar Rhythm', level: 2 },
               {
@@ -3256,7 +3256,7 @@ export const COURSES: Course[] = [
             id: 'void-of-course',
             title: 'Void of Course Moon',
             description: 'What it means and how to use it.',
-            estimatedMinutes: 7,
+            estimatedMinutes: 2,
             content: [
               { type: 'heading', content: 'The Moon Between Signs', level: 2 },
               {
@@ -3331,7 +3331,7 @@ export const COURSES: Course[] = [
             id: 'mercury-retrograde',
             title: 'Mercury Retrograde Survival',
             description: 'The famous retrograde — and its opportunities.',
-            estimatedMinutes: 8,
+            estimatedMinutes: 2,
             content: [
               { type: 'heading', content: 'The Most Famous Retrograde', level: 2 },
               {
@@ -3410,7 +3410,7 @@ export const COURSES: Course[] = [
             id: 'using-transits',
             title: 'Using Transits for Timing',
             description: 'Practical transit timing for decisions.',
-            estimatedMinutes: 8,
+            estimatedMinutes: 2,
             content: [
               { type: 'heading', content: 'Timing With the Stars', level: 2 },
               {
@@ -3484,7 +3484,7 @@ export const COURSES: Course[] = [
             id: 'solar-return',
             title: 'Personal Year Cycles',
             description: 'Solar returns and birthday charts.',
-            estimatedMinutes: 7,
+            estimatedMinutes: 2,
             content: [
               { type: 'heading', content: 'Your Personal New Year', level: 2 },
               {
@@ -3557,7 +3557,7 @@ export const COURSES: Course[] = [
     title: 'Reading for Others',
     description: 'Ethics, boundaries, and best practices for giving astrological readings to other people.',
     difficulty: 'advanced',
-    estimatedMinutes: 35,
+    estimatedMinutes: 10,
     icon: '💼',
     modules: [
       {
@@ -3569,7 +3569,7 @@ export const COURSES: Course[] = [
             id: 'empowering-readings',
             title: 'How to Give Empowering Readings',
             description: 'Making readings helpful, not harmful.',
-            estimatedMinutes: 8,
+            estimatedMinutes: 2,
             content: [
               { type: 'heading', content: 'The Reader\'s Responsibility', level: 2 },
               {
@@ -3633,7 +3633,7 @@ export const COURSES: Course[] = [
             id: 'what-not-to-say',
             title: 'What NOT to Say',
             description: 'Topics to avoid or handle with extreme care.',
-            estimatedMinutes: 8,
+            estimatedMinutes: 2,
             content: [
               { type: 'heading', content: 'Dangerous Territory', level: 2 },
               {
@@ -3710,7 +3710,7 @@ export const COURSES: Course[] = [
             id: 'boundaries',
             title: 'Setting Boundaries as a Reader',
             description: 'Protecting yourself and your clients.',
-            estimatedMinutes: 7,
+            estimatedMinutes: 2,
             content: [
               { type: 'heading', content: 'Healthy Boundaries', level: 2 },
               {
@@ -3775,7 +3775,7 @@ export const COURSES: Course[] = [
             id: 'when-to-refer',
             title: 'When to Refer Out',
             description: 'Recognizing when someone needs different help.',
-            estimatedMinutes: 7,
+            estimatedMinutes: 2,
             content: [
               { type: 'heading', content: 'Knowing Your Limits', level: 2 },
               {
@@ -3844,7 +3844,7 @@ export const COURSES: Course[] = [
             id: 'structuring-readings',
             title: 'Structuring a Reading',
             description: 'How to organize and pace an effective reading.',
-            estimatedMinutes: 8,
+            estimatedMinutes: 2,
             content: [
               { type: 'heading', content: 'The Flow of a Reading', level: 2 },
               {
@@ -3900,7 +3900,7 @@ export const COURSES: Course[] = [
             id: 'practice-skills',
             title: 'Building Your Reading Skills',
             description: 'How to practice and improve your chart reading abilities.',
-            estimatedMinutes: 7,
+            estimatedMinutes: 2,
             content: [
               { type: 'heading', content: 'Practice Makes Progress', level: 2 },
               {
@@ -3951,7 +3951,7 @@ export const COURSES: Course[] = [
             id: 'getting-feedback',
             title: 'Getting & Using Feedback',
             description: 'How to learn from the people you read for.',
-            estimatedMinutes: 6,
+            estimatedMinutes: 2,
             content: [
               { type: 'heading', content: 'Feedback as a Teacher', level: 2 },
               {
@@ -4011,7 +4011,7 @@ export const COURSES: Course[] = [
     title: 'Professional Astrology Practice',
     description: 'Everything you need to launch and run a successful astrology practice - from pricing and marketing to client management and teaching.',
     difficulty: 'advanced',
-    estimatedMinutes: 180,
+    estimatedMinutes: 45,
     icon: '🏆',
     modules: [
       {
@@ -4023,7 +4023,7 @@ export const COURSES: Course[] = [
             id: 'going-professional',
             title: 'Going Professional',
             description: 'Making the transition from hobbyist to professional astrologer.',
-            estimatedMinutes: 10,
+            estimatedMinutes: 3,
             content: [
               { type: 'heading', content: 'From Passion to Profession', level: 2 },
               {
@@ -4081,7 +4081,7 @@ export const COURSES: Course[] = [
             id: 'pricing-services',
             title: 'Pricing Your Services',
             description: 'How to set prices that value your work and attract clients.',
-            estimatedMinutes: 10,
+            estimatedMinutes: 3,
             content: [
               { type: 'heading', content: 'The Money Conversation', level: 2 },
               {
@@ -4137,7 +4137,7 @@ export const COURSES: Course[] = [
             id: 'service-offerings',
             title: 'Designing Your Service Menu',
             description: 'Creating offerings that serve clients and showcase your skills.',
-            estimatedMinutes: 10,
+            estimatedMinutes: 3,
             content: [
               { type: 'heading', content: 'What Will You Offer?', level: 2 },
               {
@@ -4193,7 +4193,7 @@ export const COURSES: Course[] = [
             id: 'finding-clients',
             title: 'Finding & Attracting Clients',
             description: 'Marketing strategies that feel authentic.',
-            estimatedMinutes: 12,
+            estimatedMinutes: 4,
             content: [
               { type: 'heading', content: 'Building Your Client Base', level: 2 },
               {
@@ -4255,7 +4255,7 @@ export const COURSES: Course[] = [
             id: 'online-vs-inperson',
             title: 'Online vs. In-Person Readings',
             description: 'Choosing and optimizing your delivery method.',
-            estimatedMinutes: 8,
+            estimatedMinutes: 2,
             content: [
               { type: 'heading', content: 'How Will You Deliver Readings?', level: 2 },
               {
@@ -4311,7 +4311,7 @@ export const COURSES: Course[] = [
             id: 'difficult-questions',
             title: 'Handling Difficult Questions',
             description: 'What to do when clients ask about death, illness, or other sensitive topics.',
-            estimatedMinutes: 10,
+            estimatedMinutes: 3,
             content: [
               { type: 'heading', content: 'The Hard Questions', level: 2 },
               {
@@ -4367,7 +4367,7 @@ export const COURSES: Course[] = [
             id: 'emotional-sessions',
             title: 'Managing Emotional Sessions',
             description: 'What to do when clients cry, get angry, or have strong reactions.',
-            estimatedMinutes: 10,
+            estimatedMinutes: 3,
             content: [
               { type: 'heading', content: 'When Emotions Run High', level: 2 },
               {
@@ -4424,7 +4424,7 @@ export const COURSES: Course[] = [
             id: 'managing-expectations',
             title: 'Managing Client Expectations',
             description: 'Setting up readings for success from the start.',
-            estimatedMinutes: 8,
+            estimatedMinutes: 2,
             content: [
               { type: 'heading', content: 'Starting Right', level: 2 },
               {
@@ -4474,7 +4474,7 @@ export const COURSES: Course[] = [
             id: 'client-retention',
             title: 'Building Long-Term Client Relationships',
             description: 'Turn one-time clients into returning ones.',
-            estimatedMinutes: 8,
+            estimatedMinutes: 2,
             content: [
               { type: 'heading', content: 'Beyond the First Reading', level: 2 },
               {
@@ -4532,7 +4532,7 @@ export const COURSES: Course[] = [
             id: 'why-teach',
             title: 'Why Teach Astrology?',
             description: 'The rewards and responsibilities of astrological education.',
-            estimatedMinutes: 8,
+            estimatedMinutes: 2,
             content: [
               { type: 'heading', content: 'Becoming a Teacher', level: 2 },
               {
@@ -4582,7 +4582,7 @@ export const COURSES: Course[] = [
             id: 'curriculum-design',
             title: 'Designing Your Curriculum',
             description: 'How to structure effective astrology lessons.',
-            estimatedMinutes: 12,
+            estimatedMinutes: 4,
             content: [
               { type: 'heading', content: 'Creating a Learning Path', level: 2 },
               {
@@ -4639,7 +4639,7 @@ export const COURSES: Course[] = [
             id: 'teaching-methods',
             title: 'Teaching Methods & Styles',
             description: 'How to accommodate different learning styles.',
-            estimatedMinutes: 10,
+            estimatedMinutes: 3,
             content: [
               { type: 'heading', content: 'How People Learn', level: 2 },
               {
@@ -4695,7 +4695,7 @@ export const COURSES: Course[] = [
             id: 'workshops-courses',
             title: 'Creating Workshops & Courses',
             description: 'From single workshops to comprehensive programs.',
-            estimatedMinutes: 10,
+            estimatedMinutes: 3,
             content: [
               { type: 'heading', content: 'Formats for Teaching', level: 2 },
               {
@@ -4752,7 +4752,7 @@ export const COURSES: Course[] = [
             id: 'building-educational-practice',
             title: 'Building an Educational Practice',
             description: 'Turn teaching into a sustainable part of your business.',
-            estimatedMinutes: 10,
+            estimatedMinutes: 3,
             content: [
               { type: 'heading', content: 'Teaching as Business', level: 2 },
               {
@@ -4816,7 +4816,7 @@ export const COURSES: Course[] = [
             id: 'legal-setup',
             title: 'Legal & Business Setup',
             description: 'Protecting yourself and running a legitimate business.',
-            estimatedMinutes: 10,
+            estimatedMinutes: 3,
             content: [
               { type: 'heading', content: 'The Business Side', level: 2 },
               {
@@ -4867,7 +4867,7 @@ export const COURSES: Course[] = [
             id: 'scheduling-booking',
             title: 'Scheduling & Booking Systems',
             description: 'Make booking easy and manage your time well.',
-            estimatedMinutes: 8,
+            estimatedMinutes: 2,
             content: [
               { type: 'heading', content: 'Smooth Scheduling', level: 2 },
               {
@@ -4918,7 +4918,7 @@ export const COURSES: Course[] = [
             id: 'client-records',
             title: 'Client Records & Notes',
             description: 'What to track and how to keep information secure.',
-            estimatedMinutes: 8,
+            estimatedMinutes: 2,
             content: [
               { type: 'heading', content: 'Professional Record Keeping', level: 2 },
               {
@@ -4969,7 +4969,7 @@ export const COURSES: Course[] = [
             id: 'continuing-education',
             title: 'Continuing Education & Growth',
             description: 'Never stop learning and evolving as a practitioner.',
-            estimatedMinutes: 8,
+            estimatedMinutes: 2,
             content: [
               { type: 'heading', content: 'Lifelong Learning', level: 2 },
               {
@@ -5031,7 +5031,7 @@ export const COURSES: Course[] = [
     title: 'Synastry & Compatibility',
     description: 'Master relationship astrology - understand romantic compatibility, friendship dynamics, and how charts interact.',
     difficulty: 'intermediate',
-    estimatedMinutes: 120,
+    estimatedMinutes: 30,
     icon: '💕',
     modules: [
       {
@@ -5043,7 +5043,7 @@ export const COURSES: Course[] = [
             id: 'what-is-synastry',
             title: 'What is Synastry?',
             description: 'An introduction to comparing birth charts for relationship insights.',
-            estimatedMinutes: 8,
+            estimatedMinutes: 2,
             content: [
               { type: 'heading', content: 'The Art of Chart Comparison', level: 2 },
               {
@@ -5089,7 +5089,7 @@ export const COURSES: Course[] = [
             id: 'key-synastry-planets',
             title: 'Key Planets in Synastry',
             description: 'Which planets matter most for different types of relationships.',
-            estimatedMinutes: 10,
+            estimatedMinutes: 3,
             content: [
               { type: 'heading', content: 'The Relationship Planets', level: 2 },
               {
@@ -5144,7 +5144,7 @@ export const COURSES: Course[] = [
             id: 'synastry-aspects',
             title: 'Understanding Synastry Aspects',
             description: 'How different aspect types manifest in relationships.',
-            estimatedMinutes: 12,
+            estimatedMinutes: 4,
             content: [
               { type: 'heading', content: 'Aspects Between Charts', level: 2 },
               {
@@ -5202,7 +5202,7 @@ export const COURSES: Course[] = [
             id: 'overlay-meaning',
             title: 'What House Overlays Mean',
             description: 'How planetary overlays activate different life areas.',
-            estimatedMinutes: 10,
+            estimatedMinutes: 3,
             content: [
               { type: 'heading', content: 'Planets in Your Houses', level: 2 },
               {
@@ -5249,7 +5249,7 @@ export const COURSES: Course[] = [
             id: 'venus-mars-houses',
             title: 'Venus & Mars House Overlays',
             description: 'Where attraction and desire show up in charts.',
-            estimatedMinutes: 8,
+            estimatedMinutes: 2,
             content: [
               { type: 'heading', content: 'The Attraction Houses', level: 2 },
               {
@@ -5301,7 +5301,7 @@ export const COURSES: Course[] = [
             id: 'composite-intro',
             title: 'Introduction to Composite Charts',
             description: 'How a relationship has its own birth chart.',
-            estimatedMinutes: 10,
+            estimatedMinutes: 3,
             content: [
               { type: 'heading', content: 'The Relationship\'s Chart', level: 2 },
               {
@@ -5348,7 +5348,7 @@ export const COURSES: Course[] = [
             id: 'reading-composite',
             title: 'Reading a Composite Chart',
             description: 'How to interpret the relationship chart.',
-            estimatedMinutes: 10,
+            estimatedMinutes: 3,
             content: [
               { type: 'heading', content: 'Interpreting the Composite', level: 2 },
               {
@@ -5403,7 +5403,7 @@ export const COURSES: Course[] = [
     title: 'The Twelve Signs in Depth',
     description: 'A comprehensive exploration of each zodiac sign - psychology, motivations, strengths, shadows, and growth paths.',
     difficulty: 'beginner',
-    estimatedMinutes: 150,
+    estimatedMinutes: 40,
     icon: '♈',
     modules: [
       {
@@ -5415,7 +5415,7 @@ export const COURSES: Course[] = [
             id: 'aries-deep',
             title: 'Aries: The Pioneer',
             description: 'Understanding the sign of initiation and courage.',
-            estimatedMinutes: 10,
+            estimatedMinutes: 3,
             content: [
               { type: 'heading', content: 'The Ram\'s Journey', level: 2 },
               {
@@ -5467,7 +5467,7 @@ export const COURSES: Course[] = [
             id: 'leo-deep',
             title: 'Leo: The Sovereign',
             description: 'Understanding the sign of creativity and self-expression.',
-            estimatedMinutes: 10,
+            estimatedMinutes: 3,
             content: [
               { type: 'heading', content: 'The Lion\'s Heart', level: 2 },
               {
@@ -5519,7 +5519,7 @@ export const COURSES: Course[] = [
             id: 'sagittarius-deep',
             title: 'Sagittarius: The Seeker',
             description: 'Understanding the sign of exploration and meaning.',
-            estimatedMinutes: 10,
+            estimatedMinutes: 3,
             content: [
               { type: 'heading', content: 'The Archer\'s Quest', level: 2 },
               {
@@ -5578,7 +5578,7 @@ export const COURSES: Course[] = [
             id: 'taurus-deep',
             title: 'Taurus: The Builder',
             description: 'Understanding the sign of values and stability.',
-            estimatedMinutes: 10,
+            estimatedMinutes: 3,
             content: [
               { type: 'heading', content: 'The Bull\'s Garden', level: 2 },
               {
@@ -5630,7 +5630,7 @@ export const COURSES: Course[] = [
             id: 'virgo-deep',
             title: 'Virgo: The Analyst',
             description: 'Understanding the sign of service and improvement.',
-            estimatedMinutes: 10,
+            estimatedMinutes: 3,
             content: [
               { type: 'heading', content: 'The Maiden\'s Craft', level: 2 },
               {
@@ -5682,7 +5682,7 @@ export const COURSES: Course[] = [
             id: 'capricorn-deep',
             title: 'Capricorn: The Achiever',
             description: 'Understanding the sign of ambition and mastery.',
-            estimatedMinutes: 10,
+            estimatedMinutes: 3,
             content: [
               { type: 'heading', content: 'The Mountain Climber', level: 2 },
               {
@@ -5741,7 +5741,7 @@ export const COURSES: Course[] = [
             id: 'gemini-deep',
             title: 'Gemini: The Messenger',
             description: 'Understanding the sign of communication and curiosity.',
-            estimatedMinutes: 10,
+            estimatedMinutes: 3,
             content: [
               { type: 'heading', content: 'The Twins\' Dance', level: 2 },
               {
@@ -5793,7 +5793,7 @@ export const COURSES: Course[] = [
             id: 'libra-deep',
             title: 'Libra: The Harmonizer',
             description: 'Understanding the sign of balance and relationships.',
-            estimatedMinutes: 10,
+            estimatedMinutes: 3,
             content: [
               { type: 'heading', content: 'The Scales of Balance', level: 2 },
               {
@@ -5845,7 +5845,7 @@ export const COURSES: Course[] = [
             id: 'aquarius-deep',
             title: 'Aquarius: The Visionary',
             description: 'Understanding the sign of innovation and humanity.',
-            estimatedMinutes: 10,
+            estimatedMinutes: 3,
             content: [
               { type: 'heading', content: 'The Water Bearer\'s Vision', level: 2 },
               {
@@ -5904,7 +5904,7 @@ export const COURSES: Course[] = [
             id: 'cancer-deep',
             title: 'Cancer: The Nurturer',
             description: 'Understanding the sign of emotion and care.',
-            estimatedMinutes: 10,
+            estimatedMinutes: 3,
             content: [
               { type: 'heading', content: 'The Crab\'s Shell', level: 2 },
               {
@@ -5956,7 +5956,7 @@ export const COURSES: Course[] = [
             id: 'scorpio-deep',
             title: 'Scorpio: The Transformer',
             description: 'Understanding the sign of intensity and depth.',
-            estimatedMinutes: 10,
+            estimatedMinutes: 3,
             content: [
               { type: 'heading', content: 'The Scorpion\'s Depths', level: 2 },
               {
@@ -6008,7 +6008,7 @@ export const COURSES: Course[] = [
             id: 'pisces-deep',
             title: 'Pisces: The Mystic',
             description: 'Understanding the sign of spirituality and compassion.',
-            estimatedMinutes: 10,
+            estimatedMinutes: 3,
             content: [
               { type: 'heading', content: 'The Fish\'s Ocean', level: 2 },
               {

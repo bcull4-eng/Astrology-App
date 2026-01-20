@@ -6,7 +6,7 @@
  * how to read for paying clients and teach astrology to others.
  *
  * Price: £49 one-time purchase
- * Duration: 20+ hours of content
+ * Duration: 90 bite-sized lessons (2-4 min each)
  * Certificate: Certified Astrology Practitioner
  */
 
@@ -38,9 +38,10 @@ export const COMPREHENSIVE_COURSE_OUTLINE = {
   subtitle: 'Become a Certified Astrology Practitioner',
   description: 'Master every aspect of astrology in this comprehensive certification program. From fundamental concepts to advanced predictive techniques, learn everything you need to read charts professionally and teach others.',
   price: COURSE_PRICE,
-  estimatedHours: 20,
+  estimatedHours: 4,
   totalLessons: 90,
-  totalModules: 10,
+  lessonFormat: 'Bite-sized lessons (2-4 min each)',
+  totalModules: 12,
   certificate: CERTIFICATE_INFO,
 
   modules: [
@@ -252,13 +253,13 @@ export const TARGET_AUDIENCE = [
 export const COURSE_FEATURES = [
   {
     icon: 'book',
-    title: '72 In-Depth Lessons',
-    description: 'Comprehensive coverage of every astrological topic',
+    title: '90 Bite-Sized Lessons',
+    description: 'Easy to digest lessons covering every astrological topic',
   },
   {
     icon: 'clock',
-    title: '15+ Hours of Content',
-    description: 'Learn at your own pace with lifetime access',
+    title: 'Bite-Sized Lessons',
+    description: 'Each lesson is 2-4 minutes - learn in small steps',
   },
   {
     icon: 'chart',

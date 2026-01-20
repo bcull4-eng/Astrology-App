@@ -38,6 +38,12 @@ export default async function ReportsLayout({
               Reports
             </Link>
             <Link
+              href="/charts"
+              className="text-indigo-200/50 hover:text-white transition-colors text-sm"
+            >
+              Calculators
+            </Link>
+            <Link
               href="/synastry"
               className="text-indigo-200/50 hover:text-white transition-colors text-sm"
             >
@@ -48,6 +54,12 @@ export default async function ReportsLayout({
               className="text-indigo-200/50 hover:text-white transition-colors text-sm"
             >
               AI Astrologist
+            </Link>
+            <Link
+              href="/birth-details"
+              className="text-indigo-200/50 hover:text-white transition-colors text-sm"
+            >
+              Birth Details
             </Link>
             <Link
               href="/settings"

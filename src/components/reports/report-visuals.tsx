@@ -379,3 +379,353 @@ export function ReportSummaryCard({ headline, overview, keyStrengths, growthArea
     </div>
   )
 }
+
+// Planetary Strength Visualization
+interface PlanetaryStrengthProps {
+  data: Record<string, number>
+  title?: string
+}
+
+const planetSymbols: Record<string, string> = {
+  Sun: '☉',
+  Moon: '☽',
+  Mercury: '☿',
+  Venus: '♀',
+  Mars: '♂',
+  Jupiter: '♃',
+  Saturn: '♄',
+  Uranus: '♅',
+  Neptune: '♆',
+  Pluto: '♇',
+}
+
+const planetColors: Record<string, string> = {
+  Sun: 'from-yellow-400 to-orange-500',
+  Moon: 'from-slate-300 to-slate-400',
+  Mercury: 'from-emerald-400 to-teal-500',
+  Venus: 'from-pink-400 to-rose-500',
+  Mars: 'from-red-500 to-red-600',
+  Jupiter: 'from-amber-400 to-yellow-500',
+  Saturn: 'from-slate-500 to-slate-600',
+  Uranus: 'from-cyan-400 to-blue-500',
+  Neptune: 'from-indigo-400 to-purple-500',
+  Pluto: 'from-violet-500 to-purple-600',
+}
+
+export function PlanetaryStrength({ data, title }: PlanetaryStrengthProps) {
+  const sortedPlanets = Object.entries(data).sort((a, b) => b[1] - a[1])
+  const maxValue = Math.max(...Object.values(data))
+
+  return (
+    <div className="bg-slate-800/30 rounded-xl p-5 border border-slate-700/50">
+      {title && (
+        <h4 className="text-white font-medium mb-4 flex items-center gap-2">
+          <span className="text-lg">🪐</span>
+          {title}
+        </h4>
+      )}
+
+      <div className="space-y-3">
+        {sortedPlanets.slice(0, 5).map(([planet, value], index) => {
+          const percentage = Math.round((value / maxValue) * 100)
+          const isTop = index === 0
+
+          return (
+            <div key={planet} className="flex items-center gap-3">
+              <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${planetColors[planet] || 'from-slate-400 to-slate-500'} flex items-center justify-center text-lg text-white shadow-lg flex-shrink-0`}>
+                {planetSymbols[planet] || '?'}
+              </div>
+              <div className="flex-1">
+                <div className="flex items-center justify-between mb-1">
+                  <span className={`text-sm ${isTop ? 'text-white font-medium' : 'text-slate-300'}`}>
+                    {planet}
+                    {isTop && <span className="ml-2 text-xs text-indigo-400">(Dominant)</span>}
+                  </span>
+                  <span className="text-xs text-slate-500">{percentage}%</span>
+                </div>
+                <div className="h-1.5 bg-slate-700 rounded-full overflow-hidden">
+                  <div
+                    className={`h-full ${isTop ? 'bg-indigo-500' : 'bg-slate-500'} rounded-full transition-all duration-500`}
+                    style={{ width: `${percentage}%` }}
+                  />
+                </div>
+              </div>
+            </div>
+          )
+        })}
+      </div>
+
+      <p className="mt-4 text-xs text-slate-500">
+        Your dominant planets have the strongest influence on your personality and life themes.
+      </p>
+    </div>
+  )
+}
+
+// Aspect Grid - shows major planetary aspects
+interface AspectGridProps {
+  aspects: Array<{
+    planet1: string
+    planet2: string
+    type: 'conjunction' | 'opposition' | 'trine' | 'square' | 'sextile'
+    orb: number
+  }>
+  title?: string
+}
+
+const aspectSymbols: Record<string, { symbol: string; color: string; meaning: string }> = {
+  conjunction: { symbol: '☌', color: 'text-purple-400', meaning: 'Union' },
+  opposition: { symbol: '☍', color: 'text-red-400', meaning: 'Tension' },
+  trine: { symbol: '△', color: 'text-emerald-400', meaning: 'Harmony' },
+  square: { symbol: '□', color: 'text-orange-400', meaning: 'Challenge' },
+  sextile: { symbol: '⚹', color: 'text-cyan-400', meaning: 'Opportunity' },
+}
+
+export function AspectGrid({ aspects, title }: AspectGridProps) {
+  const harmonious = aspects.filter(a => a.type === 'trine' || a.type === 'sextile').length
+  const challenging = aspects.filter(a => a.type === 'square' || a.type === 'opposition').length
+  const totalAspects = aspects.length
+
+  return (
+    <div className="bg-slate-800/30 rounded-xl p-5 border border-slate-700/50">
+      {title && (
+        <h4 className="text-white font-medium mb-4 flex items-center gap-2">
+          <span className="text-lg">✨</span>
+          {title}
+        </h4>
+      )}
+
+      {/* Aspect Balance */}
+      <div className="grid grid-cols-3 gap-3 mb-4">
+        <div className="bg-emerald-500/10 rounded-lg p-3 text-center">
+          <div className="text-2xl font-bold text-emerald-400">{harmonious}</div>
+          <div className="text-xs text-emerald-400/70">Harmonious</div>
+        </div>
+        <div className="bg-orange-500/10 rounded-lg p-3 text-center">
+          <div className="text-2xl font-bold text-orange-400">{challenging}</div>
+          <div className="text-xs text-orange-400/70">Challenging</div>
+        </div>
+        <div className="bg-purple-500/10 rounded-lg p-3 text-center">
+          <div className="text-2xl font-bold text-purple-400">{aspects.filter(a => a.type === 'conjunction').length}</div>
+          <div className="text-xs text-purple-400/70">Conjunctions</div>
+        </div>
+      </div>
+
+      {/* Key Aspects */}
+      <div className="space-y-2">
+        {aspects.slice(0, 5).map((aspect, i) => {
+          const info = aspectSymbols[aspect.type]
+          return (
+            <div key={i} className="flex items-center gap-2 p-2 bg-slate-800/50 rounded-lg">
+              <span className={`text-lg ${info.color}`}>{info.symbol}</span>
+              <span className="text-sm text-slate-300">
+                {aspect.planet1} {info.symbol} {aspect.planet2}
+              </span>
+              <span className="ml-auto text-xs text-slate-500">{info.meaning}</span>
+            </div>
+          )
+        })}
+      </div>
+
+      <p className="mt-3 text-xs text-slate-500">
+        {harmonious > challenging
+          ? 'Your chart has more harmonious aspects, suggesting natural talents and flowing energy.'
+          : 'Your chart has dynamic aspects that drive growth through challenge and transformation.'}
+      </p>
+    </div>
+  )
+}
+
+// Compatibility Meter - for relationship reports
+interface CompatibilityMeterProps {
+  score: number
+  category: string
+  description: string
+}
+
+export function CompatibilityMeter({ score, category, description }: CompatibilityMeterProps) {
+  const getColor = (s: number) => {
+    if (s >= 80) return { bar: 'bg-emerald-500', text: 'text-emerald-400', glow: 'shadow-emerald-500/30' }
+    if (s >= 60) return { bar: 'bg-teal-500', text: 'text-teal-400', glow: 'shadow-teal-500/30' }
+    if (s >= 40) return { bar: 'bg-amber-500', text: 'text-amber-400', glow: 'shadow-amber-500/30' }
+    return { bar: 'bg-orange-500', text: 'text-orange-400', glow: 'shadow-orange-500/30' }
+  }
+
+  const colors = getColor(score)
+
+  return (
+    <div className="bg-slate-800/30 rounded-xl p-5 border border-slate-700/50">
+      <div className="flex items-center justify-between mb-3">
+        <h4 className="text-white font-medium">{category}</h4>
+        <span className={`text-2xl font-bold ${colors.text}`}>{score}%</span>
+      </div>
+
+      <div className="h-3 bg-slate-700 rounded-full overflow-hidden mb-3">
+        <div
+          className={`h-full ${colors.bar} rounded-full transition-all duration-500 ${colors.glow} shadow-lg`}
+          style={{ width: `${score}%` }}
+        />
+      </div>
+
+      <p className="text-sm text-slate-400">{description}</p>
+    </div>
+  )
+}
+
+// Yearly Timeline for forecasts
+interface YearlyTimelineProps {
+  months: Array<{
+    name: string
+    energy: 'high' | 'medium' | 'low' | 'challenging'
+    theme: string
+  }>
+  title?: string
+}
+
+export function YearlyTimeline({ months, title }: YearlyTimelineProps) {
+  const energyColors = {
+    high: { bg: 'bg-emerald-500', dot: 'bg-emerald-400', text: 'text-emerald-400' },
+    medium: { bg: 'bg-teal-500', dot: 'bg-teal-400', text: 'text-teal-400' },
+    low: { bg: 'bg-slate-500', dot: 'bg-slate-400', text: 'text-slate-400' },
+    challenging: { bg: 'bg-orange-500', dot: 'bg-orange-400', text: 'text-orange-400' },
+  }
+
+  return (
+    <div className="bg-slate-800/30 rounded-xl p-5 border border-slate-700/50">
+      {title && (
+        <h4 className="text-white font-medium mb-4 flex items-center gap-2">
+          <span className="text-lg">📅</span>
+          {title}
+        </h4>
+      )}
+
+      <div className="grid grid-cols-4 gap-2">
+        {months.map((month, i) => {
+          const colors = energyColors[month.energy]
+          return (
+            <div
+              key={i}
+              className="p-2 rounded-lg bg-slate-800/50 text-center group relative"
+            >
+              <div className={`w-3 h-3 rounded-full ${colors.dot} mx-auto mb-1`} />
+              <span className="text-xs text-slate-400">{month.name.slice(0, 3)}</span>
+
+              {/* Tooltip on hover */}
+              <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-32 p-2 bg-slate-900 border border-slate-700 rounded-lg shadow-xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10">
+                <p className={`text-xs font-medium ${colors.text}`}>{month.energy.charAt(0).toUpperCase() + month.energy.slice(1)} Energy</p>
+                <p className="text-xs text-slate-400 mt-1">{month.theme}</p>
+              </div>
+            </div>
+          )
+        })}
+      </div>
+
+      <div className="flex items-center justify-center gap-4 mt-4 text-xs">
+        <div className="flex items-center gap-1">
+          <div className="w-2 h-2 rounded-full bg-emerald-400" />
+          <span className="text-slate-500">High</span>
+        </div>
+        <div className="flex items-center gap-1">
+          <div className="w-2 h-2 rounded-full bg-teal-400" />
+          <span className="text-slate-500">Medium</span>
+        </div>
+        <div className="flex items-center gap-1">
+          <div className="w-2 h-2 rounded-full bg-orange-400" />
+          <span className="text-slate-500">Challenging</span>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// Birth Chart Mini Wheel (enhanced)
+interface BirthChartWheelProps {
+  placements: Array<{
+    planet: string
+    sign: string
+    house: number
+    degree: number
+  }>
+}
+
+export function BirthChartWheel({ placements }: BirthChartWheelProps) {
+  const zodiacSigns = ['Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo', 'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces']
+
+  return (
+    <div className="bg-slate-800/30 rounded-xl p-5 border border-slate-700/50">
+      <h4 className="text-white font-medium mb-4 flex items-center gap-2">
+        <span className="text-lg">🎯</span>
+        Birth Chart Overview
+      </h4>
+
+      <div className="relative w-64 h-64 mx-auto">
+        {/* Outer zodiac ring */}
+        <div className="absolute inset-0 rounded-full border-2 border-slate-600">
+          {zodiacSigns.map((sign, i) => {
+            const angle = (i * 30 - 90) * (Math.PI / 180)
+            const x = 50 + 45 * Math.cos(angle)
+            const y = 50 + 45 * Math.sin(angle)
+            return (
+              <div
+                key={sign}
+                className="absolute text-xs text-slate-500"
+                style={{
+                  left: `${x}%`,
+                  top: `${y}%`,
+                  transform: 'translate(-50%, -50%)',
+                }}
+              >
+                {zodiacEmojis[sign]}
+              </div>
+            )
+          })}
+        </div>
+
+        {/* Inner ring */}
+        <div className="absolute inset-8 rounded-full border border-slate-700" />
+
+        {/* Planet placements */}
+        {placements.slice(0, 7).map((placement, i) => {
+          const signIndex = zodiacSigns.findIndex(s => s.toLowerCase() === placement.sign.toLowerCase())
+          const angle = ((signIndex * 30 + placement.degree) - 90) * (Math.PI / 180)
+          const radius = 30 + (i % 2) * 8
+          const x = 50 + radius * Math.cos(angle)
+          const y = 50 + radius * Math.sin(angle)
+
+          return (
+            <div
+              key={placement.planet}
+              className="absolute"
+              style={{
+                left: `${x}%`,
+                top: `${y}%`,
+                transform: 'translate(-50%, -50%)',
+              }}
+            >
+              <div className={`w-6 h-6 rounded-full bg-gradient-to-br ${planetColors[placement.planet.charAt(0).toUpperCase() + placement.planet.slice(1)] || 'from-slate-400 to-slate-500'} flex items-center justify-center text-xs text-white shadow-lg`}>
+                {planetSymbols[placement.planet.charAt(0).toUpperCase() + placement.planet.slice(1)] || '?'}
+              </div>
+            </div>
+          )
+        })}
+
+        {/* Center */}
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="w-16 h-16 rounded-full bg-slate-800 border border-slate-600 flex items-center justify-center">
+            <span className="text-2xl">✦</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Legend */}
+      <div className="mt-4 grid grid-cols-4 gap-2 text-xs">
+        {placements.slice(0, 4).map((p) => (
+          <div key={p.planet} className="flex items-center gap-1 text-slate-400">
+            <span>{planetSymbols[p.planet.charAt(0).toUpperCase() + p.planet.slice(1)]}</span>
+            <span>{p.sign.slice(0, 3)}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}

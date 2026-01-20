@@ -21,7 +21,13 @@ import {
   TermTooltip,
   ReportTip,
   ReportSummaryCard,
+  PlanetaryStrength,
+  AspectGrid,
+  CompatibilityMeter,
+  YearlyTimeline,
+  BirthChartWheel,
 } from '@/components/reports/report-visuals'
+import { AIExplainWrapper, AIExplainBanner } from '@/components/reports/ai-explain'
 
 // Helper to create a demo partner chart from birth data
 // In production, this would call a proper chart calculation API
@@ -383,7 +389,7 @@ export default function ReportViewPage() {
         return <ModalityBalance data={visual.data as Record<string, number>} title={visual.title} />
       case 'chart-wheel':
         return <MiniChartWheel data={visual.data as { sun?: string; moon?: string; rising?: string }} />
-      case 'house-emphasis':
+      case 'house-emphasis': {
         // Convert string keys to number keys for house emphasis
         const houseData: Record<number, number> = {}
         Object.entries(visual.data).forEach(([key, value]) => {
@@ -393,6 +399,17 @@ export default function ReportViewPage() {
           }
         })
         return <HouseEmphasis data={houseData} title={visual.title} />
+      }
+      case 'planetary-strength':
+        return <PlanetaryStrength data={visual.data as Record<string, number>} title={visual.title} />
+      case 'aspect-grid':
+        return <AspectGrid aspects={visual.data as unknown as Array<{ planet1: string; planet2: string; type: 'conjunction' | 'opposition' | 'trine' | 'square' | 'sextile'; orb: number }>} title={visual.title} />
+      case 'compatibility-meter':
+        return <CompatibilityMeter score={(visual.data as unknown as { score: number }).score} category={visual.title} description={(visual.data as unknown as { description: string }).description || ''} />
+      case 'yearly-timeline':
+        return <YearlyTimeline months={visual.data as unknown as Array<{ name: string; energy: 'high' | 'medium' | 'low' | 'challenging'; theme: string }>} title={visual.title} />
+      case 'birth-chart-wheel':
+        return <BirthChartWheel placements={visual.data as unknown as Array<{ planet: string; sign: string; house: number; degree: number }>} />
       default:
         return null
     }
@@ -593,6 +610,9 @@ export default function ReportViewPage() {
         </div>
       </div>
 
+      {/* AI Explain Banner */}
+      <AIExplainBanner />
+
       {/* Summary Card */}
       <ReportSummaryCard
         headline={report.summary.headline}
@@ -702,63 +722,65 @@ export default function ReportViewPage() {
       </div>
 
       {/* Report Content */}
-      <div className="space-y-6 print:space-y-4">
-        {report.sections.map((section, i) => (
-          <div
-            key={section.id}
-            id={section.id}
-            className="bg-slate-800/30 border border-slate-700/50 rounded-2xl overflow-hidden print:break-inside-avoid"
-          >
-            <button
-              onClick={() => toggleSection(section.id)}
-              className="w-full px-6 py-4 flex items-center justify-between text-left hover:bg-slate-800/50 transition-colors print:pointer-events-none"
-            >
-              <div className="flex items-center gap-3">
-                <span className="w-8 h-8 flex items-center justify-center bg-indigo-500/20 text-indigo-400 rounded-lg text-sm font-medium">
-                  {i + 1}
-                </span>
-                {section.icon && <span className="text-xl">{section.icon}</span>}
-                <h2 className="text-lg font-semibold text-white">{section.title}</h2>
-              </div>
-              <svg
-                className={`w-5 h-5 text-slate-400 transition-transform print:hidden ${
-                  expandedSections.has(section.id) ? 'rotate-180' : ''
-                }`}
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-              </svg>
-            </button>
-
+      <AIExplainWrapper reportContext={`${report.title} astrology report for ${report.userName}`}>
+        <div className="space-y-6 print:space-y-4">
+          {report.sections.map((section, i) => (
             <div
-              className={`px-6 pb-6 print:block ${expandedSections.has(section.id) ? 'block' : 'hidden'}`}
+              key={section.id}
+              id={section.id}
+              className="bg-slate-800/30 border border-slate-700/50 rounded-2xl overflow-hidden print:break-inside-avoid"
             >
-              {section.subsections.map((subsection, j) => (
-                <div key={j} className="mb-8 last:mb-0">
-                  {subsection.title && (
-                    <h3 className="text-white font-medium text-lg mb-4 flex items-center gap-2">
-                      <span className="w-1.5 h-1.5 rounded-full bg-indigo-500" />
-                      {subsection.title}
-                    </h3>
-                  )}
-
-                  <div className="prose prose-invert prose-slate max-w-none">
-                    {renderContentWithTerms(subsection.content, subsection.terms)}
-                  </div>
-
-                  {/* Subsection Visual */}
-                  {subsection.visual && <div className="mt-6">{renderVisual(subsection.visual)}</div>}
-
-                  {/* Subsection Tip */}
-                  {subsection.tip && <ReportTip>{subsection.tip}</ReportTip>}
+              <button
+                onClick={() => toggleSection(section.id)}
+                className="w-full px-6 py-4 flex items-center justify-between text-left hover:bg-slate-800/50 transition-colors print:pointer-events-none"
+              >
+                <div className="flex items-center gap-3">
+                  <span className="w-8 h-8 flex items-center justify-center bg-indigo-500/20 text-indigo-400 rounded-lg text-sm font-medium">
+                    {i + 1}
+                  </span>
+                  {section.icon && <span className="text-xl">{section.icon}</span>}
+                  <h2 className="text-lg font-semibold text-white">{section.title}</h2>
                 </div>
-              ))}
+                <svg
+                  className={`w-5 h-5 text-slate-400 transition-transform print:hidden ${
+                    expandedSections.has(section.id) ? 'rotate-180' : ''
+                  }`}
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+
+              <div
+                className={`px-6 pb-6 print:block ${expandedSections.has(section.id) ? 'block' : 'hidden'}`}
+              >
+                {section.subsections.map((subsection, j) => (
+                  <div key={j} className="mb-8 last:mb-0">
+                    {subsection.title && (
+                      <h3 className="text-white font-medium text-lg mb-4 flex items-center gap-2">
+                        <span className="w-1.5 h-1.5 rounded-full bg-indigo-500" />
+                        {subsection.title}
+                      </h3>
+                    )}
+
+                    <div className="prose prose-invert prose-slate max-w-none">
+                      {renderContentWithTerms(subsection.content, subsection.terms)}
+                    </div>
+
+                    {/* Subsection Visual */}
+                    {subsection.visual && <div className="mt-6">{renderVisual(subsection.visual)}</div>}
+
+                    {/* Subsection Tip */}
+                    {subsection.tip && <ReportTip>{subsection.tip}</ReportTip>}
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      </AIExplainWrapper>
 
       {/* Glossary Section (Print Version) */}
       <div className="hidden print:block mt-8 pt-8 border-t border-slate-700">

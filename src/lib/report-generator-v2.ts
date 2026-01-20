@@ -13,9 +13,10 @@ type Sign = 'Aries' | 'Taurus' | 'Gemini' | 'Cancer' | 'Leo' | 'Virgo' |
 
 // Extended report types for visual and interactive content
 export interface ReportVisual {
-  type: 'chart-wheel' | 'element-balance' | 'modality-balance' | 'aspect-grid' | 'house-emphasis' | 'planetary-strength'
+  type: 'chart-wheel' | 'element-balance' | 'modality-balance' | 'aspect-grid' | 'house-emphasis' | 'planetary-strength' | 'compatibility-meter' | 'yearly-timeline' | 'birth-chart-wheel'
   title: string
-  data: Record<string, number | string>
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  data: Record<string, number | string> | any[]
 }
 
 export interface ReportTerm {
@@ -2418,10 +2419,10 @@ This year invites you to focus on ${getYearFocus(sunSign, sunData)}. The planeta
             type: 'element-balance',
             title: 'Your Elemental Energy This Year',
             data: {
-              Fire: sunData.element === 'Fire' ? '35' : signData[moonSign].element === 'Fire' ? '25' : '15',
-              Earth: sunData.element === 'Earth' ? '35' : signData[moonSign].element === 'Earth' ? '25' : '15',
-              Air: sunData.element === 'Air' ? '35' : signData[moonSign].element === 'Air' ? '25' : '15',
-              Water: sunData.element === 'Water' ? '35' : signData[moonSign].element === 'Water' ? '25' : '15',
+              Fire: sunData.element === 'Fire' ? 35 : signData[moonSign].element === 'Fire' ? 25 : 15,
+              Earth: sunData.element === 'Earth' ? 35 : signData[moonSign].element === 'Earth' ? 25 : 15,
+              Air: sunData.element === 'Air' ? 35 : signData[moonSign].element === 'Air' ? 25 : 15,
+              Water: sunData.element === 'Water' ? 35 : signData[moonSign].element === 'Water' ? 25 : 15,
             },
           },
           tip: `Save this report and revisit it at the start of each month to see what themes are emerging. The insights become more meaningful as the year unfolds.`,
@@ -2470,9 +2471,9 @@ As a ${sunSign}, your professional superpowers include ${sunData.strengths.slice
             type: 'modality-balance',
             title: 'Your Professional Energy Style',
             data: {
-              Cardinal: sunData.modality === 'Cardinal' ? '45' : '20',
-              Fixed: sunData.modality === 'Fixed' ? '45' : '20',
-              Mutable: sunData.modality === 'Mutable' ? '45' : '20',
+              Cardinal: sunData.modality === 'Cardinal' ? 45 : 20,
+              Fixed: sunData.modality === 'Fixed' ? 45 : 20,
+              Mutable: sunData.modality === 'Mutable' ? 45 : 20,
             },
           },
         },
@@ -5980,10 +5981,10 @@ export function generateFinancialPotentialReportV2(chart: NatalChart, userName: 
             type: 'element-balance',
             title: 'Your Financial Element Balance',
             data: {
-              Fire: sunSign === 'Aries' || sunSign === 'Leo' || sunSign === 'Sagittarius' ? '30' : '10',
-              Earth: venusSign === 'Taurus' || venusSign === 'Virgo' || venusSign === 'Capricorn' ? '35' : '15',
-              Air: marsSign === 'Gemini' || marsSign === 'Libra' || marsSign === 'Aquarius' ? '25' : '10',
-              Water: moonSign === 'Cancer' || moonSign === 'Scorpio' || moonSign === 'Pisces' ? '30' : '15',
+              Fire: sunSign === 'Aries' || sunSign === 'Leo' || sunSign === 'Sagittarius' ? 30 : 10,
+              Earth: venusSign === 'Taurus' || venusSign === 'Virgo' || venusSign === 'Capricorn' ? 35 : 15,
+              Air: marsSign === 'Gemini' || marsSign === 'Libra' || marsSign === 'Aquarius' ? 25 : 10,
+              Water: moonSign === 'Cancer' || moonSign === 'Scorpio' || moonSign === 'Pisces' ? 30 : 15,
             },
           },
         },

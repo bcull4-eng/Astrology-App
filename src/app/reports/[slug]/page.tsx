@@ -87,6 +87,12 @@ export default function ReportDetailPage() {
   const [partnerBirthPlace, setPartnerBirthPlace] = useState('')
   const [showFullSample, setShowFullSample] = useState(false)
   const [activeFaq, setActiveFaq] = useState<number | null>(null)
+  const [isGift, setIsGift] = useState(false)
+  const [giftRecipient, setGiftRecipient] = useState({
+    name: '',
+    email: '',
+    message: '',
+  })
 
   useEffect(() => {
     const foundReport = getReportBySlug(slug)
@@ -127,12 +133,18 @@ export default function ReportDetailPage() {
   ]
 
   const handlePurchase = async () => {
-    if (!hasChart) {
+    // For gifts, we don't need the user's chart - they're buying for someone else
+    if (!isGift && !hasChart) {
       router.push('/birth-details')
       return
     }
 
-    if (report?.requiresPartner && (!partnerName || !partnerBirthDate || !partnerBirthPlace)) {
+    // Check gift recipient details
+    if (isGift && (!giftRecipient.name || !giftRecipient.email)) {
+      return
+    }
+
+    if (!isGift && report?.requiresPartner && (!partnerName || !partnerBirthDate || !partnerBirthPlace)) {
       return
     }
 
@@ -141,7 +153,9 @@ export default function ReportDetailPage() {
     // Store report info for after purchase
     const purchaseData = {
       reportSlug: slug,
-      partnerData: report?.requiresPartner
+      isGift,
+      giftRecipient: isGift ? giftRecipient : null,
+      partnerData: !isGift && report?.requiresPartner
         ? {
             name: partnerName,
             birthDate: partnerBirthDate,
@@ -594,8 +608,8 @@ export default function ReportDetailPage() {
                 </div>
               </div>
 
-              {/* Requirements */}
-              {!hasChart && (
+              {/* Requirements - only show when not in gift mode */}
+              {!hasChart && !isGift && (
                 <div className="bg-amber-500/10 border border-amber-500/30 rounded-xl p-4 mb-4">
                   <div className="flex items-start gap-3">
                     <svg
@@ -621,8 +635,8 @@ export default function ReportDetailPage() {
                 </div>
               )}
 
-              {/* Partner Details Form */}
-              {report.requiresPartner && hasChart && (
+              {/* Partner Details Form - only show when not gifting */}
+              {report.requiresPartner && hasChart && !isGift && (
                 <div className="space-y-3 mb-4">
                   <h3 className="text-white font-medium text-sm">Partner&apos;s birth details</h3>
                   <p className="text-slate-500 text-xs">
@@ -671,17 +685,27 @@ export default function ReportDetailPage() {
                 onClick={handlePurchase}
                 disabled={
                   loading ||
-                  (report.requiresPartner &&
+                  (isGift && (!giftRecipient.name || !giftRecipient.email)) ||
+                  (!isGift && !hasChart) ||
+                  (!isGift && report.requiresPartner &&
                     hasChart &&
                     (!partnerName || !partnerBirthDate || !partnerBirthPlace))
                 }
-                className="w-full py-4 px-4 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold rounded-xl transition-all shadow-lg shadow-indigo-500/25 text-lg"
+                className={`w-full py-4 px-4 ${
+                  isGift
+                    ? 'bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-500 hover:to-rose-500 shadow-pink-500/25'
+                    : 'bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 shadow-indigo-500/25'
+                } disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold rounded-xl transition-all shadow-lg text-lg`}
               >
                 {loading ? (
                   <span className="flex items-center justify-center gap-2">
                     <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                     Processing...
                   </span>
+                ) : isGift ? (
+                  (!giftRecipient.name || !giftRecipient.email)
+                    ? 'Enter recipient details'
+                    : `Gift Report - £${report.price}`
                 ) : !hasChart ? (
                   'Add birth details first'
                 ) : report.price > 0 ? (
@@ -746,18 +770,63 @@ export default function ReportDetailPage() {
               </div>
             </div>
 
-            {/* Gift Option */}
+            {/* Gift Option Toggle */}
             {report.price > 0 && (
               <div className="bg-slate-800/30 border border-slate-700/50 rounded-xl p-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-pink-500/20 flex items-center justify-center">
+                <button
+                  onClick={() => setIsGift(!isGift)}
+                  className="w-full flex items-center gap-3"
+                >
+                  <div className={`w-10 h-10 rounded-xl ${isGift ? 'bg-pink-500/30' : 'bg-pink-500/20'} flex items-center justify-center transition-colors`}>
                     <span className="text-lg">🎁</span>
                   </div>
-                  <div className="flex-1">
+                  <div className="flex-1 text-left">
                     <div className="text-white font-medium text-sm">Gift this report</div>
                     <div className="text-slate-500 text-xs">Perfect for birthdays & special occasions</div>
                   </div>
-                </div>
+                  <div className={`w-12 h-6 rounded-full p-1 transition-colors ${isGift ? 'bg-pink-500' : 'bg-slate-700'}`}>
+                    <div className={`w-4 h-4 rounded-full bg-white transition-transform ${isGift ? 'translate-x-6' : 'translate-x-0'}`} />
+                  </div>
+                </button>
+
+                {/* Gift Recipient Form */}
+                {isGift && (
+                  <div className="mt-4 pt-4 border-t border-slate-700/50 space-y-3">
+                    <div>
+                      <label className="block text-slate-400 text-xs mb-1">Recipient&apos;s name *</label>
+                      <input
+                        type="text"
+                        value={giftRecipient.name}
+                        onChange={(e) => setGiftRecipient({ ...giftRecipient, name: e.target.value })}
+                        placeholder="Their name"
+                        className="w-full px-3 py-2 bg-slate-800/50 border border-slate-600 rounded-lg text-white text-sm placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-pink-500"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-slate-400 text-xs mb-1">Recipient&apos;s email *</label>
+                      <input
+                        type="email"
+                        value={giftRecipient.email}
+                        onChange={(e) => setGiftRecipient({ ...giftRecipient, email: e.target.value })}
+                        placeholder="their@email.com"
+                        className="w-full px-3 py-2 bg-slate-800/50 border border-slate-600 rounded-lg text-white text-sm placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-pink-500"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-slate-400 text-xs mb-1">Personal message (optional)</label>
+                      <textarea
+                        value={giftRecipient.message}
+                        onChange={(e) => setGiftRecipient({ ...giftRecipient, message: e.target.value })}
+                        placeholder="Add a personal note..."
+                        rows={2}
+                        className="w-full px-3 py-2 bg-slate-800/50 border border-slate-600 rounded-lg text-white text-sm placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-pink-500 resize-none"
+                      />
+                    </div>
+                    <p className="text-slate-500 text-xs">
+                      They&apos;ll receive an email to create an account and enter their birth details.
+                    </p>
+                  </div>
+                )}
               </div>
             )}
 

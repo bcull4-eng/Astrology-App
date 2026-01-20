@@ -37,6 +37,12 @@ function BundleContent() {
   const [partnerBirthDate, setPartnerBirthDate] = useState('')
   const [partnerBirthTime, setPartnerBirthTime] = useState('')
   const [partnerBirthPlace, setPartnerBirthPlace] = useState('')
+  const [isGift, setIsGift] = useState(false)
+  const [giftRecipient, setGiftRecipient] = useState({
+    name: '',
+    email: '',
+    message: '',
+  })
 
   const isAll6 = bundleType === 'all6'
   const bundlePrice = isAll6 ? ALL_6_PRICE : PICK_3_PRICE
@@ -73,8 +79,14 @@ function BundleContent() {
   }
 
   const handlePurchase = async () => {
-    if (!hasChart) {
+    // For gifts, we don't need the user's chart
+    if (!isGift && !hasChart) {
       router.push('/birth-details')
+      return
+    }
+
+    // Check gift recipient details
+    if (isGift && (!giftRecipient.name || !giftRecipient.email)) {
       return
     }
 
@@ -82,7 +94,7 @@ function BundleContent() {
       return
     }
 
-    if (requiresPartner && (!partnerName || !partnerBirthDate || !partnerBirthPlace)) {
+    if (!isGift && requiresPartner && (!partnerName || !partnerBirthDate || !partnerBirthPlace)) {
       return
     }
 
@@ -92,7 +104,9 @@ function BundleContent() {
     const purchaseData = {
       type: isAll6 ? 'all6-bundle' : 'pick3-bundle',
       reports: isAll6 ? paidReports.map(r => r.slug) : selectedReports,
-      partnerData: requiresPartner ? {
+      isGift,
+      giftRecipient: isGift ? giftRecipient : null,
+      partnerData: !isGift && requiresPartner ? {
         name: partnerName,
         birthDate: partnerBirthDate,
         birthTime: partnerBirthTime,
@@ -129,9 +143,10 @@ function BundleContent() {
     }
   }
 
-  const canPurchase = hasChart &&
+  const canPurchase = (isGift || hasChart) &&
     (isAll6 || selectedReports.length === 3) &&
-    (!requiresPartner || (partnerName && partnerBirthDate && partnerBirthPlace))
+    (!isGift || (giftRecipient.name && giftRecipient.email)) &&
+    (isGift || !requiresPartner || (partnerName && partnerBirthDate && partnerBirthPlace))
 
   return (
     <div className="max-w-3xl mx-auto">
@@ -343,8 +358,8 @@ function BundleContent() {
         </div>
       </div>
 
-      {/* Partner Details (if required) */}
-      {requiresPartner && (
+      {/* Partner Details (if required and not gifting) */}
+      {requiresPartner && !isGift && (
         <div className="bg-indigo-950/30 rounded-xl p-6 mb-8">
           <h3 className="text-white font-semibold mb-2">Partner&apos;s birth details</h3>
           <p className="text-indigo-200/50 text-sm mb-4">
@@ -419,21 +434,85 @@ function BundleContent() {
         </div>
       )}
 
+      {/* Gift Option Toggle */}
+      <div className="bg-indigo-950/30 rounded-xl p-5 mb-6">
+        <button
+          onClick={() => setIsGift(!isGift)}
+          className="w-full flex items-center gap-4"
+        >
+          <div className={`w-12 h-12 rounded-xl ${isGift ? 'bg-pink-500/30' : 'bg-pink-500/20'} flex items-center justify-center transition-colors`}>
+            <span className="text-2xl">🎁</span>
+          </div>
+          <div className="flex-1 text-left">
+            <div className="text-white font-medium">Gift this bundle</div>
+            <div className="text-indigo-200/50 text-sm">Send as a gift to someone special</div>
+          </div>
+          <div className={`w-14 h-7 rounded-full p-1 transition-colors ${isGift ? 'bg-pink-500' : 'bg-indigo-900/50'}`}>
+            <div className={`w-5 h-5 rounded-full bg-white transition-transform ${isGift ? 'translate-x-7' : 'translate-x-0'}`} />
+          </div>
+        </button>
+
+        {/* Gift Recipient Form */}
+        {isGift && (
+          <div className="mt-5 pt-5 border-t border-indigo-500/20 space-y-4">
+            <div>
+              <label className="block text-indigo-200/70 text-sm mb-1">Recipient&apos;s name *</label>
+              <input
+                type="text"
+                value={giftRecipient.name}
+                onChange={(e) => setGiftRecipient({ ...giftRecipient, name: e.target.value })}
+                placeholder="Their name"
+                className="w-full px-4 py-3 bg-indigo-950/50 border border-indigo-500/20 rounded-lg text-white placeholder-indigo-300/40 focus:outline-none focus:ring-2 focus:ring-pink-500"
+              />
+            </div>
+            <div>
+              <label className="block text-indigo-200/70 text-sm mb-1">Recipient&apos;s email *</label>
+              <input
+                type="email"
+                value={giftRecipient.email}
+                onChange={(e) => setGiftRecipient({ ...giftRecipient, email: e.target.value })}
+                placeholder="their@email.com"
+                className="w-full px-4 py-3 bg-indigo-950/50 border border-indigo-500/20 rounded-lg text-white placeholder-indigo-300/40 focus:outline-none focus:ring-2 focus:ring-pink-500"
+              />
+            </div>
+            <div>
+              <label className="block text-indigo-200/70 text-sm mb-1">Personal message (optional)</label>
+              <textarea
+                value={giftRecipient.message}
+                onChange={(e) => setGiftRecipient({ ...giftRecipient, message: e.target.value })}
+                placeholder="Add a personal note to include with the gift..."
+                rows={3}
+                className="w-full px-4 py-3 bg-indigo-950/50 border border-indigo-500/20 rounded-lg text-white placeholder-indigo-300/40 focus:outline-none focus:ring-2 focus:ring-pink-500 resize-none"
+              />
+            </div>
+            <p className="text-indigo-300/40 text-xs">
+              They&apos;ll receive an email with instructions to create an account and enter their birth details to generate their personalized reports.
+            </p>
+          </div>
+        )}
+      </div>
+
       {/* CTA */}
       <button
         onClick={handlePurchase}
         disabled={loading || !canPurchase}
         className={`w-full py-4 px-6 ${
-          isAll6
-            ? 'bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-400 hover:to-indigo-400 shadow-purple-500/20'
-            : 'bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 shadow-amber-500/20'
-        } disabled:opacity-50 disabled:cursor-not-allowed text-${isAll6 ? 'white' : 'black'} font-bold text-lg rounded-xl transition-all shadow-lg`}
+          isGift
+            ? 'bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-400 hover:to-rose-400 shadow-pink-500/20 text-white'
+            : isAll6
+            ? 'bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-400 hover:to-indigo-400 shadow-purple-500/20 text-white'
+            : 'bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 shadow-amber-500/20 text-black'
+        } disabled:opacity-50 disabled:cursor-not-allowed font-bold text-lg rounded-xl transition-all shadow-lg`}
       >
         {loading ? (
           <span className="flex items-center justify-center gap-2">
-            <div className={`w-5 h-5 border-2 ${isAll6 ? 'border-white/30 border-t-white' : 'border-black/30 border-t-black'} rounded-full animate-spin`} />
+            <div className={`w-5 h-5 border-2 ${isGift || isAll6 ? 'border-white/30 border-t-white' : 'border-black/30 border-t-black'} rounded-full animate-spin`} />
             Processing...
           </span>
+        ) : isGift ? (
+          (!giftRecipient.name || !giftRecipient.email)
+            ? 'Enter recipient details'
+            : `Gift ${isAll6 ? 'All 6' : '3'} Reports - £${bundlePrice}`
         ) : !hasChart ? (
           'Add birth details first'
         ) : !isAll6 && selectedReports.length < 3 ? (

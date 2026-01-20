@@ -1,14 +1,264 @@
 /**
  * Stripe Webhook Handler
  *
- * Handles: checkout.completed, subscription.created/updated/cancelled, payment.failed
+ * Handles: checkout.session.completed, subscription events, payment events
  */
 
 import { NextRequest, NextResponse } from 'next/server'
+import { headers } from 'next/headers'
+import Stripe from 'stripe'
+import { constructWebhookEvent, stripe } from '@/lib/stripe'
+import { createClient } from '@supabase/supabase-js'
+
+// Use service role client for database operations (bypasses RLS)
+const supabaseAdmin = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.SUPABASE_SERVICE_ROLE_KEY!
+)
 
 export async function POST(request: NextRequest) {
-  // Implementation pending
-  // Will use PaymentProvider.handleWebhookEvent()
+  const body = await request.text()
+  const headersList = await headers()
+  const signature = headersList.get('stripe-signature')
 
-  return NextResponse.json({ received: true })
+  if (!signature) {
+    console.error('Missing stripe-signature header')
+    return NextResponse.json({ error: 'Missing signature' }, { status: 400 })
+  }
+
+  let event: Stripe.Event
+
+  try {
+    event = constructWebhookEvent(body, signature)
+  } catch (err) {
+    console.error('Webhook signature verification failed:', err)
+    return NextResponse.json({ error: 'Invalid signature' }, { status: 400 })
+  }
+
+  try {
+    switch (event.type) {
+      case 'checkout.session.completed':
+        await handleCheckoutCompleted(event.data.object as Stripe.Checkout.Session)
+        break
+
+      case 'customer.subscription.created':
+      case 'customer.subscription.updated':
+        await handleSubscriptionUpdated(event.data.object as Stripe.Subscription)
+        break
+
+      case 'customer.subscription.deleted':
+        await handleSubscriptionDeleted(event.data.object as Stripe.Subscription)
+        break
+
+      case 'invoice.payment_failed':
+        await handlePaymentFailed(event.data.object as Stripe.Invoice)
+        break
+
+      default:
+        console.log(`Unhandled event type: ${event.type}`)
+    }
+
+    return NextResponse.json({ received: true })
+  } catch (error) {
+    console.error('Webhook handler error:', error)
+    return NextResponse.json({ error: 'Webhook handler failed' }, { status: 500 })
+  }
+}
+
+/**
+ * Handle successful checkout
+ */
+async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
+  const userId = session.metadata?.user_id
+  const planType = session.metadata?.plan_type
+  const productType = session.metadata?.product_type
+  const productId = session.metadata?.product_id
+
+  if (!userId) {
+    console.error('No user_id in checkout session metadata')
+    return
+  }
+
+  const customerId = session.customer as string
+
+  if (session.mode === 'subscription') {
+    // Handle subscription checkout
+    const subscriptionId = session.subscription as string
+    const subscription = await stripe.subscriptions.retrieve(subscriptionId) as Stripe.Subscription
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const sub = subscription as any
+
+    await upsertSubscription(userId, customerId, subscription, planType || 'monthly')
+    await updateUserMetadata(userId, 'pro', planType || 'monthly', sub.current_period_end as number)
+  } else if (session.mode === 'payment') {
+    // Handle one-time payment
+    if (planType === 'lifetime') {
+      // Lifetime subscription (one-time payment)
+      await supabaseAdmin.from('subscriptions').upsert({
+        user_id: userId,
+        stripe_customer_id: customerId,
+        stripe_subscription_id: null,
+        stripe_price_id: session.metadata?.price_id || null,
+        plan_type: 'lifetime',
+        status: 'active',
+        current_period_start: new Date().toISOString(),
+        current_period_end: null, // Never expires
+      }, { onConflict: 'user_id' })
+
+      await updateUserMetadata(userId, 'pro', 'lifetime', null)
+    } else if (productType && productId) {
+      // One-time product purchase (report, course)
+      await supabaseAdmin.from('purchases').insert({
+        user_id: userId,
+        stripe_customer_id: customerId,
+        stripe_payment_intent_id: session.payment_intent as string,
+        stripe_checkout_session_id: session.id,
+        product_type: productType,
+        product_id: productId,
+        amount_paid: session.amount_total || 0,
+        currency: session.currency || 'gbp',
+        status: 'completed',
+      })
+
+      // If purchasing course, update metadata
+      if (productId === 'astrology-certification') {
+        await supabaseAdmin.auth.admin.updateUserById(userId, {
+          user_metadata: {
+            course_purchased: true,
+            course_purchased_at: new Date().toISOString(),
+          },
+        })
+      }
+    }
+  }
+
+  console.log(`Checkout completed for user ${userId}`)
+}
+
+/**
+ * Handle subscription updates
+ */
+async function handleSubscriptionUpdated(subscription: Stripe.Subscription) {
+  const userId = subscription.metadata?.user_id
+
+  if (!userId) {
+    console.error('No user_id in subscription metadata')
+    return
+  }
+
+  const customerId = subscription.customer as string
+  const planType = subscription.metadata?.plan_type || 'monthly'
+
+  await upsertSubscription(userId, customerId, subscription, planType)
+
+  // Update user metadata based on subscription status
+  const periodEnd = (subscription as Stripe.Subscription & { current_period_end: number }).current_period_end
+  if (subscription.status === 'active' || subscription.status === 'trialing') {
+    await updateUserMetadata(userId, 'pro', planType, periodEnd)
+  } else if (subscription.status === 'past_due') {
+    await updateUserMetadata(userId, 'pro', planType, periodEnd)
+  }
+
+  console.log(`Subscription updated for user ${userId}: ${subscription.status}`)
+}
+
+/**
+ * Handle subscription cancellation/deletion
+ */
+async function handleSubscriptionDeleted(subscription: Stripe.Subscription) {
+  const userId = subscription.metadata?.user_id
+
+  if (!userId) {
+    console.error('No user_id in subscription metadata')
+    return
+  }
+
+  // Update subscription status in database
+  await supabaseAdmin
+    .from('subscriptions')
+    .update({
+      status: 'canceled',
+      canceled_at: new Date().toISOString(),
+    })
+    .eq('stripe_subscription_id', subscription.id)
+
+  // Update user metadata
+  await supabaseAdmin.auth.admin.updateUserById(userId, {
+    user_metadata: {
+      subscription_status: 'expired',
+    },
+  })
+
+  console.log(`Subscription deleted for user ${userId}`)
+}
+
+/**
+ * Handle payment failure
+ */
+async function handlePaymentFailed(invoice: Stripe.Invoice) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const subscriptionId = (invoice as any).subscription as string
+
+  if (!subscriptionId) return
+
+  const subscription = await stripe.subscriptions.retrieve(subscriptionId) as Stripe.Subscription
+  const userId = subscription.metadata?.user_id
+
+  if (!userId) return
+
+  // Update subscription status
+  await supabaseAdmin
+    .from('subscriptions')
+    .update({ status: 'past_due' })
+    .eq('stripe_subscription_id', subscriptionId)
+
+  console.log(`Payment failed for user ${userId}`)
+}
+
+/**
+ * Upsert subscription record
+ */
+async function upsertSubscription(
+  userId: string,
+  customerId: string,
+  subscription: Stripe.Subscription,
+  planType: string
+) {
+  const priceId = subscription.items.data[0]?.price.id
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const sub = subscription as any
+
+  await supabaseAdmin.from('subscriptions').upsert({
+    user_id: userId,
+    stripe_customer_id: customerId,
+    stripe_subscription_id: subscription.id,
+    stripe_price_id: priceId,
+    plan_type: planType,
+    status: subscription.status === 'active' ? 'active' :
+            subscription.status === 'trialing' ? 'trialing' :
+            subscription.status === 'past_due' ? 'past_due' :
+            subscription.status === 'canceled' ? 'canceled' : 'expired',
+    current_period_start: new Date(sub.current_period_start * 1000).toISOString(),
+    current_period_end: new Date(sub.current_period_end * 1000).toISOString(),
+    cancel_at_period_end: sub.cancel_at_period_end,
+  }, { onConflict: 'user_id' })
+}
+
+/**
+ * Update user metadata with subscription status
+ */
+async function updateUserMetadata(
+  userId: string,
+  status: 'pro' | 'free' | 'expired',
+  planType: string,
+  periodEnd: number | null
+) {
+  await supabaseAdmin.auth.admin.updateUserById(userId, {
+    user_metadata: {
+      subscription_status: status,
+      subscription_plan: planType,
+      subscription_expires_at: periodEnd ? new Date(periodEnd * 1000).toISOString() : null,
+      subscribed_at: new Date().toISOString(),
+    },
+  })
 }

@@ -103,43 +103,33 @@ export default function PaywallPage() {
     setLoading(true)
 
     try {
-      const supabase = createClient()
-
-      // Calculate expiry based on plan
-      const now = new Date()
-      let expiresAt: Date | null = null
-
-      if (selectedPlan === 'monthly') {
-        expiresAt = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000) // 30 days
-      } else if (selectedPlan === 'annual') {
-        expiresAt = new Date(now.getTime() + 365 * 24 * 60 * 60 * 1000) // 1 year
-      }
-      // Lifetime has no expiry (null)
-
-      // Update user metadata with subscription status
-      const { error } = await supabase.auth.updateUser({
-        data: {
-          subscription_status: 'pro',
-          subscription_plan: selectedPlan,
-          subscription_expires_at: expiresAt?.toISOString() || null,
-          subscribed_at: now.toISOString(),
-        }
+      // Create Stripe checkout session
+      const response = await fetch('/api/stripe/checkout', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          planType: selectedPlan,
+        }),
       })
 
-      if (error) {
-        console.error('Failed to update subscription:', error)
-        // Still redirect - we'll handle this better with proper Stripe integration
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to create checkout session')
       }
 
-      // TODO: In production, integrate with Stripe:
-      // 1. Call API to create Stripe checkout session with selected plan
-      // 2. Redirect to Stripe checkout
-      // 3. Handle success/cancel redirects via webhooks
-
-      router.push('/dashboard')
+      // Redirect to Stripe checkout
+      if (data.url) {
+        window.location.href = data.url
+      } else {
+        throw new Error('No checkout URL returned')
+      }
     } catch (error) {
-      console.error('Subscription error:', error)
+      console.error('Checkout error:', error)
       setLoading(false)
+      // Could show error toast here
     }
   }
 

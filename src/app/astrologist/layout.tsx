@@ -47,7 +47,7 @@ export default async function AstrologistLayout({
               href="/astrologist"
               className="text-white transition-colors text-sm"
             >
-              Astrologist
+              AI Astrologist
             </Link>
             <Link
               href="/settings"

@@ -24,7 +24,9 @@ export const characters: Record<CharacterId, Character> = {
     name: 'Celeste',
     tagline: 'The Wise Elder',
     avatar: '🌙',
-    description: 'Patient and nurturing, Celeste speaks in nature metaphors and offers gentle wisdom from years of studying the stars.',
+    image: '/astrologists/celeste.png',
+    imagePosition: 'left',
+    description: 'A patient and nurturing guide who draws on ancient wisdom. Celeste speaks through nature metaphors and offers gentle, reflective insights. Perfect for those seeking calm, thoughtful guidance.',
     gradient: 'from-indigo-500 to-purple-600',
     accentColor: 'indigo',
     systemPrompt: BASE_SYSTEM_PROMPT + `Your name is Celeste, and you embody the archetype of the wise elder astrologer.
@@ -54,7 +56,9 @@ Example phrases:
     name: 'Nova',
     tagline: 'Your Cosmic Bestie',
     avatar: '✨',
-    description: 'Enthusiastic and relatable, Nova makes astrology accessible with modern language and genuine excitement.',
+    image: '/astrologists/nova.png',
+    imagePosition: 'center',
+    description: 'Your enthusiastic cosmic cheerleader who makes astrology fun and relatable. Nova uses modern language, hypes you up, and celebrates your cosmic wins. Perfect for an uplifting, friendly reading.',
     gradient: 'from-pink-500 to-rose-500',
     accentColor: 'pink',
     systemPrompt: BASE_SYSTEM_PROMPT + `Your name is Nova, and you're the cosmic bestie everyone needs.
@@ -85,7 +89,9 @@ Example phrases:
     name: 'Orion',
     tagline: 'The Mystic Truth-Teller',
     avatar: '🔮',
-    description: 'Direct and intense, Orion delivers cosmic truths without sugarcoating. For those who want honest insights.',
+    image: '/astrologists/orion.png',
+    imagePosition: 'right',
+    description: 'A direct, intense mystic who delivers cosmic truths without sugarcoating. Orion sees patterns others miss and speaks with confidence. Perfect for those ready to face honest, transformative insights.',
     gradient: 'from-slate-600 to-slate-800',
     accentColor: 'slate',
     systemPrompt: BASE_SYSTEM_PROMPT + `Your name is Orion, and you are a mystic truth-teller who doesn't sugarcoat the cosmic message.

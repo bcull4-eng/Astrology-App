@@ -43,7 +43,7 @@ export default function AstrologistPage() {
       {viewingChat && selectedCharacter ? (
         <ChatInterface characterId={selectedCharacter} onBack={handleBack} />
       ) : (
-        <div className="flex-1 flex items-center justify-center p-6">
+        <div className="flex-1 overflow-y-auto py-8 px-6">
           <CharacterSelector
             selectedCharacter={selectedCharacter}
             onSelect={handleSelectCharacter}

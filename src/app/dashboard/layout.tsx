@@ -60,7 +60,7 @@ export default async function DashboardLayout({
                 href="/astrologist"
                 className="text-indigo-200/70 hover:text-white transition-colors text-sm"
               >
-                Astrologist
+                AI Astrologist
               </Link>
               <Link
                 href="/birth-details"

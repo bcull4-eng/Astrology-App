@@ -11,6 +11,8 @@ export interface Character {
   name: string
   tagline: string
   avatar: string
+  image: string
+  imagePosition: 'left' | 'center' | 'right'
   description: string
   systemPrompt: string
   gradient: string

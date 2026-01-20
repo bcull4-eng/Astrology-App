@@ -47,7 +47,7 @@ export default async function LearnLayout({
               href="/astrologist"
               className="text-indigo-200/50 hover:text-white transition-colors text-sm"
             >
-              Astrologist
+              AI Astrologist
             </Link>
             <Link
               href="/settings"

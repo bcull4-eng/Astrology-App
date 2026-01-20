@@ -6,6 +6,7 @@
  * Displays a selectable character card for the AI astrologist.
  */
 
+import Image from 'next/image'
 import type { Character } from '@/types'
 
 interface CharacterCardProps {
@@ -19,42 +20,54 @@ export function CharacterCard({ character, isSelected, onSelect }: CharacterCard
     <button
       onClick={onSelect}
       className={`
-        relative w-full text-left p-6 rounded-2xl border-2 transition-all duration-200
-        ${isSelected
-          ? `bg-gradient-to-br ${character.gradient} border-white/30 scale-[1.02] shadow-lg`
-          : 'bg-slate-800/50 border-slate-700 hover:border-slate-600 hover:bg-slate-800/70'
-        }
+        relative w-full text-left transition-all duration-200
+        ${isSelected ? 'scale-[1.01]' : 'hover:scale-[1.005]'}
       `}
     >
-      <div className="flex items-start gap-4">
-        <span className="text-4xl">{character.avatar}</span>
-        <div className="flex-1">
-          <h3 className={`font-semibold text-lg ${isSelected ? 'text-white' : 'text-slate-200'}`}>
-            {character.name}
-          </h3>
-          <p className={`text-sm font-medium ${isSelected ? 'text-white/80' : 'text-slate-400'}`}>
+      <div className={`
+        flex items-stretch overflow-hidden rounded-2xl transition-all
+        ${isSelected
+          ? 'bg-slate-800/80 ring-2 ring-indigo-500/60 shadow-lg shadow-indigo-500/10'
+          : 'bg-slate-800/40 hover:bg-slate-800/60'
+        }
+      `}>
+        {/* Character image */}
+        <div className="relative w-32 h-40 flex-shrink-0">
+          <Image
+            src={character.image}
+            alt={character.name}
+            fill
+            className="object-cover object-top"
+          />
+        </div>
+
+        {/* Content */}
+        <div className="flex-1 p-4 flex flex-col justify-center">
+          <div className="flex items-center gap-2 mb-1">
+            <h3 className="font-bold text-lg text-white">
+              {character.name}
+            </h3>
+            {isSelected && (
+              <div className="w-5 h-5 bg-indigo-500 rounded-full flex items-center justify-center">
+                <svg
+                  className="w-3 h-3 text-white"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                </svg>
+              </div>
+            )}
+          </div>
+          <p className={`text-sm font-medium mb-2 ${isSelected ? 'text-indigo-400' : 'text-indigo-400/70'}`}>
             {character.tagline}
           </p>
-          <p className={`mt-2 text-sm ${isSelected ? 'text-white/70' : 'text-slate-400'}`}>
+          <p className="text-sm text-slate-400 leading-relaxed">
             {character.description}
           </p>
         </div>
       </div>
-
-      {isSelected && (
-        <div className="absolute top-4 right-4">
-          <div className="w-6 h-6 bg-white/20 rounded-full flex items-center justify-center">
-            <svg
-              className="w-4 h-4 text-white"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-            </svg>
-          </div>
-        </div>
-      )}
     </button>
   )
 }

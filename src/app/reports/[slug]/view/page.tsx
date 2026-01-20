@@ -120,8 +120,9 @@ export default function ReportViewPage() {
       notFound()
     }
 
-    // Check for pending report purchase
+    // Check for pending report purchase (single report or bundle)
     const pendingReport = sessionStorage.getItem('pending-report')
+    const pendingBundle = sessionStorage.getItem('pending-bundle')
     const chartData = sessionStorage.getItem('natal-chart')
 
     if (!chartData) {
@@ -146,26 +147,29 @@ export default function ReportViewPage() {
 
         // Handle reports that require partner data
         if (reportDef.requiresPartner) {
-          if (!pendingReport) {
+          // Check both pending-report (single purchase) and pending-bundle (bundle purchase)
+          let partnerData = null
+
+          if (pendingReport) {
+            const parsed = JSON.parse(pendingReport)
+            partnerData = parsed.partnerData
+          } else if (pendingBundle) {
+            const parsed = JSON.parse(pendingBundle)
+            partnerData = parsed.partnerData
+          }
+
+          if (!partnerData || !partnerData.name) {
             // No partner data provided - redirect back to purchase page
             console.error('Partner report requested but no partner data found')
             router.push(`/reports/${slug}`)
             return
           }
 
-          const { partnerData } = JSON.parse(pendingReport)
-
-          if (!partnerData || !partnerData.name) {
-            console.error('Partner data incomplete')
-            router.push(`/reports/${slug}`)
-            return
-          }
-
           // Create partner chart based on their birth date (demo implementation)
           // In production, this would be calculated from actual birth data
-          const partnerChart: NatalChart = createPartnerChart(partnerData)
+          const partnerChart: NatalChart = createPartnerChart(partnerData as { name: string; birthDate: string; birthTime?: string; birthPlace: string })
 
-          generatedReport = generateReportV2(slug, chart, userName, partnerChart, partnerData.name)
+          generatedReport = generateReportV2(slug, chart, userName, partnerChart, partnerData.name as string)
         } else {
           generatedReport = generateReportV2(slug, chart, userName)
         }
@@ -174,7 +178,7 @@ export default function ReportViewPage() {
         // Expand all sections by default
         setExpandedSections(new Set(generatedReport.sections.map((s) => s.id)))
 
-        // Clear the pending report
+        // Clear the pending data (don't clear bundle data as user may generate other reports)
         sessionStorage.removeItem('pending-report')
       } catch (error) {
         console.error('Failed to generate report:', error)

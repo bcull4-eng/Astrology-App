@@ -7,7 +7,7 @@
  * Includes bundle option and gift feature.
  */
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { reportsList } from '@/lib/reports'
 import { ReportIcon, ConstellationIcon, StarIcon, ZodiacWheelIcon } from '@/components/ui/astrology-icons'
@@ -24,6 +24,20 @@ const ALL_6_ORIGINAL = 174 // £29 x 6
 // Filter out free reports for bundle calculations
 const paidReports = reportsList.filter(r => r.price > 0)
 
+interface PurchaseData {
+  purchases: Array<{
+    id: string
+    product_type: string
+    product_id: string
+    created_at: string
+  }>
+  reportCredits: number
+  subscription: {
+    plan_type: string
+    status: string
+  } | null
+}
+
 export default function ReportsPage() {
   const [showGiftModal, setShowGiftModal] = useState(false)
   const [selectedGiftReport, setSelectedGiftReport] = useState<string | null>(null)
@@ -35,6 +49,26 @@ export default function ReportsPage() {
   })
   const [giftSubmitting, setGiftSubmitting] = useState(false)
   const [giftSuccess, setGiftSuccess] = useState(false)
+  const [purchaseData, setPurchaseData] = useState<PurchaseData | null>(null)
+  const [loadingPurchases, setLoadingPurchases] = useState(true)
+
+  // Fetch user's purchases on mount
+  useEffect(() => {
+    async function fetchPurchases() {
+      try {
+        const response = await fetch('/api/user/purchases')
+        if (response.ok) {
+          const data = await response.json()
+          setPurchaseData(data)
+        }
+      } catch (error) {
+        console.error('Error fetching purchases:', error)
+      } finally {
+        setLoadingPurchases(false)
+      }
+    }
+    fetchPurchases()
+  }, [])
 
   const handleGiftClick = (slug: string) => {
     setSelectedGiftReport(slug)
@@ -94,6 +128,48 @@ export default function ReportsPage() {
           <StatsBar variant="minimal" />
         </div>
       </div>
+
+      {/* My Reports Section - Shows if user has report credits */}
+      {!loadingPurchases && purchaseData && purchaseData.reportCredits > 0 && (
+        <div className="bg-gradient-to-r from-emerald-500/10 via-teal-500/10 to-cyan-500/10 rounded-2xl p-6 mb-8 border border-emerald-500/20">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-12 bg-emerald-500/20 rounded-xl flex items-center justify-center">
+                <svg className="w-6 h-6 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <div>
+                <h2 className="text-lg font-bold text-white">My Reports</h2>
+                <p className="text-emerald-300/70 text-sm">
+                  You have <span className="font-semibold text-emerald-400">{purchaseData.reportCredits} report credit{purchaseData.reportCredits !== 1 ? 's' : ''}</span> available
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <p className="text-indigo-200/60 text-sm mb-4">
+            Click on any report below to generate it using your credits. Your reports will be saved and accessible anytime.
+          </p>
+
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
+            {paidReports.map((report) => (
+              <Link
+                key={report.slug}
+                href={`/reports/${report.slug}/view`}
+                className="flex flex-col items-center gap-2 p-3 bg-indigo-950/50 hover:bg-indigo-900/50 rounded-xl transition-colors group"
+              >
+                <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${report.gradient} flex items-center justify-center`}>
+                  <ReportIcon type={report.slug} size={20} className="text-white" />
+                </div>
+                <span className="text-xs text-center text-indigo-200/70 group-hover:text-white transition-colors">
+                  {report.title.replace(' Report', '')}
+                </span>
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Bundle Offers */}
       <div className="grid md:grid-cols-2 gap-4 mb-8">

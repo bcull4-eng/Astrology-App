@@ -8,7 +8,7 @@
  * - All 6: User gets all 6 reports for £89
  */
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { reportsList } from '@/lib/reports'
@@ -25,7 +25,7 @@ const ALL_6_ORIGINAL = 174 // £29 x 6
 // Filter out free reports (like monthly forecast)
 const paidReports = reportsList.filter(r => r.price > 0)
 
-export default function BundlePage() {
+function BundleContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const bundleType = searchParams.get('type') || 'pick3'
@@ -88,14 +88,10 @@ export default function BundlePage() {
 
     setLoading(true)
 
-    // TODO: Implement Stripe checkout
-    await new Promise((resolve) => setTimeout(resolve, 1500))
-
-    // Store bundle purchase info
+    // Store bundle info for after purchase
     const purchaseData = {
       type: isAll6 ? 'all6-bundle' : 'pick3-bundle',
       reports: isAll6 ? paidReports.map(r => r.slug) : selectedReports,
-      purchasedAt: new Date().toISOString(),
       partnerData: requiresPartner ? {
         name: partnerName,
         birthDate: partnerBirthDate,
@@ -105,17 +101,32 @@ export default function BundlePage() {
     }
     sessionStorage.setItem('pending-bundle', JSON.stringify(purchaseData))
 
-    // Redirect to first report
-    const firstReport = isAll6 ? paidReports[0].slug : selectedReports[0]
-    sessionStorage.setItem(
-      'pending-report',
-      JSON.stringify({
-        reportSlug: firstReport,
-        purchasedAt: new Date().toISOString(),
-        partnerData: purchaseData.partnerData,
+    try {
+      // Create Stripe checkout session
+      const response = await fetch('/api/stripe/checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          productType: isAll6 ? 'report_bundle_6' : 'report_bundle_3',
+          productId: isAll6 ? 'report-bundle-6' : 'report-bundle-3',
+        }),
       })
-    )
-    router.push(`/reports/${firstReport}/view`)
+
+      const data = await response.json()
+
+      if (data.error) {
+        console.error('Checkout error:', data.error)
+        setLoading(false)
+        return
+      }
+
+      if (data.url) {
+        window.location.href = data.url
+      }
+    } catch (error) {
+      console.error('Checkout error:', error)
+      setLoading(false)
+    }
   }
 
   const canPurchase = hasChart &&
@@ -477,5 +488,21 @@ export default function BundlePage() {
         </div>
       </div>
     </div>
+  )
+}
+
+function BundleLoading() {
+  return (
+    <div className="max-w-3xl mx-auto flex items-center justify-center py-12">
+      <div className="w-8 h-8 border-2 border-indigo-500 border-t-transparent rounded-full animate-spin" />
+    </div>
+  )
+}
+
+export default function BundlePage() {
+  return (
+    <Suspense fallback={<BundleLoading />}>
+      <BundleContent />
+    </Suspense>
   )
 }

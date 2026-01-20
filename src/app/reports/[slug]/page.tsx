@@ -138,14 +138,9 @@ export default function ReportDetailPage() {
 
     setLoading(true)
 
-    // TODO: Implement Stripe checkout
-    // For now, simulate purchase and redirect to generated report
-    await new Promise((resolve) => setTimeout(resolve, 1500))
-
-    // Store the purchase info for report generation
+    // Store report info for after purchase
     const purchaseData = {
       reportSlug: slug,
-      purchasedAt: new Date().toISOString(),
       partnerData: report?.requiresPartner
         ? {
             name: partnerName,
@@ -157,7 +152,38 @@ export default function ReportDetailPage() {
     }
     sessionStorage.setItem('pending-report', JSON.stringify(purchaseData))
 
-    router.push(`/reports/${slug}/view`)
+    // Free reports go directly to view
+    if (report?.price === 0) {
+      router.push(`/reports/${slug}/view`)
+      return
+    }
+
+    try {
+      // Create Stripe checkout session for single report
+      const response = await fetch('/api/stripe/checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          productType: 'report',
+          productId: 'single-report',
+        }),
+      })
+
+      const data = await response.json()
+
+      if (data.error) {
+        console.error('Checkout error:', data.error)
+        setLoading(false)
+        return
+      }
+
+      if (data.url) {
+        window.location.href = data.url
+      }
+    } catch (error) {
+      console.error('Checkout error:', error)
+      setLoading(false)
+    }
   }
 
   if (!report) {

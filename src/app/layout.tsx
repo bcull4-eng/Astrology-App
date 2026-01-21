@@ -15,7 +15,7 @@ const fraunces = Fraunces({
 });
 
 export const metadata: Metadata = {
-  title: "Astro - Your Cosmic Blueprint",
+  title: "Orbli - Your Cosmic Blueprint",
   description: "Personalized astrology insights based on your natal chart",
 };
 

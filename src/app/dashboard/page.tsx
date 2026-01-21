@@ -17,6 +17,7 @@ import {
   MonthlyForecastLocked,
   DailyInsights,
   WeeklyForecast,
+  MonthlyForecast,
 } from '@/components/dashboard'
 import { useSubscription } from '@/hooks/use-subscription'
 import { generateDailyHoroscope } from '@/lib/daily-horoscope'
@@ -157,8 +158,12 @@ export default function DashboardPage() {
         <WeeklyForecastLocked />
       )}
 
-      {/* Monthly Forecast (PREMIUM - Locked for now, uses report system) */}
-      <MonthlyForecastLocked />
+      {/* Monthly Forecast */}
+      {isPro && natalChart ? (
+        <MonthlyForecast chart={natalChart} />
+      ) : (
+        <MonthlyForecastLocked />
+      )}
 
       {/* Upgrade CTA - only show for non-pro users */}
       {!isPro && (

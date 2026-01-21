@@ -7,10 +7,11 @@
  * Collects partner's birth data for relationship analysis.
  */
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import type { BirthTimeConfidence } from '@/types'
+import { useSubscription } from '@/hooks/use-subscription'
 
 const timeConfidenceOptions: { value: BirthTimeConfidence; label: string }[] = [
   { value: 'exact', label: 'Exact time' },
@@ -319,16 +320,7 @@ function SynastryForm() {
 }
 
 export default function SynastryPage() {
-  const [isPremium, setIsPremium] = useState(false)
-  const [loading, setLoading] = useState(true)
-
-  useEffect(() => {
-    // TODO: Check actual subscription status from API/database
-    // For now, check sessionStorage for demo purposes
-    const subscription = sessionStorage.getItem('user-subscription')
-    setIsPremium(subscription === 'premium' || subscription === 'annual' || subscription === 'lifetime')
-    setLoading(false)
-  }, [])
+  const { isPro, loading } = useSubscription()
 
   if (loading) {
     return (
@@ -339,7 +331,7 @@ export default function SynastryPage() {
   }
 
   // Show locked state for free users
-  if (!isPremium) {
+  if (!isPro) {
     return <SynastryLocked />
   }
 

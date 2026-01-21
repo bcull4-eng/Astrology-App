@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 
 export default function ChartsLayout({
   children,
@@ -12,8 +13,8 @@ export default function ChartsLayout({
         <div className="max-w-6xl mx-auto px-4">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-6">
-              <Link href="/" className="text-xl font-bold text-white">
-                Astrology App
+              <Link href="/" className="flex items-center">
+                <Image src="/logo.jpg" alt="Orbli" width={80} height={28} className="h-7 w-auto" />
               </Link>
               <Link
                 href="/charts"

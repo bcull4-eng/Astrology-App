@@ -37,7 +37,7 @@ export async function POST(request: NextRequest) {
 
     // Send email via Resend
     const { error } = await resend.emails.send({
-      from: 'Astro Support <support@orbli.app>',
+      from: 'Orbli Support <support@orbli.app>',
       to: ['orblingai@gmail.com'],
       replyTo: email,
       subject: `Support Request from ${name}`,

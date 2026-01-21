@@ -9,6 +9,7 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import Image from 'next/image'
 import { createClient } from '@/lib/supabase/client'
 import { useAuth } from '@/hooks'
 import { getReportBySlug } from '@/lib/reports'
@@ -112,8 +113,8 @@ export default function AccountPage() {
       {/* Header */}
       <header className="border-b border-indigo-900/30 bg-[#1a1a2e]/80 backdrop-blur-md">
         <div className="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
-          <Link href="/dashboard" className="text-white font-semibold text-xl">
-            <span className="text-indigo-400">Astro</span>
+          <Link href="/dashboard" className="flex items-center">
+            <Image src="/logo.jpg" alt="Orbli" width={80} height={28} className="h-7 w-auto" />
           </Link>
           <nav className="flex items-center gap-6">
             <Link href="/dashboard" className="text-indigo-200/70 hover:text-white transition-colors text-sm">

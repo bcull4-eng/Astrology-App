@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import { getUser } from '@/lib/auth'
 import { redirect } from 'next/navigation'
 import { TestimonialsSection, StatsBar } from '@/components/social-proof'
@@ -17,7 +18,9 @@ export default async function Home() {
       {/* Header */}
       <header className="fixed top-0 left-0 right-0 z-50 bg-slate-900/80 backdrop-blur-md border-b border-slate-800/50">
         <div className="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
-          <div className="text-white font-semibold text-xl">Astro</div>
+          <div className="flex items-center">
+            <Image src="/logo.jpg" alt="Orbli" width={80} height={28} className="h-7 w-auto" />
+          </div>
           <div className="flex items-center gap-6">
             <Link href="/charts" className="text-slate-400 hover:text-white transition-colors text-sm">
               Free Calculators
@@ -511,7 +514,9 @@ export default async function Home() {
       <footer className="border-t border-slate-800 py-12 px-4">
         <div className="max-w-6xl mx-auto">
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-            <div className="text-white font-semibold text-xl">Astro</div>
+            <div className="flex items-center">
+              <Image src="/logo.jpg" alt="Orbli" width={80} height={28} className="h-7 w-auto" />
+            </div>
             <div className="flex items-center gap-8 text-sm text-slate-400">
               <Link href="/charts" className="hover:text-white transition-colors">Calculators</Link>
               <Link href="/reports" className="hover:text-white transition-colors">Reports</Link>
@@ -520,7 +525,7 @@ export default async function Home() {
             </div>
           </div>
           <div className="mt-8 pt-8 border-t border-slate-800 text-center text-sm text-slate-500">
-            <p>&copy; {new Date().getFullYear()} Astro. All rights reserved.</p>
+            <p>&copy; {new Date().getFullYear()} Orbli. All rights reserved.</p>
           </div>
         </div>
       </footer>

@@ -382,7 +382,7 @@ export function ReportSummaryCard({ headline, overview, keyStrengths, growthArea
 
 // Planetary Strength Visualization
 interface PlanetaryStrengthProps {
-  data: Record<string, number>
+  data: Record<string, number | string>
   title?: string
 }
 
@@ -413,8 +413,33 @@ const planetColors: Record<string, string> = {
 }
 
 export function PlanetaryStrength({ data, title }: PlanetaryStrengthProps) {
-  const sortedPlanets = Object.entries(data).sort((a, b) => b[1] - a[1])
-  const maxValue = Math.max(...Object.values(data))
+  // Helper to parse value - handles numbers, "75%", and sign names
+  const parseValue = (val: number | string): { numeric: number | null; display: string; isPercentage: boolean } => {
+    if (typeof val === 'number') {
+      return { numeric: val, display: `${Math.round(val)}%`, isPercentage: true }
+    }
+    // Check if it's a percentage string like "75%"
+    const percentMatch = String(val).match(/^(\d+(?:\.\d+)?)\s*%?$/)
+    if (percentMatch) {
+      const num = parseFloat(percentMatch[1])
+      return { numeric: num, display: `${Math.round(num)}%`, isPercentage: true }
+    }
+    // It's a sign name or other label
+    return { numeric: null, display: String(val), isPercentage: false }
+  }
+
+  const entries = Object.entries(data).map(([key, val]) => ({
+    key,
+    ...parseValue(val as number | string),
+  }))
+
+  // Sort by numeric value if available, otherwise keep original order
+  const sortedEntries = entries.some(e => e.numeric !== null)
+    ? [...entries].sort((a, b) => (b.numeric || 0) - (a.numeric || 0))
+    : entries
+
+  const maxValue = Math.max(...entries.filter(e => e.numeric !== null).map(e => e.numeric || 0), 1)
+  const hasPercentages = entries.some(e => e.isPercentage)
 
   return (
     <div className="bg-slate-800/30 rounded-xl p-5 border border-slate-700/50">
@@ -426,27 +451,29 @@ export function PlanetaryStrength({ data, title }: PlanetaryStrengthProps) {
       )}
 
       <div className="space-y-3">
-        {sortedPlanets.slice(0, 5).map(([planet, value], index) => {
-          const percentage = Math.round((value / maxValue) * 100)
-          const isTop = index === 0
+        {sortedEntries.slice(0, 6).map((entry, index) => {
+          const percentage = entry.numeric !== null ? Math.round((entry.numeric / maxValue) * 100) : 100
+          const isTop = index === 0 && hasPercentages
 
           return (
-            <div key={planet} className="flex items-center gap-3">
-              <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${planetColors[planet] || 'from-slate-400 to-slate-500'} flex items-center justify-center text-lg text-white shadow-lg flex-shrink-0`}>
-                {planetSymbols[planet] || '?'}
+            <div key={entry.key} className="flex items-center gap-3">
+              <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${planetColors[entry.key] || 'from-slate-400 to-slate-500'} flex items-center justify-center text-lg text-white shadow-lg flex-shrink-0`}>
+                {planetSymbols[entry.key] || '?'}
               </div>
               <div className="flex-1">
                 <div className="flex items-center justify-between mb-1">
                   <span className={`text-sm ${isTop ? 'text-white font-medium' : 'text-slate-300'}`}>
-                    {planet}
+                    {entry.key}
                     {isTop && <span className="ml-2 text-xs text-indigo-400">(Dominant)</span>}
                   </span>
-                  <span className="text-xs text-slate-500">{percentage}%</span>
+                  <span className={`text-xs ${entry.isPercentage ? 'text-slate-500' : 'text-indigo-400'}`}>
+                    {entry.display}
+                  </span>
                 </div>
                 <div className="h-1.5 bg-slate-700 rounded-full overflow-hidden">
                   <div
                     className={`h-full ${isTop ? 'bg-indigo-500' : 'bg-slate-500'} rounded-full transition-all duration-500`}
-                    style={{ width: `${percentage}%` }}
+                    style={{ width: `${entry.isPercentage ? percentage : 100}%` }}
                   />
                 </div>
               </div>

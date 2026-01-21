@@ -38,6 +38,15 @@ interface PurchaseData {
   } | null
 }
 
+interface GeneratedReport {
+  id: string
+  report_slug: string
+  report_title: string
+  word_count: number
+  partner_name: string | null
+  created_at: string
+}
+
 export default function ReportsPage() {
   const [showGiftModal, setShowGiftModal] = useState(false)
   const [selectedGiftReport, setSelectedGiftReport] = useState<string | null>(null)
@@ -50,24 +59,35 @@ export default function ReportsPage() {
   const [giftSubmitting, setGiftSubmitting] = useState(false)
   const [giftSuccess, setGiftSuccess] = useState(false)
   const [purchaseData, setPurchaseData] = useState<PurchaseData | null>(null)
+  const [generatedReports, setGeneratedReports] = useState<GeneratedReport[]>([])
   const [loadingPurchases, setLoadingPurchases] = useState(true)
 
-  // Fetch user's purchases on mount
+  // Fetch user's purchases and generated reports on mount
   useEffect(() => {
-    async function fetchPurchases() {
+    async function fetchData() {
       try {
-        const response = await fetch('/api/user/purchases')
-        if (response.ok) {
-          const data = await response.json()
+        // Fetch purchases and generated reports in parallel
+        const [purchasesResponse, reportsResponse] = await Promise.all([
+          fetch('/api/user/purchases'),
+          fetch('/api/reports'),
+        ])
+
+        if (purchasesResponse.ok) {
+          const data = await purchasesResponse.json()
           setPurchaseData(data)
         }
+
+        if (reportsResponse.ok) {
+          const data = await reportsResponse.json()
+          setGeneratedReports(data.reports || [])
+        }
       } catch (error) {
-        console.error('Error fetching purchases:', error)
+        console.error('Error fetching data:', error)
       } finally {
         setLoadingPurchases(false)
       }
     }
-    fetchPurchases()
+    fetchData()
   }, [])
 
   const handleGiftClick = (slug: string) => {
@@ -129,47 +149,101 @@ export default function ReportsPage() {
         </div>
       </div>
 
-      {/* My Reports Section - Shows if user has report credits */}
-      {!loadingPurchases && purchaseData && purchaseData.reportCredits > 0 && (
+      {/* My Generated Reports Section - Shows reports user has already generated */}
+      {!loadingPurchases && generatedReports.length > 0 && (
         <div className="bg-gradient-to-r from-emerald-500/10 via-teal-500/10 to-cyan-500/10 rounded-2xl p-6 mb-8 border border-emerald-500/20">
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center gap-3">
-              <div className="w-12 h-12 bg-emerald-500/20 rounded-xl flex items-center justify-center">
-                <svg className="w-6 h-6 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </div>
-              <div>
-                <h2 className="text-lg font-bold text-white">My Reports</h2>
-                <p className="text-emerald-300/70 text-sm">
-                  You have <span className="font-semibold text-emerald-400">{purchaseData.reportCredits} report credit{purchaseData.reportCredits !== 1 ? 's' : ''}</span> available
-                </p>
-              </div>
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-12 h-12 bg-emerald-500/20 rounded-xl flex items-center justify-center">
+              <svg className="w-6 h-6 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <div>
+              <h2 className="text-lg font-bold text-white">Your Generated Reports</h2>
+              <p className="text-emerald-300/70 text-sm">
+                {generatedReports.length} report{generatedReports.length !== 1 ? 's' : ''} ready to view
+              </p>
             </div>
           </div>
 
-          <p className="text-indigo-200/60 text-sm mb-4">
-            Click on any report below to generate it using your credits. Your reports will be saved and accessible anytime.
-          </p>
-
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
-            {paidReports.map((report) => (
-              <Link
-                key={report.slug}
-                href={`/reports/${report.slug}/view`}
-                className="flex flex-col items-center gap-2 p-3 bg-indigo-950/50 hover:bg-indigo-900/50 rounded-xl transition-colors group"
-              >
-                <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${report.gradient} flex items-center justify-center`}>
-                  <ReportIcon type={report.slug} size={20} className="text-white" />
-                </div>
-                <span className="text-xs text-center text-indigo-200/70 group-hover:text-white transition-colors">
-                  {report.title.replace(' Report', '')}
-                </span>
-              </Link>
-            ))}
+            {generatedReports.map((genReport) => {
+              const reportDef = paidReports.find(r => r.slug === genReport.report_slug)
+              if (!reportDef) return null
+              return (
+                <Link
+                  key={genReport.id}
+                  href={`/reports/${genReport.report_slug}/view`}
+                  className="flex flex-col items-center gap-2 p-3 bg-emerald-950/30 hover:bg-emerald-900/30 rounded-xl transition-colors group border border-emerald-500/20"
+                >
+                  <div className="relative">
+                    <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${reportDef.gradient} flex items-center justify-center`}>
+                      <ReportIcon type={reportDef.slug} size={20} className="text-white" />
+                    </div>
+                    <div className="absolute -top-1 -right-1 w-4 h-4 bg-emerald-500 rounded-full flex items-center justify-center">
+                      <svg className="w-2.5 h-2.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                      </svg>
+                    </div>
+                  </div>
+                  <span className="text-xs text-center text-emerald-200/70 group-hover:text-white transition-colors">
+                    {reportDef.title.replace(' Report', '')}
+                  </span>
+                  <span className="text-[10px] text-emerald-400/60">View Report</span>
+                </Link>
+              )
+            })}
           </div>
         </div>
       )}
+
+      {/* Available Credits Section - Shows if user has credits to generate more reports */}
+      {!loadingPurchases && purchaseData && purchaseData.reportCredits > 0 && (() => {
+        const generatedSlugs = generatedReports.map(r => r.report_slug)
+        const availableReports = paidReports.filter(r => !generatedSlugs.includes(r.slug))
+
+        if (availableReports.length === 0) return null
+
+        return (
+          <div className="bg-gradient-to-r from-indigo-500/10 via-purple-500/10 to-pink-500/10 rounded-2xl p-6 mb-8 border border-indigo-500/20">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-12 h-12 bg-indigo-500/20 rounded-xl flex items-center justify-center">
+                <svg className="w-6 h-6 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                </svg>
+              </div>
+              <div>
+                <h2 className="text-lg font-bold text-white">Generate More Reports</h2>
+                <p className="text-indigo-300/70 text-sm">
+                  You have <span className="font-semibold text-indigo-400">{purchaseData.reportCredits} credit{purchaseData.reportCredits !== 1 ? 's' : ''}</span> remaining
+                </p>
+              </div>
+            </div>
+
+            <p className="text-indigo-200/60 text-sm mb-4">
+              Click on any report below to generate it using your credits. Once generated, reports are saved permanently.
+            </p>
+
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
+              {availableReports.map((report) => (
+                <Link
+                  key={report.slug}
+                  href={`/reports/${report.slug}/view`}
+                  className="flex flex-col items-center gap-2 p-3 bg-indigo-950/50 hover:bg-indigo-900/50 rounded-xl transition-colors group"
+                >
+                  <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${report.gradient} flex items-center justify-center`}>
+                    <ReportIcon type={report.slug} size={20} className="text-white" />
+                  </div>
+                  <span className="text-xs text-center text-indigo-200/70 group-hover:text-white transition-colors">
+                    {report.title.replace(' Report', '')}
+                  </span>
+                  <span className="text-[10px] text-indigo-400/60">Generate</span>
+                </Link>
+              ))}
+            </div>
+          </div>
+        )
+      })()}
 
       {/* Bundle Offers */}
       <div className="grid md:grid-cols-2 gap-4 mb-8">

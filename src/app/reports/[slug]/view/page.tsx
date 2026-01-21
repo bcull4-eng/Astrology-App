@@ -142,13 +142,27 @@ export default function ReportViewPage() {
     const userData = sessionStorage.getItem('user-data')
     const userName = userData ? JSON.parse(userData).name || 'You' : 'You'
 
-    // Simulate generation time for better UX (minimum 5 seconds to show steps)
-    const generateReport = async () => {
-      // Wait for animation to complete
-      await new Promise((resolve) => setTimeout(resolve, 5600))
-
-      // Generate the report
+    // First check if report already exists in database
+    const loadOrGenerateReport = async () => {
       try {
+        // Check if report already exists
+        const existingResponse = await fetch(`/api/reports?slug=${slug}`)
+        const existingData = await existingResponse.json()
+
+        if (existingData.report) {
+          // Report exists - load it directly (skip generation animation)
+          console.log('Loading existing report from database')
+          setReport(existingData.report.report_content as GeneratedReportV2)
+          setExpandedSections(new Set((existingData.report.report_content as GeneratedReportV2).sections.map((s: { id: string }) => s.id)))
+          setLoading(false)
+          return
+        }
+
+        // Report doesn't exist - need to generate it
+        // Wait for animation to complete
+        await new Promise((resolve) => setTimeout(resolve, 5600))
+
+        // Generate the report
         let generatedReport: GeneratedReportV2
 
         // Handle reports that require partner data
@@ -180,6 +194,32 @@ export default function ReportViewPage() {
           generatedReport = generateReportV2(slug, chart, userName)
         }
 
+        // Save the generated report to the database
+        try {
+          const saveResponse = await fetch('/api/reports', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              reportSlug: slug,
+              reportTitle: generatedReport.title,
+              reportContent: generatedReport,
+              wordCount: generatedReport.wordCount,
+              partnerName: generatedReport.partnerName || null,
+            }),
+          })
+
+          const saveData = await saveResponse.json()
+          if (saveData.error && saveData.error !== 'Report already exists') {
+            console.error('Failed to save report:', saveData.error)
+            // Continue anyway - report was generated, just not saved
+          } else {
+            console.log('Report saved successfully, remaining credits:', saveData.remainingCredits)
+          }
+        } catch (saveError) {
+          console.error('Error saving report:', saveError)
+          // Continue anyway - report was generated, just not saved
+        }
+
         setReport(generatedReport)
         // Expand all sections by default
         setExpandedSections(new Set(generatedReport.sections.map((s) => s.id)))
@@ -187,14 +227,14 @@ export default function ReportViewPage() {
         // Clear the pending data (don't clear bundle data as user may generate other reports)
         sessionStorage.removeItem('pending-report')
       } catch (error) {
-        console.error('Failed to generate report:', error)
+        console.error('Failed to load/generate report:', error)
         router.push(`/reports/${slug}`)
       } finally {
         setLoading(false)
       }
     }
 
-    generateReport()
+    loadOrGenerateReport()
   }, [slug, router])
 
   const toggleSection = (sectionId: string) => {

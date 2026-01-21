@@ -44,25 +44,9 @@ export async function GET() {
       .eq('user_id', user.id)
       .single()
 
-    // Determine purchased report slugs
-    const purchasedReports: string[] = []
-    let reportCredits = 0
-
-    for (const purchase of purchases || []) {
-      if (purchase.product_type === 'report') {
-        // Single report - the specific report slug should be stored
-        // For now, we track that they bought a single report credit
-        reportCredits += 1
-      } else if (purchase.product_type === 'report_bundle_3') {
-        reportCredits += 3
-      } else if (purchase.product_type === 'report_bundle_6') {
-        reportCredits += 6
-      }
-    }
-
-    // Check user metadata for report credits (set by webhook)
-    const userCredits = user.user_metadata?.report_credits || 0
-    reportCredits = Math.max(reportCredits, userCredits)
+    // Get remaining credits from user metadata (this is the source of truth)
+    // The webhook sets initial credits, and they're decremented when reports are generated
+    const reportCredits = user.user_metadata?.report_credits ?? 0
 
     return NextResponse.json({
       purchases: purchases || [],

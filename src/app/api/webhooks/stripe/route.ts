@@ -103,6 +103,17 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
 
     await upsertSubscription(userId, customerId, subscription, planType || 'monthly')
     await updateUserMetadata(userId, 'pro', planType || 'monthly', sub.current_period_end as number)
+
+    // Grant free report credits for annual subscription
+    if (planType === 'annual') {
+      console.log('[Stripe Webhook] Granting 2 report credits for annual subscription')
+      await supabaseAdmin.auth.admin.updateUserById(userId, {
+        user_metadata: {
+          report_credits: 2,
+          report_credits_granted_at: new Date().toISOString(),
+        },
+      })
+    }
   } else if (session.mode === 'payment') {
     // Handle one-time payment
     if (planType === 'lifetime') {
@@ -119,6 +130,15 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
       }, { onConflict: 'user_id' })
 
       await updateUserMetadata(userId, 'pro', 'lifetime', null)
+
+      // Grant free report credits for lifetime subscription
+      console.log('[Stripe Webhook] Granting 3 report credits for lifetime subscription')
+      await supabaseAdmin.auth.admin.updateUserById(userId, {
+        user_metadata: {
+          report_credits: 3,
+          report_credits_granted_at: new Date().toISOString(),
+        },
+      })
     } else if (productType && productId) {
       // One-time product purchase (report, course)
       console.log('[Stripe Webhook] Inserting purchase record:', { userId, productType, productId })

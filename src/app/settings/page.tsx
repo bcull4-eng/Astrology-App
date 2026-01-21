@@ -14,7 +14,7 @@ import { useAuth } from '@/hooks'
 import { getReportBySlug } from '@/lib/reports'
 import { ReportIcon } from '@/components/ui/astrology-icons'
 
-type Tab = 'account' | 'reports' | 'subscription' | 'notifications'
+type Tab = 'account' | 'reports' | 'subscription' | 'notifications' | 'support'
 
 interface GeneratedReport {
   id: string
@@ -33,6 +33,10 @@ export default function AccountPage() {
   const [generatedReports, setGeneratedReports] = useState<GeneratedReport[]>([])
   const [reportCredits, setReportCredits] = useState(0)
   const [loadingReports, setLoadingReports] = useState(true)
+  const [supportForm, setSupportForm] = useState({ name: '', email: '', message: '' })
+  const [supportSubmitting, setSupportSubmitting] = useState(false)
+  const [supportSuccess, setSupportSuccess] = useState(false)
+  const [supportError, setSupportError] = useState<string | null>(null)
 
   // Fetch generated reports and credits
   useEffect(() => {
@@ -69,11 +73,38 @@ export default function AccountPage() {
     router.refresh()
   }
 
+  const handleSupportSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setSupportSubmitting(true)
+    setSupportError(null)
+
+    try {
+      const response = await fetch('/api/support', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(supportForm),
+      })
+
+      if (!response.ok) {
+        const data = await response.json()
+        throw new Error(data.error || 'Failed to send message')
+      }
+
+      setSupportSuccess(true)
+      setSupportForm({ name: '', email: '', message: '' })
+    } catch (error) {
+      setSupportError(error instanceof Error ? error.message : 'Failed to send message')
+    } finally {
+      setSupportSubmitting(false)
+    }
+  }
+
   const tabs: { id: Tab; label: string; icon: string }[] = [
     { id: 'account', label: 'Account', icon: 'user' },
     { id: 'reports', label: 'My Reports', icon: 'document' },
     { id: 'subscription', label: 'Subscription', icon: 'card' },
     { id: 'notifications', label: 'Notifications', icon: 'bell' },
+    { id: 'support', label: 'Support', icon: 'support' },
   ]
 
   return (
@@ -351,6 +382,98 @@ export default function AccountPage() {
           </div>
         )}
 
+        {activeTab === 'support' && (
+          <div className="space-y-6">
+            <div className="bg-indigo-950/30 rounded-2xl p-6">
+              <h2 className="text-white font-semibold mb-4">Contact Support</h2>
+              <p className="text-indigo-200/50 text-sm mb-6">
+                Have a question or need help? Send us a message and we&apos;ll get back to you as soon as possible.
+              </p>
+
+              {supportSuccess ? (
+                <div className="bg-green-500/10 border border-green-500/30 rounded-xl p-6 text-center">
+                  <div className="w-12 h-12 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg className="w-6 h-6 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                  </div>
+                  <h3 className="text-white font-medium mb-2">Message Sent!</h3>
+                  <p className="text-green-300/70 text-sm mb-4">
+                    Thank you for reaching out. We&apos;ll get back to you soon.
+                  </p>
+                  <button
+                    onClick={() => setSupportSuccess(false)}
+                    className="text-indigo-400 hover:text-indigo-300 text-sm font-medium transition-colors"
+                  >
+                    Send another message
+                  </button>
+                </div>
+              ) : (
+                <form onSubmit={handleSupportSubmit} className="space-y-4">
+                  <div>
+                    <label htmlFor="support-name" className="block text-indigo-200/70 text-sm mb-2">
+                      Name
+                    </label>
+                    <input
+                      id="support-name"
+                      type="text"
+                      required
+                      value={supportForm.name}
+                      onChange={(e) => setSupportForm({ ...supportForm, name: e.target.value })}
+                      className="w-full px-4 py-3 bg-indigo-950/50 border border-indigo-500/20 rounded-xl text-white placeholder-indigo-300/30 focus:outline-none focus:border-indigo-500/50 transition-colors"
+                      placeholder="Your name"
+                    />
+                  </div>
+
+                  <div>
+                    <label htmlFor="support-email" className="block text-indigo-200/70 text-sm mb-2">
+                      Email Address
+                    </label>
+                    <input
+                      id="support-email"
+                      type="email"
+                      required
+                      value={supportForm.email}
+                      onChange={(e) => setSupportForm({ ...supportForm, email: e.target.value })}
+                      className="w-full px-4 py-3 bg-indigo-950/50 border border-indigo-500/20 rounded-xl text-white placeholder-indigo-300/30 focus:outline-none focus:border-indigo-500/50 transition-colors"
+                      placeholder="your@email.com"
+                    />
+                  </div>
+
+                  <div>
+                    <label htmlFor="support-message" className="block text-indigo-200/70 text-sm mb-2">
+                      Message
+                    </label>
+                    <textarea
+                      id="support-message"
+                      required
+                      rows={5}
+                      value={supportForm.message}
+                      onChange={(e) => setSupportForm({ ...supportForm, message: e.target.value })}
+                      className="w-full px-4 py-3 bg-indigo-950/50 border border-indigo-500/20 rounded-xl text-white placeholder-indigo-300/30 focus:outline-none focus:border-indigo-500/50 transition-colors resize-none"
+                      placeholder="How can we help you?"
+                    />
+                  </div>
+
+                  {supportError && (
+                    <div className="text-red-400 text-sm bg-red-500/10 border border-red-500/30 rounded-lg px-4 py-3">
+                      {supportError}
+                    </div>
+                  )}
+
+                  <button
+                    type="submit"
+                    disabled={supportSubmitting}
+                    className="w-full px-4 py-3 bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed text-white font-medium rounded-xl transition-colors"
+                  >
+                    {supportSubmitting ? 'Sending...' : 'Send Message'}
+                  </button>
+                </form>
+              )}
+            </div>
+          </div>
+        )}
+
         {/* Back link */}
         <div className="mt-8 text-center">
           <Link href="/dashboard" className="text-indigo-200/50 hover:text-white text-sm transition-colors">
@@ -405,6 +528,17 @@ function TabIcon({ icon }: { icon: string }) {
             strokeLinejoin="round"
             strokeWidth={2}
             d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
+          />
+        </svg>
+      )
+    case 'support':
+      return (
+        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
           />
         </svg>
       )

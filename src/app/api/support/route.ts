@@ -37,7 +37,7 @@ export async function POST(request: NextRequest) {
 
     // Send email via Resend
     const { error } = await resend.emails.send({
-      from: 'Astro Support <support@send.orbli.app>',
+      from: 'Astro Support <support@orbli.app>',
       to: ['orblingai@gmail.com'],
       replyTo: email,
       subject: `Support Request from ${name}`,
@@ -52,9 +52,9 @@ export async function POST(request: NextRequest) {
     })
 
     if (error) {
-      console.error('Failed to send support email:', error)
+      console.error('Failed to send support email:', JSON.stringify(error, null, 2))
       return NextResponse.json(
-        { error: 'Failed to send message' },
+        { error: error.message || 'Failed to send message' },
         { status: 500 }
       )
     }

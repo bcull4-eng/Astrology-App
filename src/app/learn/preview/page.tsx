@@ -23,10 +23,12 @@ import {
 export default function CoursePreviewPage() {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
   const [expandedModule, setExpandedModule] = useState<string | null>(null)
 
   const handlePurchase = async () => {
     setLoading(true)
+    setError(null)
 
     try {
       // Create Stripe checkout session
@@ -41,17 +43,23 @@ export default function CoursePreviewPage() {
 
       const data = await response.json()
 
-      if (data.error) {
-        console.error('Checkout error:', data.error)
+      if (!response.ok || data.error) {
+        const errorMsg = data.error || `Request failed with status ${response.status}`
+        console.error('Checkout error:', errorMsg)
+        setError(errorMsg)
         setLoading(false)
         return
       }
 
       if (data.url) {
         window.location.href = data.url
+      } else {
+        setError('No checkout URL returned')
+        setLoading(false)
       }
-    } catch (error) {
-      console.error('Checkout error:', error)
+    } catch (err) {
+      console.error('Checkout error:', err)
+      setError('Failed to start checkout. Please try again.')
       setLoading(false)
     }
   }
@@ -169,6 +177,11 @@ export default function CoursePreviewPage() {
                 'Enroll Now'
               )}
             </button>
+            {error && (
+              <div className="text-red-400 text-sm mt-2 text-center">
+                {error}
+              </div>
+            )}
             <div className="flex items-center justify-center gap-4 text-xs text-indigo-300/50">
               <span>30-day guarantee</span>
               <span>•</span>
@@ -340,6 +353,11 @@ export default function CoursePreviewPage() {
         >
           {loading ? 'Processing...' : `Enroll Now - £${COURSE_PRICE}`}
         </button>
+        {error && (
+          <div className="text-red-400 text-sm mt-2">
+            {error}
+          </div>
+        )}
         <div className="flex items-center justify-center gap-6 mt-6 text-sm text-indigo-300/50">
           <div className="flex items-center gap-2">
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

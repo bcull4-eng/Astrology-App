@@ -7,6 +7,13 @@
 
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
+import { createClient as createAdminClient } from '@supabase/supabase-js'
+
+// Admin client for updating user metadata (bypasses RLS)
+const supabaseAdmin = createAdminClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.SUPABASE_SERVICE_ROLE_KEY!
+)
 
 export async function GET(request: NextRequest) {
   try {
@@ -114,9 +121,9 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Failed to save report' }, { status: 500 })
     }
 
-    // Decrement report credits
-    const { error: updateError } = await supabase.auth.updateUser({
-      data: {
+    // Decrement report credits using admin client
+    const { error: updateError } = await supabaseAdmin.auth.admin.updateUserById(user.id, {
+      user_metadata: {
         report_credits: currentCredits - 1,
       },
     })

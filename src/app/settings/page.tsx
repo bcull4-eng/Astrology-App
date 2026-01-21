@@ -6,30 +6,60 @@
  * User account settings, purchased reports, subscription management, and sign out.
  */
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
 import { useAuth } from '@/hooks'
 import { getReportBySlug } from '@/lib/reports'
+import { ReportIcon } from '@/components/ui/astrology-icons'
 
 type Tab = 'account' | 'reports' | 'subscription' | 'notifications'
 
-// Mock purchased reports - in production this would come from the database
-const mockPurchasedReports = [
-  {
-    id: '1',
-    slug: 'personality-deep-dive',
-    purchasedAt: '2024-01-15T10:30:00Z',
-    generatedAt: '2024-01-15T10:31:00Z',
-  },
-]
+interface GeneratedReport {
+  id: string
+  report_slug: string
+  report_title: string
+  word_count: number
+  partner_name: string | null
+  created_at: string
+}
 
 export default function AccountPage() {
   const router = useRouter()
   const { user } = useAuth()
   const [activeTab, setActiveTab] = useState<Tab>('account')
   const [signingOut, setSigningOut] = useState(false)
+  const [generatedReports, setGeneratedReports] = useState<GeneratedReport[]>([])
+  const [reportCredits, setReportCredits] = useState(0)
+  const [loadingReports, setLoadingReports] = useState(true)
+
+  // Fetch generated reports and credits
+  useEffect(() => {
+    async function fetchReports() {
+      try {
+        const [reportsRes, purchasesRes] = await Promise.all([
+          fetch('/api/reports'),
+          fetch('/api/user/purchases'),
+        ])
+
+        if (reportsRes.ok) {
+          const data = await reportsRes.json()
+          setGeneratedReports(data.reports || [])
+        }
+
+        if (purchasesRes.ok) {
+          const data = await purchasesRes.json()
+          setReportCredits(data.reportCredits || 0)
+        }
+      } catch (error) {
+        console.error('Error fetching reports:', error)
+      } finally {
+        setLoadingReports(false)
+      }
+    }
+    fetchReports()
+  }, [])
 
   const handleSignOut = async () => {
     setSigningOut(true)
@@ -125,9 +155,37 @@ export default function AccountPage() {
 
         {activeTab === 'reports' && (
           <div className="space-y-6">
+            {/* Report Credits */}
+            {reportCredits > 0 && (
+              <div className="bg-gradient-to-r from-indigo-500/10 via-purple-500/10 to-pink-500/10 rounded-2xl p-6 border border-indigo-500/20">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 bg-indigo-500/20 rounded-xl flex items-center justify-center">
+                      <svg className="w-6 h-6 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                      </svg>
+                    </div>
+                    <div>
+                      <h2 className="text-white font-semibold">Report Credits</h2>
+                      <p className="text-indigo-300/70 text-sm">
+                        You have <span className="font-semibold text-indigo-400">{reportCredits} credit{reportCredits !== 1 ? 's' : ''}</span> remaining
+                      </p>
+                    </div>
+                  </div>
+                  <Link
+                    href="/reports"
+                    className="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-medium rounded-lg transition-colors"
+                  >
+                    Generate Report
+                  </Link>
+                </div>
+              </div>
+            )}
+
+            {/* Generated Reports */}
             <div className="bg-indigo-950/30 rounded-2xl p-6">
               <div className="flex items-center justify-between mb-6">
-                <h2 className="text-white font-semibold">Purchased Reports</h2>
+                <h2 className="text-white font-semibold">My Reports</h2>
                 <Link
                   href="/reports"
                   className="text-indigo-400 hover:text-indigo-300 text-sm font-medium transition-colors"
@@ -136,7 +194,11 @@ export default function AccountPage() {
                 </Link>
               </div>
 
-              {mockPurchasedReports.length === 0 ? (
+              {loadingReports ? (
+                <div className="flex items-center justify-center py-12">
+                  <div className="w-8 h-8 border-2 border-indigo-500 border-t-transparent rounded-full animate-spin" />
+                </div>
+              ) : generatedReports.length === 0 ? (
                 <div className="text-center py-12">
                   <div className="w-16 h-16 bg-indigo-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
                     <svg className="w-8 h-8 text-indigo-300/40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -148,46 +210,51 @@ export default function AccountPage() {
                       />
                     </svg>
                   </div>
-                  <h3 className="text-white font-medium mb-2">No reports yet</h3>
+                  <h3 className="text-white font-medium mb-2">No reports generated yet</h3>
                   <p className="text-indigo-200/50 text-sm mb-4">
-                    Purchase a report to get deep insights into your chart
+                    {reportCredits > 0
+                      ? 'Use your credits to generate personalized reports'
+                      : 'Purchase a report bundle to get deep insights into your chart'}
                   </p>
                   <Link
                     href="/reports"
                     className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-medium rounded-lg transition-colors"
                   >
-                    Browse Reports
+                    {reportCredits > 0 ? 'Generate a Report' : 'Browse Reports'}
                   </Link>
                 </div>
               ) : (
                 <div className="space-y-4">
-                  {mockPurchasedReports.map((purchased) => {
-                    const reportDef = getReportBySlug(purchased.slug)
+                  {generatedReports.map((report) => {
+                    const reportDef = getReportBySlug(report.report_slug)
                     if (!reportDef) return null
 
                     return (
                       <div
-                        key={purchased.id}
+                        key={report.id}
                         className="flex items-center gap-4 p-4 bg-indigo-950/40 rounded-xl"
                       >
                         <div
-                          className={`w-12 h-12 rounded-lg bg-gradient-to-br ${reportDef.gradient} flex items-center justify-center text-2xl flex-shrink-0`}
+                          className={`w-12 h-12 rounded-lg bg-gradient-to-br ${reportDef.gradient} flex items-center justify-center flex-shrink-0`}
                         >
-                          {reportDef.icon}
+                          <ReportIcon type={reportDef.slug} size={24} className="text-white" />
                         </div>
                         <div className="flex-1 min-w-0">
-                          <h3 className="text-white font-medium truncate">{reportDef.title}</h3>
+                          <h3 className="text-white font-medium truncate">{report.report_title}</h3>
                           <p className="text-indigo-200/50 text-sm">
-                            Purchased{' '}
-                            {new Date(purchased.purchasedAt).toLocaleDateString('en-US', {
+                            Generated{' '}
+                            {new Date(report.created_at).toLocaleDateString('en-US', {
                               year: 'numeric',
                               month: 'short',
                               day: 'numeric',
                             })}
+                            {report.word_count && (
+                              <span className="ml-2">• {report.word_count.toLocaleString()} words</span>
+                            )}
                           </p>
                         </div>
                         <Link
-                          href={`/reports/${purchased.slug}/view`}
+                          href={`/reports/${report.report_slug}/view`}
                           className="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-medium rounded-lg transition-colors flex-shrink-0"
                         >
                           View Report

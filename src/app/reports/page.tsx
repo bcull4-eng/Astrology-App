@@ -554,7 +554,7 @@ export default function ReportsPage() {
           <div>
             <h3 className="text-white font-semibold mb-1">Have a Lifetime subscription?</h3>
             <p className="text-indigo-200/50 text-sm">
-              Lifetime members get 1 free report included with their subscription.
+              Lifetime members get all 6 reports free with their subscription.
             </p>
           </div>
           <Link

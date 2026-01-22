@@ -131,11 +131,11 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
 
       await updateUserMetadata(userId, 'pro', 'lifetime', null)
 
-      // Grant free report credits for lifetime subscription
-      console.log('[Stripe Webhook] Granting 3 report credits for lifetime subscription')
+      // Grant all 6 reports free for lifetime subscription
+      console.log('[Stripe Webhook] Granting 6 report credits for lifetime subscription')
       await supabaseAdmin.auth.admin.updateUserById(userId, {
         user_metadata: {
-          report_credits: 3,
+          report_credits: 6,
           report_credits_granted_at: new Date().toISOString(),
         },
       })

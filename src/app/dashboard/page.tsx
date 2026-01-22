@@ -306,7 +306,7 @@ export default function DashboardPage() {
                   <svg className="w-4 h-4 text-purple-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                   </svg>
-                  <span className="text-purple-400 font-medium">All 3 reports free (£87 value)</span>
+                  <span className="text-purple-400 font-medium">All 6 reports free (£174 value)</span>
                 </li>
                 <li className="flex items-center gap-2 text-indigo-200/70">
                   <svg className="w-4 h-4 text-purple-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">

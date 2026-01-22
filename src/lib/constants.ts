@@ -24,7 +24,7 @@ export const REPORT_PRICES = {
  */
 export const SUBSCRIPTION_BENEFITS = {
   ANNUAL_FREE_REPORTS: 2, // Annual includes 2 free reports
-  LIFETIME_FREE_REPORTS: 3, // Lifetime includes all 3 reports
+  LIFETIME_FREE_REPORTS: 6, // Lifetime includes all 6 reports
 } as const
 
 /**

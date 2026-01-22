@@ -55,10 +55,10 @@ const plans: { type: PlanType; name: string; price: number; period: string; bill
     billingNote: 'Pay once, yours forever',
     badge: 'Best Value',
     highlight: true,
-    freeReports: 3,
+    freeReports: 6,
     features: [
       'Everything in Annual',
-      'All 3 reports included free',
+      'All 6 reports included free',
       'Lifetime access forever',
       'Early access to new features',
       'Priority support',
@@ -245,8 +245,8 @@ export default function PaywallPage() {
                     />
                   </svg>
                   <span>
-                    {plan.freeReports === 3
-                      ? 'All 3 reports included (£87 value)'
+                    {plan.freeReports === 6
+                      ? 'All 6 reports included (£174 value)'
                       : `${plan.freeReports} free reports included (£58 value)`}
                   </span>
                 </div>

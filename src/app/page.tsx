@@ -20,7 +20,7 @@ export default async function Home() {
       <header className="fixed top-0 left-0 right-0 z-50 bg-slate-900/80 backdrop-blur-md border-b border-slate-800/50">
         <div className="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
           <div className="flex items-center">
-            <Image src="/orbli-logo.png" alt="Orbli" width={288} height={87} style={{ width: '140px', height: 'auto' }} />
+            <Image src="/orbli-logo.png" alt="Orbli" width={288} height={87} style={{ width: '105px', height: 'auto' }} />
           </div>
           <div className="flex items-center gap-6">
             <Link href="/charts" className="text-slate-400 hover:text-white transition-colors text-sm">
@@ -53,7 +53,7 @@ export default async function Home() {
                 alt="Orbli"
                 width={288}
                 height={87}
-                style={{ width: '400px', height: 'auto' }}
+                style={{ width: '300px', height: 'auto' }}
                 priority
               />
             </div>
@@ -513,7 +513,7 @@ export default async function Home() {
         <div className="max-w-6xl mx-auto">
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             <div className="flex items-center">
-              <Image src="/orbli-logo.png" alt="Orbli" width={288} height={87} style={{ width: '120px', height: 'auto' }} />
+              <Image src="/orbli-logo.png" alt="Orbli" width={288} height={87} style={{ width: '90px', height: 'auto' }} />
             </div>
             <div className="flex items-center gap-8 text-sm text-slate-400">
               <Link href="/charts" className="hover:text-white transition-colors">Calculators</Link>

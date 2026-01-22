@@ -102,7 +102,7 @@ export default function DashboardPage() {
               alt="Orbli"
               width={288}
               height={87}
-              style={{ width: '180px', height: 'auto' }}
+              style={{ width: '135px', height: 'auto' }}
             />
           </div>
           <div className="flex-1 text-center md:text-left">

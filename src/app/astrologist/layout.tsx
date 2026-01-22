@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { requireUser } from '@/lib/auth'
+import { createClient } from '@/lib/supabase/server'
 import { StaticStarfield } from '@/components/ui/starfield-background'
 
 export default async function AstrologistLayout({
@@ -8,7 +9,18 @@ export default async function AstrologistLayout({
 }: {
   children: React.ReactNode
 }) {
-  await requireUser()
+  const user = await requireUser()
+
+  let hasBirthData = false
+  try {
+    const supabase = await createClient()
+    const { data } = await supabase
+      .from('user_birth_data')
+      .select('id')
+      .eq('user_id', user.id)
+      .single()
+    hasBirthData = !!data
+  } catch {}
 
   return (
     <div className="min-h-screen bg-[#1a1a2e] relative overflow-hidden">
@@ -17,7 +29,7 @@ export default async function AstrologistLayout({
       <header className="border-b border-indigo-500/10 bg-[#1a1a2e]/80 backdrop-blur-md relative z-10">
         <div className="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
           <Link href="/dashboard" className="flex items-center">
-            <Image src="/orbli-logo.png" alt="Orbli" width={288} height={87} style={{ width: '140px', height: 'auto' }} />
+            <Image src="/orbli-logo.png" alt="Orbli" width={288} height={87} style={{ width: '105px', height: 'auto' }} />
           </Link>
           <nav className="flex items-center gap-6">
             <Link
@@ -62,12 +74,14 @@ export default async function AstrologistLayout({
             >
               Tarot
             </Link>
-            <Link
-              href="/birth-details"
-              className="text-indigo-200/50 hover:text-white transition-colors text-sm"
-            >
-              Birth Details
-            </Link>
+            {!hasBirthData && (
+              <Link
+                href="/birth-details"
+                className="text-amber-400 hover:text-amber-300 transition-colors text-sm font-medium"
+              >
+                Add Birth Details
+              </Link>
+            )}
             <Link
               href="/settings"
               className="text-indigo-200/50 hover:text-white transition-colors text-sm"

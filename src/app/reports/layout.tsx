@@ -26,7 +26,7 @@ export default async function ReportsLayout({
   }
 
   return (
-    <div className="min-h-screen bg-[#1a1a2e] relative overflow-hidden">
+    <div className="min-h-screen bg-[#1a1a2e] relative overflow-x-hidden">
       <StaticStarfield />
       {/* Header */}
       <header className="border-b border-indigo-500/10 bg-[#1a1a2e]/80 backdrop-blur-md relative z-10">
@@ -34,7 +34,7 @@ export default async function ReportsLayout({
           <Link href="/dashboard" className="flex items-center">
             <Image src="/orbli-logo.png" alt="Orbli" width={288} height={87} style={{ width: '105px', height: 'auto' }} />
           </Link>
-          <nav className="flex items-center gap-6 overflow-x-auto scrollbar-hide">
+          <nav className="flex items-center gap-4 overflow-x-auto scrollbar-hide whitespace-nowrap pl-4">
             <Link
               href="/dashboard"
               className="text-indigo-200/50 hover:text-white transition-colors text-sm"

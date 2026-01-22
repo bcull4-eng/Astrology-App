@@ -122,7 +122,7 @@ export async function POST(request: NextRequest) {
         'Authorization': `Bearer ${apiKey}`,
       },
       body: JSON.stringify({
-        model: 'grok-3-fast',
+        model: 'grok-3-fast-latest',
         messages,
         stream: true,
         max_tokens: 512,

@@ -71,13 +71,21 @@ export const useTarotStore = create<TarotState>()(
         const { lastReadingDate, hasUsedDailyReading } = get()
         const today = getTodayDateString()
 
-        // If last reading was on a different day, reset the limit
+        // If last reading was on a different day, they haven't used it today
         if (lastReadingDate !== today) {
-          set({ hasUsedDailyReading: false, lastReadingDate: null })
           return false
         }
 
         return hasUsedDailyReading
+      },
+
+      resetDailyLimitIfNewDay: () => {
+        const { lastReadingDate } = get()
+        const today = getTodayDateString()
+
+        if (lastReadingDate !== today) {
+          set({ hasUsedDailyReading: false, lastReadingDate: null })
+        }
       },
 
       resetReading: () =>

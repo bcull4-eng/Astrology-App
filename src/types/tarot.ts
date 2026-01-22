@@ -67,5 +67,6 @@ export interface TarotState {
   setIsInterpreting: (isInterpreting: boolean) => void
   setDailyReadingUsed: () => void
   checkDailyLimit: () => boolean
+  resetDailyLimitIfNewDay: () => void
   resetReading: () => void
 }

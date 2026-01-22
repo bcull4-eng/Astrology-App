@@ -18,11 +18,13 @@ export default function TarotPage() {
   const { isPro, loading } = useSubscription()
 
   // Test the store import
-  const { checkDailyLimit } = useTarotStore()
+  const { checkDailyLimit, resetDailyLimitIfNewDay } = useTarotStore()
 
   useEffect(() => {
     setMounted(true)
-  }, [])
+    // Reset daily limit if it's a new day (must be in effect, not during render)
+    resetDailyLimitIfNewDay()
+  }, [resetDailyLimitIfNewDay])
 
   const hasUsedDaily = mounted ? checkDailyLimit() : false
 

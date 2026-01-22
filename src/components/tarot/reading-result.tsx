@@ -47,7 +47,7 @@ export function ReadingResult({
       )}
 
       {/* Cards display */}
-      <div className="flex justify-center gap-8 mb-8">
+      <div className="flex justify-start md:justify-center gap-4 md:gap-8 mb-8 overflow-x-auto scrollbar-hide px-4 -mx-4 pb-2">
         {drawnCards.map((drawnCard, index) => {
           const card = getCard(drawnCard.cardId)
           if (!card) return null

@@ -50,7 +50,7 @@ export function TarotCard({
   }, [isRevealed, revealDelay, isFlipped])
 
   return (
-    <div className="flex flex-col items-center gap-2">
+    <div className="flex flex-col items-center gap-2 flex-shrink-0">
       {showPosition && (
         <span className="text-xs text-indigo-300/70 font-medium uppercase tracking-wider">
           {showPosition}

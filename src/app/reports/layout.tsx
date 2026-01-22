@@ -37,57 +37,57 @@ export default async function ReportsLayout({
           <nav className="flex items-center gap-4 overflow-x-auto scrollbar-hide whitespace-nowrap pl-4">
             <Link
               href="/dashboard"
-              className="text-indigo-200/50 hover:text-white transition-colors text-sm"
+              className="text-indigo-200/50 hover:text-white transition-colors text-sm flex-shrink-0"
             >
               Dashboard
             </Link>
             <Link
               href="/learn"
-              className="text-indigo-200/50 hover:text-white transition-colors text-sm"
+              className="text-indigo-200/50 hover:text-white transition-colors text-sm flex-shrink-0"
             >
               Learn
             </Link>
             <Link
               href="/reports"
-              className="text-white transition-colors text-sm font-medium"
+              className="text-white transition-colors text-sm font-medium flex-shrink-0"
             >
               Reports
             </Link>
             <Link
               href="/charts"
-              className="text-indigo-200/50 hover:text-white transition-colors text-sm"
+              className="text-indigo-200/50 hover:text-white transition-colors text-sm flex-shrink-0"
             >
               Calculators
             </Link>
             <Link
               href="/synastry"
-              className="text-indigo-200/50 hover:text-white transition-colors text-sm"
+              className="text-indigo-200/50 hover:text-white transition-colors text-sm flex-shrink-0"
             >
               Synastry
             </Link>
             <Link
               href="/astrologist"
-              className="text-indigo-200/50 hover:text-white transition-colors text-sm"
+              className="text-indigo-200/50 hover:text-white transition-colors text-sm flex-shrink-0"
             >
               AI Astrologist
             </Link>
             <Link
               href="/tarot"
-              className="text-indigo-200/50 hover:text-white transition-colors text-sm"
+              className="text-indigo-200/50 hover:text-white transition-colors text-sm flex-shrink-0"
             >
               Tarot
             </Link>
             {!hasBirthData && (
               <Link
                 href="/birth-details"
-                className="text-amber-400 hover:text-amber-300 transition-colors text-sm font-medium"
+                className="text-amber-400 hover:text-amber-300 transition-colors text-sm font-medium flex-shrink-0"
               >
                 Add Birth Details
               </Link>
             )}
             <Link
               href="/settings"
-              className="text-indigo-200/50 hover:text-white transition-colors text-sm"
+              className="text-indigo-200/50 hover:text-white transition-colors text-sm flex-shrink-0"
             >
               Account
             </Link>

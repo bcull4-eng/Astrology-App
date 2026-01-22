@@ -3,11 +3,10 @@
 /**
  * Deck Spread Component
  *
- * Displays a fanned deck of face-down cards for selection.
- * Users click cards to select them for their reading.
+ * Simple card selection - click the deck to draw a random card.
  */
 
-import { useState, useMemo } from 'react'
+import { useMemo } from 'react'
 import { TAROT_DECK } from '@/lib/tarot/cards'
 
 interface DeckSpreadProps {
@@ -17,107 +16,88 @@ interface DeckSpreadProps {
 }
 
 export function DeckSpread({ cardsToSelect, selectedCardIds, onCardSelect }: DeckSpreadProps) {
-  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
-
-  // Shuffle deck on mount - use memo to keep consistent during component lifecycle
+  // Shuffle deck on mount
   const shuffledDeck = useMemo(() => {
     return [...TAROT_DECK].sort(() => Math.random() - 0.5)
   }, [])
 
   const canSelectMore = selectedCardIds.length < cardsToSelect
+  const remainingCards = cardsToSelect - selectedCardIds.length
 
-  const handleCardClick = (cardId: string) => {
-    if (selectedCardIds.includes(cardId)) return
+  const handleDrawCard = () => {
     if (!canSelectMore) return
+
+    // Find a card that hasn't been selected yet
+    const availableCard = shuffledDeck.find(card => !selectedCardIds.includes(card.id))
+    if (!availableCard) return
 
     // 50% chance of reversal
     const isReversed = Math.random() > 0.5
-    onCardSelect(cardId, isReversed)
+    onCardSelect(availableCard.id, isReversed)
   }
 
   return (
-    <div className="w-full">
+    <div className="w-full flex flex-col items-center">
       {/* Instructions */}
       <div className="text-center mb-8">
         <p className="text-indigo-200/70">
           {canSelectMore
-            ? `Select ${cardsToSelect - selectedCardIds.length} more ${cardsToSelect - selectedCardIds.length === 1 ? 'card' : 'cards'}`
-            : 'All cards selected'}
+            ? `Tap the deck to draw ${remainingCards} ${remainingCards === 1 ? 'card' : 'cards'}`
+            : 'All cards drawn'}
         </p>
       </div>
 
-      {/* Fan of cards */}
-      <div className="relative h-64 flex items-center justify-center">
-        <div className="relative w-full max-w-2xl h-full">
-          {shuffledDeck.map((card, index) => {
-            const isSelected = selectedCardIds.includes(card.id)
-            const totalCards = shuffledDeck.length
-            const middleIndex = totalCards / 2
+      {/* Clickable deck */}
+      <button
+        onClick={handleDrawCard}
+        disabled={!canSelectMore}
+        className={`
+          relative group
+          ${canSelectMore ? 'cursor-pointer hover:scale-105' : 'opacity-50 cursor-not-allowed'}
+          transition-transform duration-200
+        `}
+      >
+        {/* Stacked cards effect */}
+        <div className="absolute top-1 left-1 w-32 h-48 rounded-lg bg-indigo-950 border-2 border-indigo-400/20" />
+        <div className="absolute top-0.5 left-0.5 w-32 h-48 rounded-lg bg-indigo-900 border-2 border-indigo-400/25" />
 
-            // Calculate fan spread angles and positions
-            const angleRange = 60 // Total spread angle in degrees
-            const angle = ((index - middleIndex) / middleIndex) * (angleRange / 2)
-
-            // Calculate vertical offset for arc effect
-            const normalizedPosition = (index - middleIndex) / middleIndex
-            const arcHeight = 30 * (1 - normalizedPosition * normalizedPosition)
-
-            const isHovered = hoveredIndex === index
-
-            return (
-              <div
-                key={card.id}
-                className={`
-                  absolute left-1/2 bottom-0
-                  transition-all duration-200 ease-out
-                  ${isSelected ? 'opacity-30 pointer-events-none' : 'cursor-pointer'}
-                  ${!canSelectMore && !isSelected ? 'pointer-events-none' : ''}
-                `}
-                style={{
-                  transform: `
-                    translateX(-50%)
-                    translateY(${isHovered && !isSelected ? -20 - arcHeight : -arcHeight}px)
-                    rotate(${angle}deg)
-                  `,
-                  transformOrigin: 'bottom center',
-                  zIndex: isHovered ? 100 : index,
-                }}
-                onClick={() => handleCardClick(card.id)}
-                onMouseEnter={() => setHoveredIndex(index)}
-                onMouseLeave={() => setHoveredIndex(null)}
-              >
-                {/* Card back */}
-                <div
-                  className={`
-                    w-16 h-24 rounded-lg overflow-hidden shadow-lg
-                    transition-all duration-200
-                    ${isHovered && !isSelected ? 'shadow-xl shadow-indigo-500/20' : ''}
-                  `}
-                >
-                  <div className="w-full h-full bg-gradient-to-br from-indigo-900 via-purple-900 to-indigo-900 flex items-center justify-center border-2 border-indigo-400/30">
-                    <div className="w-[80%] h-[85%] border border-indigo-400/20 rounded flex items-center justify-center">
-                      <span className="text-xl opacity-40">✦</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )
-          })}
+        {/* Top card */}
+        <div className="relative w-32 h-48 rounded-lg overflow-hidden shadow-xl border-2 border-indigo-400/30 bg-gradient-to-br from-indigo-900 via-purple-900 to-indigo-900">
+          <div className="absolute inset-3 border border-indigo-400/20 rounded flex items-center justify-center">
+            <div className="text-center">
+              <span className="text-4xl opacity-50">✦</span>
+              {canSelectMore && (
+                <p className="text-xs text-indigo-300/50 mt-2">Tap to draw</p>
+              )}
+            </div>
+          </div>
         </div>
-      </div>
+
+        {/* Glow effect on hover */}
+        {canSelectMore && (
+          <div className="absolute inset-0 rounded-lg bg-indigo-500/0 group-hover:bg-indigo-500/10 transition-colors" />
+        )}
+      </button>
 
       {/* Selected cards indicator */}
-      <div className="flex justify-center gap-2 mt-8">
+      <div className="flex justify-center gap-3 mt-8">
         {Array.from({ length: cardsToSelect }).map((_, i) => (
           <div
             key={i}
             className={`
-              w-3 h-3 rounded-full transition-colors
-              ${i < selectedCardIds.length ? 'bg-indigo-500' : 'bg-slate-700'}
+              w-4 h-4 rounded-full transition-all duration-300
+              ${i < selectedCardIds.length
+                ? 'bg-indigo-500 scale-110'
+                : 'bg-slate-700 border border-slate-600'}
             `}
           />
         ))}
       </div>
+
+      {/* Card count */}
+      <p className="text-sm text-slate-500 mt-4">
+        {selectedCardIds.length} of {cardsToSelect} cards drawn
+      </p>
     </div>
   )
 }

@@ -107,6 +107,12 @@ export default async function DashboardLayout({
               >
                 Account
               </Link>
+              <Link
+                href="/paywall"
+                className="text-indigo-200/70 hover:text-white transition-colors text-sm"
+              >
+                Pricing
+              </Link>
             </nav>
           </div>
         </header>

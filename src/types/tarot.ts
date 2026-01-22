@@ -53,8 +53,8 @@ export interface TarotState {
   interpretation: string
   isInterpreting: boolean
 
-  // Daily limit
-  hasUsedDailyReading: boolean
+  // Daily limit - tracks which reading types have been used today
+  usedReadingTypes: ReadingType[]
   lastReadingDate: string | null
 
   // Actions
@@ -65,8 +65,8 @@ export interface TarotState {
   setInterpretation: (interpretation: string) => void
   appendInterpretation: (chunk: string) => void
   setIsInterpreting: (isInterpreting: boolean) => void
-  setDailyReadingUsed: () => void
-  checkDailyLimit: () => boolean
+  markReadingTypeUsed: (type: ReadingType) => void
+  hasUsedReadingType: (type: ReadingType) => boolean
   resetDailyLimitIfNewDay: () => void
   resetReading: () => void
 }

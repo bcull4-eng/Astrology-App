@@ -26,8 +26,8 @@ export const useTarotStore = create<TarotState>()(
       interpretation: '',
       isInterpreting: false,
 
-      // Daily limit
-      hasUsedDailyReading: false,
+      // Daily limit - tracks which reading types have been used today
+      usedReadingTypes: [],
       lastReadingDate: null,
 
       // Actions
@@ -61,22 +61,15 @@ export const useTarotStore = create<TarotState>()(
       setIsInterpreting: (isInterpreting: boolean) =>
         set({ isInterpreting }),
 
-      setDailyReadingUsed: () =>
-        set({
-          hasUsedDailyReading: true,
+      markReadingTypeUsed: (type: ReadingType) =>
+        set((state) => ({
+          usedReadingTypes: [...state.usedReadingTypes, type],
           lastReadingDate: getTodayDateString(),
-        }),
+        })),
 
-      checkDailyLimit: () => {
-        const { lastReadingDate, hasUsedDailyReading } = get()
-        const today = getTodayDateString()
-
-        // If last reading was on a different day, they haven't used it today
-        if (lastReadingDate !== today) {
-          return false
-        }
-
-        return hasUsedDailyReading
+      hasUsedReadingType: (type: ReadingType) => {
+        const { usedReadingTypes } = get()
+        return usedReadingTypes.includes(type)
       },
 
       resetDailyLimitIfNewDay: () => {
@@ -84,7 +77,7 @@ export const useTarotStore = create<TarotState>()(
         const today = getTodayDateString()
 
         if (lastReadingDate !== today) {
-          set({ hasUsedDailyReading: false, lastReadingDate: null })
+          set({ usedReadingTypes: [], lastReadingDate: null })
         }
       },
 
@@ -101,7 +94,7 @@ export const useTarotStore = create<TarotState>()(
     {
       name: 'tarot-storage',
       partialize: (state) => ({
-        hasUsedDailyReading: state.hasUsedDailyReading,
+        usedReadingTypes: state.usedReadingTypes,
         lastReadingDate: state.lastReadingDate,
       }),
     }

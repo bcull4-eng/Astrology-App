@@ -37,80 +37,87 @@ export default async function DashboardLayout({
       <div className="relative z-10">
         {/* Header */}
         <header className="border-b border-indigo-900/30 bg-[#1a1a2e]/80 backdrop-blur-md sticky top-0 z-20">
-          <div className="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
-            <Link href="/dashboard" className="flex items-center flex-shrink-0">
-              <Image src="/orbli-logo.png" alt="Orbli" width={288} height={87} style={{ width: '90px', height: 'auto' }} />
-            </Link>
-            <Link
-              href="/settings"
-              className="text-indigo-200/70 hover:text-white transition-colors text-sm md:hidden"
-            >
-              Account
-            </Link>
+          <div className="max-w-4xl mx-auto px-4 py-3">
+            {/* Desktop: logo and nav inline */}
+            <div className="hidden md:flex items-center gap-6">
+              <Link href="/dashboard" className="flex items-center flex-shrink-0">
+                <Image src="/orbli-logo.png" alt="Orbli" width={288} height={87} style={{ width: '90px', height: 'auto' }} />
+              </Link>
+              <nav className="flex items-center gap-4">
+                <Link href="/dashboard" className="text-indigo-200/70 hover:text-white transition-colors text-sm">
+                  Dashboard
+                </Link>
+                <Link href="/learn" className="text-indigo-200/70 hover:text-white transition-colors text-sm">
+                  Learn <span className="text-emerald-400 text-[10px]">new</span>
+                </Link>
+                <Link href="/reports" className="text-indigo-200/70 hover:text-white transition-colors text-sm">
+                  Reports <span className="text-emerald-400 text-[10px]">new</span>
+                </Link>
+                <Link href="/charts" className="text-indigo-200/70 hover:text-white transition-colors text-sm">
+                  Calculators
+                </Link>
+                <Link href="/synastry" className="text-indigo-200/70 hover:text-white transition-colors text-sm">
+                  Synastry
+                </Link>
+                <Link href="/astrologist" className="text-indigo-200/70 hover:text-white transition-colors text-sm">
+                  AI Astrologist
+                </Link>
+                <Link href="/tarot" className="text-indigo-200/70 hover:text-white transition-colors text-sm">
+                  Tarot <span className="text-emerald-400 text-[10px]">new</span>
+                </Link>
+                {!hasBirthData && (
+                  <Link href="/birth-details" className="text-amber-400 hover:text-amber-300 transition-colors text-sm font-medium">
+                    Add Birth Details
+                  </Link>
+                )}
+                <Link href="/settings" className="text-indigo-200/70 hover:text-white transition-colors text-sm">
+                  Account
+                </Link>
+                <Link href="/paywall" className="text-indigo-200/70 hover:text-white transition-colors text-sm">
+                  Pricing
+                </Link>
+              </nav>
+            </div>
+            {/* Mobile: logo row */}
+            <div className="flex md:hidden items-center justify-between">
+              <Link href="/dashboard" className="flex items-center flex-shrink-0">
+                <Image src="/orbli-logo.png" alt="Orbli" width={288} height={87} style={{ width: '90px', height: 'auto' }} />
+              </Link>
+              <Link href="/settings" className="text-indigo-200/70 hover:text-white transition-colors text-sm">
+                Account
+              </Link>
+            </div>
           </div>
-          {/* Nav - scrollable row */}
-          <div className="overflow-x-auto scrollbar-hide" style={{ WebkitOverflowScrolling: 'touch' }}>
+          {/* Mobile nav - scrollable row */}
+          <div className="md:hidden overflow-x-auto scrollbar-hide" style={{ WebkitOverflowScrolling: 'touch' }}>
             <nav className="flex items-center gap-4 px-4 pb-3 whitespace-nowrap min-w-max">
-              <Link
-                href="/dashboard"
-                className="text-indigo-200/70 hover:text-white transition-colors text-sm"
-              >
+              <Link href="/dashboard" className="text-indigo-200/70 hover:text-white transition-colors text-sm">
                 Dashboard
               </Link>
-              <Link
-                href="/learn"
-                className="text-indigo-200/70 hover:text-white transition-colors text-sm"
-              >
+              <Link href="/learn" className="text-indigo-200/70 hover:text-white transition-colors text-sm">
                 Learn <span className="text-emerald-400 text-[10px]">new</span>
               </Link>
-              <Link
-                href="/reports"
-                className="text-indigo-200/70 hover:text-white transition-colors text-sm"
-              >
+              <Link href="/reports" className="text-indigo-200/70 hover:text-white transition-colors text-sm">
                 Reports <span className="text-emerald-400 text-[10px]">new</span>
               </Link>
-              <Link
-                href="/charts"
-                className="text-indigo-200/70 hover:text-white transition-colors text-sm"
-              >
+              <Link href="/charts" className="text-indigo-200/70 hover:text-white transition-colors text-sm">
                 Calculators
               </Link>
-              <Link
-                href="/synastry"
-                className="text-indigo-200/70 hover:text-white transition-colors text-sm"
-              >
+              <Link href="/synastry" className="text-indigo-200/70 hover:text-white transition-colors text-sm">
                 Synastry
               </Link>
-              <Link
-                href="/astrologist"
-                className="text-indigo-200/70 hover:text-white transition-colors text-sm"
-              >
+              <Link href="/astrologist" className="text-indigo-200/70 hover:text-white transition-colors text-sm">
                 AI Astrologist
               </Link>
-              <Link
-                href="/tarot"
-                className="text-indigo-200/70 hover:text-white transition-colors text-sm"
-              >
+              <Link href="/tarot" className="text-indigo-200/70 hover:text-white transition-colors text-sm">
                 Tarot <span className="text-emerald-400 text-[10px]">new</span>
               </Link>
               {!hasBirthData && (
-                <Link
-                  href="/birth-details"
-                  className="text-amber-400 hover:text-amber-300 transition-colors text-sm font-medium"
-                >
+                <Link href="/birth-details" className="text-amber-400 hover:text-amber-300 transition-colors text-sm font-medium">
                   Add Birth Details
                 </Link>
               )}
-              <Link
-                href="/settings"
-                className="text-indigo-200/70 hover:text-white transition-colors text-sm hidden md:block"
-              >
-                Account
-              </Link>
-              <Link
-                href="/paywall"
-                className="text-indigo-200/70 hover:text-white transition-colors text-sm"
-              >
+              <Link href="/paywall" className="text-indigo-200/70 hover:text-white transition-colors text-sm">
                 Pricing
               </Link>
             </nav>

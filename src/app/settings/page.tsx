@@ -54,6 +54,12 @@ export default function AccountPage() {
   const [supportError, setSupportError] = useState<string | null>(null)
   const [birthData, setBirthData] = useState<BirthData | null>(null)
   const [loadingBirthData, setLoadingBirthData] = useState(true)
+  const [subscription, setSubscription] = useState<{
+    status: string
+    plan: string
+    expiresAt: string | null
+  } | null>(null)
+  const [managingSubscription, setManagingSubscription] = useState(false)
 
   // Fetch generated reports, credits, and birth data
   useEffect(() => {
@@ -78,6 +84,20 @@ export default function AccountPage() {
         if (birthDataRes.ok) {
           const data = await birthDataRes.json()
           setBirthData(data.birthData || null)
+        }
+
+        // Fetch subscription data from user metadata
+        const supabase = createClient()
+        const { data: { user: currentUser } } = await supabase.auth.getUser()
+        if (currentUser?.user_metadata) {
+          const meta = currentUser.user_metadata
+          if (meta.subscription_status) {
+            setSubscription({
+              status: meta.subscription_status || 'free',
+              plan: meta.subscription_plan || 'none',
+              expiresAt: meta.subscription_expires_at || null,
+            })
+          }
         }
       } catch (error) {
         console.error('Error fetching data:', error)
@@ -120,6 +140,29 @@ export default function AccountPage() {
       setSupportError(error instanceof Error ? error.message : 'Failed to send message')
     } finally {
       setSupportSubmitting(false)
+    }
+  }
+
+  const handleManageSubscription = async () => {
+    setManagingSubscription(true)
+    try {
+      const response = await fetch('/api/stripe/portal', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+      })
+
+      if (response.ok) {
+        const data = await response.json()
+        if (data.url) {
+          window.location.href = data.url
+        }
+      } else {
+        console.error('Failed to create portal session')
+      }
+    } catch (error) {
+      console.error('Error opening subscription portal:', error)
+    } finally {
+      setManagingSubscription(false)
     }
   }
 
@@ -425,23 +468,73 @@ export default function AccountPage() {
           <div className="space-y-6">
             <div className="bg-indigo-950/30 rounded-2xl p-6">
               <h2 className="text-white font-semibold mb-4">Current Plan</h2>
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-white font-medium">Pro Plan</p>
-                  <p className="text-indigo-200/50 text-sm">£20/month</p>
+              {subscription && subscription.status === 'pro' ? (
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-white font-medium">
+                      {subscription.plan === 'lifetime' ? 'Lifetime Pro' :
+                       subscription.plan === 'annual' ? 'Annual Pro' : 'Monthly Pro'}
+                    </p>
+                    <p className="text-indigo-200/50 text-sm">
+                      {subscription.plan === 'lifetime' ? 'One-time purchase - Never expires' :
+                       subscription.plan === 'annual' ? '£99/year' : '£14.99/month'}
+                    </p>
+                    {subscription.expiresAt && subscription.plan !== 'lifetime' && (
+                      <p className="text-indigo-300/70 text-sm mt-1">
+                        Renews on {new Date(subscription.expiresAt).toLocaleDateString('en-GB', {
+                          day: 'numeric',
+                          month: 'long',
+                          year: 'numeric',
+                        })}
+                      </p>
+                    )}
+                  </div>
+                  {subscription.plan !== 'lifetime' && (
+                    <button
+                      onClick={handleManageSubscription}
+                      disabled={managingSubscription}
+                      className="px-4 py-2 bg-indigo-900/50 hover:bg-indigo-800/50 text-white text-sm font-medium rounded-lg transition-colors disabled:opacity-50"
+                    >
+                      {managingSubscription ? 'Loading...' : 'Manage Subscription'}
+                    </button>
+                  )}
                 </div>
-                <button className="px-4 py-2 bg-indigo-900/50 hover:bg-indigo-800/50 text-white text-sm font-medium rounded-lg transition-colors">
-                  Manage Subscription
-                </button>
-              </div>
+              ) : (
+                <div className="text-center py-6">
+                  <div className="w-16 h-16 bg-indigo-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg className="w-8 h-8 text-indigo-300/40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                  </div>
+                  <h3 className="text-white font-medium mb-2">No active subscription</h3>
+                  <p className="text-indigo-200/50 text-sm mb-4">
+                    Upgrade to Pro for unlimited access to all features
+                  </p>
+                  <Link
+                    href="/paywall"
+                    className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-medium rounded-lg transition-colors"
+                  >
+                    View Plans
+                  </Link>
+                </div>
+              )}
             </div>
 
-            <div className="bg-indigo-950/30 rounded-2xl p-6">
-              <h2 className="text-white font-semibold mb-4">Billing History</h2>
-              <div className="text-indigo-200/50 text-sm">
-                Your billing history will appear here once you have active subscriptions.
+            {subscription && subscription.status === 'pro' && (
+              <div className="bg-indigo-950/30 rounded-2xl p-6">
+                <h2 className="text-white font-semibold mb-4">Billing & Invoices</h2>
+                <p className="text-indigo-200/50 text-sm mb-4">
+                  View your invoices, update payment methods, and manage your billing details through the Stripe customer portal.
+                </p>
+                <button
+                  onClick={handleManageSubscription}
+                  disabled={managingSubscription}
+                  className="px-4 py-2 bg-indigo-900/50 hover:bg-indigo-800/50 text-white text-sm font-medium rounded-lg transition-colors disabled:opacity-50"
+                >
+                  {managingSubscription ? 'Loading...' : 'Open Billing Portal'}
+                </button>
               </div>
-            </div>
+            )}
           </div>
         )}
 

@@ -15,7 +15,21 @@ import { useAuth } from '@/hooks'
 import { getReportBySlug } from '@/lib/reports'
 import { ReportIcon } from '@/components/ui/astrology-icons'
 
-type Tab = 'account' | 'reports' | 'subscription' | 'notifications' | 'support'
+type Tab = 'account' | 'birthdetails' | 'reports' | 'subscription' | 'notifications' | 'support'
+
+interface BirthData {
+  birthDate: string
+  birthTime: string | null
+  birthTimeConfidence: string
+  birthPlace: {
+    city: string
+    country: string
+    latitude: number
+    longitude: number
+    timezone: string
+  }
+  updatedAt: string
+}
 
 interface GeneratedReport {
   id: string
@@ -38,14 +52,17 @@ export default function AccountPage() {
   const [supportSubmitting, setSupportSubmitting] = useState(false)
   const [supportSuccess, setSupportSuccess] = useState(false)
   const [supportError, setSupportError] = useState<string | null>(null)
+  const [birthData, setBirthData] = useState<BirthData | null>(null)
+  const [loadingBirthData, setLoadingBirthData] = useState(true)
 
-  // Fetch generated reports and credits
+  // Fetch generated reports, credits, and birth data
   useEffect(() => {
-    async function fetchReports() {
+    async function fetchData() {
       try {
-        const [reportsRes, purchasesRes] = await Promise.all([
+        const [reportsRes, purchasesRes, birthDataRes] = await Promise.all([
           fetch('/api/reports'),
           fetch('/api/user/purchases'),
+          fetch('/api/user/birth-data'),
         ])
 
         if (reportsRes.ok) {
@@ -57,13 +74,19 @@ export default function AccountPage() {
           const data = await purchasesRes.json()
           setReportCredits(data.reportCredits || 0)
         }
+
+        if (birthDataRes.ok) {
+          const data = await birthDataRes.json()
+          setBirthData(data.birthData || null)
+        }
       } catch (error) {
-        console.error('Error fetching reports:', error)
+        console.error('Error fetching data:', error)
       } finally {
         setLoadingReports(false)
+        setLoadingBirthData(false)
       }
     }
-    fetchReports()
+    fetchData()
   }, [])
 
   const handleSignOut = async () => {
@@ -102,6 +125,7 @@ export default function AccountPage() {
 
   const tabs: { id: Tab; label: string; icon: string }[] = [
     { id: 'account', label: 'Account', icon: 'user' },
+    { id: 'birthdetails', label: 'Birth Details', icon: 'star' },
     { id: 'reports', label: 'My Reports', icon: 'document' },
     { id: 'subscription', label: 'Subscription', icon: 'card' },
     { id: 'notifications', label: 'Notifications', icon: 'bell' },
@@ -114,7 +138,7 @@ export default function AccountPage() {
       <header className="border-b border-indigo-900/30 bg-[#1a1a2e]/80 backdrop-blur-md">
         <div className="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
           <Link href="/dashboard" className="flex items-center">
-            <Image src="/orbli-logo.png" alt="Orbli" width={80} height={28} className="h-7 w-auto" />
+            <Image src="/orbli-logo.png" alt="Orbli" width={150} height={150} style={{ width: '150px', height: '150px' }} />
           </Link>
           <nav className="flex items-center gap-6">
             <Link href="/dashboard" className="text-indigo-200/70 hover:text-white transition-colors text-sm">
@@ -181,6 +205,103 @@ export default function AccountPage() {
               >
                 {signingOut ? 'Signing out...' : 'Sign out'}
               </button>
+            </div>
+          </div>
+        )}
+
+        {activeTab === 'birthdetails' && (
+          <div className="space-y-6">
+            <div className="bg-indigo-950/30 rounded-2xl p-6">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-white font-semibold">Your Birth Details</h2>
+                <Link
+                  href="/birth-details"
+                  className="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-medium rounded-lg transition-colors"
+                >
+                  {birthData ? 'Edit Details' : 'Add Details'}
+                </Link>
+              </div>
+
+              {loadingBirthData ? (
+                <div className="flex items-center justify-center py-12">
+                  <div className="w-8 h-8 border-2 border-indigo-500 border-t-transparent rounded-full animate-spin" />
+                </div>
+              ) : birthData ? (
+                <div className="space-y-6">
+                  {/* Birth Date & Time */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <label className="block text-indigo-200/50 text-sm mb-1">Birth Date</label>
+                      <p className="text-white">
+                        {new Date(birthData.birthDate).toLocaleDateString('en-US', {
+                          weekday: 'long',
+                          year: 'numeric',
+                          month: 'long',
+                          day: 'numeric',
+                        })}
+                      </p>
+                    </div>
+                    <div>
+                      <label className="block text-indigo-200/50 text-sm mb-1">Birth Time</label>
+                      <p className="text-white">
+                        {birthData.birthTime || 'Not specified'}
+                        {birthData.birthTimeConfidence && birthData.birthTimeConfidence !== 'exact' && (
+                          <span className="text-indigo-300/50 text-sm ml-2">
+                            ({birthData.birthTimeConfidence})
+                          </span>
+                        )}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Birth Location */}
+                  <div>
+                    <label className="block text-indigo-200/50 text-sm mb-1">Birth Location</label>
+                    <p className="text-white">
+                      {birthData.birthPlace.city}, {birthData.birthPlace.country}
+                    </p>
+                    <p className="text-indigo-300/50 text-sm mt-1">
+                      {birthData.birthPlace.latitude.toFixed(4)}°, {birthData.birthPlace.longitude.toFixed(4)}° • {birthData.birthPlace.timezone}
+                    </p>
+                  </div>
+
+                  {/* Last Updated */}
+                  {birthData.updatedAt && (
+                    <div className="pt-4 border-t border-indigo-500/10">
+                      <p className="text-indigo-300/50 text-sm">
+                        Last updated: {new Date(birthData.updatedAt).toLocaleDateString('en-US', {
+                          year: 'numeric',
+                          month: 'long',
+                          day: 'numeric',
+                        })}
+                      </p>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <div className="text-center py-12">
+                  <div className="w-16 h-16 bg-indigo-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg className="w-8 h-8 text-indigo-300/40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={1.5}
+                        d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"
+                      />
+                    </svg>
+                  </div>
+                  <h3 className="text-white font-medium mb-2">No birth details yet</h3>
+                  <p className="text-indigo-200/50 text-sm mb-4">
+                    Add your birth details to unlock personalized insights and readings
+                  </p>
+                  <Link
+                    href="/birth-details"
+                    className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-medium rounded-lg transition-colors"
+                  >
+                    Add Birth Details
+                  </Link>
+                </div>
+              )}
             </div>
           </div>
         )}
@@ -540,6 +661,17 @@ function TabIcon({ icon }: { icon: string }) {
             strokeLinejoin="round"
             strokeWidth={2}
             d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+          />
+        </svg>
+      )
+    case 'star':
+      return (
+        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"
           />
         </svg>
       )

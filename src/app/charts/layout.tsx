@@ -14,7 +14,7 @@ export default function ChartsLayout({
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-6">
               <Link href="/" className="flex items-center">
-                <Image src="/orbli-logo.png" alt="Orbli" width={80} height={28} className="h-7 w-auto" />
+                <Image src="/orbli-logo.png" alt="Orbli" width={150} height={150} style={{ width: '150px', height: '150px' }} />
               </Link>
               <Link
                 href="/charts"

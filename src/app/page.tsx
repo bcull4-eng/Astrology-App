@@ -20,7 +20,7 @@ export default async function Home() {
       <header className="fixed top-0 left-0 right-0 z-50 bg-slate-900/80 backdrop-blur-md border-b border-slate-800/50">
         <div className="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
           <div className="flex items-center">
-            <Image src="/orbli-logo.png" alt="Orbli" width={120} height={40} className="h-8 w-auto" />
+            <Image src="/orbli-logo.png" alt="Orbli" width={150} height={150} style={{ width: '150px', height: '150px' }} />
           </div>
           <div className="flex items-center gap-6">
             <Link href="/charts" className="text-slate-400 hover:text-white transition-colors text-sm">
@@ -47,13 +47,13 @@ export default async function Home() {
         <div className="max-w-6xl mx-auto">
           <div className="text-center max-w-4xl mx-auto mb-16">
             {/* Orbli Logo - Front and Center */}
-            <div className="mb-8">
+            <div className="mb-10 flex justify-center">
               <Image
                 src="/orbli-logo.png"
                 alt="Orbli"
-                width={200}
-                height={67}
-                className="h-16 md:h-20 w-auto mx-auto"
+                width={500}
+                height={500}
+                style={{ width: '500px', height: '500px' }}
                 priority
               />
             </div>
@@ -513,7 +513,7 @@ export default async function Home() {
         <div className="max-w-6xl mx-auto">
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             <div className="flex items-center">
-              <Image src="/orbli-logo.png" alt="Orbli" width={100} height={33} className="h-8 w-auto" />
+              <Image src="/orbli-logo.png" alt="Orbli" width={150} height={150} style={{ width: '150px', height: '150px' }} />
             </div>
             <div className="flex items-center gap-8 text-sm text-slate-400">
               <Link href="/charts" className="hover:text-white transition-colors">Calculators</Link>

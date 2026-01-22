@@ -182,17 +182,17 @@ export function SignResultCompact({ result, onClick }: SignResultCompactProps) {
   return (
     <button
       onClick={onClick}
-      className={`bg-gradient-to-br ${colorClass} border rounded-lg p-4 text-left transition-transform hover:scale-[1.02] w-full`}
+      className={`bg-gradient-to-br ${colorClass} border rounded-lg p-3 md:p-4 text-left transition-transform hover:scale-[1.02] w-full min-h-[70px]`}
     >
-      <div className="flex items-center justify-between">
-        <div>
-          <p className="text-sm text-slate-400">{planetName}</p>
-          <p className="text-lg font-semibold text-white">{signName}</p>
+      <div className="flex items-center justify-between gap-2">
+        <div className="min-w-0 flex-1">
+          <p className="text-xs md:text-sm text-slate-400 truncate">{planetName}</p>
+          <p className="text-sm md:text-lg font-semibold text-white truncate">{signName}</p>
         </div>
-        <div className="text-3xl opacity-80">{signSymbol}</div>
+        <div className="text-2xl md:text-3xl opacity-80 flex-shrink-0">{signSymbol}</div>
       </div>
       {result.isRetrograde && (
-        <span className="inline-block mt-2 text-xs text-amber-400 bg-amber-400/10 px-2 py-0.5 rounded">
+        <span className="inline-block mt-1 md:mt-2 text-[10px] md:text-xs text-amber-400 bg-amber-400/10 px-1.5 md:px-2 py-0.5 rounded">
           Retrograde
         </span>
       )}

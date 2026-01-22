@@ -56,7 +56,7 @@ export function CalculatorResultDisplay({ calculator, result }: CalculatorResult
     return (
       <div className="space-y-6">
         {/* Grid of compact results */}
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-2 md:gap-4">
           {result.signResults.map((sr, i) => (
             <SignResultCompact
               key={i}
@@ -90,7 +90,7 @@ export function CalculatorResultDisplay({ calculator, result }: CalculatorResult
       <div className="space-y-6">
         <div className="bg-slate-800/50 rounded-xl p-6 border border-slate-700">
           <h3 className="text-xl font-semibold text-white mb-4">Your Birth Chart Placements</h3>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-3">
             {result.signResults.map((sr, i) => (
               <SignResultCompact
                 key={i}

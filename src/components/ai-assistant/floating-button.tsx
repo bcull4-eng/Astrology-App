@@ -1,6 +1,7 @@
 'use client'
 
 import { Sparkles } from 'lucide-react'
+import { usePathname } from 'next/navigation'
 import { useAIAssistantStore } from '@/store/ai-assistant'
 
 interface FloatingAIButtonProps {
@@ -9,6 +10,10 @@ interface FloatingAIButtonProps {
 
 export function FloatingAIButton({ onClick }: FloatingAIButtonProps) {
   const { isOpen } = useAIAssistantStore()
+  const pathname = usePathname()
+
+  // Don't show on astrologist page (has its own chat)
+  if (pathname?.startsWith('/astrologist')) return null
 
   // Don't show if modal is already open
   if (isOpen) return null

@@ -24,13 +24,20 @@ const ReadingResult = dynamic(
   { loading: () => <div className="h-64 flex items-center justify-center"><div className="w-8 h-8 border-2 border-indigo-500 border-t-transparent rounded-full animate-spin" /></div> }
 )
 
-type Step = 'select-type' | 'enter-question' | 'draw-cards' | 'reading'
+type Step = 'select-type' | 'enter-question' | 'draw-cards' | 'reading' | 'view-past'
 
 export default function TarotPage() {
   const [step, setStep] = useState<Step>('select-type')
   const [natalChart, setNatalChart] = useState<NatalChart | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [mounted, setMounted] = useState(false)
+  // For viewing past readings
+  const [viewingPastReading, setViewingPastReading] = useState<{
+    cards: DrawnCard[]
+    interpretation: string
+    question?: string
+    readingType: ReadingType
+  } | null>(null)
 
   const { isPro, loading: subscriptionLoading } = useSubscription()
 
@@ -47,7 +54,8 @@ export default function TarotPage() {
     appendInterpretation,
     setInterpretation,
     setIsInterpreting,
-    markReadingTypeUsed,
+    saveCompletedReading,
+    getCompletedReading,
     hasUsedReadingType,
     resetDailyLimitIfNewDay,
     resetReading,
@@ -69,6 +77,7 @@ export default function TarotPage() {
     resetReading()
     setStep('select-type')
     setError(null)
+    setViewingPastReading(null)
   }, [resetReading])
 
   // Handle browser back/forward navigation
@@ -80,7 +89,7 @@ export default function TarotPage() {
       window.history.replaceState({ step: 'select-type' }, '')
     }
 
-    const handlePopState = (event: PopStateEvent) => {
+    const handlePopState = () => {
       // Always return to select-type when back is pressed
       if (step !== 'select-type') {
         handleBackToSelect()
@@ -133,8 +142,16 @@ export default function TarotPage() {
   }, [mounted])
 
   const handleSelectReadingType = (type: ReadingType) => {
-    // Don't allow selecting a type that's already been used today
-    if (hasUsedReadingType(type)) return
+    // If already used today, show the past reading
+    if (hasUsedReadingType(type)) {
+      const pastReading = getCompletedReading(type)
+      if (pastReading) {
+        setViewingPastReading(pastReading)
+        setReadingType(type)
+        setStep('view-past')
+      }
+      return
+    }
 
     setReadingType(type)
     if (type === 'yes_no') {
@@ -184,7 +201,12 @@ export default function TarotPage() {
       if (!response.ok) {
         const errorData = await response.json()
         if (errorData.code === 'DAILY_LIMIT_REACHED') {
-          markReadingTypeUsed(selectedReadingType)
+          saveCompletedReading({
+            readingType: selectedReadingType,
+            cards,
+            interpretation: '',
+            question: question || undefined,
+          })
           setError(errorData.message)
           setIsInterpreting(false)
           return
@@ -194,17 +216,25 @@ export default function TarotPage() {
 
       const reader = response.body?.getReader()
       const decoder = new TextDecoder()
+      let fullInterpretation = ''
 
       if (reader) {
         while (true) {
           const { done, value } = await reader.read()
           if (done) break
           const chunk = decoder.decode(value)
+          fullInterpretation += chunk
           appendInterpretation(chunk)
         }
       }
 
-      markReadingTypeUsed(selectedReadingType)
+      // Save the completed reading
+      saveCompletedReading({
+        readingType: selectedReadingType,
+        cards,
+        interpretation: fullInterpretation,
+        question: question || undefined,
+      })
     } catch (err) {
       console.error('Interpretation error:', err)
       setError(err instanceof Error ? err.message : 'Failed to get interpretation')
@@ -217,6 +247,7 @@ export default function TarotPage() {
     resetReading()
     setStep('select-type')
     setError(null)
+    setViewingPastReading(null)
   }
 
   // Loading state
@@ -255,27 +286,6 @@ export default function TarotPage() {
     )
   }
 
-  // All readings used for today
-  if (allTypesUsed && step === 'select-type') {
-    return (
-      <div className="min-h-[calc(100vh-65px)] flex items-center justify-center p-4">
-        <div className="max-w-md text-center">
-          <div className="text-6xl mb-6">🌙</div>
-          <h1 className="text-2xl font-bold text-white mb-3">Come Back Tomorrow</h1>
-          <p className="text-indigo-200/70 mb-6">
-            You&apos;ve completed all your tarot readings for today. The cards will be ready to speak to you again tomorrow.
-          </p>
-          <Link
-            href="/dashboard"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-slate-700 hover:bg-slate-600 text-white font-medium rounded-xl transition-all"
-          >
-            Return to Dashboard
-          </Link>
-        </div>
-      </div>
-    )
-  }
-
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
       {/* Step 1: Select Reading Type */}
@@ -284,9 +294,11 @@ export default function TarotPage() {
           <div className="text-center mb-8">
             <h1 className="text-3xl font-bold text-white mb-3">Tarot Readings</h1>
             <p className="text-indigo-200/70">
-              Choose a reading type. You have 1 of each reading per day.
+              {allTypesUsed
+                ? 'View your readings from today, or come back tomorrow for new ones.'
+                : 'Choose a reading type. You have 1 of each reading per day.'}
             </p>
-            {usedReadingTypes.length > 0 && (
+            {usedReadingTypes.length > 0 && !allTypesUsed && (
               <p className="text-indigo-400/60 text-sm mt-2">
                 {spreads.length - usedReadingTypes.length} of {spreads.length} readings remaining today
               </p>
@@ -302,7 +314,6 @@ export default function TarotPage() {
                   spread={spread}
                   isSelected={selectedReadingType === spread.id}
                   onSelect={() => handleSelectReadingType(spread.id)}
-                  disabled={isUsed}
                   usedToday={isUsed}
                 />
               )
@@ -376,7 +387,7 @@ export default function TarotPage() {
         </div>
       )}
 
-      {/* Step 4: Reading Result */}
+      {/* Step 4: Reading Result (new reading) */}
       {step === 'reading' && selectedSpread && (
         <div>
           {error ? (
@@ -413,6 +424,44 @@ export default function TarotPage() {
               )}
             </>
           )}
+        </div>
+      )}
+
+      {/* Step 5: View Past Reading */}
+      {step === 'view-past' && viewingPastReading && selectedSpread && (
+        <div>
+          <button
+            onClick={handleBackToSelect}
+            className="flex items-center gap-2 text-indigo-300/70 hover:text-white transition-colors mb-6"
+          >
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+            Back
+          </button>
+
+          <div className="text-center mb-4">
+            <span className="text-xs px-3 py-1 bg-indigo-500/20 text-indigo-300 rounded-full">
+              Today&apos;s Reading
+            </span>
+          </div>
+
+          <ReadingResult
+            spread={selectedSpread}
+            drawnCards={viewingPastReading.cards}
+            interpretation={viewingPastReading.interpretation}
+            isInterpreting={false}
+            question={viewingPastReading.question}
+          />
+
+          <div className="flex justify-center mt-8">
+            <button
+              onClick={handleNewReading}
+              className="px-6 py-3 bg-slate-700 hover:bg-slate-600 text-white font-medium rounded-xl transition-all"
+            >
+              Back to Tarot
+            </button>
+          </div>
         </div>
       )}
     </div>

@@ -45,8 +45,8 @@ async function checkSubscription(): Promise<{ isPro: boolean; userId: string | n
   }
 }
 
-// Check if user has already used their daily reading
-async function checkDailyLimit(userId: string): Promise<boolean> {
+// Check if user has already used this specific reading type today
+async function checkDailyLimitForType(userId: string, readingType: ReadingType): Promise<boolean> {
   try {
     const supabase = await createClient()
 
@@ -58,6 +58,7 @@ async function checkDailyLimit(userId: string): Promise<boolean> {
       .from('tarot_readings')
       .select('*', { count: 'exact', head: true })
       .eq('user_id', userId)
+      .eq('reading_type', readingType)
       .gte('created_at', today.toISOString())
 
     return (count || 0) > 0
@@ -122,14 +123,14 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Check daily limit
-    const hasUsedDaily = await checkDailyLimit(userId)
-    if (hasUsedDaily) {
+    // Check daily limit for this specific reading type
+    const hasUsedThisType = await checkDailyLimitForType(userId, body.readingType)
+    if (hasUsedThisType) {
       return new Response(
         JSON.stringify({
           error: 'Daily limit reached',
           code: 'DAILY_LIMIT_REACHED',
-          message: 'You have already received your daily tarot reading. Come back tomorrow!',
+          message: `You have already completed your ${body.readingType.replace('_', ' ')} reading today. Try a different reading type or come back tomorrow!`,
         }),
         { status: 429, headers: { 'Content-Type': 'application/json' } }
       )

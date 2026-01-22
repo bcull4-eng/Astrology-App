@@ -9,7 +9,7 @@
 
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
-import type { TarotState, ReadingType, DrawnCard } from '@/types/tarot'
+import type { TarotState, ReadingType, CompletedReading } from '@/types/tarot'
 
 function getTodayDateString(): string {
   return new Date().toISOString().split('T')[0]
@@ -28,6 +28,7 @@ export const useTarotStore = create<TarotState>()(
 
       // Daily limit - tracks which reading types have been used today
       usedReadingTypes: [],
+      completedReadings: [],
       lastReadingDate: null,
 
       // Actions
@@ -61,11 +62,23 @@ export const useTarotStore = create<TarotState>()(
       setIsInterpreting: (isInterpreting: boolean) =>
         set({ isInterpreting }),
 
-      markReadingTypeUsed: (type: ReadingType) =>
-        set((state) => ({
-          usedReadingTypes: [...state.usedReadingTypes, type],
-          lastReadingDate: getTodayDateString(),
-        })),
+      saveCompletedReading: (reading: CompletedReading) =>
+        set((state) => {
+          // Remove any existing reading of the same type
+          const filtered = state.completedReadings.filter(r => r.readingType !== reading.readingType)
+          return {
+            completedReadings: [...filtered, reading],
+            usedReadingTypes: state.usedReadingTypes.includes(reading.readingType)
+              ? state.usedReadingTypes
+              : [...state.usedReadingTypes, reading.readingType],
+            lastReadingDate: getTodayDateString(),
+          }
+        }),
+
+      getCompletedReading: (type: ReadingType) => {
+        const { completedReadings } = get()
+        return completedReadings.find(r => r.readingType === type)
+      },
 
       hasUsedReadingType: (type: ReadingType) => {
         const { usedReadingTypes } = get()
@@ -77,7 +90,7 @@ export const useTarotStore = create<TarotState>()(
         const today = getTodayDateString()
 
         if (lastReadingDate !== today) {
-          set({ usedReadingTypes: [], lastReadingDate: null })
+          set({ usedReadingTypes: [], completedReadings: [], lastReadingDate: null })
         }
       },
 
@@ -95,6 +108,7 @@ export const useTarotStore = create<TarotState>()(
       name: 'tarot-storage',
       partialize: (state) => ({
         usedReadingTypes: state.usedReadingTypes,
+        completedReadings: state.completedReadings,
         lastReadingDate: state.lastReadingDate,
       }),
     }

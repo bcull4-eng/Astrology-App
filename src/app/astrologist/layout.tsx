@@ -17,7 +17,7 @@ export default async function AstrologistLayout({
       <header className="border-b border-indigo-500/10 bg-[#1a1a2e]/80 backdrop-blur-md relative z-10">
         <div className="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
           <Link href="/dashboard" className="flex items-center">
-            <Image src="/orbli-logo.png" alt="Orbli" width={150} height={150} style={{ width: '150px', height: '150px' }} />
+            <Image src="/orbli-logo.png" alt="Orbli" width={288} height={87} style={{ width: '140px', height: 'auto' }} />
           </Link>
           <nav className="flex items-center gap-6">
             <Link

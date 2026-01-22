@@ -39,7 +39,7 @@ export default async function DashboardLayout({
         <header className="border-b border-indigo-900/30 bg-[#1a1a2e]/80 backdrop-blur-md sticky top-0 z-20">
           <div className="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
             <Link href="/dashboard" className="flex items-center">
-              <Image src="/orbli-logo.png" alt="Orbli" width={150} height={150} style={{ width: '150px', height: '150px' }} />
+              <Image src="/orbli-logo.png" alt="Orbli" width={288} height={87} style={{ width: '140px', height: 'auto' }} />
             </Link>
             <nav className="flex items-center gap-6">
               <Link

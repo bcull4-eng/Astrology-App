@@ -100,9 +100,9 @@ export default function DashboardPage() {
             <Image
               src="/orbli-logo.png"
               alt="Orbli"
-              width={200}
-              height={200}
-              style={{ width: '200px', height: '200px' }}
+              width={288}
+              height={87}
+              style={{ width: '180px', height: 'auto' }}
             />
           </div>
           <div className="flex-1 text-center md:text-left">

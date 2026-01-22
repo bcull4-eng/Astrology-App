@@ -64,6 +64,12 @@ export default async function DashboardLayout({
                 AI Astrologist
               </Link>
               <Link
+                href="/tarot"
+                className="text-indigo-200/70 hover:text-white transition-colors text-sm"
+              >
+                Tarot
+              </Link>
+              <Link
                 href="/birth-details"
                 className="text-indigo-200/70 hover:text-white transition-colors text-sm"
               >

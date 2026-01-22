@@ -117,3 +117,14 @@ export type {
   KeyTakeaway,
   FAQ,
 } from './calculators'
+
+// Tarot
+export type {
+  TarotSuit,
+  ReadingType,
+  TarotCard,
+  DrawnCard,
+  SpreadConfig,
+  TarotReading,
+  TarotState,
+} from './tarot'

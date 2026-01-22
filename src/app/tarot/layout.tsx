@@ -3,12 +3,12 @@ import Image from 'next/image'
 import { requireUser } from '@/lib/auth'
 import { StaticStarfield } from '@/components/ui/starfield-background'
 
-export default async function ReportsLayout({
+export default async function TarotLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
-  const user = await requireUser()
+  await requireUser()
 
   return (
     <div className="min-h-screen bg-[#1a1a2e] relative overflow-hidden">
@@ -34,7 +34,7 @@ export default async function ReportsLayout({
             </Link>
             <Link
               href="/reports"
-              className="text-white transition-colors text-sm font-medium"
+              className="text-indigo-200/50 hover:text-white transition-colors text-sm"
             >
               Reports
             </Link>
@@ -58,7 +58,7 @@ export default async function ReportsLayout({
             </Link>
             <Link
               href="/tarot"
-              className="text-indigo-200/50 hover:text-white transition-colors text-sm"
+              className="text-white transition-colors text-sm"
             >
               Tarot
             </Link>
@@ -79,7 +79,7 @@ export default async function ReportsLayout({
       </header>
 
       {/* Main content */}
-      <main className="max-w-4xl mx-auto px-4 py-8 relative z-10">{children}</main>
+      <main className="relative z-10">{children}</main>
     </div>
   )
 }

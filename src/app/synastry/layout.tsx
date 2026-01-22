@@ -31,7 +31,7 @@ export default async function SynastryLayout({
           <Link href="/dashboard" className="flex items-center">
             <Image src="/orbli-logo.png" alt="Orbli" width={288} height={87} style={{ width: '105px', height: 'auto' }} />
           </Link>
-          <nav className="flex items-center gap-6">
+          <nav className="flex items-center gap-6 overflow-x-auto scrollbar-hide">
             <Link
               href="/dashboard"
               className="text-indigo-200/50 hover:text-white transition-colors text-sm"

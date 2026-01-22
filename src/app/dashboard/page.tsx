@@ -9,6 +9,7 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import {
   NatalChartWheel,
   DailyHoroscope,
@@ -92,29 +93,46 @@ export default function DashboardPage() {
 
   return (
     <div>
-      {/* Top action bar */}
-      <div className="flex items-center justify-between mb-6">
-        <div className="flex items-center gap-3">
-          {dataSource === 'calculated' && natalChart && (
-            <div className="px-3 py-1.5 bg-emerald-500/10 border border-emerald-500/30 rounded-lg">
-              <span className="text-emerald-400 text-xs font-medium">Personalized insights from your chart</span>
-            </div>
-          )}
-          {(!natalChart || dataSource === 'mock') && (
-            <div className="px-3 py-1.5 bg-amber-500/10 border border-amber-500/30 rounded-lg">
-              <span className="text-amber-400 text-xs font-medium">Add birth details for personalized insights</span>
-            </div>
-          )}
+      {/* Welcome Section */}
+      <div className="bg-gradient-to-br from-indigo-900/30 via-purple-900/20 to-slate-900/30 rounded-2xl p-6 mb-8 border border-indigo-500/20">
+        <div className="flex flex-col md:flex-row items-center gap-6">
+          <div className="flex-shrink-0">
+            <Image
+              src="/orbli-logo.png"
+              alt="Orbli"
+              width={140}
+              height={47}
+              className="h-12 w-auto"
+            />
+          </div>
+          <div className="flex-1 text-center md:text-left">
+            <h1 className="text-xl font-semibold text-white mb-2">Welcome to Orbli</h1>
+            <p className="text-indigo-200/70 text-sm leading-relaxed">
+              Your personal cosmic guide. Get daily insights, explore your birth chart, chat with our AI astrologist,
+              and discover what the stars have in store for you.
+            </p>
+          </div>
+          <div className="flex-shrink-0">
+            {!natalChart ? (
+              <Link
+                href="/birth-details"
+                className="flex items-center gap-2 px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-xl transition-colors"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                </svg>
+                Add Birth Details
+              </Link>
+            ) : (
+              <div className="flex items-center gap-2 px-4 py-2 bg-emerald-500/10 border border-emerald-500/30 rounded-xl">
+                <svg className="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                </svg>
+                <span className="text-emerald-400 text-sm font-medium">Chart Active</span>
+              </div>
+            )}
+          </div>
         </div>
-        <Link
-          href="/birth-details"
-          className="flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-lg transition-colors"
-        >
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
-          </svg>
-          {natalChart ? 'Update Birth Details' : 'Add Birth Details'}
-        </Link>
       </div>
 
       {/* ===== FREE SECTION ===== */}

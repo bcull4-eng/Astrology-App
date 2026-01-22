@@ -114,7 +114,7 @@ export default function AccountPage() {
       <header className="border-b border-indigo-900/30 bg-[#1a1a2e]/80 backdrop-blur-md">
         <div className="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
           <Link href="/dashboard" className="flex items-center">
-            <Image src="/logo.jpg" alt="Orbli" width={80} height={28} className="h-7 w-auto" />
+            <Image src="/orbli-logo.png" alt="Orbli" width={80} height={28} className="h-7 w-auto" />
           </Link>
           <nav className="flex items-center gap-6">
             <Link href="/dashboard" className="text-indigo-200/70 hover:text-white transition-colors text-sm">

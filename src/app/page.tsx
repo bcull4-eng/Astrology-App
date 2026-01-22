@@ -3,6 +3,7 @@ import Image from 'next/image'
 import { getUser } from '@/lib/auth'
 import { redirect } from 'next/navigation'
 import { TestimonialsSection, StatsBar } from '@/components/social-proof'
+import { AnimatedUserCount } from '@/components/social-proof/animated-user-count'
 import { Star, Sparkles, Calendar, TrendingUp, MessageCircle, FileText, ChevronRight, Play, Shield, Zap } from 'lucide-react'
 
 export default async function Home() {
@@ -19,7 +20,7 @@ export default async function Home() {
       <header className="fixed top-0 left-0 right-0 z-50 bg-slate-900/80 backdrop-blur-md border-b border-slate-800/50">
         <div className="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
           <div className="flex items-center">
-            <Image src="/logo.jpg" alt="Orbli" width={80} height={28} className="h-7 w-auto" />
+            <Image src="/orbli-logo.png" alt="Orbli" width={120} height={40} className="h-8 w-auto" />
           </div>
           <div className="flex items-center gap-6">
             <Link href="/charts" className="text-slate-400 hover:text-white transition-colors text-sm">
@@ -45,24 +46,21 @@ export default async function Home() {
       <section className="pt-32 pb-20 px-4">
         <div className="max-w-6xl mx-auto">
           <div className="text-center max-w-4xl mx-auto mb-16">
-            {/* Social proof badge */}
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-slate-800/50 border border-slate-700 rounded-full mb-8">
-              <div className="flex -space-x-2">
-                {['SM', 'JK', 'EL', 'MT'].map((initials, i) => (
-                  <div
-                    key={i}
-                    className="w-7 h-7 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full flex items-center justify-center text-white text-xs font-medium border-2 border-slate-800"
-                  >
-                    {initials}
-                  </div>
-                ))}
-              </div>
-              <div className="flex items-center gap-1">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="w-4 h-4 text-amber-400 fill-amber-400" />
-                ))}
-              </div>
-              <span className="text-slate-400 text-sm">Loved by 47,000+ users</span>
+            {/* Orbli Logo - Front and Center */}
+            <div className="mb-8">
+              <Image
+                src="/orbli-logo.png"
+                alt="Orbli"
+                width={200}
+                height={67}
+                className="h-16 md:h-20 w-auto mx-auto"
+                priority
+              />
+            </div>
+
+            {/* Social proof badge with animated counter */}
+            <div className="mb-8">
+              <AnimatedUserCount target={237} />
             </div>
 
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight">
@@ -378,8 +376,8 @@ export default async function Home() {
       <section className="py-24 px-4">
         <div className="max-w-6xl mx-auto">
           <TestimonialsSection
-            title="Trusted by 47,000+ users"
-            subtitle="See why people are choosing Astro for their cosmic guidance"
+            title="Trusted by our growing community"
+            subtitle="See why people are choosing Orbli for their cosmic guidance"
             count={6}
             showStats={true}
             variant="grid"
@@ -498,7 +496,7 @@ export default async function Home() {
             Ready to understand your cosmic timing?
           </h2>
           <p className="text-xl text-slate-400 mb-10">
-            Join 47,000+ people who use Astro to navigate their lives with clarity.
+            Join our growing community who use Orbli to navigate their lives with clarity.
           </p>
           <Link
             href="/auth/sign-up"
@@ -515,7 +513,7 @@ export default async function Home() {
         <div className="max-w-6xl mx-auto">
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             <div className="flex items-center">
-              <Image src="/logo.jpg" alt="Orbli" width={80} height={28} className="h-7 w-auto" />
+              <Image src="/orbli-logo.png" alt="Orbli" width={100} height={33} className="h-8 w-auto" />
             </div>
             <div className="flex items-center gap-8 text-sm text-slate-400">
               <Link href="/charts" className="hover:text-white transition-colors">Calculators</Link>

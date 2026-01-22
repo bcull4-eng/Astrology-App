@@ -1,5 +1,6 @@
 export { TestimonialCard } from './testimonial-card'
 export { TestimonialsSection } from './testimonials-section'
 export { StatsBar } from './stats-bar'
+export { AnimatedUserCount } from './animated-user-count'
 export { testimonials, stats, getRandomTestimonials, getTestimonialsByFeature } from './testimonials-data'
 export type { Testimonial } from './testimonials-data'

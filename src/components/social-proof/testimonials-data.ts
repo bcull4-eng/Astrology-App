@@ -129,11 +129,10 @@ export const testimonials: Testimonial[] = [
 ]
 
 export const stats = {
-  totalUsers: '47,000+',
+  totalUsers: 237,
   averageRating: 4.9,
-  totalReviews: '2,400+',
-  reportsGenerated: '125,000+',
-  countriesServed: '89',
+  totalReviews: '50+',
+  countriesServed: '12',
   satisfactionRate: '98%',
 }
 

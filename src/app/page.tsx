@@ -23,14 +23,8 @@ export default async function Home() {
             <Image src="/orbli-logo.png" alt="Orbli" width={288} height={87} style={{ width: '105px', height: 'auto' }} />
           </div>
           <div className="flex items-center gap-6">
-            <Link href="/charts" className="text-slate-400 hover:text-white transition-colors text-sm">
+            <Link href="/charts" className="text-slate-400 hover:text-white transition-colors text-sm ml-4">
               Free Calculators
-            </Link>
-            <Link
-              href="/auth/sign-in"
-              className="text-slate-300 hover:text-white transition-colors text-sm"
-            >
-              Sign in
             </Link>
             <Link
               href="/auth/sign-up"

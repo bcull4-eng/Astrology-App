@@ -64,7 +64,8 @@ export const useAIAssistantStore = create<AIAssistantStore>((set, get) => ({
       })
 
       if (!response.ok) {
-        throw new Error('Failed to get AI response')
+        const errorData = await response.json().catch(() => ({}))
+        throw new Error(errorData.error || 'Failed to get AI response')
       }
 
       // Handle streaming response
@@ -95,11 +96,12 @@ export const useAIAssistantStore = create<AIAssistantStore>((set, get) => ({
       }
     } catch (error) {
       console.error('AI Assistant error:', error)
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error'
       // Update assistant message with error
       set((state) => ({
         messages: state.messages.map((msg) =>
           msg.id === assistantMessage.id
-            ? { ...msg, content: 'Sorry, I encountered an error. Please try again.' }
+            ? { ...msg, content: `Sorry, I encountered an error: ${errorMessage}` }
             : msg
         ),
       }))

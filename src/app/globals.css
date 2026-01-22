@@ -145,3 +145,9 @@ h1, h2, h3 {
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
+
+/* Mobile nav scroll fix */
+.nav-scroll {
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-x;
+}

@@ -41,7 +41,7 @@ export default async function DashboardLayout({
             <Link href="/dashboard" className="flex items-center">
               <Image src="/orbli-logo.png" alt="Orbli" width={288} height={87} style={{ width: '105px', height: 'auto' }} />
             </Link>
-            <nav className="flex items-center gap-4 overflow-x-auto scrollbar-hide whitespace-nowrap pl-4">
+            <nav className="flex items-center gap-4 overflow-x-auto scrollbar-hide nav-scroll whitespace-nowrap pl-4">
               <Link
                 href="/dashboard"
                 className="text-indigo-200/70 hover:text-white transition-colors text-sm flex-shrink-0"
@@ -52,13 +52,13 @@ export default async function DashboardLayout({
                 href="/learn"
                 className="text-indigo-200/70 hover:text-white transition-colors text-sm flex-shrink-0"
               >
-                Learn
+                Learn <span className="text-emerald-400 text-[10px]">new</span>
               </Link>
               <Link
                 href="/reports"
                 className="text-indigo-200/70 hover:text-white transition-colors text-sm flex-shrink-0"
               >
-                Reports
+                Reports <span className="text-emerald-400 text-[10px]">new</span>
               </Link>
               <Link
                 href="/charts"
@@ -82,7 +82,7 @@ export default async function DashboardLayout({
                 href="/tarot"
                 className="text-indigo-200/70 hover:text-white transition-colors text-sm flex-shrink-0"
               >
-                Tarot
+                Tarot <span className="text-emerald-400 text-[10px]">new</span>
               </Link>
               {!hasBirthData && (
                 <Link

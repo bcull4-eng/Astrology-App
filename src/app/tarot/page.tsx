@@ -294,15 +294,8 @@ export default function TarotPage() {
           <div className="text-center mb-8">
             <h1 className="text-3xl font-bold text-white mb-3">Tarot Readings</h1>
             <p className="text-indigo-200/70">
-              {allTypesUsed
-                ? 'View your readings from today, or come back tomorrow for new ones.'
-                : 'Choose a reading type. You have 1 of each reading per day.'}
+              Choose a reading type to begin your tarot session.
             </p>
-            {usedReadingTypes.length > 0 && !allTypesUsed && (
-              <p className="text-indigo-400/60 text-sm mt-2">
-                {spreads.length - usedReadingTypes.length} of {spreads.length} readings remaining today
-              </p>
-            )}
           </div>
 
           <div className="grid gap-4 md:grid-cols-2">

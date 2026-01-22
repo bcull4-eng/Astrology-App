@@ -123,19 +123,6 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Check daily limit for this specific reading type
-    const hasUsedThisType = await checkDailyLimitForType(userId, body.readingType)
-    if (hasUsedThisType) {
-      return new Response(
-        JSON.stringify({
-          error: 'Daily limit reached',
-          code: 'DAILY_LIMIT_REACHED',
-          message: `You have already completed your ${body.readingType.replace('_', ' ')} reading today. Try a different reading type or come back tomorrow!`,
-        }),
-        { status: 429, headers: { 'Content-Type': 'application/json' } }
-      )
-    }
-
     // Check for API key
     const apiKey = process.env.XAI_API_KEY
     if (!apiKey) {

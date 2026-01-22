@@ -1,8 +1,9 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useSubscription } from '@/hooks/use-subscription'
+import { useTarotStore } from '@/store/tarot'
 
 // Hardcoded spreads to avoid any import issues
 const SPREADS = [
@@ -16,10 +17,14 @@ export default function TarotPage() {
   const [mounted, setMounted] = useState(false)
   const { isPro, loading } = useSubscription()
 
-  // Client-side mount check
-  if (typeof window !== 'undefined' && !mounted) {
+  // Test the store import
+  const { checkDailyLimit } = useTarotStore()
+
+  useEffect(() => {
     setMounted(true)
-  }
+  }, [])
+
+  const hasUsedDaily = mounted ? checkDailyLimit() : false
 
   if (!mounted || loading) {
     return (

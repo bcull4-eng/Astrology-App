@@ -543,59 +543,19 @@ export default function AccountPage() {
 
         {activeTab === 'notifications' && (
           <div className="space-y-6">
-            <div className="bg-indigo-950/30 rounded-2xl p-6">
-              <h2 className="text-white font-semibold mb-4">Email Notifications</h2>
-              <div className="space-y-4">
-                <label className="flex items-center justify-between cursor-pointer">
-                  <div>
-                    <p className="text-white">Daily guidance emails</p>
-                    <p className="text-indigo-200/50 text-sm">Get your daily do/avoid list by email</p>
-                  </div>
-                  <input
-                    type="checkbox"
-                    defaultChecked
-                    className="w-5 h-5 rounded bg-indigo-900/50 border-indigo-500/30 text-indigo-500 focus:ring-indigo-500"
-                  />
-                </label>
-                <label className="flex items-center justify-between cursor-pointer">
-                  <div>
-                    <p className="text-white">Theme change alerts</p>
-                    <p className="text-indigo-200/50 text-sm">Get notified when your primary theme changes</p>
-                  </div>
-                  <input
-                    type="checkbox"
-                    defaultChecked
-                    className="w-5 h-5 rounded bg-indigo-900/50 border-indigo-500/30 text-indigo-500 focus:ring-indigo-500"
-                  />
-                </label>
-                <label className="flex items-center justify-between cursor-pointer">
-                  <div>
-                    <p className="text-white">New report available</p>
-                    <p className="text-indigo-200/50 text-sm">Get notified when new report types are released</p>
-                  </div>
-                  <input
-                    type="checkbox"
-                    defaultChecked
-                    className="w-5 h-5 rounded bg-indigo-900/50 border-indigo-500/30 text-indigo-500 focus:ring-indigo-500"
-                  />
-                </label>
+            <div className="bg-indigo-950/30 rounded-2xl p-6 text-center py-12">
+              <div className="w-16 h-16 bg-indigo-500/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg className="w-8 h-8 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                </svg>
               </div>
-            </div>
-
-            <div className="bg-indigo-950/30 rounded-2xl p-6">
-              <h2 className="text-white font-semibold mb-4">Push Notifications</h2>
-              <div className="space-y-4">
-                <label className="flex items-center justify-between cursor-pointer">
-                  <div>
-                    <p className="text-white">Daily reminders</p>
-                    <p className="text-indigo-200/50 text-sm">Remind me to check my daily guidance</p>
-                  </div>
-                  <input
-                    type="checkbox"
-                    className="w-5 h-5 rounded bg-indigo-900/50 border-indigo-500/30 text-indigo-500 focus:ring-indigo-500"
-                  />
-                </label>
-              </div>
+              <span className="inline-block px-3 py-1 bg-indigo-500/20 text-indigo-300 text-xs font-medium rounded-full mb-3">
+                Coming Soon
+              </span>
+              <h3 className="text-white font-medium mb-2">Notifications</h3>
+              <p className="text-indigo-200/50 text-sm max-w-md mx-auto">
+                Soon you&apos;ll be able to receive daily guidance emails, theme change alerts, and push notifications to stay connected with your cosmic journey.
+              </p>
             </div>
           </div>
         )}

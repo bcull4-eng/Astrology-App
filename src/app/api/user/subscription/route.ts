@@ -1,7 +1,7 @@
 /**
  * User Subscription API
  *
- * Returns and syncs subscription data from Stripe.
+ * Returns and syncs subscription data from Stripe for accurate cancel status.
  */
 
 import { NextResponse } from 'next/server'

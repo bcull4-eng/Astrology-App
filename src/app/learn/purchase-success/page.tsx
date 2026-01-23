@@ -55,7 +55,7 @@ export default function CoursePurchaseSuccessPage() {
         <ul className="space-y-3">
           <li className="flex items-start gap-3 text-indigo-200/70">
             <span className="text-emerald-400 mt-0.5">*</span>
-            <span>Access to all 10 modules with 60+ lessons</span>
+            <span>Access to all 12 modules with 90 lessons</span>
           </li>
           <li className="flex items-start gap-3 text-indigo-200/70">
             <span className="text-emerald-400 mt-0.5">*</span>

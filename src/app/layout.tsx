@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Fraunces } from "next/font/google";
 import "./globals.css";
 import { AIAssistantProvider } from "@/components/ai-assistant";
+import { CookieBanner } from "@/components/cookie-banner";
 
 const geist = Geist({
   variable: "--font-geist",
@@ -89,6 +90,7 @@ export default function RootLayout({
         <AIAssistantProvider>
           {children}
         </AIAssistantProvider>
+        <CookieBanner />
       </body>
     </html>
   );

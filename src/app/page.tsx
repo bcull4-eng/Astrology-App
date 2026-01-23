@@ -516,8 +516,13 @@ export default async function Home() {
               <Link href="/auth/sign-in" className="hover:text-white transition-colors">Sign In</Link>
             </div>
           </div>
-          <div className="mt-8 pt-8 border-t border-slate-800 text-center text-sm text-slate-500">
+          <div className="mt-8 pt-8 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-slate-500">
             <p>&copy; {new Date().getFullYear()} Orbli. All rights reserved.</p>
+            <div className="flex items-center gap-6">
+              <Link href="/legal/privacy" className="hover:text-white transition-colors">Privacy</Link>
+              <Link href="/legal/terms" className="hover:text-white transition-colors">Terms</Link>
+              <Link href="/legal/cookies" className="hover:text-white transition-colors">Cookies</Link>
+            </div>
           </div>
         </div>
       </footer>

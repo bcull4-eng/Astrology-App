@@ -102,18 +102,25 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
     const sub = subscription as any
 
     await upsertSubscription(userId, customerId, subscription, planType || 'monthly')
-    await updateUserMetadata(userId, 'pro', planType || 'monthly', sub.current_period_end as number)
+
+    // Build metadata update - include report credits for annual plans
+    const userMetadata: Record<string, unknown> = {
+      subscription_status: 'pro',
+      subscription_plan: planType || 'monthly',
+      subscription_expires_at: new Date((sub.current_period_end as number) * 1000).toISOString(),
+      subscribed_at: new Date().toISOString(),
+    }
 
     // Grant free report credits for annual subscription
     if (planType === 'annual') {
       console.log('[Stripe Webhook] Granting 2 report credits for annual subscription')
-      await supabaseAdmin.auth.admin.updateUserById(userId, {
-        user_metadata: {
-          report_credits: 2,
-          report_credits_granted_at: new Date().toISOString(),
-        },
-      })
+      userMetadata.report_credits = 2
+      userMetadata.report_credits_granted_at = new Date().toISOString()
     }
+
+    await supabaseAdmin.auth.admin.updateUserById(userId, {
+      user_metadata: userMetadata,
+    })
   } else if (session.mode === 'payment') {
     // Handle one-time payment
     if (planType === 'lifetime') {
@@ -129,12 +136,14 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
         current_period_end: null, // Never expires
       }, { onConflict: 'user_id' })
 
-      await updateUserMetadata(userId, 'pro', 'lifetime', null)
-
-      // Grant all 6 reports free for lifetime subscription
+      // Grant all 6 reports free for lifetime subscription - update all metadata in one call
       console.log('[Stripe Webhook] Granting 6 report credits for lifetime subscription')
       await supabaseAdmin.auth.admin.updateUserById(userId, {
         user_metadata: {
+          subscription_status: 'pro',
+          subscription_plan: 'lifetime',
+          subscription_expires_at: null,
+          subscribed_at: new Date().toISOString(),
           report_credits: 6,
           report_credits_granted_at: new Date().toISOString(),
         },

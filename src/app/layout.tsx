@@ -42,6 +42,30 @@ export const metadata: Metadata = {
   },
 };
 
+// Organization schema for site-wide SEO
+const organizationJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: 'Orbli',
+  url: 'https://orbli.app',
+  logo: 'https://orbli.app/orbli-logo.png',
+  description: 'Free astrology app with birth chart calculator, daily horoscopes, AI astrologer chat, tarot readings, and personalized cosmic insights.',
+  sameAs: [],
+}
+
+const websiteJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: 'Orbli',
+  url: 'https://orbli.app',
+  description: 'Free astrology app with birth chart calculator, daily horoscopes, AI astrologer chat, tarot readings, and personalized cosmic insights.',
+  potentialAction: {
+    '@type': 'SearchAction',
+    target: 'https://orbli.app/charts?q={search_term_string}',
+    'query-input': 'required name=search_term_string',
+  },
+}
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -49,6 +73,16 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
+        />
+      </head>
       <body
         className={`${geist.className} ${fraunces.variable} antialiased`}
       >

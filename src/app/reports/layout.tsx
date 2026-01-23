@@ -1,8 +1,19 @@
 import Link from 'next/link'
 import Image from 'next/image'
+import type { Metadata } from 'next'
 import { requireUser } from '@/lib/auth'
 import { createClient } from '@/lib/supabase/server'
 import { StaticStarfield } from '@/components/ui/starfield-background'
+
+export const metadata: Metadata = {
+  title: 'Personalized Astrology Reports | Birth Chart Analysis | Orbli',
+  description: 'Get in-depth personalized astrology reports based on your birth chart. Natal chart analysis, relationship compatibility, career guidance, and year ahead forecasts.',
+  openGraph: {
+    title: 'Personalized Astrology Reports | Orbli',
+    description: 'Get in-depth personalized astrology reports based on your birth chart.',
+    type: 'website',
+  },
+}
 
 export default async function ReportsLayout({
   children,

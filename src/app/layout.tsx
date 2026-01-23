@@ -15,8 +15,31 @@ const fraunces = Fraunces({
 });
 
 export const metadata: Metadata = {
-  title: "Orbli - Your Cosmic Blueprint",
-  description: "Personalized astrology insights based on your natal chart",
+  title: {
+    default: "Orbli - Free Birth Chart & Astrology Calculators",
+    template: "%s | Orbli",
+  },
+  description: "Free astrology app with birth chart calculator, daily horoscopes, AI astrologer chat, tarot readings, and personalized cosmic insights based on your natal chart.",
+  keywords: "astrology, birth chart, natal chart, horoscope, zodiac signs, moon sign, rising sign, sun sign, tarot, synastry, compatibility",
+  authors: [{ name: "Orbli" }],
+  creator: "Orbli",
+  openGraph: {
+    type: "website",
+    locale: "en_GB",
+    url: "https://orbli.app",
+    siteName: "Orbli",
+    title: "Orbli - Free Birth Chart & Astrology Calculators",
+    description: "Free astrology app with birth chart calculator, daily horoscopes, AI astrologer chat, tarot readings, and personalized cosmic insights.",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Orbli - Free Birth Chart & Astrology Calculators",
+    description: "Free astrology app with birth chart calculator, daily horoscopes, AI astrologer chat, and tarot readings.",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function RootLayout({

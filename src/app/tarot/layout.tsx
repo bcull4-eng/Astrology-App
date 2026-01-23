@@ -1,8 +1,19 @@
 import Link from 'next/link'
 import Image from 'next/image'
+import type { Metadata } from 'next'
 import { requireUser } from '@/lib/auth'
 import { createClient } from '@/lib/supabase/server'
 import { StaticStarfield } from '@/components/ui/starfield-background'
+
+export const metadata: Metadata = {
+  title: 'Free Tarot Reading Online | Daily Tarot Card Reading | Orbli',
+  description: 'Get your free daily tarot reading with AI-powered interpretations personalized to your birth chart. Choose from one-card, three-card, or yes/no spreads.',
+  openGraph: {
+    title: 'Free Tarot Reading Online | Orbli',
+    description: 'Get your free daily tarot reading with AI-powered interpretations personalized to your birth chart.',
+    type: 'website',
+  },
+}
 
 export default async function TarotLayout({
   children,

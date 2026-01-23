@@ -1,8 +1,19 @@
 import Link from 'next/link'
 import Image from 'next/image'
+import type { Metadata } from 'next'
 import { requireUser } from '@/lib/auth'
 import { createClient } from '@/lib/supabase/server'
 import { StaticStarfield } from '@/components/ui/starfield-background'
+
+export const metadata: Metadata = {
+  title: 'Synastry Chart Calculator | Relationship Compatibility | Orbli',
+  description: 'Free synastry chart calculator to analyze relationship compatibility. Compare birth charts and discover your romantic, emotional, and spiritual connections.',
+  openGraph: {
+    title: 'Synastry Chart Calculator | Orbli',
+    description: 'Free synastry chart calculator to analyze relationship compatibility between two people.',
+    type: 'website',
+  },
+}
 
 export default async function SynastryLayout({
   children,

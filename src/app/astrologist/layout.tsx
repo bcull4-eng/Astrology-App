@@ -1,8 +1,19 @@
 import Link from 'next/link'
 import Image from 'next/image'
+import type { Metadata } from 'next'
 import { requireUser } from '@/lib/auth'
 import { createClient } from '@/lib/supabase/server'
 import { StaticStarfield } from '@/components/ui/starfield-background'
+
+export const metadata: Metadata = {
+  title: 'AI Astrologer Chat | Ask About Your Birth Chart | Orbli',
+  description: 'Chat with our AI astrologer about your birth chart, transits, and cosmic influences. Get personalized astrological guidance and answers instantly.',
+  openGraph: {
+    title: 'AI Astrologer Chat | Orbli',
+    description: 'Chat with our AI astrologer about your birth chart and get personalized guidance.',
+    type: 'website',
+  },
+}
 
 export default async function AstrologistLayout({
   children,

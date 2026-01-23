@@ -1,8 +1,19 @@
 import Link from 'next/link'
 import Image from 'next/image'
+import type { Metadata } from 'next'
 import { requireUser } from '@/lib/auth'
 import { createClient } from '@/lib/supabase/server'
 import { StaticStarfield } from '@/components/ui/starfield-background'
+
+export const metadata: Metadata = {
+  title: 'Learn Astrology Online | Free Astrology Course for Beginners | Orbli',
+  description: 'Master astrology with our comprehensive online course. Learn to read birth charts, understand planetary placements, and interpret transits. Certificate included.',
+  openGraph: {
+    title: 'Learn Astrology Online | Orbli',
+    description: 'Master astrology with our comprehensive online course. Learn to read birth charts and understand planetary placements.',
+    type: 'website',
+  },
+}
 
 export default async function LearnLayout({
   children,

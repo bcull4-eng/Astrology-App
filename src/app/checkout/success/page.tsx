@@ -7,17 +7,27 @@
  * Verifies the session and redirects to dashboard.
  */
 
-import { Suspense, useEffect, useState } from 'react'
+import { Suspense, useEffect, useState, useRef } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
+import { trackSubscription } from '@/lib/analytics'
 
 function SuccessContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const sessionId = searchParams.get('session_id')
+  const plan = searchParams.get('plan') as 'monthly' | 'annual' | 'lifetime' | null
   const [countdown, setCountdown] = useState(5)
+  const tracked = useRef(false)
 
   useEffect(() => {
+    // Track conversion (only once)
+    if (!tracked.current && plan) {
+      tracked.current = true
+      const values = { monthly: 14.99, annual: 99, lifetime: 199 }
+      trackSubscription(plan, values[plan] || 0)
+    }
+
     // Auto-redirect to dashboard after countdown
     const timer = setInterval(() => {
       setCountdown((prev) => {
@@ -31,7 +41,7 @@ function SuccessContent() {
     }, 1000)
 
     return () => clearInterval(timer)
-  }, [router])
+  }, [router, plan])
 
   return (
     <div className="max-w-md w-full text-center">

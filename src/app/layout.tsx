@@ -1,8 +1,11 @@
 import type { Metadata } from "next";
 import { Geist, Fraunces } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 import { AIAssistantProvider } from "@/components/ai-assistant";
 import { CookieBanner } from "@/components/cookie-banner";
+
+const GA_MEASUREMENT_ID = "G-Z9M696VKJT";
 
 const geist = Geist({
   variable: "--font-geist",
@@ -75,6 +78,21 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        <Script
+          src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${GA_MEASUREMENT_ID}', {
+              page_title: document.title,
+              page_location: window.location.href,
+            });
+          `}
+        </Script>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}

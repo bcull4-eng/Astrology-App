@@ -4,6 +4,7 @@ import { getUser } from '@/lib/auth'
 import { redirect } from 'next/navigation'
 import { TestimonialsSection, StatsBar } from '@/components/social-proof'
 import { AnimatedUserCount } from '@/components/social-proof/animated-user-count'
+import { StaticStarfield } from '@/components/ui/starfield-background'
 import { Star, Sparkles, Calendar, TrendingUp, MessageCircle, FileText, ChevronRight, Play, Shield, Zap } from 'lucide-react'
 
 export default async function Home() {
@@ -15,7 +16,8 @@ export default async function Home() {
   }
 
   return (
-    <div className="min-h-screen bg-[#1a1a2e]">
+    <div className="min-h-screen bg-[#1a1a2e] relative overflow-hidden">
+      <StaticStarfield />
       {/* Header */}
       <header className="fixed top-0 left-0 right-0 z-50 bg-[#1a1a2e]/80 backdrop-blur-md border-b border-indigo-900/30">
         <div className="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">

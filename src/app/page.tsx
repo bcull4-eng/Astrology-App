@@ -366,6 +366,433 @@ export default async function Home() {
         </div>
       </section>
 
+      {/* AI Astrologist Showcase */}
+      <section className="py-24 px-4">
+        <div className="max-w-6xl mx-auto">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <div>
+              <span className="px-3 py-1 bg-pink-500/10 text-pink-400 text-sm font-medium rounded-full">
+                AI Astrologist
+              </span>
+              <h2 className="text-3xl md:text-4xl font-bold text-white mt-4 mb-4">
+                Ask anything about your chart
+              </h2>
+              <p className="text-slate-400 mb-6">
+                Have a burning question about your love life, career, or what&apos;s coming up? Our AI Astrologist knows your complete birth chart and gives personalised answers instantly.
+              </p>
+              <ul className="space-y-3 mb-8">
+                <li className="flex items-center gap-3 text-slate-300">
+                  <div className="w-6 h-6 bg-pink-500/20 rounded-full flex items-center justify-center">
+                    <svg className="w-4 h-4 text-pink-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                  </div>
+                  Understands your complete natal chart
+                </li>
+                <li className="flex items-center gap-3 text-slate-300">
+                  <div className="w-6 h-6 bg-pink-500/20 rounded-full flex items-center justify-center">
+                    <svg className="w-4 h-4 text-pink-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                  </div>
+                  Answers questions about love, career, timing & more
+                </li>
+                <li className="flex items-center gap-3 text-slate-300">
+                  <div className="w-6 h-6 bg-pink-500/20 rounded-full flex items-center justify-center">
+                    <svg className="w-4 h-4 text-pink-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                  </div>
+                  Choose from multiple astrologer personalities
+                </li>
+              </ul>
+              <Link
+                href="/auth/sign-up"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-pink-600 hover:bg-pink-700 text-white font-semibold rounded-xl transition-colors"
+              >
+                Try AI Astrologist
+                <ChevronRight className="w-5 h-5" />
+              </Link>
+            </div>
+
+            {/* Chat mockup */}
+            <div className="bg-slate-900 border border-slate-700 rounded-2xl overflow-hidden shadow-2xl">
+              <div className="bg-slate-800 px-4 py-3 border-b border-slate-700 flex items-center gap-3">
+                <div className="w-10 h-10 bg-gradient-to-br from-pink-500 to-purple-600 rounded-full flex items-center justify-center">
+                  <Sparkles className="w-5 h-5 text-white" />
+                </div>
+                <div>
+                  <div className="text-white font-medium">Luna</div>
+                  <div className="text-slate-400 text-xs">Intuitive Guide</div>
+                </div>
+              </div>
+              <div className="p-4 space-y-4 h-[400px] overflow-hidden">
+                {/* User message */}
+                <div className="flex justify-end">
+                  <div className="bg-indigo-600 rounded-2xl rounded-br-md px-4 py-2 max-w-[80%]">
+                    <p className="text-white text-sm">Why do I keep attracting the same type of partners?</p>
+                  </div>
+                </div>
+                {/* AI response */}
+                <div className="flex gap-3">
+                  <div className="w-8 h-8 bg-gradient-to-br from-pink-500 to-purple-600 rounded-full flex-shrink-0 flex items-center justify-center">
+                    <Sparkles className="w-4 h-4 text-white" />
+                  </div>
+                  <div className="bg-slate-800 rounded-2xl rounded-tl-md px-4 py-3 max-w-[85%]">
+                    <p className="text-slate-200 text-sm leading-relaxed">
+                      Great question! Looking at your chart, I see <span className="text-pink-400">Venus in Scorpio in your 7th house</span> - this creates an intense pattern in relationships.
+                    </p>
+                    <p className="text-slate-200 text-sm leading-relaxed mt-2">
+                      You&apos;re drawn to deep, transformative connections. Your <span className="text-purple-400">Moon square Pluto</span> adds emotional intensity that can feel magnetic but overwhelming.
+                    </p>
+                    <p className="text-slate-200 text-sm leading-relaxed mt-2">
+                      The pattern will shift when Saturn enters your 7th house in March - you&apos;ll start attracting more stable, committed partners.
+                    </p>
+                  </div>
+                </div>
+                {/* User follow-up */}
+                <div className="flex justify-end">
+                  <div className="bg-indigo-600 rounded-2xl rounded-br-md px-4 py-2 max-w-[80%]">
+                    <p className="text-white text-sm">What can I do until then?</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Tarot Showcase */}
+      <section className="py-24 px-4 bg-gradient-to-b from-slate-900 via-purple-950/20 to-slate-900">
+        <div className="max-w-6xl mx-auto">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            {/* Tarot mockup */}
+            <div className="order-2 lg:order-1">
+              <div className="bg-slate-900/80 border border-purple-500/30 rounded-2xl p-8 shadow-2xl">
+                <div className="text-center mb-6">
+                  <span className="text-purple-400 text-sm font-medium">Your Daily Card</span>
+                  <h3 className="text-xl font-semibold text-white mt-1">The Star</h3>
+                </div>
+
+                {/* Card display */}
+                <div className="flex justify-center mb-6">
+                  <div className="relative">
+                    <div className="w-48 h-80 bg-gradient-to-b from-purple-900/50 to-indigo-900/50 border-2 border-purple-500/50 rounded-xl flex items-center justify-center shadow-lg shadow-purple-500/20">
+                      <div className="text-center">
+                        <div className="text-6xl mb-2">⭐</div>
+                        <div className="text-purple-300 text-sm font-medium">XVII</div>
+                        <div className="text-white text-lg mt-2">The Star</div>
+                      </div>
+                    </div>
+                    {/* Glow effect */}
+                    <div className="absolute inset-0 bg-purple-500/20 blur-2xl -z-10" />
+                  </div>
+                </div>
+
+                {/* Interpretation preview */}
+                <div className="bg-slate-800/50 rounded-xl p-4">
+                  <p className="text-slate-300 text-sm leading-relaxed">
+                    The Star brings <span className="text-purple-400">hope and renewal</span> after a challenging period. With your <span className="text-indigo-400">Moon in Pisces</span>, this card amplifies your intuition today. Trust the gentle guidance you receive...
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="order-1 lg:order-2">
+              <span className="px-3 py-1 bg-purple-500/10 text-purple-400 text-sm font-medium rounded-full">
+                Daily Tarot
+              </span>
+              <h2 className="text-3xl md:text-4xl font-bold text-white mt-4 mb-4">
+                Daily tarot readings tied to your chart
+              </h2>
+              <p className="text-slate-400 mb-6">
+                Not generic readings - our tarot interpretations are woven with your natal chart placements for deeply personal guidance. One free reading per day with Pro.
+              </p>
+              <ul className="space-y-3 mb-8">
+                <li className="flex items-center gap-3 text-slate-300">
+                  <div className="w-6 h-6 bg-purple-500/20 rounded-full flex items-center justify-center">
+                    <svg className="w-4 h-4 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                  </div>
+                  Classic Rider-Waite deck with reversals
+                </li>
+                <li className="flex items-center gap-3 text-slate-300">
+                  <div className="w-6 h-6 bg-purple-500/20 rounded-full flex items-center justify-center">
+                    <svg className="w-4 h-4 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                  </div>
+                  Multiple spread types: Daily, Yes/No, 3-Card
+                </li>
+                <li className="flex items-center gap-3 text-slate-300">
+                  <div className="w-6 h-6 bg-purple-500/20 rounded-full flex items-center justify-center">
+                    <svg className="w-4 h-4 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                  </div>
+                  Interpretations personalised to your birth chart
+                </li>
+              </ul>
+              <Link
+                href="/auth/sign-up"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-purple-600 hover:bg-purple-700 text-white font-semibold rounded-xl transition-colors"
+              >
+                Get Your Daily Card
+                <ChevronRight className="w-5 h-5" />
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Reports Showcase */}
+      <section className="py-24 px-4">
+        <div className="max-w-6xl mx-auto">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <div>
+              <span className="px-3 py-1 bg-amber-500/10 text-amber-400 text-sm font-medium rounded-full">
+                In-Depth Reports
+              </span>
+              <h2 className="text-3xl md:text-4xl font-bold text-white mt-4 mb-4">
+                4,000+ word reports about you
+              </h2>
+              <p className="text-slate-400 mb-6">
+                Comprehensive, beautifully designed reports that reveal the depths of your personality, relationships, career path, and the year ahead. Generated instantly, yours forever.
+              </p>
+              <ul className="space-y-3 mb-8">
+                <li className="flex items-center gap-3 text-slate-300">
+                  <div className="w-6 h-6 bg-amber-500/20 rounded-full flex items-center justify-center">
+                    <svg className="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                  </div>
+                  6 different report types available
+                </li>
+                <li className="flex items-center gap-3 text-slate-300">
+                  <div className="w-6 h-6 bg-amber-500/20 rounded-full flex items-center justify-center">
+                    <svg className="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                  </div>
+                  Compatibility reports for couples
+                </li>
+                <li className="flex items-center gap-3 text-slate-300">
+                  <div className="w-6 h-6 bg-amber-500/20 rounded-full flex items-center justify-center">
+                    <svg className="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                  </div>
+                  Interactive elements & visual charts
+                </li>
+              </ul>
+              <Link
+                href="/reports"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-amber-600 hover:bg-amber-700 text-white font-semibold rounded-xl transition-colors"
+              >
+                View Sample Reports
+                <ChevronRight className="w-5 h-5" />
+              </Link>
+            </div>
+
+            {/* Reports mockup */}
+            <div className="relative">
+              {/* Stacked report cards */}
+              <div className="relative h-[450px]">
+                {/* Background card */}
+                <div className="absolute top-8 left-8 right-0 bg-slate-800 border border-slate-700 rounded-2xl p-6 shadow-xl transform rotate-3">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-10 h-10 bg-gradient-to-br from-pink-500 to-rose-600 rounded-lg flex items-center justify-center">
+                      <span className="text-white text-lg">💕</span>
+                    </div>
+                    <div>
+                      <div className="text-white font-semibold">Love & Relationships</div>
+                      <div className="text-slate-400 text-xs">4,200 words</div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Middle card */}
+                <div className="absolute top-4 left-4 right-4 bg-slate-800 border border-slate-700 rounded-2xl p-6 shadow-xl transform -rotate-2">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-10 h-10 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-lg flex items-center justify-center">
+                      <span className="text-white text-lg">💼</span>
+                    </div>
+                    <div>
+                      <div className="text-white font-semibold">Career & Purpose</div>
+                      <div className="text-slate-400 text-xs">4,500 words</div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Front card - full preview */}
+                <div className="absolute top-0 left-0 right-8 bg-slate-900 border border-amber-500/30 rounded-2xl overflow-hidden shadow-2xl">
+                  <div className="bg-gradient-to-r from-amber-900/50 to-orange-900/50 px-6 py-4 border-b border-amber-500/20">
+                    <div className="flex items-center gap-3">
+                      <div className="w-12 h-12 bg-gradient-to-br from-amber-500 to-orange-600 rounded-xl flex items-center justify-center">
+                        <Star className="w-6 h-6 text-white" />
+                      </div>
+                      <div>
+                        <div className="text-white font-semibold text-lg">Personality Deep Dive</div>
+                        <div className="text-amber-400/70 text-sm">Your Complete Natal Analysis</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="p-6 space-y-4">
+                    <div>
+                      <h4 className="text-white font-medium mb-2">Your Core Identity</h4>
+                      <p className="text-slate-400 text-sm leading-relaxed">
+                        With your Sun in Leo in the 10th house, you were born to shine in a public role. Your identity is deeply tied to achievement and recognition...
+                      </p>
+                    </div>
+                    <div>
+                      <h4 className="text-white font-medium mb-2">Emotional Nature</h4>
+                      <p className="text-slate-400 text-sm leading-relaxed">
+                        Your Moon in Pisces gives you exceptional emotional depth and intuition. You absorb the feelings of those around you like a sponge...
+                      </p>
+                    </div>
+                    <div className="flex items-center gap-4 pt-4 border-t border-slate-800">
+                      <span className="text-slate-500 text-xs">4,800 words</span>
+                      <span className="text-slate-500 text-xs">•</span>
+                      <span className="text-slate-500 text-xs">12 sections</span>
+                      <span className="text-slate-500 text-xs">•</span>
+                      <span className="text-amber-400 text-xs">£29</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Course Showcase */}
+      <section className="py-24 px-4 bg-gradient-to-b from-slate-900 via-cyan-950/20 to-slate-900">
+        <div className="max-w-6xl mx-auto">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            {/* Course mockup */}
+            <div className="order-2 lg:order-1">
+              <div className="bg-slate-900 border border-cyan-500/30 rounded-2xl overflow-hidden shadow-2xl">
+                {/* Course header */}
+                <div className="bg-gradient-to-r from-cyan-900/50 to-blue-900/50 px-6 py-4 border-b border-cyan-500/20">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <span className="text-cyan-400 text-xs font-medium">MODULE 3</span>
+                      <h3 className="text-white font-semibold">The Planets</h3>
+                    </div>
+                    <div className="text-right">
+                      <div className="text-white font-semibold">67%</div>
+                      <div className="text-slate-400 text-xs">Complete</div>
+                    </div>
+                  </div>
+                  {/* Progress bar */}
+                  <div className="mt-3 h-2 bg-slate-800 rounded-full overflow-hidden">
+                    <div className="h-full w-2/3 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-full" />
+                  </div>
+                </div>
+
+                {/* Lesson content mockup */}
+                <div className="p-6">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-10 h-10 bg-amber-500/20 rounded-full flex items-center justify-center">
+                      <span className="text-xl">☀️</span>
+                    </div>
+                    <div>
+                      <div className="text-white font-medium">The Sun</div>
+                      <div className="text-slate-400 text-xs">Your core identity & life force</div>
+                    </div>
+                  </div>
+
+                  <div className="bg-slate-800/50 rounded-xl p-4 mb-4">
+                    <p className="text-slate-300 text-sm leading-relaxed">
+                      The Sun represents your <span className="text-amber-400">core essence</span> - who you are at your most authentic. Unlike your Moon (emotions) or Rising (first impressions), your Sun sign shows...
+                    </p>
+                  </div>
+
+                  {/* Interactive element */}
+                  <div className="bg-indigo-950/50 border border-indigo-500/30 rounded-xl p-4">
+                    <div className="flex items-center gap-2 mb-2">
+                      <Sparkles className="w-4 h-4 text-indigo-400" />
+                      <span className="text-indigo-400 text-sm font-medium">Your Chart Connection</span>
+                    </div>
+                    <p className="text-slate-300 text-sm">
+                      Your Sun is in <span className="text-amber-400 font-medium">Leo</span> - you express your identity through creativity, leadership, and warm generosity.
+                    </p>
+                  </div>
+                </div>
+
+                {/* Lesson navigation */}
+                <div className="px-6 py-4 bg-slate-800/30 border-t border-slate-700/50 flex items-center justify-between">
+                  <button className="text-slate-400 text-sm hover:text-white transition-colors flex items-center gap-1">
+                    <ChevronRight className="w-4 h-4 rotate-180" />
+                    Previous
+                  </button>
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 rounded-full bg-cyan-500" />
+                    <div className="w-2 h-2 rounded-full bg-cyan-500" />
+                    <div className="w-2 h-2 rounded-full bg-cyan-500" />
+                    <div className="w-2 h-2 rounded-full bg-slate-600" />
+                    <div className="w-2 h-2 rounded-full bg-slate-600" />
+                  </div>
+                  <button className="text-cyan-400 text-sm hover:text-cyan-300 transition-colors flex items-center gap-1">
+                    Next
+                    <ChevronRight className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div className="order-1 lg:order-2">
+              <span className="px-3 py-1 bg-cyan-500/10 text-cyan-400 text-sm font-medium rounded-full">
+                Learn Astrology
+              </span>
+              <h2 className="text-3xl md:text-4xl font-bold text-white mt-4 mb-4">
+                Master astrology with our interactive course
+              </h2>
+              <p className="text-slate-400 mb-6">
+                12 modules, 90 lessons, and interactive exercises - all tied to YOUR birth chart. Learn astrology by studying yourself. No dry textbook theory.
+              </p>
+              <ul className="space-y-3 mb-8">
+                <li className="flex items-center gap-3 text-slate-300">
+                  <div className="w-6 h-6 bg-cyan-500/20 rounded-full flex items-center justify-center">
+                    <svg className="w-4 h-4 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                  </div>
+                  Lessons reference your own birth chart
+                </li>
+                <li className="flex items-center gap-3 text-slate-300">
+                  <div className="w-6 h-6 bg-cyan-500/20 rounded-full flex items-center justify-center">
+                    <svg className="w-4 h-4 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                  </div>
+                  Quizzes to test your knowledge
+                </li>
+                <li className="flex items-center gap-3 text-slate-300">
+                  <div className="w-6 h-6 bg-cyan-500/20 rounded-full flex items-center justify-center">
+                    <svg className="w-4 h-4 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                  </div>
+                  Certificate upon completion
+                </li>
+              </ul>
+              <div className="flex items-center gap-4">
+                <Link
+                  href="/learn"
+                  className="inline-flex items-center gap-2 px-6 py-3 bg-cyan-600 hover:bg-cyan-700 text-white font-semibold rounded-xl transition-colors"
+                >
+                  Preview Course
+                  <ChevronRight className="w-5 h-5" />
+                </Link>
+                <span className="text-slate-400 text-sm">Free preview available</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Testimonials */}
       <section className="py-24 px-4">
         <div className="max-w-6xl mx-auto">

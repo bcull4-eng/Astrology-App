@@ -40,14 +40,20 @@ export async function GET() {
           subscription.stripe_subscription_id
         )
 
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const stripeSub = stripeSubscription as any
+        const periodEnd = stripeSub.current_period_end
+          || stripeSubscription.items.data[0]?.current_period_end
+          || null
+
         // Update database with current Stripe data
         const { error: updateError } = await supabase
           .from('subscriptions')
           .update({
             status: stripeSubscription.status,
-            cancel_at_period_end: stripeSubscription.cancel_at_period_end,
-            current_period_end: stripeSubscription.current_period_end
-              ? new Date(stripeSubscription.current_period_end * 1000).toISOString()
+            cancel_at_period_end: stripeSub.cancel_at_period_end || false,
+            current_period_end: periodEnd
+              ? new Date(periodEnd * 1000).toISOString()
               : null,
           })
           .eq('user_id', user.id)
@@ -60,9 +66,9 @@ export async function GET() {
           subscription: {
             ...subscription,
             status: stripeSubscription.status,
-            cancel_at_period_end: stripeSubscription.cancel_at_period_end,
-            current_period_end: stripeSubscription.current_period_end
-              ? new Date(stripeSubscription.current_period_end * 1000).toISOString()
+            cancel_at_period_end: stripeSub.cancel_at_period_end || false,
+            current_period_end: periodEnd
+              ? new Date(periodEnd * 1000).toISOString()
               : subscription.current_period_end,
           },
         })

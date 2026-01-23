@@ -43,24 +43,19 @@ export async function GET() {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const stripeSub = stripeSubscription as any
 
-        console.log('[Subscription API] Stripe response:', {
-          id: stripeSubscription.id,
-          status: stripeSubscription.status,
-          cancel_at_period_end: stripeSub.cancel_at_period_end,
-          cancel_at: stripeSub.cancel_at,
-          canceled_at: stripeSub.canceled_at,
-        })
-
         const periodEnd = stripeSub.current_period_end
           || stripeSubscription.items.data[0]?.current_period_end
           || null
+
+        // Check both cancel_at_period_end AND cancel_at (Stripe uses either depending on how cancelled)
+        const willCancel = stripeSub.cancel_at_period_end || stripeSub.cancel_at != null
 
         // Update database with current Stripe data
         const { error: updateError } = await supabase
           .from('subscriptions')
           .update({
             status: stripeSubscription.status,
-            cancel_at_period_end: stripeSub.cancel_at_period_end || false,
+            cancel_at_period_end: willCancel,
             current_period_end: periodEnd
               ? new Date(periodEnd * 1000).toISOString()
               : null,
@@ -75,15 +70,10 @@ export async function GET() {
           subscription: {
             ...subscription,
             status: stripeSubscription.status,
-            cancel_at_period_end: stripeSub.cancel_at_period_end || false,
+            cancel_at_period_end: willCancel,
             current_period_end: periodEnd
               ? new Date(periodEnd * 1000).toISOString()
               : subscription.current_period_end,
-          },
-          debug: {
-            stripe_cancel_at_period_end: stripeSub.cancel_at_period_end,
-            stripe_cancel_at: stripeSub.cancel_at,
-            stripe_status: stripeSubscription.status,
           },
         })
       } catch (stripeError) {

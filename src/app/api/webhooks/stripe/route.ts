@@ -198,27 +198,52 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
  * Handle subscription updates
  */
 async function handleSubscriptionUpdated(subscription: Stripe.Subscription) {
+  console.log('[Stripe Webhook] Processing subscription update/create')
+
   const userId = subscription.metadata?.user_id
 
   if (!userId) {
-    console.error('No user_id in subscription metadata')
+    console.error('[Stripe Webhook] No user_id in subscription metadata')
     return
   }
+
+  console.log('[Stripe Webhook] Subscription data:', {
+    userId,
+    subscriptionId: subscription.id,
+    status: subscription.status,
+    planType: subscription.metadata?.plan_type,
+  })
 
   const customerId = subscription.customer as string
   const planType = subscription.metadata?.plan_type || 'monthly'
 
-  await upsertSubscription(userId, customerId, subscription, planType)
-
-  // Update user metadata based on subscription status
-  const periodEnd = (subscription as Stripe.Subscription & { current_period_end: number }).current_period_end
-  if (subscription.status === 'active' || subscription.status === 'trialing') {
-    await updateUserMetadata(userId, 'pro', planType, periodEnd)
-  } else if (subscription.status === 'past_due') {
-    await updateUserMetadata(userId, 'pro', planType, periodEnd)
+  try {
+    await upsertSubscription(userId, customerId, subscription, planType)
+    console.log('[Stripe Webhook] Subscription upserted successfully')
+  } catch (error) {
+    console.error('[Stripe Webhook] Failed to upsert subscription:', error)
+    throw error
   }
 
-  console.log(`Subscription updated for user ${userId}: ${subscription.status}`)
+  // Get period end from subscription or items
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const sub = subscription as any
+  const periodEnd = sub.current_period_end
+    || subscription.items.data[0]?.current_period_end
+    || null
+
+  // Update user metadata based on subscription status
+  if (subscription.status === 'active' || subscription.status === 'trialing' || subscription.status === 'past_due') {
+    try {
+      await updateUserMetadata(userId, 'pro', planType, periodEnd)
+      console.log('[Stripe Webhook] User metadata updated successfully')
+    } catch (error) {
+      console.error('[Stripe Webhook] Failed to update user metadata:', error)
+      throw error
+    }
+  }
+
+  console.log(`[Stripe Webhook] Subscription updated for user ${userId}: ${subscription.status}`)
 }
 
 /**
@@ -287,7 +312,17 @@ async function upsertSubscription(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const sub = subscription as any
 
-  await supabaseAdmin.from('subscriptions').upsert({
+  // Get period dates - try subscription level first, then fall back to item level
+  const periodStart = sub.current_period_start
+    || subscription.items.data[0]?.current_period_start
+    || sub.start_date
+    || Math.floor(Date.now() / 1000)
+
+  const periodEnd = sub.current_period_end
+    || subscription.items.data[0]?.current_period_end
+    || null
+
+  const upsertData: Record<string, unknown> = {
     user_id: userId,
     stripe_customer_id: customerId,
     stripe_subscription_id: subscription.id,
@@ -297,10 +332,16 @@ async function upsertSubscription(
             subscription.status === 'trialing' ? 'trialing' :
             subscription.status === 'past_due' ? 'past_due' :
             subscription.status === 'canceled' ? 'canceled' : 'expired',
-    current_period_start: new Date(sub.current_period_start * 1000).toISOString(),
-    current_period_end: new Date(sub.current_period_end * 1000).toISOString(),
-    cancel_at_period_end: sub.cancel_at_period_end,
-  }, { onConflict: 'user_id' })
+    current_period_start: new Date(periodStart * 1000).toISOString(),
+    cancel_at_period_end: sub.cancel_at_period_end || false,
+  }
+
+  // Only set period end if we have a valid value
+  if (periodEnd) {
+    upsertData.current_period_end = new Date(periodEnd * 1000).toISOString()
+  }
+
+  await supabaseAdmin.from('subscriptions').upsert(upsertData, { onConflict: 'user_id' })
 }
 
 /**

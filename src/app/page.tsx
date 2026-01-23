@@ -517,7 +517,10 @@ export default async function Home() {
             </div>
           </div>
           <div className="mt-8 pt-8 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-slate-500">
-            <p>&copy; {new Date().getFullYear()} Orbli. All rights reserved.</p>
+            <div>
+              <p>&copy; {new Date().getFullYear()} Wooden Donkey Ltd. All rights reserved.</p>
+              <p className="mt-1 text-slate-600 text-xs">167-169 Great Portland Street, 5th Floor, London, W1W 5PF</p>
+            </div>
             <div className="flex items-center gap-6">
               <Link href="/legal/privacy" className="hover:text-white transition-colors">Privacy</Link>
               <Link href="/legal/terms" className="hover:text-white transition-colors">Terms</Link>

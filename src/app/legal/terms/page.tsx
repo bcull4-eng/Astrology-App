@@ -26,7 +26,10 @@ export default function TermsOfServicePage() {
                 By accessing or using Orbli (&quot;the Service&quot;), you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use our Service.
               </p>
               <p className="mt-3">
-                Orbli is operated from the United Kingdom. These terms are governed by English law.
+                Orbli is operated by Wooden Donkey Ltd, a company registered in England and Wales. These terms are governed by English law.
+              </p>
+              <p className="mt-3">
+                <strong>Registered Office:</strong> 167-169 Great Portland Street, 5th Floor, London, W1W 5PF
               </p>
             </section>
 

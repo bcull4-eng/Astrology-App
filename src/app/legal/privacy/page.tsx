@@ -23,10 +23,13 @@ export default function PrivacyPolicyPage() {
             <section>
               <h2 className="text-xl font-semibold text-white mb-4">1. Introduction</h2>
               <p>
-                Orbli (&quot;we&quot;, &quot;our&quot;, or &quot;us&quot;) is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our website and services at orbli.app.
+                Orbli is operated by Wooden Donkey Ltd (&quot;we&quot;, &quot;our&quot;, or &quot;us&quot;). We are committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our website and services at orbli.app.
               </p>
               <p className="mt-3">
-                We are based in the United Kingdom and comply with the UK General Data Protection Regulation (UK GDPR) and the Data Protection Act 2018.
+                We are a company registered in England and Wales and comply with the UK General Data Protection Regulation (UK GDPR) and the Data Protection Act 2018.
+              </p>
+              <p className="mt-3">
+                <strong>Registered Office:</strong> 167-169 Great Portland Street, 5th Floor, London, W1W 5PF
               </p>
             </section>
 

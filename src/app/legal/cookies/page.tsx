@@ -25,6 +25,12 @@ export default function CookiePolicyPage() {
               <p>
                 Cookies are small text files stored on your device when you visit a website. They help websites remember your preferences and improve your browsing experience.
               </p>
+              <p className="mt-3">
+                Orbli is operated by Wooden Donkey Ltd, a company registered in England and Wales.
+              </p>
+              <p className="mt-3">
+                <strong>Registered Office:</strong> 167-169 Great Portland Street, 5th Floor, London, W1W 5PF
+              </p>
             </section>
 
             <section>

@@ -42,6 +42,15 @@ export async function GET() {
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const stripeSub = stripeSubscription as any
+
+        console.log('[Subscription API] Stripe response:', {
+          id: stripeSubscription.id,
+          status: stripeSubscription.status,
+          cancel_at_period_end: stripeSub.cancel_at_period_end,
+          cancel_at: stripeSub.cancel_at,
+          canceled_at: stripeSub.canceled_at,
+        })
+
         const periodEnd = stripeSub.current_period_end
           || stripeSubscription.items.data[0]?.current_period_end
           || null

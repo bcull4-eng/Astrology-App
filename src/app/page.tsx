@@ -463,7 +463,7 @@ export default async function Home() {
       </section>
 
       {/* Tarot Showcase */}
-      <section className="py-24 px-4 bg-gradient-to-b from-slate-900 via-purple-950/20 to-slate-900">
+      <section className="py-24 px-4 bg-indigo-950/20">
         <div className="max-w-6xl mx-auto">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             {/* Tarot mockup */}
@@ -667,7 +667,7 @@ export default async function Home() {
       </section>
 
       {/* Course Showcase */}
-      <section className="py-24 px-4 bg-gradient-to-b from-slate-900 via-cyan-950/20 to-slate-900">
+      <section className="py-24 px-4 bg-indigo-950/20">
         <div className="max-w-6xl mx-auto">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             {/* Course mockup */}
@@ -807,7 +807,7 @@ export default async function Home() {
       </section>
 
       {/* Pricing Preview */}
-      <section className="py-24 px-4 bg-gradient-to-b from-slate-900 to-indigo-950">
+      <section className="py-24 px-4 bg-indigo-950/30">
         <div className="max-w-4xl mx-auto text-center">
           <span className="px-3 py-1 bg-indigo-500/10 text-indigo-400 text-sm font-medium rounded-full">
             Pricing

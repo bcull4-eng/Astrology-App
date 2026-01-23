@@ -80,6 +80,11 @@ export async function GET() {
               ? new Date(periodEnd * 1000).toISOString()
               : subscription.current_period_end,
           },
+          debug: {
+            stripe_cancel_at_period_end: stripeSub.cancel_at_period_end,
+            stripe_cancel_at: stripeSub.cancel_at,
+            stripe_status: stripeSubscription.status,
+          },
         })
       } catch (stripeError) {
         console.error('Error fetching from Stripe:', stripeError)

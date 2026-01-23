@@ -27,7 +27,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geist.variable} ${fraunces.variable} font-sans antialiased`}
+        className={`${geist.className} ${fraunces.variable} antialiased`}
       >
         <AIAssistantProvider>
           {children}

@@ -5,7 +5,8 @@
  * Exchanges the code for a session and redirects appropriately.
  */
 
-import { createClient } from '@/lib/supabase/server'
+import { createServerClient } from '@supabase/ssr'
+import { cookies } from 'next/headers'
 import { NextResponse } from 'next/server'
 
 export async function GET(request: Request) {
@@ -14,7 +15,25 @@ export async function GET(request: Request) {
   const next = searchParams.get('next')
 
   if (code) {
-    const supabase = await createClient()
+    const cookieStore = await cookies()
+
+    const supabase = createServerClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      {
+        cookies: {
+          getAll() {
+            return cookieStore.getAll()
+          },
+          setAll(cookiesToSet) {
+            cookiesToSet.forEach(({ name, value, options }) => {
+              cookieStore.set(name, value, options)
+            })
+          },
+        },
+      }
+    )
+
     const { error } = await supabase.auth.exchangeCodeForSession(code)
 
     if (!error) {
@@ -25,22 +44,21 @@ export async function GET(request: Request) {
       if (user) {
         const hasBirthData = user.user_metadata?.birth_date || user.user_metadata?.birthDate
 
-        // If explicit next param, use it
+        // Determine redirect destination
+        let redirectTo = '/birth-details'
+
         if (next) {
-          return NextResponse.redirect(`${origin}${next}`)
+          redirectTo = next
+        } else if (hasBirthData) {
+          redirectTo = '/dashboard'
         }
 
-        // Returning user with birth data -> dashboard
-        if (hasBirthData) {
-          return NextResponse.redirect(`${origin}/dashboard`)
-        }
-
-        // New user without birth data -> onboarding
-        return NextResponse.redirect(`${origin}/birth-details`)
+        // Use 303 See Other to ensure browser follows redirect properly
+        return NextResponse.redirect(`${origin}${redirectTo}`, { status: 303 })
       }
     }
   }
 
   // Return to sign-up page with error if something went wrong
-  return NextResponse.redirect(`${origin}/auth/sign-up?error=Could not verify email`)
+  return NextResponse.redirect(`${origin}/auth/sign-up?error=Could not verify email`, { status: 303 })
 }

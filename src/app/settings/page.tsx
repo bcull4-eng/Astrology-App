@@ -58,6 +58,7 @@ export default function AccountPage() {
     status: string
     plan: string
     expiresAt: string | null
+    cancelAtPeriodEnd: boolean
   } | null>(null)
   const [managingSubscription, setManagingSubscription] = useState(false)
 
@@ -65,10 +66,11 @@ export default function AccountPage() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const [reportsRes, purchasesRes, birthDataRes] = await Promise.all([
+        const [reportsRes, purchasesRes, birthDataRes, subscriptionRes] = await Promise.all([
           fetch('/api/reports'),
           fetch('/api/user/purchases'),
           fetch('/api/user/birth-data'),
+          fetch('/api/user/subscription'),
         ])
 
         if (reportsRes.ok) {
@@ -86,19 +88,20 @@ export default function AccountPage() {
           setBirthData(data.birthData || null)
         }
 
-        // Fetch subscription data from user metadata
-        const supabase = createClient()
-        const { data: { user: currentUser } } = await supabase.auth.getUser()
-        if (currentUser?.user_metadata) {
-          const meta = currentUser.user_metadata
-          if (meta.subscription_status) {
+        // Use subscription API which syncs with Stripe for accurate cancel_at_period_end
+        if (subscriptionRes.ok) {
+          const data = await subscriptionRes.json()
+          if (data.subscription) {
+            const sub = data.subscription
             setSubscription({
-              status: meta.subscription_status || 'free',
-              plan: meta.subscription_plan || 'none',
-              expiresAt: meta.subscription_expires_at || null,
+              status: sub.status === 'active' || sub.status === 'trialing' ? 'pro' : sub.status,
+              plan: sub.plan_type || 'none',
+              expiresAt: sub.current_period_end || null,
+              cancelAtPeriodEnd: sub.cancel_at_period_end || false,
             })
           }
         }
+
       } catch (error) {
         console.error('Error fetching data:', error)
       } finally {
@@ -480,8 +483,8 @@ export default function AccountPage() {
                        subscription.plan === 'annual' ? '£99/year' : '£14.99/month'}
                     </p>
                     {subscription.expiresAt && subscription.plan !== 'lifetime' && (
-                      <p className="text-indigo-300/70 text-sm mt-1">
-                        Renews on {new Date(subscription.expiresAt).toLocaleDateString('en-GB', {
+                      <p className={`text-sm mt-1 ${subscription.cancelAtPeriodEnd ? 'text-amber-400/70' : 'text-indigo-300/70'}`}>
+                        {subscription.cancelAtPeriodEnd ? 'Cancels on' : 'Renews on'} {new Date(subscription.expiresAt).toLocaleDateString('en-GB', {
                           day: 'numeric',
                           month: 'long',
                           year: 'numeric',

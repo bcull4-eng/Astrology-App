@@ -233,10 +233,13 @@ async function handleSubscriptionUpdated(subscription: Stripe.Subscription) {
     || null
 
   // Update user metadata based on subscription status
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const cancelAtPeriodEnd = (subscription as any).cancel_at_period_end || false
+
   if (subscription.status === 'active' || subscription.status === 'trialing' || subscription.status === 'past_due') {
     try {
-      await updateUserMetadata(userId, 'pro', planType, periodEnd)
-      console.log('[Stripe Webhook] User metadata updated successfully')
+      await updateUserMetadata(userId, 'pro', planType, periodEnd, cancelAtPeriodEnd)
+      console.log('[Stripe Webhook] User metadata updated successfully, cancelAtPeriodEnd:', cancelAtPeriodEnd)
     } catch (error) {
       console.error('[Stripe Webhook] Failed to update user metadata:', error)
       throw error
@@ -351,13 +354,15 @@ async function updateUserMetadata(
   userId: string,
   status: 'pro' | 'free' | 'expired',
   planType: string,
-  periodEnd: number | null
+  periodEnd: number | null,
+  cancelAtPeriodEnd: boolean = false
 ) {
   await supabaseAdmin.auth.admin.updateUserById(userId, {
     user_metadata: {
       subscription_status: status,
       subscription_plan: planType,
       subscription_expires_at: periodEnd ? new Date(periodEnd * 1000).toISOString() : null,
+      subscription_cancel_at_period_end: cancelAtPeriodEnd,
       subscribed_at: new Date().toISOString(),
     },
   })

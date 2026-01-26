@@ -30,7 +30,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_GB",
-    url: "https://orbli.app",
+    url: "https://www.orbli.app",
     siteName: "Orbli",
     title: "Orbli - Free Birth Chart & Astrology Calculators",
     description: "Free astrology app with birth chart calculator, daily horoscopes, AI astrologer chat, tarot readings, and personalized cosmic insights.",
@@ -51,8 +51,8 @@ const organizationJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
   name: 'Orbli',
-  url: 'https://orbli.app',
-  logo: 'https://orbli.app/orbli-logo.png',
+  url: 'https://www.orbli.app',
+  logo: 'https://www.orbli.app/orbli-logo.png',
   description: 'Free astrology app with birth chart calculator, daily horoscopes, AI astrologer chat, tarot readings, and personalized cosmic insights.',
   sameAs: [],
 }
@@ -61,11 +61,11 @@ const websiteJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'WebSite',
   name: 'Orbli',
-  url: 'https://orbli.app',
+  url: 'https://www.orbli.app',
   description: 'Free astrology app with birth chart calculator, daily horoscopes, AI astrologer chat, tarot readings, and personalized cosmic insights.',
   potentialAction: {
     '@type': 'SearchAction',
-    target: 'https://orbli.app/charts?q={search_term_string}',
+    target: 'https://www.orbli.app/charts?q={search_term_string}',
     'query-input': 'required name=search_term_string',
   },
 }

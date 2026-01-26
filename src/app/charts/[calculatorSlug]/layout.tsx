@@ -25,7 +25,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description: calculator.metaDescription || calculator.description,
       type: 'website',
       siteName: 'Orbli',
-      url: `https://orbli.app/charts/${calculatorSlug}`,
+      url: `https://www.orbli.app/charts/${calculatorSlug}`,
     },
     twitter: {
       card: 'summary_large_image',
@@ -33,7 +33,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description: calculator.metaDescription || calculator.description,
     },
     alternates: {
-      canonical: `https://orbli.app/charts/${calculatorSlug}`,
+      canonical: `https://www.orbli.app/charts/${calculatorSlug}`,
     },
   }
 }
@@ -51,11 +51,11 @@ export default async function CalculatorLayout({ params, children }: Props) {
     '@type': 'WebPage',
     name: calculator?.metaTitle || calculator?.title,
     description: calculator?.metaDescription || calculator?.description,
-    url: `https://orbli.app/charts/${calculatorSlug}`,
+    url: `https://www.orbli.app/charts/${calculatorSlug}`,
     isPartOf: {
       '@type': 'WebSite',
       name: 'Orbli',
-      url: 'https://orbli.app',
+      url: 'https://www.orbli.app',
     },
   })
 
@@ -66,7 +66,7 @@ export default async function CalculatorLayout({ params, children }: Props) {
       '@type': 'SoftwareApplication',
       name: calculator.title,
       description: calculator.description,
-      url: `https://orbli.app/charts/${calculatorSlug}`,
+      url: `https://www.orbli.app/charts/${calculatorSlug}`,
       applicationCategory: 'LifestyleApplication',
       operatingSystem: 'Web',
       offers: {

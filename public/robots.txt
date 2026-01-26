@@ -3,7 +3,7 @@ User-agent: *
 Allow: /
 
 # Sitemap
-Sitemap: https://orbli.app/sitemap.xml
+Sitemap: https://www.orbli.app/sitemap.xml
 
 # Disallow private/auth pages from being crawled
 Disallow: /auth/callback

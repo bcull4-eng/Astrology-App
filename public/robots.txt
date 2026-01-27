@@ -6,6 +6,8 @@ Allow: /
 Sitemap: https://www.orbli.app/sitemap.xml
 
 # Disallow private/auth pages from being crawled
-Disallow: /auth/callback
+Disallow: /auth/
 Disallow: /checkout/
 Disallow: /api/
+Disallow: /dashboard
+Disallow: /paywall

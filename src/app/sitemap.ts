@@ -27,14 +27,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     'solar-return-calculator',
   ]
 
-  // Static pages
+  // Static pages (excluding auth, dashboard, paywall - these shouldn't be indexed)
   const staticPages = [
     { url: '', priority: 1.0, changeFrequency: 'weekly' as const },
-    { url: '/auth/sign-in', priority: 0.8, changeFrequency: 'monthly' as const },
-    { url: '/auth/sign-up', priority: 0.9, changeFrequency: 'monthly' as const },
-    { url: '/paywall', priority: 0.7, changeFrequency: 'monthly' as const },
     { url: '/charts', priority: 0.9, changeFrequency: 'weekly' as const },
-    { url: '/dashboard', priority: 0.8, changeFrequency: 'daily' as const },
     { url: '/learn', priority: 0.8, changeFrequency: 'weekly' as const },
     { url: '/reports', priority: 0.8, changeFrequency: 'weekly' as const },
     { url: '/synastry', priority: 0.8, changeFrequency: 'weekly' as const },

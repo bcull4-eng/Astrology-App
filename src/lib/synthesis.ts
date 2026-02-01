@@ -2,7 +2,9 @@
  * Theme Synthesis Service
  *
  * Generates personalized themes and guidance from natal chart data.
- * Deterministic business logic - no AI.
+ * When real transit data is available (from astrology-api.io), themes
+ * and guidance are based on actual planetary transits. Otherwise
+ * falls back to deterministic logic based on natal placements.
  */
 
 import { addDays, subDays } from 'date-fns'
@@ -20,6 +22,7 @@ import type {
   GuidanceTone,
 } from '@/types'
 import type { FocusArea } from '@/types'
+import type { DailySkyData, TransitAspect } from './astrology-api'
 
 // Planet meanings for theme generation
 const planetThemes: Record<Planet, {
@@ -108,26 +111,45 @@ const signDescriptions: Record<ZodiacSign, {
   pisces: { style: 'intuitive and compassionate', approach: 'flowing with life' },
 }
 
+// Aspect descriptions for transit-based themes
+const aspectDescriptions: Record<string, {
+  nature: string
+  action: string
+}> = {
+  conjunction: { nature: 'intensifying', action: 'Focus on the combined energy' },
+  opposition: { nature: 'polarizing', action: 'Seek balance between opposing forces' },
+  trine: { nature: 'flowing', action: 'Leverage this natural ease' },
+  square: { nature: 'tension-building', action: 'Use this friction as fuel for growth' },
+  sextile: { nature: 'opportunity-creating', action: 'Take advantage of this opening' },
+  quincunx: { nature: 'adjusting', action: 'Make small but meaningful changes' },
+}
+
 /**
- * Generate primary theme from natal chart
+ * Generate primary theme from natal chart and optional real transits
  */
-export function generatePrimaryTheme(chart: NatalChart): SynthesisedTheme {
+export function generatePrimaryTheme(
+  chart: NatalChart,
+  dailySky?: DailySkyData,
+  userTransits?: TransitAspect[]
+): SynthesisedTheme {
   const today = new Date()
 
-  // Find the most prominent planet (sun, moon, or chart ruler)
+  // If we have real transit data, use the strongest transit to drive the theme
+  if (userTransits && userTransits.length > 0) {
+    return generateTransitBasedTheme(chart, userTransits, today)
+  }
+
+  // Fallback: natal-chart-only logic
   const sunPlacement = chart.placements.find(p => p.planet === 'sun')
   const moonPlacement = chart.placements.find(p => p.planet === 'moon')
   const ascendantSign = chart.ascendant.sign
 
-  // Get chart ruler based on ascendant
   const chartRuler = getChartRuler(ascendantSign)
   const rulerPlacement = chart.placements.find(p => p.planet === chartRuler)
 
-  // Choose focal planet based on current transits (simplified)
   const focalPlanet = rulerPlacement || sunPlacement || moonPlacement
 
   if (!focalPlanet) {
-    // Fallback
     return createDefaultTheme(today)
   }
 
@@ -135,7 +157,6 @@ export function generatePrimaryTheme(chart: NatalChart): SynthesisedTheme {
   const signInfo = signDescriptions[focalPlanet.sign]
   const themeName = planetInfo.themes[0]
 
-  // Generate description
   const description = generateThemeDescription(focalPlanet, signInfo, planetInfo)
 
   return {
@@ -156,19 +177,119 @@ export function generatePrimaryTheme(chart: NatalChart): SynthesisedTheme {
 }
 
 /**
- * Generate secondary themes from natal chart
+ * Generate a theme from real transit aspects
  */
-export function generateSecondaryThemes(chart: NatalChart): SynthesisedTheme[] {
+function generateTransitBasedTheme(
+  chart: NatalChart,
+  transits: TransitAspect[],
+  today: Date
+): SynthesisedTheme {
+  // Sort transits by significance: tight orb + outer planets first
+  const sorted = [...transits].sort((a, b) => {
+    const outerPlanets = ['saturn', 'uranus', 'neptune', 'pluto']
+    const aIsOuter = outerPlanets.includes(a.transitingPlanet) ? 1 : 0
+    const bIsOuter = outerPlanets.includes(b.transitingPlanet) ? 1 : 0
+    if (aIsOuter !== bIsOuter) return bIsOuter - aIsOuter
+    return a.orb - b.orb // Tighter orb = more significant
+  })
+
+  const primary = sorted[0]
+  const planetInfo = planetThemes[primary.transitingPlanet]
+  const natalPlanetInfo = planetThemes[primary.natalPlanet]
+  const natalPlacement = chart.placements.find(p => p.planet === primary.natalPlanet)
+  const aspectInfo = aspectDescriptions[primary.aspect] || aspectDescriptions['conjunction']
+
+  // Build theme name from transit
+  const transitingName = primary.transitingPlanet.charAt(0).toUpperCase() + primary.transitingPlanet.slice(1)
+  const natalName = primary.natalPlanet.charAt(0).toUpperCase() + primary.natalPlanet.slice(1)
+  const themeName = planetInfo.themes[0]
+
+  // Build description from real transit
+  const signName = natalPlacement
+    ? natalPlacement.sign.charAt(0).toUpperCase() + natalPlacement.sign.slice(1)
+    : ''
+  const houseArea = natalPlacement ? getHouseArea(natalPlacement.house) : 'your chart'
+
+  const description = `${transitingName} is currently ${primary.aspect} your natal ${natalName}${signName ? ` in ${signName}` : ''} in ${houseArea}. This ${aspectInfo.nature} energy brings themes of ${planetInfo.keywords.slice(0, 2).join(' and ')} into your ${natalPlanetInfo.keywords[0]} area. ${aspectInfo.action}.${primary.isApplying ? ' This aspect is still building in strength.' : ' This aspect is now separating.'}`
+
+  // Determine intensity from orb
+  let intensity: IntensityLevel
+  if (primary.orb < 1) intensity = 5
+  else if (primary.orb < 2) intensity = 4
+  else if (primary.orb < 4) intensity = 3
+  else if (primary.orb < 6) intensity = 2
+  else intensity = 1
+
+  return {
+    id: `theme-transit-${primary.transitingPlanet}-${primary.natalPlanet}-${Date.now()}`,
+    theme_name: themeName,
+    description,
+    start_date: subDays(today, 7),
+    peak_window: {
+      start: primary.isApplying ? addDays(today, 1) : subDays(today, 1),
+      end: primary.isApplying ? addDays(today, 7) : addDays(today, 3),
+    },
+    end_date: addDays(today, 21),
+    intensity_today: intensity,
+    primary_focus_area: planetInfo.focusArea,
+    contributing_transits: sorted.slice(0, 3).map(t => `${t.transitingPlanet}-${t.aspect}-${t.natalPlanet}`),
+    last_updated_at: today,
+  }
+}
+
+/**
+ * Generate secondary themes from natal chart and optional transits
+ */
+export function generateSecondaryThemes(
+  chart: NatalChart,
+  dailySky?: DailySkyData,
+  userTransits?: TransitAspect[]
+): SynthesisedTheme[] {
   const today = new Date()
   const themes: SynthesisedTheme[] = []
 
-  // Get planets in angular houses (1, 4, 7, 10) or personal planets
+  // If we have real transits, use the 2nd and 3rd strongest
+  if (userTransits && userTransits.length > 1) {
+    const sorted = [...userTransits].sort((a, b) => a.orb - b.orb)
+    const secondary = sorted.slice(1, 3)
+
+    secondary.forEach((transit, index) => {
+      const planetInfo = planetThemes[transit.transitingPlanet]
+      const aspectInfo = aspectDescriptions[transit.aspect] || aspectDescriptions['conjunction']
+      const natalName = transit.natalPlanet.charAt(0).toUpperCase() + transit.natalPlanet.slice(1)
+      const transitName = transit.transitingPlanet.charAt(0).toUpperCase() + transit.transitingPlanet.slice(1)
+
+      let intensity: IntensityLevel
+      if (transit.orb < 2) intensity = 4
+      else if (transit.orb < 4) intensity = 3
+      else intensity = 2
+
+      themes.push({
+        id: `theme-transit-secondary-${transit.transitingPlanet}-${Date.now()}`,
+        theme_name: planetInfo.themes[Math.min(index + 1, planetInfo.themes.length - 1)],
+        description: `${transitName} ${transit.aspect} your natal ${natalName} brings ${aspectInfo.nature} energy to your ${planetInfo.keywords[0]} area. ${aspectInfo.action}.`,
+        start_date: subDays(today, 3 + index * 5),
+        peak_window: {
+          start: addDays(today, 10 + index * 7),
+          end: addDays(today, 17 + index * 7),
+        },
+        end_date: addDays(today, 35 + index * 10),
+        intensity_today: intensity,
+        primary_focus_area: planetInfo.focusArea,
+        contributing_transits: [`${transit.transitingPlanet}-${transit.aspect}-${transit.natalPlanet}`],
+        last_updated_at: today,
+      })
+    })
+
+    return themes
+  }
+
+  // Fallback: natal-chart-only logic
   const significantPlanets = chart.placements.filter(p =>
     [1, 4, 7, 10].includes(p.house) ||
     ['mercury', 'venus', 'mars'].includes(p.planet)
   )
 
-  // Generate themes for up to 2 secondary planets
   const secondaryPlanets = significantPlanets
     .filter(p => p.planet !== 'sun' && p.planet !== 'moon')
     .slice(0, 2)
@@ -199,9 +320,13 @@ export function generateSecondaryThemes(chart: NatalChart): SynthesisedTheme[] {
 }
 
 /**
- * Generate daily guidance from natal chart
+ * Generate daily guidance from natal chart and optional real data
  */
-export function generateDailyGuidance(chart: NatalChart): DailyGuidance {
+export function generateDailyGuidance(
+  chart: NatalChart,
+  dailySky?: DailySkyData,
+  userTransits?: TransitAspect[]
+): DailyGuidance {
   const today = new Date()
 
   const moonPlacement = chart.placements.find(p => p.planet === 'moon')
@@ -209,33 +334,44 @@ export function generateDailyGuidance(chart: NatalChart): DailyGuidance {
   const marsPlacement = chart.placements.find(p => p.planet === 'mars')
 
   const moonSign = moonPlacement?.sign || 'aries'
-  const moonInfo = signDescriptions[moonSign]
 
-  // Determine tone based on moon sign element
-  const tone = getToneFromSign(moonSign)
+  // Determine tone: use real transit data if available
+  let tone: GuidanceTone
+  if (dailySky && userTransits && userTransits.length > 0) {
+    tone = getToneFromTransits(dailySky, userTransits)
+  } else {
+    tone = getToneFromSign(moonSign)
+  }
 
-  // Generate do/avoid lists based on planetary positions
-  const doList = generateDoList(chart)
-  const avoidList = generateAvoidList(chart)
+  // Generate do/avoid lists: enhance with real data if available
+  const doList = generateDoList(chart, dailySky, userTransits)
+  const avoidList = generateAvoidList(chart, dailySky)
+
+  // Generate advice: enhance with real data
+  const shortAdvice = generateShortAdvice(moonSign, mercuryPlacement, marsPlacement, dailySky, userTransits)
 
   return {
     date: today,
     tone,
-    short_advice: generateShortAdvice(moonSign, mercuryPlacement, marsPlacement),
+    short_advice: shortAdvice,
     do_list: doList,
     avoid_list: avoidList,
-    intensity_level: calculateOverallIntensity(chart),
+    intensity_level: dailySky && userTransits
+      ? calculateTransitIntensity(userTransits)
+      : calculateOverallIntensity(chart),
   }
 }
 
 /**
- * Generate upcoming windows
+ * Generate upcoming windows - enhanced with real sky data when available
  */
-export function generateUpcomingWindows(chart: NatalChart): UpcomingWindow[] {
+export function generateUpcomingWindows(
+  chart: NatalChart,
+  dailySky?: DailySkyData
+): UpcomingWindow[] {
   const today = new Date()
   const windows: UpcomingWindow[] = []
 
-  // Generate 4 upcoming windows based on planetary emphasis
   const focusAreas: FocusArea[] = ['relationships', 'career', 'growth', 'money']
 
   focusAreas.forEach((area, index) => {
@@ -243,7 +379,7 @@ export function generateUpcomingWindows(chart: NatalChart): UpcomingWindow[] {
     windows.push({
       start_date: addDays(today, startOffset),
       end_date: addDays(today, startOffset + 6),
-      summary: generateWindowSummary(area, chart),
+      summary: generateWindowSummary(area, chart, dailySky),
       key_focus: area,
       intensity_trend: index === 0 ? 'peaking' : index === 1 ? 'rising' : 'easing',
     })
@@ -252,7 +388,7 @@ export function generateUpcomingWindows(chart: NatalChart): UpcomingWindow[] {
   return windows
 }
 
-// Helper functions
+// ---------- Helper functions ----------
 
 function getChartRuler(ascendant: ZodiacSign): Planet {
   const rulers: Record<ZodiacSign, Planet> = {
@@ -302,7 +438,6 @@ function getHouseArea(house: number): string {
 }
 
 function calculateIntensity(placement: NatalPlacement): IntensityLevel {
-  // Higher intensity for angular houses and personal planets
   let intensity = 3
 
   if ([1, 4, 7, 10].includes(placement.house)) intensity += 1
@@ -312,22 +447,69 @@ function calculateIntensity(placement: NatalPlacement): IntensityLevel {
   return Math.max(1, Math.min(5, intensity)) as IntensityLevel
 }
 
+function calculateTransitIntensity(transits: TransitAspect[]): IntensityLevel {
+  if (transits.length === 0) return 3
+
+  let score = 0
+  for (const t of transits) {
+    // Outer planet transits are more significant
+    const outerPlanets = ['saturn', 'uranus', 'neptune', 'pluto']
+    const isOuter = outerPlanets.includes(t.transitingPlanet)
+    const weight = isOuter ? 2 : 1
+
+    // Tighter orb = stronger
+    const orbFactor = Math.max(0, 5 - t.orb) / 5
+    score += weight * orbFactor
+
+    // Challenging aspects add more intensity
+    if (t.nature === 'challenging') score += 0.5
+  }
+
+  const avg = score / transits.length
+  if (avg >= 2) return 5
+  if (avg >= 1.5) return 4
+  if (avg >= 1) return 3
+  if (avg >= 0.5) return 2
+  return 1
+}
+
 function getToneFromSign(sign: ZodiacSign): GuidanceTone {
   const fireSign = ['aries', 'leo', 'sagittarius'].includes(sign)
   const earthSigns = ['taurus', 'virgo', 'capricorn'].includes(sign)
   const airSigns = ['gemini', 'libra', 'aquarius'].includes(sign)
-  const waterSigns = ['cancer', 'scorpio', 'pisces'].includes(sign)
 
   if (fireSign) return 'action_oriented'
   if (earthSigns) return 'cautious'
   if (airSigns) return 'encouraging'
-  if (waterSigns) return 'reflective'
   return 'reflective'
 }
 
-function generateDoList(chart: NatalChart): string[] {
+function getToneFromTransits(dailySky: DailySkyData, transits: TransitAspect[]): GuidanceTone {
+  // Void of course moon = restorative
+  if (dailySky.voidOfCourse.isVoid) return 'restorative'
+
+  // Count harmonious vs challenging transits
+  const harmonious = transits.filter(t => t.nature === 'harmonious').length
+  const challenging = transits.filter(t => t.nature === 'challenging').length
+
+  if (harmonious > challenging + 1) return 'encouraging'
+  if (challenging > harmonious + 1) return 'cautious'
+
+  // Check for major retrogrades
+  const majorRetrogrades = dailySky.retrogrades.filter(p =>
+    ['mercury', 'venus', 'mars'].includes(p)
+  )
+  if (majorRetrogrades.length > 0) return 'reflective'
+
+  return 'action_oriented'
+}
+
+function generateDoList(
+  chart: NatalChart,
+  dailySky?: DailySkyData,
+  transits?: TransitAspect[]
+): string[] {
   const sunSign = chart.placements.find(p => p.planet === 'sun')?.sign || 'aries'
-  const moonSign = chart.placements.find(p => p.planet === 'moon')?.sign || 'aries'
 
   const baseDos = [
     'Honor your natural rhythms today',
@@ -335,7 +517,6 @@ function generateDoList(chart: NatalChart): string[] {
     'Connect with someone who understands you',
   ]
 
-  // Add sign-specific advice
   const signAdvice: Record<ZodiacSign, string> = {
     aries: 'Take initiative on something important',
     taurus: 'Create comfort and stability in your space',
@@ -351,10 +532,32 @@ function generateDoList(chart: NatalChart): string[] {
     pisces: 'Trust your intuition',
   }
 
-  return [...baseDos, signAdvice[sunSign]]
+  const doList = [...baseDos, signAdvice[sunSign]]
+
+  // Add transit-specific advice
+  if (transits && transits.length > 0) {
+    const harmonious = transits.find(t => t.nature === 'harmonious')
+    if (harmonious) {
+      const planetName = harmonious.transitingPlanet.charAt(0).toUpperCase() + harmonious.transitingPlanet.slice(1)
+      doList.push(`Leverage the supportive ${planetName} energy for ${planetThemes[harmonious.transitingPlanet]?.keywords[0] || 'growth'}`)
+    }
+  }
+
+  // Add moon-phase advice
+  if (dailySky) {
+    const phase = dailySky.moonPhase.name.toLowerCase()
+    if (phase.includes('new')) doList.push('Set intentions and plant seeds for new beginnings')
+    else if (phase.includes('full')) doList.push('Celebrate progress and release what no longer serves you')
+    else if (phase.includes('waxing')) doList.push('Build momentum on projects already in motion')
+  }
+
+  return doList
 }
 
-function generateAvoidList(chart: NatalChart): string[] {
+function generateAvoidList(
+  chart: NatalChart,
+  dailySky?: DailySkyData
+): string[] {
   const marsPlacement = chart.placements.find(p => p.planet === 'mars')
   const saturnPlacement = chart.placements.find(p => p.planet === 'saturn')
 
@@ -371,33 +574,60 @@ function generateAvoidList(chart: NatalChart): string[] {
     baseAvoids.push('Taking on new major responsibilities')
   }
 
+  // Add real sky data warnings
+  if (dailySky) {
+    if (dailySky.voidOfCourse.isVoid) {
+      baseAvoids.push('Starting important new projects (Moon is void-of-course)')
+    }
+
+    if (dailySky.retrogrades.includes('mercury')) {
+      baseAvoids.push('Signing contracts or making major communications without double-checking')
+    }
+  }
+
   return baseAvoids
 }
 
 function generateShortAdvice(
   moonSign: ZodiacSign,
   mercury: NatalPlacement | undefined,
-  mars: NatalPlacement | undefined
+  mars: NatalPlacement | undefined,
+  dailySky?: DailySkyData,
+  transits?: TransitAspect[]
 ): string {
   const moonInfo = signDescriptions[moonSign]
 
   let advice = `Today favors ${moonInfo.approach}. `
 
-  if (mercury?.is_retrograde) {
-    advice += 'Review communications carefully before sending. '
+  // Add real transit context if available
+  if (transits && transits.length > 0) {
+    const primary = transits[0]
+    const aspectInfo = aspectDescriptions[primary.aspect]
+    if (aspectInfo) {
+      advice += `${aspectInfo.action}. `
+    }
+  } else {
+    if (mercury?.is_retrograde) {
+      advice += 'Review communications carefully before sending. '
+    }
+
+    if (mars?.is_retrograde) {
+      advice += 'Channel energy into reflection rather than action.'
+    } else {
+      advice += 'Your instincts are a reliable guide.'
+    }
   }
 
-  if (mars?.is_retrograde) {
-    advice += 'Channel energy into reflection rather than action.'
-  } else {
-    advice += 'Your instincts are a reliable guide.'
+  // Add moon phase context
+  if (dailySky) {
+    const phase = dailySky.moonPhase.name
+    advice += ` The ${phase} supports ${phase.toLowerCase().includes('waxing') ? 'building and growing' : phase.toLowerCase().includes('waning') ? 'releasing and reflecting' : phase.toLowerCase().includes('full') ? 'culmination and celebration' : 'new beginnings and intention-setting'}.`
   }
 
   return advice.trim()
 }
 
 function calculateOverallIntensity(chart: NatalChart): IntensityLevel {
-  // Average intensity across personal planets
   const personalPlanets = chart.placements.filter(p =>
     ['sun', 'moon', 'mercury', 'venus', 'mars'].includes(p.planet)
   )
@@ -408,7 +638,7 @@ function calculateOverallIntensity(chart: NatalChart): IntensityLevel {
   return Math.max(1, Math.min(5, avgIntensity)) as IntensityLevel
 }
 
-function generateWindowSummary(area: FocusArea, chart: NatalChart): string {
+function generateWindowSummary(area: FocusArea, chart: NatalChart, dailySky?: DailySkyData): string {
   const summaries: Record<FocusArea, string[]> = {
     relationships: [
       'Important conversations and connections highlighted.',
@@ -430,6 +660,17 @@ function generateWindowSummary(area: FocusArea, chart: NatalChart): string {
       'Time for reflection and self-improvement.',
       'Learning and expansion are favored.',
     ],
+  }
+
+  // Add real context if available
+  if (dailySky) {
+    const retroPlanets = dailySky.retrogrades
+    if (area === 'career' && retroPlanets.includes('mercury')) {
+      return 'Mercury retrograde advises revisiting career plans rather than launching new ones. Review and refine.'
+    }
+    if (area === 'relationships' && retroPlanets.includes('venus')) {
+      return 'Venus retrograde brings past relationship themes to the surface for healing. Reflect before acting.'
+    }
   }
 
   const options = summaries[area]

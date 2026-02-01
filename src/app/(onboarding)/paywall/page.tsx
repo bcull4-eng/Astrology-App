@@ -3,7 +3,7 @@
 /**
  * Paywall Screen
  *
- * Displays: Monthly (£14.99), Annual (£99 + 2 reports), Lifetime (£149 + all reports)
+ * Displays: Weekly Intro (£2 first week), Annual (£99 + 2 reports), Lifetime (£149 + all reports)
  * Actions: subscribe (triggers payment flow), dismiss/skip
  */
 
@@ -14,19 +14,20 @@ import { StatsBar } from '@/components/social-proof/stats-bar'
 import { TestimonialCard } from '@/components/social-proof/testimonial-card'
 import { getTestimonialsByFeature } from '@/components/social-proof/testimonials-data'
 
-type PlanType = 'monthly' | 'annual' | 'lifetime'
+type PlanType = 'weekly_intro' | 'weekly' | 'annual' | 'lifetime'
 
 const plans: { type: PlanType; name: string; price: number; period: string; billingNote: string; features: string[]; badge?: string; highlight?: boolean; freeReports?: number }[] = [
   {
-    type: 'monthly',
-    name: 'Monthly',
-    price: 14.99,
-    period: '/month',
-    billingNote: 'Billed monthly, cancel anytime',
+    type: 'weekly_intro',
+    name: 'Weekly',
+    price: 2,
+    period: 'first week',
+    billingNote: 'Then £4.99/week, cancel anytime',
+    badge: 'Try It',
     features: [
       'AI Astrologist chat',
       'Daily personalized insights',
-      'Monthly forecast reports',
+      'Weekly & monthly forecasts',
       'Synastry relationship analysis',
       'Learning courses access',
       'Unlimited chart comparisons',
@@ -37,11 +38,11 @@ const plans: { type: PlanType; name: string; price: number; period: string; bill
     name: 'Annual',
     price: 99,
     period: '/year',
-    billingNote: 'Save 45% vs monthly',
+    billingNote: 'Best value for committed users',
     badge: 'Most Popular',
     freeReports: 2,
     features: [
-      'Everything in Monthly',
+      'Everything in Weekly',
       '2 free personalized reports',
       '12 months full access',
       'Priority email support',
@@ -96,7 +97,7 @@ const allFeatures = [
 
 export default function PaywallPage() {
   const router = useRouter()
-  const [selectedPlan, setSelectedPlan] = useState<PlanType>('lifetime')
+  const [selectedPlan, setSelectedPlan] = useState<PlanType>('weekly_intro')
   const [loading, setLoading] = useState(false)
 
   const handleSubscribe = async () => {
@@ -264,7 +265,7 @@ export default function PaywallPage() {
       >
         {loading
           ? 'Redirecting to checkout...'
-          : `Get ${selectedPlan === 'lifetime' ? 'Lifetime' : selectedPlan === 'annual' ? 'Annual' : 'Monthly'} Access`}
+          : `Get ${selectedPlan === 'lifetime' ? 'Lifetime' : selectedPlan === 'annual' ? 'Annual' : 'Weekly'} Access`}
       </button>
 
       <button

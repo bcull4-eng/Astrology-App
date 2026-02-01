@@ -862,8 +862,11 @@ export default async function Home() {
                 Most Popular
               </div>
               <h3 className="text-xl font-semibold text-white mb-2">Pro</h3>
-              <div className="text-3xl font-bold text-white mb-6">
-                £14.99 <span className="text-base font-normal text-slate-400">/month</span>
+              <div className="text-3xl font-bold text-white mb-1">
+                £2 <span className="text-base font-normal text-slate-400">first week</span>
+              </div>
+              <div className="text-sm text-slate-400 mb-6">
+                Then £4.99/week, cancel anytime
               </div>
               <ul className="space-y-3 mb-8">
                 <li className="flex items-center gap-3 text-slate-300">
@@ -894,7 +897,7 @@ export default async function Home() {
                   <svg className="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                   </svg>
-                  2 free reports included
+                  Synastry & tarot readings
                 </li>
               </ul>
               <Link

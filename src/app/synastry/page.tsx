@@ -107,7 +107,7 @@ function SynastryLocked() {
           href="/paywall"
           className="block w-full py-4 px-6 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-semibold text-center rounded-xl transition-all shadow-lg shadow-indigo-500/25"
         >
-          Unlock Synastry - Starting at £14.99/month
+          Unlock Synastry - Try for just £2
         </Link>
       </div>
 

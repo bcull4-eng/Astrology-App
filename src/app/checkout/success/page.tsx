@@ -16,7 +16,7 @@ function SuccessContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const sessionId = searchParams.get('session_id')
-  const plan = searchParams.get('plan') as 'monthly' | 'annual' | 'lifetime' | null
+  const plan = searchParams.get('plan') as 'weekly_intro' | 'weekly' | 'annual' | 'lifetime' | null
   const [countdown, setCountdown] = useState(5)
   const tracked = useRef(false)
 
@@ -24,7 +24,7 @@ function SuccessContent() {
     // Track conversion (only once)
     if (!tracked.current && plan) {
       tracked.current = true
-      const values = { monthly: 14.99, annual: 99, lifetime: 199 }
+      const values = { weekly_intro: 2, weekly: 4.99, annual: 99, lifetime: 199 }
       trackSubscription(plan, values[plan] || 0)
     }
 

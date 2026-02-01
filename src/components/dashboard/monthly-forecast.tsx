@@ -5,14 +5,17 @@
  *
  * Comprehensive monthly forecast with week-by-week breakdown,
  * key dates, themes, and personalized guidance.
+ * Enhanced with real planetary positions when available from astrology-api.io.
  */
 
-import { useMemo } from 'react'
+import { useMemo, useState, useEffect } from 'react'
 import type { NatalChart } from '@/types'
 import { signData } from '@/lib/report-generator-v2'
+import type { DailySkyData } from '@/lib/astrology-api'
 
 interface MonthlyForecastProps {
   chart: NatalChart
+  dailySky?: DailySkyData | null
 }
 
 function getSign(chart: NatalChart, planet: string): string {
@@ -24,7 +27,7 @@ function capitalizeSign(sign: string): string {
   return sign.charAt(0).toUpperCase() + sign.slice(1)
 }
 
-function generateMonthlyOverview(chart: NatalChart): {
+function generateMonthlyOverview(chart: NatalChart, dailySky?: DailySkyData | null): {
   overview: string
   theme: string
   opportunities: string[]
@@ -43,6 +46,87 @@ function generateMonthlyOverview(chart: NatalChart): {
   const currentMonth = new Date().toLocaleString('default', { month: 'long' })
   const monthNum = new Date().getMonth()
 
+  // Build transit-aware content if real data is available
+  if (dailySky) {
+    const moonPhase = dailySky.moonPhase.name
+    const retroList = dailySky.retrogrades
+    const retroNames = retroList.map(p => p.charAt(0).toUpperCase() + p.slice(1))
+
+    const retroContext = retroList.length > 0
+      ? ` ${retroNames.join(', ')} ${retroList.length === 1 ? 'is' : 'are'} retrograde this month, adding a layer of review and reflection to the proceedings.`
+      : ' All planets are in direct motion, supporting forward momentum.'
+
+    const overview = `${currentMonth} opens with a ${moonPhase}, setting the stage for ${moonPhase.toLowerCase().includes('waxing') || moonPhase.toLowerCase().includes('full') ? 'an active and manifesting' : 'a reflective and seed-planting'} month for ${sunSign} individuals. Your natural ${sunData?.keywords[0]?.toLowerCase() || 'drive'} finds both support and challenge in this month's planetary patterns.${retroContext} Venus in ${venusSign} colours your relationships throughout, while Mars in ${marsSign} shapes how you pursue your ${sunData?.keywords[0]?.toLowerCase() || 'goals'}.`
+
+    const theme = retroList.includes('mercury')
+      ? `Communication Review and ${sunData?.keywords[0] || 'Growth'}`
+      : retroList.includes('saturn')
+      ? `Restructuring and ${moonData?.keywords[0] || 'Reflection'}`
+      : `${sunData?.keywords[0] || 'Transformation'} Through ${moonData?.keywords[0] || 'Intuition'}`
+
+    // Build key dates with real lunar data
+    const keyDates = [
+      {
+        date: dailySky.nextNewMoon
+          ? `${currentMonth} ${new Date(dailySky.nextNewMoon).getDate()}`
+          : `${currentMonth} ${5 + (monthNum % 3)}`,
+        event: 'New Moon - Fresh starts',
+        advice: `Set intentions around ${sunData?.keywords[0]?.toLowerCase() || 'growth'} and plant seeds for the cycle ahead`,
+      },
+      {
+        date: dailySky.nextFullMoon
+          ? `${currentMonth} ${new Date(dailySky.nextFullMoon).getDate()}`
+          : `${currentMonth} ${19 + (monthNum % 4)}`,
+        event: 'Full Moon - Culmination',
+        advice: 'Celebrate progress, release what no longer serves you, and embrace illumination',
+      },
+      {
+        date: `${currentMonth} ${12 + (monthNum % 5)}`,
+        event: retroList.length > 0
+          ? `${retroNames[0]} retrograde highlight`
+          : 'Venus enters supportive aspect',
+        advice: retroList.length > 0
+          ? `Pay extra attention to ${retroList[0] === 'mercury' ? 'communications' : retroList[0] === 'venus' ? 'relationships' : 'progress'} around this date`
+          : 'Ideal for relationships and creativity',
+      },
+      {
+        date: `${currentMonth} ${25 + (monthNum % 3)}`,
+        event: 'Mars activation',
+        advice: `Channel your ${marsSign} Mars energy into bold action on important goals`,
+      },
+    ]
+
+    // Build opportunities and challenges from real data
+    const opportunities = [
+      `${moonPhase.toLowerCase().includes('waxing') ? 'Building' : 'Reflective'} energy supports ${sunData?.strengths[0]?.toLowerCase() || 'your natural talents'}`,
+      `Venus in ${venusSign} enhances your capacity for ${signData[venusSign as keyof typeof signData]?.keywords[0]?.toLowerCase() || 'connection'}`,
+      retroList.length === 0
+        ? 'All planets direct - excellent for launching new initiatives'
+        : `${retroNames.join(', ')} retrograde offers a chance to refine and revisit`,
+      `Mars in ${marsSign} fuels your ${signData[marsSign as keyof typeof signData]?.keywords[0]?.toLowerCase() || 'ambition'} all month`,
+    ]
+
+    const challenges = [
+      retroList.includes('mercury')
+        ? 'Mercury retrograde may cause communication delays and tech issues'
+        : `Watch for your ${sunSign} tendency toward ${sunData?.challenges[0]?.toLowerCase() || 'overextension'}`,
+      retroList.includes('venus')
+        ? 'Venus retrograde stirs up past relationship patterns'
+        : `Balance your ${sunSign} ambitions with ${moonSign} emotional needs`,
+      `Don't rush decisions around the Full Moon - let clarity emerge naturally`,
+    ]
+
+    return {
+      overview,
+      theme,
+      opportunities,
+      challenges,
+      keyDates,
+      weeks: generateWeekData(sunData, moonData, retroList),
+    }
+  }
+
+  // Fallback: template-based content
   const overviews = [
     `${currentMonth} brings a powerful emphasis on ${sunData?.keywords[0]?.toLowerCase() || 'personal growth'} for ${sunSign} individuals. The planetary movements this month support your natural inclination toward ${sunData?.strengths.slice(0, 2).join(' and ')?.toLowerCase() || 'achievement'}, while also inviting deeper exploration of your ${moonSign} emotional landscape. This is a month to embrace both your ambitious ${sunData?.element || 'Fire'} nature and your need for ${moonData?.keywords[0]?.toLowerCase() || 'emotional security'}.`,
     `This ${currentMonth}, the cosmic energies align beautifully with your ${sunSign}-${moonSign} combination. Expect opportunities related to ${sunData?.keywords.slice(0, 2).join(' and ')?.toLowerCase() || 'self-expression'}, while Venus in ${venusSign} enhances your relationships and creative endeavors. Mars energizes your ${marsSign} drive, making this an excellent month for taking decisive action on long-held goals.`,
@@ -58,21 +142,21 @@ function generateMonthlyOverview(chart: NatalChart): {
   const opportunityLists = [
     [
       `Career advancement through ${sunData?.strengths[0]?.toLowerCase() || 'leadership'}`,
-      `Deeper connections with loved ones`,
-      `Financial opportunities mid-month`,
-      `Creative projects gain momentum`,
+      'Deeper connections with loved ones',
+      'Financial opportunities mid-month',
+      'Creative projects gain momentum',
     ],
     [
       `New beginnings in ${sunData?.keywords[0]?.toLowerCase() || 'personal'} areas`,
-      `Relationship harmony and growth`,
-      `Learning and skill development`,
-      `Health and wellness breakthroughs`,
+      'Relationship harmony and growth',
+      'Learning and skill development',
+      'Health and wellness breakthroughs',
     ],
     [
       `Professional recognition for your ${sunData?.strengths[0]?.toLowerCase() || 'efforts'}`,
-      `Emotional healing and release`,
-      `Unexpected positive changes`,
-      `Spiritual or personal insights`,
+      'Emotional healing and release',
+      'Unexpected positive changes',
+      'Spiritual or personal insights',
     ],
   ]
 
@@ -80,21 +164,20 @@ function generateMonthlyOverview(chart: NatalChart): {
     [
       `Avoid ${sunData?.challenges[0]?.toLowerCase() || 'overextension'} in week 2`,
       `Manage ${moonData?.shadowSide?.toLowerCase() || 'emotional reactivity'}`,
-      `Don't rush major decisions around the 15th`,
+      "Don't rush major decisions around the 15th",
     ],
     [
       `Watch for ${sunData?.shadowSide?.toLowerCase() || 'ego conflicts'}`,
-      `Balance work and rest carefully`,
-      `Communication may be tricky late month`,
+      'Balance work and rest carefully',
+      'Communication may be tricky late month',
     ],
     [
       `Guard against ${moonData?.challenges[0]?.toLowerCase() || 'overwhelm'}`,
-      `Patience needed in relationships`,
-      `Financial caution around month's end`,
+      'Patience needed in relationships',
+      "Financial caution around month's end",
     ],
   ]
 
-  const today = new Date()
   const keyDatesList = [
     [
       { date: `${currentMonth} ${5 + (monthNum % 3)}`, event: 'New Moon - Fresh starts', advice: `Set intentions around ${sunData?.keywords[0]?.toLowerCase() || 'growth'}` },
@@ -135,8 +218,60 @@ function generateMonthlyOverview(chart: NatalChart): {
   }
 }
 
-export function MonthlyForecast({ chart }: MonthlyForecastProps) {
-  const forecast = useMemo(() => generateMonthlyOverview(chart), [chart])
+function generateWeekData(
+  sunData: (typeof signData)[keyof typeof signData] | undefined,
+  moonData: (typeof signData)[keyof typeof signData] | undefined,
+  retrogrades: string[]
+): { week: number; title: string; focus: string; energy: number }[] {
+  const retroImpact = retrogrades.length * 3
+
+  return [
+    {
+      week: 1,
+      title: retrogrades.length > 0 ? 'Review and Reset' : 'New Beginnings',
+      focus: retrogrades.includes('mercury')
+        ? 'Review communications and revisit plans'
+        : `Initiate ${sunData?.keywords[0]?.toLowerCase() || 'new projects'} with confidence`,
+      energy: Math.max(55, 75 - retroImpact),
+    },
+    {
+      week: 2,
+      title: 'Building Momentum',
+      focus: `Develop your ${moonData?.keywords[0]?.toLowerCase() || 'emotional connections'} and strengthen foundations`,
+      energy: Math.max(60, 85 - retroImpact),
+    },
+    {
+      week: 3,
+      title: retrogrades.length > 1 ? 'Navigate Carefully' : 'Peak Energy',
+      focus: retrogrades.length > 1
+        ? 'Multiple retrogrades demand patience and flexibility'
+        : `Push forward with ${sunData?.strengths[0]?.toLowerCase() || 'determination'}`,
+      energy: Math.max(55, 90 - retroImpact),
+    },
+    {
+      week: 4,
+      title: 'Integration',
+      focus: `Reflect and consolidate your ${sunData?.element?.toLowerCase() || 'fire'} gains from the month`,
+      energy: Math.max(55, 70 - Math.floor(retroImpact / 2)),
+    },
+  ]
+}
+
+export function MonthlyForecast({ chart, dailySky: initialDailySky }: MonthlyForecastProps) {
+  const [dailySky, setDailySky] = useState<DailySkyData | null>(initialDailySky ?? null)
+
+  useEffect(() => {
+    if (initialDailySky !== undefined) return
+
+    fetch('/api/daily-sky')
+      .then(res => res.json())
+      .then(json => {
+        if (json.success && json.data) setDailySky(json.data)
+      })
+      .catch(() => {})
+  }, [initialDailySky])
+
+  const forecast = useMemo(() => generateMonthlyOverview(chart, dailySky), [chart, dailySky])
   const currentMonth = new Date().toLocaleString('default', { month: 'long' })
   const currentYear = new Date().getFullYear()
   const sunSign = capitalizeSign(getSign(chart, 'sun'))
@@ -148,17 +283,33 @@ export function MonthlyForecast({ chart }: MonthlyForecastProps) {
       <div className="flex items-center justify-between mb-6">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <div className="w-2 h-2 rounded-full bg-fuchsia-400 animate-pulse" />
-            <span className="text-fuchsia-400 text-xs font-medium">Monthly Forecast</span>
+            <div className={`w-2 h-2 rounded-full ${dailySky ? 'bg-emerald-400' : 'bg-fuchsia-400'} animate-pulse`} />
+            <span className={`${dailySky ? 'text-emerald-400' : 'text-fuchsia-400'} text-xs font-medium`}>
+              {dailySky ? 'Live planetary data' : 'Monthly Forecast'}
+            </span>
           </div>
           <h2 className="text-2xl font-bold text-white">{currentMonth} {currentYear}</h2>
-          <p className="text-indigo-200/50 text-sm">{sunSign} Sun, {moonSign} Moon</p>
+          <p className="text-indigo-200/50 text-sm">
+            {sunSign} Sun, {moonSign} Moon
+            {dailySky && ` • ${dailySky.moonPhase.name}`}
+          </p>
         </div>
         <div className="text-right bg-fuchsia-500/10 rounded-lg p-3">
           <div className="text-fuchsia-400 text-xs font-medium mb-1">Theme</div>
           <div className="text-white font-medium text-sm">{forecast.theme}</div>
         </div>
       </div>
+
+      {/* Retrograde alerts */}
+      {dailySky && dailySky.retrogrades.length > 0 && (
+        <div className="flex flex-wrap gap-2 mb-4">
+          {dailySky.retrogrades.map(planet => (
+            <span key={planet} className="px-2 py-1 bg-amber-500/10 text-amber-400 text-xs rounded-full">
+              {planet.charAt(0).toUpperCase() + planet.slice(1)} Retrograde
+            </span>
+          ))}
+        </div>
+      )}
 
       {/* Overview */}
       <div className="bg-gradient-to-r from-fuchsia-500/10 to-purple-500/10 rounded-xl p-5 mb-6">

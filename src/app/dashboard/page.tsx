@@ -24,17 +24,32 @@ import { useSubscription } from '@/hooks/use-subscription'
 import { generateDailyHoroscope } from '@/lib/daily-horoscope'
 import type { DailyHoroscope as DailyHoroscopeType } from '@/lib/daily-horoscope'
 import type { NatalChart } from '@/types'
+import type { DailySkyData } from '@/lib/astrology-api'
 
 export default function DashboardPage() {
   const [loading, setLoading] = useState(true)
   const [natalChart, setNatalChart] = useState<NatalChart | null>(null)
   const [dailyHoroscope, setDailyHoroscope] = useState<DailyHoroscopeType | null>(null)
+  const [dailySky, setDailySky] = useState<DailySkyData | null>(null)
   const [dataSource, setDataSource] = useState<'mock' | 'calculated'>('mock')
   const { isPro, loading: subscriptionLoading } = useSubscription()
 
   useEffect(() => {
     async function fetchDashboardData() {
       try {
+        // Fetch daily sky data (shared across all components) in parallel with chart data
+        let skyData: DailySkyData | null = null
+        try {
+          const skyRes = await fetch('/api/daily-sky')
+          const skyJson = await skyRes.json()
+          if (skyJson.success && skyJson.data) {
+            skyData = skyJson.data
+            setDailySky(skyData)
+          }
+        } catch {
+          // API unavailable - components will use template content
+        }
+
         // First try to load from database (persisted data)
         let chartData = sessionStorage.getItem('natal-chart')
 
@@ -56,8 +71,8 @@ export default function DashboardPage() {
           const chart = JSON.parse(chartData)
           setNatalChart(chart)
           setDataSource('calculated')
-          // Generate personalized daily horoscope
-          setDailyHoroscope(generateDailyHoroscope(chart))
+          // Generate personalized daily horoscope with real sky data when available
+          setDailyHoroscope(generateDailyHoroscope(chart, new Date(), skyData ?? undefined))
         } else {
           // Generate sample horoscope for users without a chart yet
           const sampleChart: NatalChart = {
@@ -68,7 +83,7 @@ export default function DashboardPage() {
             ascendant: { sign: 'leo', degree: 15 },
             midheaven: { sign: 'taurus', degree: 10 },
           }
-          setDailyHoroscope(generateDailyHoroscope(sampleChart))
+          setDailyHoroscope(generateDailyHoroscope(sampleChart, new Date(), skyData ?? undefined))
         }
       } catch (error) {
         console.error('Failed to fetch dashboard data:', error)
@@ -164,21 +179,21 @@ export default function DashboardPage() {
 
       {/* Daily Insights */}
       {isPro && natalChart ? (
-        <DailyInsights chart={natalChart} />
+        <DailyInsights chart={natalChart} dailySky={dailySky} />
       ) : (
         <DailyInsightsLocked />
       )}
 
       {/* Weekly Forecast */}
       {isPro && natalChart ? (
-        <WeeklyForecast chart={natalChart} />
+        <WeeklyForecast chart={natalChart} dailySky={dailySky} />
       ) : (
         <WeeklyForecastLocked />
       )}
 
       {/* Monthly Forecast */}
       {isPro && natalChart ? (
-        <MonthlyForecast chart={natalChart} />
+        <MonthlyForecast chart={natalChart} dailySky={dailySky} />
       ) : (
         <MonthlyForecastLocked />
       )}
@@ -195,15 +210,19 @@ export default function DashboardPage() {
 
           {/* Pricing Options */}
           <div className="grid md:grid-cols-3 gap-4 mb-6">
-            {/* Monthly */}
+            {/* Weekly Intro */}
             <Link
               href="/paywall"
-              className="bg-indigo-950/50 hover:bg-indigo-950/70 border border-indigo-500/20 hover:border-indigo-500/40 rounded-xl p-5 transition-all block"
+              className="bg-indigo-600/20 hover:bg-indigo-600/30 border-2 border-indigo-500/50 hover:border-indigo-500/70 rounded-xl p-5 transition-all relative block"
             >
+              <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 bg-indigo-500 text-white text-xs font-bold rounded-full">
+                TRY IT
+              </div>
               <div className="text-center mb-4">
-                <div className="text-white font-semibold mb-1">Monthly</div>
-                <div className="text-3xl font-bold text-white">£14.99</div>
-                <div className="text-indigo-300/50 text-sm">/month</div>
+                <div className="text-white font-semibold mb-1">Weekly</div>
+                <div className="text-3xl font-bold text-white">£2</div>
+                <div className="text-indigo-300/50 text-sm">first week</div>
+                <div className="text-indigo-400 text-sm font-medium">Then £4.99/week</div>
               </div>
               <ul className="space-y-2 text-sm">
                 <li className="flex items-center gap-2 text-indigo-200/70">
@@ -242,7 +261,7 @@ export default function DashboardPage() {
             {/* Annual - Popular */}
             <Link
               href="/paywall"
-              className="bg-indigo-600/20 hover:bg-indigo-600/30 border-2 border-indigo-500/50 hover:border-indigo-500/70 rounded-xl p-5 transition-all relative block"
+              className="bg-indigo-950/50 hover:bg-indigo-950/70 border border-indigo-500/20 hover:border-indigo-500/40 rounded-xl p-5 transition-all relative block"
             >
               <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 bg-indigo-500 text-white text-xs font-bold rounded-full">
                 MOST POPULAR
@@ -251,14 +270,13 @@ export default function DashboardPage() {
                 <div className="text-white font-semibold mb-1">Annual</div>
                 <div className="text-3xl font-bold text-white">£99</div>
                 <div className="text-indigo-300/50 text-sm">/year</div>
-                <div className="text-emerald-400 text-sm font-medium">Save 45%</div>
               </div>
               <ul className="space-y-2 text-sm">
                 <li className="flex items-center gap-2 text-indigo-200/70">
                   <svg className="w-4 h-4 text-indigo-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                   </svg>
-                  Everything in Monthly
+                  Everything in Weekly
                 </li>
                 <li className="flex items-center gap-2 text-indigo-200">
                   <svg className="w-4 h-4 text-emerald-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">

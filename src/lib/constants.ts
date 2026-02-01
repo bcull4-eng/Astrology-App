@@ -6,7 +6,8 @@
  * Subscription pricing
  */
 export const SUBSCRIPTION_PRICES = {
-  MONTHLY_PENCE: 1499, // £14.99/month
+  WEEKLY_INTRO_PENCE: 200, // £2 intro week (one-time, first-time only)
+  WEEKLY_PENCE: 499, // £4.99/week recurring
   ANNUAL_PENCE: 9900, // £99/year
   LIFETIME_PENCE: 14900, // £149 one-time
 } as const

@@ -4,15 +4,19 @@
  * Daily Insights Component (Unlocked/Premium)
  *
  * Shows personalized daily insights based on the user's natal chart.
- * Comprehensive ~300 word daily guidance with cosmic score, timing, focus areas, and action items.
+ * When real transit data is available from astrology-api.io, displays
+ * actual moon phase, retrogrades, transit highlights, and transit-based cosmic score.
+ * Falls back to template-based content when API is unavailable.
  */
 
-import { useMemo } from 'react'
+import { useMemo, useState, useEffect } from 'react'
 import type { NatalChart } from '@/types'
 import { signData } from '@/lib/report-generator-v2'
+import type { DailySkyData, TransitAspect } from '@/lib/astrology-api'
 
 interface DailyInsightsProps {
   chart: NatalChart
+  dailySky?: DailySkyData | null
 }
 
 // Get sign from placements
@@ -25,8 +29,8 @@ function capitalizeSign(sign: string): string {
   return sign.charAt(0).toUpperCase() + sign.slice(1)
 }
 
-// Generate cosmic score based on chart and current date
-function generateCosmicScore(chart: NatalChart): number {
+// Generate cosmic score - enhanced with real transit data when available
+function generateCosmicScore(chart: NatalChart, dailySky?: DailySkyData | null): number {
   const day = new Date().getDate()
   const sunSign = getSign(chart, 'sun')
   const moonSign = getSign(chart, 'moon')
@@ -34,14 +38,30 @@ function generateCosmicScore(chart: NatalChart): number {
   const sunElement = signData[capitalizeSign(sunSign) as keyof typeof signData]?.element || 'Fire'
   const moonElement = signData[capitalizeSign(moonSign) as keyof typeof signData]?.element || 'Water'
 
-  const baseScore = 65 + (day % 25)
+  let baseScore = 65 + (day % 25)
   const elementBonus = sunElement === moonElement ? 5 : 0
+  baseScore += elementBonus
 
-  return Math.min(95, Math.max(55, baseScore + elementBonus))
+  // Enhance with real sky data
+  if (dailySky) {
+    // Moon phase influence
+    const phase = dailySky.moonPhase.name.toLowerCase()
+    if (phase.includes('full')) baseScore += 8
+    else if (phase.includes('new')) baseScore -= 3
+    else if (phase.includes('waxing')) baseScore += 4
+
+    // Retrogrades reduce score slightly
+    baseScore -= dailySky.retrogrades.length * 2
+
+    // Void of course dampens energy
+    if (dailySky.voidOfCourse.isVoid) baseScore -= 5
+  }
+
+  return Math.min(95, Math.max(55, baseScore))
 }
 
 // Generate comprehensive daily insight (~300 words)
-function generateDailyInsight(chart: NatalChart): { overview: string; energy: string; guidance: string; closing: string } {
+function generateDailyInsight(chart: NatalChart, dailySky?: DailySkyData | null): { overview: string; energy: string; guidance: string; closing: string } {
   const sunSign = capitalizeSign(getSign(chart, 'sun'))
   const moonSign = capitalizeSign(getSign(chart, 'moon'))
   const risingSign = capitalizeSign(getSign(chart, 'rising') || getSign(chart, 'sun'))
@@ -56,10 +76,42 @@ function generateDailyInsight(chart: NatalChart): { overview: string; energy: st
 
   const dayOfWeek = new Date().toLocaleDateString('en-US', { weekday: 'long' })
   const day = new Date().getDate()
-
-  // Rotate content based on day for variety
   const dayMod = day % 7
 
+  // Build transit-aware overview if real data available
+  if (dailySky) {
+    const moonPhase = dailySky.moonPhase.name
+    const retroList = dailySky.retrogrades
+    const retroNote = retroList.length > 0
+      ? ` With ${retroList.map(p => p.charAt(0).toUpperCase() + p.slice(1)).join(' and ')} retrograde, a reflective quality underpins the day's energy.`
+      : ''
+
+    const voidNote = dailySky.voidOfCourse.isVoid
+      ? ' The Moon is currently void-of-course, suggesting a pause before initiating anything significant.'
+      : ''
+
+    const moonSign_current = dailySky.planets.find(p => p.planet === 'moon')
+    const moonSignName = moonSign_current
+      ? capitalizeSign(moonSign_current.sign)
+      : moonSign
+
+    const transitOverview = `Today's ${moonPhase} with the Moon in ${moonSignName} creates a ${moonPhase.toLowerCase().includes('full') ? 'powerful and illuminating' : moonPhase.toLowerCase().includes('new') ? 'fresh and seed-planting' : moonPhase.toLowerCase().includes('waxing') ? 'building and expansive' : 'releasing and introspective'} atmosphere for ${sunSign} individuals. Your ${sunData?.keywords[0] || 'core'} nature is activated by the current planetary positions.${retroNote}${voidNote}`
+
+    const transitEnergy = `The cosmic weather today particularly influences your ${sunSign}-${moonSign} combination. ${sunData?.element || 'Fire'} energy from your Sun interacts with the ${moonPhase}'s ${moonPhase.toLowerCase().includes('full') ? 'amplifying' : 'shifting'} quality. Venus in ${venusSign} adds a ${venusData?.keywords[0]?.toLowerCase() || 'harmonious'} flavour to your interactions, while Mars in ${marsSign} drives your ${marsData?.keywords[0]?.toLowerCase() || 'assertive'} impulses.`
+
+    const transitGuidance = `Today's guidance centres on working with the ${moonPhase} energy. ${moonPhase.toLowerCase().includes('waxing') || moonPhase.toLowerCase().includes('full') ? 'This is a time for building, creating, and moving forward with your plans.' : 'This is a time for reflection, release, and preparing for the next cycle.'} Your ${sunSign} ${sunData?.strengths[0]?.toLowerCase() || 'strengths'} are your greatest asset today. Trust your ${moonSign} Moon's emotional intelligence to guide your responses.`
+
+    const transitClosing = `As you navigate today's ${moonPhase} energy, remember that your unique ${sunSign}-${moonSign}-${risingSign} configuration gives you specific strengths. ${retroList.length > 0 ? `The ${retroList.map(p => p.charAt(0).toUpperCase() + p.slice(1)).join(' and ')} retrograde period is an invitation to review and refine rather than rush forward.` : 'The stars support forward movement and initiative today.'}`
+
+    return {
+      overview: transitOverview,
+      energy: transitEnergy,
+      guidance: transitGuidance,
+      closing: transitClosing,
+    }
+  }
+
+  // Fallback: template-based content
   const overviews = [
     `Today's celestial configuration creates a powerful window for ${sunData?.keywords[0] || 'growth'} and self-expression. As a ${sunSign} Sun, you are naturally drawn to ${sunData?.keywords.slice(0, 2).join(' and ') || 'achievement'}, and today's planetary alignments amplify these qualities. The Moon's position activates your ${moonSign} emotional nature, bringing ${moonData?.keywords[0] || 'intuitive'} energy to the surface. This is an excellent day to trust your instincts and act on opportunities that align with your core values.`,
     `The cosmic weather today particularly favours your ${sunSign} nature. With the current planetary positions supporting ${sunData?.element || 'Fire'} energy, you may feel an increased drive toward ${sunData?.strengths[0]?.toLowerCase() || 'action'}. Your ${moonSign} Moon adds emotional depth to your decisions, helping you balance ${sunData?.element === 'Fire' ? 'enthusiasm with wisdom' : sunData?.element === 'Earth' ? 'practicality with intuition' : sunData?.element === 'Air' ? 'logic with feeling' : 'emotion with groundedness'}.`,
@@ -99,9 +151,7 @@ function generateDailyInsight(chart: NatalChart): { overview: string; energy: st
 // Generate timing recommendations
 function generateTimingTips(chart: NatalChart): { morning: string; afternoon: string; evening: string } {
   const sunSign = capitalizeSign(getSign(chart, 'sun'))
-  const moonSign = capitalizeSign(getSign(chart, 'moon'))
   const sunData = signData[sunSign as keyof typeof signData]
-  const moonData = signData[moonSign as keyof typeof signData]
 
   const element = sunData?.element || 'Fire'
 
@@ -147,78 +197,145 @@ function generateFocusAreas(chart: NatalChart): { priority: string; secondary: s
 }
 
 // Generate action items
-function generateActionItems(chart: NatalChart): { do: string[]; avoid: string[] } {
+function generateActionItems(chart: NatalChart, dailySky?: DailySkyData | null): { do: string[]; avoid: string[] } {
   const sunSign = capitalizeSign(getSign(chart, 'sun'))
   const moonSign = capitalizeSign(getSign(chart, 'moon'))
   const sunData = signData[sunSign as keyof typeof signData]
   const moonData = signData[moonSign as keyof typeof signData]
 
-  return {
-    do: [
-      `Lead with your ${sunSign} ${sunData?.strengths[0]?.toLowerCase() || 'strengths'} in challenging situations`,
-      `Honour your ${moonSign} Moon's need for ${moonData?.keywords[0]?.toLowerCase() || 'emotional connection'}`,
-      `Express your ${sunData?.keywords[0]?.toLowerCase() || 'authentic'} nature boldly and without apology`,
-      `Take initiative on projects that align with your ${sunData?.element || 'core'} nature`,
-      `Trust your intuition, especially regarding ${moonData?.element === 'Water' ? 'emotional matters' : moonData?.element === 'Earth' ? 'practical decisions' : moonData?.element === 'Air' ? 'ideas and communication' : 'creative impulses'}`,
-    ],
-    avoid: [
-      `${sunData?.challenges[0] || 'Overextending yourself'} - your ${sunSign} shadow tendency`,
-      `Ignoring emotional signals from your ${moonSign} Moon`,
-      `Making major decisions when feeling reactive or pressured`,
-      `${moonData?.challenges[0] || 'Suppressing your true feelings'}`,
-    ],
+  const doItems = [
+    `Lead with your ${sunSign} ${sunData?.strengths[0]?.toLowerCase() || 'strengths'} in challenging situations`,
+    `Honour your ${moonSign} Moon's need for ${moonData?.keywords[0]?.toLowerCase() || 'emotional connection'}`,
+    `Express your ${sunData?.keywords[0]?.toLowerCase() || 'authentic'} nature boldly and without apology`,
+    `Take initiative on projects that align with your ${sunData?.element || 'core'} nature`,
+    `Trust your intuition, especially regarding ${moonData?.element === 'Water' ? 'emotional matters' : moonData?.element === 'Earth' ? 'practical decisions' : moonData?.element === 'Air' ? 'ideas and communication' : 'creative impulses'}`,
+  ]
+
+  const avoidItems = [
+    `${sunData?.challenges[0] || 'Overextending yourself'} - your ${sunSign} shadow tendency`,
+    `Ignoring emotional signals from your ${moonSign} Moon`,
+    `Making major decisions when feeling reactive or pressured`,
+    `${moonData?.challenges[0] || 'Suppressing your true feelings'}`,
+  ]
+
+  // Add transit-aware items
+  if (dailySky) {
+    if (dailySky.voidOfCourse.isVoid) {
+      avoidItems.push('Starting important new ventures (Moon is void-of-course)')
+    }
+    if (dailySky.retrogrades.includes('mercury')) {
+      avoidItems.push('Sending important messages without re-reading (Mercury retrograde)')
+      doItems.push('Review and revise existing plans and communications')
+    }
+    const phase = dailySky.moonPhase.name.toLowerCase()
+    if (phase.includes('new')) {
+      doItems.push('Set intentions for the new lunar cycle')
+    } else if (phase.includes('full')) {
+      doItems.push('Celebrate what you have accomplished this cycle')
+    }
   }
+
+  return { do: doItems, avoid: avoidItems }
 }
 
 // Generate life area scores with descriptions
-function generateLifeAreaScores(chart: NatalChart): { area: string; score: number; color: string; insight: string }[] {
+function generateLifeAreaScores(chart: NatalChart, dailySky?: DailySkyData | null): { area: string; score: number; color: string; insight: string }[] {
   const sunSign = capitalizeSign(getSign(chart, 'sun'))
   const moonSign = capitalizeSign(getSign(chart, 'moon'))
   const venusSign = capitalizeSign(getSign(chart, 'venus'))
   const sunData = signData[sunSign as keyof typeof signData]
   const day = new Date().getDate()
 
+  // Base scores
+  let loveScore = 70 + (day % 25)
+  let careerScore = 65 + ((day + 5) % 30)
+  let moneyScore = 60 + ((day + 10) % 35)
+  let healthScore = 75 + ((day + 3) % 20)
+
+  // Adjust with real data
+  if (dailySky) {
+    const retroCount = dailySky.retrogrades.length
+    careerScore -= retroCount * 2
+    if (dailySky.retrogrades.includes('venus')) loveScore -= 5
+    if (dailySky.retrogrades.includes('jupiter')) moneyScore -= 5
+    if (dailySky.voidOfCourse.isVoid) {
+      careerScore -= 3
+      moneyScore -= 3
+    }
+    // Full moon boosts emotional/relationship scores
+    if (dailySky.moonPhase.name.toLowerCase().includes('full')) {
+      loveScore += 5
+      healthScore += 3
+    }
+  }
+
   return [
     {
       area: 'Love',
-      score: Math.min(100, 70 + (day % 25)),
+      score: Math.min(100, Math.max(30, loveScore)),
       color: 'bg-rose-500',
-      insight: `Venus in ${venusSign} colours your romantic energy today`,
+      insight: dailySky?.retrogrades.includes('venus')
+        ? `Venus retrograde invites reflection on relationship patterns`
+        : `Venus in ${venusSign} colours your romantic energy today`,
     },
     {
       area: 'Career',
-      score: Math.min(100, 65 + ((day + 5) % 30)),
+      score: Math.min(100, Math.max(30, careerScore)),
       color: 'bg-amber-500',
-      insight: `Your ${sunSign} drive is ${((day + 5) % 30) > 20 ? 'highly' : 'moderately'} activated for professional matters`,
+      insight: dailySky?.retrogrades.includes('mercury')
+        ? `Mercury retrograde favours reviewing rather than launching`
+        : `Your ${sunSign} drive is ${careerScore > 80 ? 'highly' : 'moderately'} activated for professional matters`,
     },
     {
       area: 'Money',
-      score: Math.min(100, 60 + ((day + 10) % 35)),
+      score: Math.min(100, Math.max(30, moneyScore)),
       color: 'bg-emerald-500',
-      insight: `${sunData?.element || 'Your elemental'} energy influences financial decisions today`,
+      insight: dailySky?.retrogrades.includes('jupiter')
+        ? `Jupiter retrograde suggests caution with expansion`
+        : `${sunData?.element || 'Your elemental'} energy influences financial decisions today`,
     },
     {
       area: 'Health',
-      score: Math.min(100, 75 + ((day + 3) % 20)),
+      score: Math.min(100, Math.max(30, healthScore)),
       color: 'bg-blue-500',
       insight: `Your ${moonSign} Moon suggests ${signData[moonSign as keyof typeof signData]?.element === 'Water' ? 'hydration and rest' : 'active self-care'} focus`,
     },
   ]
 }
 
-export function DailyInsights({ chart }: DailyInsightsProps) {
+export function DailyInsights({ chart, dailySky: initialDailySky }: DailyInsightsProps) {
+  const [dailySky, setDailySky] = useState<DailySkyData | null>(initialDailySky ?? null)
+  const [skyLoaded, setSkyLoaded] = useState(!!initialDailySky)
+
+  // Fetch daily sky data from API if not provided as prop
+  useEffect(() => {
+    if (initialDailySky !== undefined) return
+
+    fetch('/api/daily-sky')
+      .then(res => res.json())
+      .then(json => {
+        if (json.success && json.data) {
+          setDailySky(json.data)
+        }
+      })
+      .catch(() => {
+        // API unavailable - continue with template content
+      })
+      .finally(() => setSkyLoaded(true))
+  }, [initialDailySky])
+
   const today = new Date().toLocaleDateString('en-US', {
     weekday: 'long',
     month: 'long',
     day: 'numeric',
   })
 
-  const cosmicScore = useMemo(() => generateCosmicScore(chart), [chart])
-  const insight = useMemo(() => generateDailyInsight(chart), [chart])
+  const cosmicScore = useMemo(() => generateCosmicScore(chart, dailySky), [chart, dailySky])
+  const insight = useMemo(() => generateDailyInsight(chart, dailySky), [chart, dailySky])
   const timing = useMemo(() => generateTimingTips(chart), [chart])
   const focus = useMemo(() => generateFocusAreas(chart), [chart])
-  const actions = useMemo(() => generateActionItems(chart), [chart])
-  const lifeAreas = useMemo(() => generateLifeAreaScores(chart), [chart])
+  const actions = useMemo(() => generateActionItems(chart, dailySky), [chart, dailySky])
+  const lifeAreas = useMemo(() => generateLifeAreaScores(chart, dailySky), [chart, dailySky])
 
   const sunSign = capitalizeSign(getSign(chart, 'sun'))
   const moonSign = capitalizeSign(getSign(chart, 'moon'))
@@ -229,11 +346,16 @@ export function DailyInsights({ chart }: DailyInsightsProps) {
       <div className="flex items-center justify-between mb-6">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-            <span className="text-emerald-400 text-xs font-medium">Updated today at 6am</span>
+            <div className={`w-2 h-2 rounded-full ${dailySky ? 'bg-emerald-400' : 'bg-indigo-400'} animate-pulse`} />
+            <span className={`${dailySky ? 'text-emerald-400' : 'text-indigo-400'} text-xs font-medium`}>
+              {dailySky ? 'Live cosmic data' : 'Updated today at 6am'}
+            </span>
           </div>
           <h2 className="text-2xl font-bold text-white">Your Daily Cosmic Insights</h2>
-          <p className="text-indigo-200/50 text-sm">{today} • {sunSign} Sun, {moonSign} Moon</p>
+          <p className="text-indigo-200/50 text-sm">
+            {today} • {sunSign} Sun, {moonSign} Moon
+            {dailySky && ` • ${dailySky.moonPhase.name}`}
+          </p>
         </div>
         <div className="text-right">
           <div className="text-3xl font-bold text-white">{cosmicScore}</div>
@@ -243,6 +365,25 @@ export function DailyInsights({ chart }: DailyInsightsProps) {
           </div>
         </div>
       </div>
+
+      {/* Real-time sky alerts */}
+      {dailySky && (dailySky.retrogrades.length > 0 || dailySky.voidOfCourse.isVoid) && (
+        <div className="flex flex-wrap gap-2 mb-4">
+          {dailySky.retrogrades.map(planet => (
+            <span key={planet} className="px-2 py-1 bg-amber-500/10 text-amber-400 text-xs rounded-full">
+              {planet.charAt(0).toUpperCase() + planet.slice(1)} Rx
+            </span>
+          ))}
+          {dailySky.voidOfCourse.isVoid && (
+            <span className="px-2 py-1 bg-slate-500/10 text-slate-400 text-xs rounded-full">
+              Moon Void-of-Course
+            </span>
+          )}
+          <span className="px-2 py-1 bg-indigo-500/10 text-indigo-400 text-xs rounded-full">
+            {dailySky.moonPhase.name}
+          </span>
+        </div>
+      )}
 
       {/* Main Insight - Overview */}
       <div className="bg-gradient-to-r from-indigo-500/10 to-purple-500/10 rounded-xl p-5 mb-4">

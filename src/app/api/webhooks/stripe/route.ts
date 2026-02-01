@@ -1,13 +1,14 @@
 /**
  * Stripe Webhook Handler
  *
- * Handles: checkout.session.completed, subscription events, payment events
+ * Handles: checkout.session.completed, subscription events, payment events,
+ * and subscription_schedule events for weekly intro → weekly transitions.
  */
 
 import { NextRequest, NextResponse } from 'next/server'
 import { headers } from 'next/headers'
 import Stripe from 'stripe'
-import { constructWebhookEvent, stripe } from '@/lib/stripe'
+import { constructWebhookEvent, stripe, STRIPE_PRICES } from '@/lib/stripe'
 import { createClient } from '@supabase/supabase-js'
 
 // Use service role client for database operations (bypasses RLS)
@@ -57,6 +58,11 @@ export async function POST(request: NextRequest) {
         await handlePaymentFailed(event.data.object as Stripe.Invoice)
         break
 
+      case 'subscription_schedule.updated':
+      case 'subscription_schedule.completed':
+        await handleSubscriptionScheduleEvent(event.data.object as Stripe.SubscriptionSchedule, event.type)
+        break
+
       default:
         console.log(`[Stripe Webhook] Unhandled event type: ${event.type}`)
     }
@@ -101,12 +107,12 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const sub = subscription as any
 
-    await upsertSubscription(userId, customerId, subscription, planType || 'monthly')
+    await upsertSubscription(userId, customerId, subscription, planType || 'weekly')
 
     // Build metadata update - include report credits for annual plans
     const userMetadata: Record<string, unknown> = {
       subscription_status: 'pro',
-      subscription_plan: planType || 'monthly',
+      subscription_plan: planType || 'weekly',
       subscription_expires_at: new Date((sub.current_period_end as number) * 1000).toISOString(),
       subscribed_at: new Date().toISOString(),
     }
@@ -121,6 +127,12 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
     await supabaseAdmin.auth.admin.updateUserById(userId, {
       user_metadata: userMetadata,
     })
+
+    // If this is a weekly_intro checkout, create a Subscription Schedule
+    // to transition from intro price to regular weekly price after 1 cycle
+    if (planType === 'weekly_intro') {
+      await createIntroToWeeklySchedule(userId, subscriptionId)
+    }
   } else if (session.mode === 'payment') {
     // Handle one-time payment
     if (planType === 'lifetime') {
@@ -195,6 +207,114 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
 }
 
 /**
+ * Create a Subscription Schedule that transitions from intro price to regular weekly price.
+ * Phase 1: intro price (current cycle)
+ * Phase 2: regular weekly price (ongoing)
+ */
+async function createIntroToWeeklySchedule(userId: string, subscriptionId: string) {
+  try {
+    console.log('[Stripe Webhook] Creating intro → weekly subscription schedule for', subscriptionId)
+
+    // Create a schedule from the existing subscription
+    const schedule = await stripe.subscriptionSchedules.create({
+      from_subscription: subscriptionId,
+    })
+
+    // Now update the schedule with two phases:
+    // Phase 1 is the current intro phase (already set by from_subscription)
+    // Phase 2 transitions to regular weekly pricing
+    const currentPhase = schedule.phases[0]
+
+    // Calculate end of intro phase (1 week from start)
+    const introEndDate = currentPhase.start_date + (7 * 24 * 60 * 60)
+
+    await stripe.subscriptionSchedules.update(schedule.id, {
+      end_behavior: 'release', // After schedule completes, subscription continues normally
+      phases: [
+        {
+          items: [{ price: STRIPE_PRICES.weekly_intro, quantity: 1 }],
+          start_date: currentPhase.start_date,
+          end_date: introEndDate,
+        },
+        {
+          items: [{ price: STRIPE_PRICES.weekly, quantity: 1 }],
+          // No end_date = ongoing at regular price
+        },
+      ],
+    })
+
+    // Mark intro_offer_used and store schedule ID in our database
+    await supabaseAdmin
+      .from('subscriptions')
+      .update({
+        intro_offer_used: true,
+        stripe_schedule_id: schedule.id,
+      })
+      .eq('user_id', userId)
+
+    console.log('[Stripe Webhook] Subscription schedule created:', schedule.id)
+  } catch (error) {
+    console.error('[Stripe Webhook] Failed to create subscription schedule:', error)
+    // Non-fatal: the subscription still works, just without the auto-transition
+    // Mark intro as used anyway to prevent double use
+    await supabaseAdmin
+      .from('subscriptions')
+      .update({ intro_offer_used: true })
+      .eq('user_id', userId)
+  }
+}
+
+/**
+ * Handle subscription schedule events (intro → weekly transition)
+ */
+async function handleSubscriptionScheduleEvent(
+  schedule: Stripe.SubscriptionSchedule,
+  eventType: string
+) {
+  console.log(`[Stripe Webhook] Processing ${eventType} for schedule ${schedule.id}`)
+
+  // Find the subscription record by schedule ID
+  const { data: subscriptionRecord } = await supabaseAdmin
+    .from('subscriptions')
+    .select('user_id, plan_type')
+    .eq('stripe_schedule_id', schedule.id)
+    .single()
+
+  if (!subscriptionRecord) {
+    console.log('[Stripe Webhook] No subscription found for schedule:', schedule.id)
+    return
+  }
+
+  // When the schedule completes or updates, check if we've moved to the weekly phase
+  if (subscriptionRecord.plan_type === 'weekly_intro') {
+    // Check current phase - if the schedule has progressed past the intro phase
+    const currentPhaseIndex = schedule.phases.findIndex(
+      (phase) => {
+        const now = Math.floor(Date.now() / 1000)
+        return phase.start_date <= now && (phase.end_date === null || phase.end_date > now)
+      }
+    )
+
+    // If we're on phase 2+ (regular weekly), update the plan type
+    if (currentPhaseIndex > 0 || eventType === 'subscription_schedule.completed') {
+      console.log('[Stripe Webhook] Transitioning plan from weekly_intro to weekly')
+
+      await supabaseAdmin
+        .from('subscriptions')
+        .update({ plan_type: 'weekly' })
+        .eq('stripe_schedule_id', schedule.id)
+
+      // Update user metadata
+      await supabaseAdmin.auth.admin.updateUserById(subscriptionRecord.user_id, {
+        user_metadata: {
+          subscription_plan: 'weekly',
+        },
+      })
+    }
+  }
+}
+
+/**
  * Handle subscription updates
  */
 async function handleSubscriptionUpdated(subscription: Stripe.Subscription) {
@@ -215,7 +335,7 @@ async function handleSubscriptionUpdated(subscription: Stripe.Subscription) {
   })
 
   const customerId = subscription.customer as string
-  const planType = subscription.metadata?.plan_type || 'monthly'
+  const planType = subscription.metadata?.plan_type || 'weekly'
 
   try {
     await upsertSubscription(userId, customerId, subscription, planType)

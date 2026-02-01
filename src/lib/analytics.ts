@@ -78,7 +78,7 @@ export function trackPurchase(
 /**
  * Track subscription started
  */
-export function trackSubscription(plan: "monthly" | "annual" | "lifetime", value: number) {
+export function trackSubscription(plan: "weekly_intro" | "weekly" | "annual" | "lifetime", value: number) {
   trackEvent("subscribe", "conversion", plan, value)
   trackPurchase(`sub_${Date.now()}`, value, "GBP", `${plan}_subscription`)
 }

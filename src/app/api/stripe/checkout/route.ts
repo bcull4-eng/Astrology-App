@@ -2,10 +2,12 @@
  * Stripe Checkout Session API
  *
  * Creates a checkout session for subscriptions or one-time purchases.
+ * Includes intro offer eligibility check for weekly_intro plan.
  */
 
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
+import { createClient as createAdminClient } from '@supabase/supabase-js'
 import {
   createCheckoutSession,
   STRIPE_PRICES,
@@ -18,6 +20,12 @@ interface CheckoutRequest {
   productType?: ProductType
   productId?: string
 }
+
+// Service role client for querying subscriptions (bypasses RLS)
+const supabaseAdmin = createAdminClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.SUPABASE_SERVICE_ROLE_KEY!
+)
 
 export async function POST(request: NextRequest) {
   try {
@@ -34,9 +42,24 @@ export async function POST(request: NextRequest) {
     }
 
     const body: CheckoutRequest = await request.json()
-    const { planType, productType, productId } = body
+    let { planType } = body
+    const { productType, productId } = body
 
     const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
+
+    // Intro offer eligibility check
+    if (planType === 'weekly_intro') {
+      const { data: subscription } = await supabaseAdmin
+        .from('subscriptions')
+        .select('intro_offer_used')
+        .eq('user_id', user.id)
+        .single()
+
+      if (subscription?.intro_offer_used) {
+        // User already used intro offer — fall back to regular weekly price
+        planType = 'weekly'
+      }
+    }
 
     // Determine checkout mode and price
     let priceId: string

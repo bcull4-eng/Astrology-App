@@ -2,11 +2,11 @@
  * Dashboard API Route
  *
  * Returns personalized themes and guidance based on natal chart.
+ * When transit data is available, themes reflect real planetary positions.
  * GET /api/dashboard
  */
 
 import { NextRequest, NextResponse } from 'next/server'
-import { cookies } from 'next/headers'
 import { createClient } from '@/lib/supabase/server'
 import {
   generatePrimaryTheme,
@@ -20,7 +20,9 @@ import {
   mockDailyGuidance,
   mockUpcomingWindows,
 } from '@/lib/mock-data'
+import { getCachedDailySky } from '@/lib/transit-cache'
 import type { NatalChart } from '@/types'
+import type { DailySkyData } from '@/lib/astrology-api'
 
 export async function GET(request: NextRequest) {
   try {
@@ -40,7 +42,6 @@ export async function GET(request: NextRequest) {
 
     // If no chart, try to get from user's stored data (future: Supabase)
     if (!chart) {
-      // For now, check if user is authenticated
       const supabase = await createClient()
       const { data: { user } } = await supabase.auth.getUser()
 
@@ -54,28 +55,30 @@ export async function GET(request: NextRequest) {
           source: 'mock',
         })
       }
-
-      // Future: Fetch user's stored natal chart from Supabase
-      // const { data: birthData } = await supabase
-      //   .from('birth_data')
-      //   .select('*')
-      //   .eq('user_id', user.id)
-      //   .single()
     }
 
     // If we have a chart, generate real data
     if (chart) {
-      const primaryTheme = generatePrimaryTheme(chart)
-      const secondaryThemes = generateSecondaryThemes(chart)
-      const dailyGuidance = generateDailyGuidance(chart)
-      const upcomingWindows = generateUpcomingWindows(chart)
+      // Try to fetch daily sky data for enhanced content
+      let dailySky: DailySkyData | undefined
+      try {
+        dailySky = await getCachedDailySky()
+      } catch {
+        // API unavailable - will fall back to template-based content
+      }
+
+      const primaryTheme = generatePrimaryTheme(chart, dailySky)
+      const secondaryThemes = generateSecondaryThemes(chart, dailySky)
+      const dailyGuidance = generateDailyGuidance(chart, dailySky)
+      const upcomingWindows = generateUpcomingWindows(chart, dailySky)
 
       return NextResponse.json({
         primaryTheme,
         secondaryThemes,
         dailyGuidance,
         upcomingWindows,
-        source: 'calculated',
+        source: dailySky ? 'live' : 'calculated',
+        dailySky: dailySky ?? null,
       })
     }
 

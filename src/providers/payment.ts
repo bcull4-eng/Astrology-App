@@ -43,7 +43,7 @@ export interface SubscriptionPlan {
   id: string
   name: string
   priceInPence: number // £20/month = 2000
-  interval: 'month' | 'year'
+  interval: 'week' | 'month' | 'year'
 }
 
 export interface CheckoutSession {

@@ -2,10 +2,13 @@
  * Daily Horoscope Generation
  *
  * Generates personalized daily horoscopes based on natal chart placements
- * and the current date. Content changes daily using date as a seed.
+ * and the current date. When real transit data is available (from astrology-api.io),
+ * it uses actual planetary positions, moon phase, and retrogrades. Otherwise
+ * falls back to template-based content with date-seeded randomness.
  */
 
 import type { NatalChart } from '@/types'
+import type { DailySkyData, TransitAspect } from './astrology-api'
 
 // Display sign type with capitalized names (for UI display)
 type Sign = 'Aries' | 'Taurus' | 'Gemini' | 'Cancer' | 'Leo' | 'Virgo' |
@@ -24,6 +27,10 @@ export interface DailyHoroscope {
   luckyNumber: number
   luckyColor: string
   affirmation: string
+  // New fields from real transit data (optional for backward compat)
+  retrogrades?: string[]
+  voidOfCourse?: boolean
+  transitHighlights?: string[]
 }
 
 const SIGN_ORDER: Sign[] = [
@@ -420,6 +427,7 @@ const AFFIRMATIONS: Record<Sign, string[]> = {
 
 const COLORS = ['deep red', 'emerald green', 'royal blue', 'golden yellow', 'soft pink', 'rich purple', 'ocean teal', 'sunset orange', 'silver gray', 'forest green', 'coral', 'indigo']
 
+// Fallback moon phases (used only when real data unavailable)
 const MOON_PHASES = ['New Moon', 'Waxing Crescent', 'First Quarter', 'Waxing Gibbous', 'Full Moon', 'Waning Gibbous', 'Last Quarter', 'Waning Crescent']
 
 function getElement(sign: Sign): 'fire' | 'earth' | 'air' | 'water' {
@@ -446,7 +454,72 @@ function getDayOfYear(date: Date): number {
   return Math.floor(diff / oneDay)
 }
 
-export function generateDailyHoroscope(chart: NatalChart, date: Date = new Date()): DailyHoroscope {
+// ---------- Transit-aware energy calculation ----------
+
+function calculateEnergyFromTransits(
+  sunSign: Sign,
+  dailySky: DailySkyData,
+  transits?: TransitAspect[]
+): 'high' | 'moderate' | 'low' {
+  let score = 50 // Base score
+
+  // Factor in retrogrades (lower energy when more planets retrograde)
+  const retroCount = dailySky.retrogrades.length
+  score -= retroCount * 5
+
+  // Factor in moon phase (full moon = high energy, new moon = low)
+  const phaseName = dailySky.moonPhase.name.toLowerCase()
+  if (phaseName.includes('full')) score += 15
+  else if (phaseName.includes('new')) score -= 5
+  else if (phaseName.includes('waxing')) score += 8
+  else if (phaseName.includes('waning')) score -= 3
+
+  // Void-of-course moon reduces productive energy
+  if (dailySky.voidOfCourse.isVoid) score -= 10
+
+  // Factor in personal transits if available
+  if (transits && transits.length > 0) {
+    for (const transit of transits) {
+      if (transit.nature === 'harmonious') score += 6
+      else if (transit.nature === 'challenging') score -= 4
+      // Tight orbs amplify effect
+      if (transit.orb < 2) score += (transit.nature === 'harmonious' ? 3 : -2)
+    }
+  }
+
+  if (score >= 65) return 'high'
+  if (score >= 40) return 'moderate'
+  return 'low'
+}
+
+// ---------- Transit highlight descriptions ----------
+
+const PLANET_DISPLAY: Record<string, string> = {
+  sun: 'the Sun', moon: 'the Moon', mercury: 'Mercury', venus: 'Venus',
+  mars: 'Mars', jupiter: 'Jupiter', saturn: 'Saturn', uranus: 'Uranus',
+  neptune: 'Neptune', pluto: 'Pluto', north_node: 'the North Node', chiron: 'Chiron',
+}
+
+const ASPECT_DISPLAY: Record<string, string> = {
+  conjunction: 'conjunct', opposition: 'opposite', trine: 'trine',
+  square: 'square', sextile: 'sextile', quincunx: 'quincunx',
+}
+
+function describeTransit(transit: TransitAspect): string {
+  const transiting = PLANET_DISPLAY[transit.transitingPlanet] || transit.transitingPlanet
+  const natal = PLANET_DISPLAY[transit.natalPlanet] || transit.natalPlanet
+  const aspect = ASPECT_DISPLAY[transit.aspect] || transit.aspect
+  return `${transiting} ${aspect} your natal ${natal}`
+}
+
+// ---------- Main generation function ----------
+
+export function generateDailyHoroscope(
+  chart: NatalChart,
+  date: Date = new Date(),
+  dailySky?: DailySkyData,
+  userTransits?: TransitAspect[]
+): DailyHoroscope {
   const sunPlacement = chart.placements.find(p => p.planet.toLowerCase() === 'sun')
   const sunSign = (sunPlacement?.sign ?
     sunPlacement.sign.charAt(0).toUpperCase() + sunPlacement.sign.slice(1).toLowerCase() :
@@ -462,19 +535,32 @@ export function generateDailyHoroscope(chart: NatalChart, date: Date = new Date(
   const dayOfWeek = date.getDay()
   const dailyTheme = DAILY_THEMES[dayOfWeek]
 
-  // Calculate moon phase (approximate)
-  const lunarCycle = 29.5
-  const knownNewMoon = new Date('2024-01-11').getTime()
-  const daysSinceNewMoon = (date.getTime() - knownNewMoon) / (1000 * 60 * 60 * 24)
-  const moonPhaseIndex = Math.floor((daysSinceNewMoon % lunarCycle) / (lunarCycle / 8))
-  const moonPhase = MOON_PHASES[moonPhaseIndex % 8]
+  // Moon phase: use real data if available, otherwise approximate
+  let moonPhase: string
+  if (dailySky) {
+    moonPhase = dailySky.moonPhase.name
+  } else {
+    const lunarCycle = 29.5
+    const knownNewMoon = new Date('2024-01-11').getTime()
+    const daysSinceNewMoon = (date.getTime() - knownNewMoon) / (1000 * 60 * 60 * 24)
+    const moonPhaseIndex = Math.floor((daysSinceNewMoon % lunarCycle) / (lunarCycle / 8))
+    moonPhase = MOON_PHASES[moonPhaseIndex % 8]
+  }
+
+  // Overall energy: use real transit data if available
+  let overallEnergy: 'high' | 'moderate' | 'low'
+  if (dailySky) {
+    overallEnergy = calculateEnergyFromTransits(sunSign, dailySky, userTransits)
+  } else {
+    overallEnergy = dailyTheme.energy
+  }
 
   // Get headline based on theme
   const headline = HEADLINES[dailyTheme.theme][sunSign]
 
   // Get summary based on energy and element
   const element = getElement(sunSign)
-  const summary = SUMMARIES[dailyTheme.energy][element]
+  const summary = SUMMARIES[overallEnergy][element]
 
   // Select insights based on seeded randomness
   const loveIndex = Math.floor(random() * LOVE_INSIGHTS[sunSign].length)
@@ -486,11 +572,21 @@ export function generateDailyHoroscope(chart: NatalChart, date: Date = new Date(
   const luckyNumber = Math.floor(random() * 99) + 1
   const colorIndex = Math.floor(random() * COLORS.length)
 
+  // Build transit highlights if real data available
+  const transitHighlights = userTransits
+    ?.slice(0, 3) // Top 3 most relevant
+    .map(describeTransit)
+
+  // Build retrograde list if real data available
+  const retrogrades = dailySky?.retrogrades.map(
+    p => (PLANET_DISPLAY[p] || p).replace(/^the /, '')
+  )
+
   return {
     date: date.toISOString().split('T')[0],
     sunSign,
     moonPhase,
-    overallEnergy: dailyTheme.energy,
+    overallEnergy,
     headline,
     summary,
     loveInsight: LOVE_INSIGHTS[sunSign][loveIndex],
@@ -499,5 +595,8 @@ export function generateDailyHoroscope(chart: NatalChart, date: Date = new Date(
     luckyNumber,
     luckyColor: COLORS[colorIndex],
     affirmation: AFFIRMATIONS[sunSign][affirmationIndex],
+    retrogrades,
+    voidOfCourse: dailySky?.voidOfCourse.isVoid,
+    transitHighlights,
   }
 }

@@ -5,14 +5,17 @@
  *
  * Comprehensive ~300 word weekly forecast with 7-day energy chart,
  * power days, transits, themes, and personalized recommendations.
+ * Enhanced with real planetary positions when available from astrology-api.io.
  */
 
-import { useMemo } from 'react'
+import { useMemo, useState, useEffect } from 'react'
 import type { NatalChart } from '@/types'
 import { signData } from '@/lib/report-generator-v2'
+import type { DailySkyData } from '@/lib/astrology-api'
 
 interface WeeklyForecastProps {
   chart: NatalChart
+  dailySky?: DailySkyData | null
 }
 
 function getSign(chart: NatalChart, planet: string): string {
@@ -24,8 +27,8 @@ function capitalizeSign(sign: string): string {
   return sign.charAt(0).toUpperCase() + sign.slice(1)
 }
 
-// Generate 7-day energy levels
-function generateWeekEnergy(chart: NatalChart): { day: string; date: string; fullDate: Date; energy: number; isPowerDay: boolean; description: string }[] {
+// Generate 7-day energy levels - enhanced with real sky data
+function generateWeekEnergy(chart: NatalChart, dailySky?: DailySkyData | null): { day: string; date: string; fullDate: Date; energy: number; isPowerDay: boolean; description: string }[] {
   const sunSign = capitalizeSign(getSign(chart, 'sun'))
   const moonSign = capitalizeSign(getSign(chart, 'moon'))
   const sunData = signData[sunSign as keyof typeof signData]
@@ -58,6 +61,19 @@ function generateWeekEnergy(chart: NatalChart): { day: string; date: string; ful
 
     if (dayOfWeek === 0 || dayOfWeek === 6) baseEnergy -= 5
 
+    // Apply real sky data adjustments for today (day 0)
+    if (i === 0 && dailySky) {
+      const retroCount = dailySky.retrogrades.length
+      baseEnergy -= retroCount * 3
+
+      if (dailySky.voidOfCourse.isVoid) baseEnergy -= 8
+
+      const phase = dailySky.moonPhase.name.toLowerCase()
+      if (phase.includes('full')) baseEnergy += 10
+      else if (phase.includes('new')) baseEnergy -= 3
+      else if (phase.includes('waxing')) baseEnergy += 5
+    }
+
     const energy = Math.min(100, Math.max(40, baseEnergy))
     const isPowerDay = energy >= 85
 
@@ -71,13 +87,20 @@ function generateWeekEnergy(chart: NatalChart): { day: string; date: string; ful
       `Reflective energy, good for planning ahead`,
     ]
 
+    // Enhanced description for today with real data
+    let description = descriptions[dayOfWeek]
+    if (i === 0 && dailySky) {
+      const phase = dailySky.moonPhase.name
+      description = `${phase} energy • ${dailySky.retrogrades.length > 0 ? `${dailySky.retrogrades.length} planets Rx` : 'Direct planetary flow'}`
+    }
+
     week.push({
       day: days[dayOfWeek],
       date: date.getDate().toString(),
       fullDate: date,
       energy,
       isPowerDay,
-      description: descriptions[dayOfWeek],
+      description,
     })
   }
 
@@ -85,7 +108,7 @@ function generateWeekEnergy(chart: NatalChart): { day: string; date: string; ful
 }
 
 // Generate comprehensive weekly overview (~300 words)
-function generateWeeklyOverview(chart: NatalChart): { overview: string; theme: string; opportunity: string; challenge: string; advice: string } {
+function generateWeeklyOverview(chart: NatalChart, dailySky?: DailySkyData | null): { overview: string; theme: string; opportunity: string; challenge: string; advice: string } {
   const sunSign = capitalizeSign(getSign(chart, 'sun'))
   const moonSign = capitalizeSign(getSign(chart, 'moon'))
   const risingSign = capitalizeSign(getSign(chart, 'rising') || getSign(chart, 'sun'))
@@ -99,6 +122,34 @@ function generateWeeklyOverview(chart: NatalChart): { overview: string; theme: s
 
   const weekNum = Math.ceil(new Date().getDate() / 7)
 
+  // Build transit-aware content if real data is available
+  if (dailySky) {
+    const moonPhase = dailySky.moonPhase.name
+    const retroList = dailySky.retrogrades
+    const retroNote = retroList.length > 0
+      ? ` With ${retroList.map(p => p.charAt(0).toUpperCase() + p.slice(1)).join(', ')} in retrograde motion, the week has a reflective quality that invites review and revision.`
+      : ' With all planets in direct motion, this is an excellent week for forward progress.'
+
+    const overview = `This week opens under a ${moonPhase}, setting a ${moonPhase.toLowerCase().includes('waxing') || moonPhase.toLowerCase().includes('full') ? 'building and expansive' : 'reflective and releasing'} tone for ${sunSign} individuals. Your ${sunData?.keywords[0] || 'core'} nature finds support in the current planetary positions, especially with Venus in ${venusSign} enhancing your ${venusData?.keywords[0]?.toLowerCase() || 'relational'} world and Mars in ${marsSign} fuelling your ${marsData?.keywords[0]?.toLowerCase() || 'drive'}.${retroNote}`
+
+    const theme = retroList.includes('mercury')
+      ? 'Communication Review and Mental Clarity'
+      : retroList.includes('venus')
+      ? 'Relationship Reflection and Values Reassessment'
+      : `${sunData?.keywords[0] || 'Growth'} and ${moonData?.keywords[0] || 'emotional development'}`
+
+    return {
+      overview,
+      theme,
+      opportunity: `The ${moonPhase} supports ${moonPhase.toLowerCase().includes('waxing') || moonPhase.toLowerCase().includes('full') ? 'launching initiatives and making bold moves' : 'reflection, planning, and tying up loose ends'}. Your ${sunSign} ${sunData?.strengths[0]?.toLowerCase() || 'natural abilities'} are particularly strong this week. Venus in ${venusSign} adds charm and grace to your interactions.`,
+      challenge: retroList.length > 0
+        ? `The ${retroList.map(p => p.charAt(0).toUpperCase() + p.slice(1)).join(' and ')} retrograde${retroList.length > 1 ? 's' : ''} may create ${retroList.includes('mercury') ? 'communication mix-ups and tech glitches' : retroList.includes('venus') ? 'relationship tensions from unresolved past issues' : 'delays and the need for patience'}. Double-check important details and allow extra time for things to unfold.`
+        : `Watch for your ${sunSign} tendency toward ${sunData?.challenges[0]?.toLowerCase() || 'overextension'}. Your ${moonSign} Moon may bring up ${moonData?.challenges[0]?.toLowerCase() || 'emotional sensitivity'} during high-stress moments.`,
+      advice: `Work with the ${moonPhase} energy this week. ${moonPhase.toLowerCase().includes('waxing') || moonPhase.toLowerCase().includes('full') ? 'Channel your momentum into your most important goals.' : 'Use this quieter phase for strategic planning and self-care.'} Your ${sunSign}-${moonSign}-${risingSign} combination is uniquely suited to navigate this week's energies.`,
+    }
+  }
+
+  // Fallback: template-based content
   const overviews = [
     `This week brings a powerful opportunity for ${sunSign} individuals to express their ${sunData?.keywords[0] || 'core'} nature more fully. The planetary alignments support your natural tendencies toward ${sunData?.strengths.slice(0, 2).join(' and ')?.toLowerCase() || 'achievement'}, while also inviting deeper exploration of your ${moonSign} emotional landscape. With Venus currently influencing ${venusData?.keywords[0]?.toLowerCase() || 'relationships'} and Mars activating your ${marsData?.keywords[0]?.toLowerCase() || 'drive'}, this is an excellent time to pursue both personal and professional goals with confidence.`,
     `The coming seven days offer a unique blend of energies tailored to your ${sunSign}-${moonSign} combination. The cosmic weather particularly supports activities related to ${sunData?.keywords.slice(0, 2).join(' and ')?.toLowerCase() || 'growth'}, while your ${moonSign} Moon ensures you stay connected to your emotional truth throughout. This week favours those who balance ${sunData?.element === 'Fire' ? 'bold action with thoughtful reflection' : sunData?.element === 'Earth' ? 'practical steps with intuitive guidance' : sunData?.element === 'Air' ? 'intellectual pursuits with emotional awareness' : 'emotional depth with grounded action'}.`,
@@ -140,14 +191,66 @@ function generateWeeklyOverview(chart: NatalChart): { overview: string; theme: s
   }
 }
 
-// Generate key transits
-function generateWeeklyTransits(chart: NatalChart): { planet: string; aspect: string; meaning: string; bestUse: string }[] {
+// Generate key transits - enhanced with real data
+function generateWeeklyTransits(chart: NatalChart, dailySky?: DailySkyData | null): { planet: string; aspect: string; meaning: string; bestUse: string }[] {
   const sunSign = capitalizeSign(getSign(chart, 'sun'))
   const moonSign = capitalizeSign(getSign(chart, 'moon'))
-  const venusSign = capitalizeSign(getSign(chart, 'venus'))
-  const marsSign = capitalizeSign(getSign(chart, 'mars'))
   const sunData = signData[sunSign as keyof typeof signData]
 
+  if (dailySky) {
+    const transits: { planet: string; aspect: string; meaning: string; bestUse: string }[] = []
+
+    // Show real planetary positions
+    const planets = dailySky.planets
+    const sunPos = planets.find(p => p.planet === 'sun')
+    const moonPos = planets.find(p => p.planet === 'moon')
+    const venusPos = planets.find(p => p.planet === 'venus')
+    const marsPos = planets.find(p => p.planet === 'mars')
+    const mercuryPos = planets.find(p => p.planet === 'mercury')
+
+    if (venusPos) {
+      const sign = capitalizeSign(venusPos.sign)
+      transits.push({
+        planet: `Venus in ${sign}${venusPos.retrograde ? ' Rx' : ''}`,
+        aspect: venusPos.retrograde ? 'reviewing relationships and values' : `enhancing ${signData[sign as keyof typeof signData]?.keywords[0]?.toLowerCase() || 'harmony'}`,
+        meaning: venusPos.retrograde ? 'Past relationships or values resurface for review' : 'Enhanced creativity, relationships, and financial flow',
+        bestUse: venusPos.retrograde ? 'Reflect on what you truly value, avoid new financial commitments' : 'Important conversations, creative projects, romantic gestures',
+      })
+    }
+
+    if (marsPos) {
+      const sign = capitalizeSign(marsPos.sign)
+      transits.push({
+        planet: `Mars in ${sign}${marsPos.retrograde ? ' Rx' : ''}`,
+        aspect: marsPos.retrograde ? 'redirecting energy inward' : `driving ${signData[sign as keyof typeof signData]?.keywords[0]?.toLowerCase() || 'action'}`,
+        meaning: marsPos.retrograde ? 'Inner motivation review, avoid forced confrontations' : 'Increased energy, motivation, and assertiveness',
+        bestUse: marsPos.retrograde ? 'Channel energy into revision and internal goals' : 'Tackling challenges, starting projects, physical activity',
+      })
+    }
+
+    if (mercuryPos) {
+      const sign = capitalizeSign(mercuryPos.sign)
+      transits.push({
+        planet: `Mercury in ${sign}${mercuryPos.retrograde ? ' Rx' : ''}`,
+        aspect: mercuryPos.retrograde ? 'reviewing communications and plans' : `supporting ${signData[sign as keyof typeof signData]?.keywords[0]?.toLowerCase() || 'thinking'}`,
+        meaning: mercuryPos.retrograde ? 'Communication mix-ups possible, review all important messages' : 'Mental clarity, effective communication, learning',
+        bestUse: mercuryPos.retrograde ? 'Re-read emails, revisit old ideas, back up data' : 'Important emails, negotiations, studying, writing',
+      })
+    }
+
+    transits.push({
+      planet: dailySky.moonPhase.name,
+      aspect: `colouring the week's emotional tone`,
+      meaning: dailySky.moonPhase.name.toLowerCase().includes('waxing') || dailySky.moonPhase.name.toLowerCase().includes('full')
+        ? 'Building energy supports manifestation and action'
+        : 'Releasing energy supports letting go and reflection',
+      bestUse: 'Follow lunar rhythms for emotional processing and timing',
+    })
+
+    return transits
+  }
+
+  // Fallback
   return [
     {
       planet: 'Venus',
@@ -177,20 +280,24 @@ function generateWeeklyTransits(chart: NatalChart): { planet: string; aspect: st
 }
 
 // Generate recommendations
-function generateWeeklyRecs(chart: NatalChart): { category: string; recommendation: string }[] {
+function generateWeeklyRecs(chart: NatalChart, dailySky?: DailySkyData | null): { category: string; recommendation: string }[] {
   const sunSign = capitalizeSign(getSign(chart, 'sun'))
   const moonSign = capitalizeSign(getSign(chart, 'moon'))
   const sunData = signData[sunSign as keyof typeof signData]
   const moonData = signData[moonSign as keyof typeof signData]
 
-  return [
+  const recs = [
     {
       category: 'Career',
-      recommendation: `Schedule important meetings on your high-energy days. Your ${sunSign} ${sunData?.strengths[0]?.toLowerCase() || 'leadership'} will be most effective then.`,
+      recommendation: dailySky?.retrogrades.includes('mercury')
+        ? `Mercury retrograde favours reviewing plans over launching new ones. Use your ${sunSign} ${sunData?.strengths[0]?.toLowerCase() || 'leadership'} to refine existing projects.`
+        : `Schedule important meetings on your high-energy days. Your ${sunSign} ${sunData?.strengths[0]?.toLowerCase() || 'leadership'} will be most effective then.`,
     },
     {
       category: 'Relationships',
-      recommendation: `Your ${moonSign} Moon craves ${moonData?.keywords[0]?.toLowerCase() || 'connection'} this week. Make time for meaningful conversations with loved ones.`,
+      recommendation: dailySky?.retrogrades.includes('venus')
+        ? `Venus retrograde may bring past relationship patterns to the surface. Use your ${moonSign} Moon's emotional intelligence to process these themes.`
+        : `Your ${moonSign} Moon craves ${moonData?.keywords[0]?.toLowerCase() || 'connection'} this week. Make time for meaningful conversations with loved ones.`,
     },
     {
       category: 'Health',
@@ -202,16 +309,33 @@ function generateWeeklyRecs(chart: NatalChart): { category: string; recommendati
     },
     {
       category: 'Finances',
-      recommendation: `Trust your ${sunSign} instincts about opportunities, but let your ${moonSign} Moon's caution guide major decisions.`,
+      recommendation: dailySky?.retrogrades.includes('jupiter')
+        ? `Jupiter retrograde suggests reviewing financial strategies rather than expanding. Consolidate before growing.`
+        : `Trust your ${sunSign} instincts about opportunities, but let your ${moonSign} Moon's caution guide major decisions.`,
     },
   ]
+
+  return recs
 }
 
-export function WeeklyForecast({ chart }: WeeklyForecastProps) {
-  const weekEnergy = useMemo(() => generateWeekEnergy(chart), [chart])
-  const overview = useMemo(() => generateWeeklyOverview(chart), [chart])
-  const transits = useMemo(() => generateWeeklyTransits(chart), [chart])
-  const recommendations = useMemo(() => generateWeeklyRecs(chart), [chart])
+export function WeeklyForecast({ chart, dailySky: initialDailySky }: WeeklyForecastProps) {
+  const [dailySky, setDailySky] = useState<DailySkyData | null>(initialDailySky ?? null)
+
+  useEffect(() => {
+    if (initialDailySky !== undefined) return
+
+    fetch('/api/daily-sky')
+      .then(res => res.json())
+      .then(json => {
+        if (json.success && json.data) setDailySky(json.data)
+      })
+      .catch(() => {})
+  }, [initialDailySky])
+
+  const weekEnergy = useMemo(() => generateWeekEnergy(chart, dailySky), [chart, dailySky])
+  const overview = useMemo(() => generateWeeklyOverview(chart, dailySky), [chart, dailySky])
+  const transits = useMemo(() => generateWeeklyTransits(chart, dailySky), [chart, dailySky])
+  const recommendations = useMemo(() => generateWeeklyRecs(chart, dailySky), [chart, dailySky])
 
   const powerDays = weekEnergy.filter(d => d.isPowerDay)
   const sunSign = capitalizeSign(getSign(chart, 'sun'))
@@ -229,11 +353,16 @@ export function WeeklyForecast({ chart }: WeeklyForecastProps) {
       <div className="flex items-center justify-between mb-6">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <div className="w-2 h-2 rounded-full bg-violet-400 animate-pulse" />
-            <span className="text-violet-400 text-xs font-medium">Weekly Forecast</span>
+            <div className={`w-2 h-2 rounded-full ${dailySky ? 'bg-emerald-400' : 'bg-violet-400'} animate-pulse`} />
+            <span className={`${dailySky ? 'text-emerald-400' : 'text-violet-400'} text-xs font-medium`}>
+              {dailySky ? 'Live planetary data' : 'Weekly Forecast'}
+            </span>
           </div>
           <h2 className="text-2xl font-bold text-white">Your Week Ahead</h2>
-          <p className="text-indigo-200/50 text-sm">{weekRange} • {sunSign} Sun, {moonSign} Moon</p>
+          <p className="text-indigo-200/50 text-sm">
+            {weekRange} • {sunSign} Sun, {moonSign} Moon
+            {dailySky && ` • ${dailySky.moonPhase.name}`}
+          </p>
         </div>
         {powerDays.length > 0 && (
           <div className="text-right bg-amber-500/10 rounded-lg p-3">
@@ -242,6 +371,17 @@ export function WeeklyForecast({ chart }: WeeklyForecastProps) {
           </div>
         )}
       </div>
+
+      {/* Retrograde alerts */}
+      {dailySky && dailySky.retrogrades.length > 0 && (
+        <div className="flex flex-wrap gap-2 mb-4">
+          {dailySky.retrogrades.map(planet => (
+            <span key={planet} className="px-2 py-1 bg-amber-500/10 text-amber-400 text-xs rounded-full">
+              {planet.charAt(0).toUpperCase() + planet.slice(1)} Retrograde
+            </span>
+          ))}
+        </div>
+      )}
 
       {/* Week Overview */}
       <div className="bg-gradient-to-r from-violet-500/10 to-purple-500/10 rounded-xl p-5 mb-4">
@@ -339,13 +479,15 @@ export function WeeklyForecast({ chart }: WeeklyForecastProps) {
 
       {/* Key Transits */}
       <div className="bg-indigo-950/40 rounded-xl p-4 mb-6">
-        <div className="text-white font-medium mb-4">Key Planetary Influences</div>
+        <div className="text-white font-medium mb-4">
+          {dailySky ? 'Current Planetary Positions' : 'Key Planetary Influences'}
+        </div>
         <div className="space-y-4">
           {transits.map((transit, i) => (
             <div key={i} className="flex items-start gap-3">
               <div className="w-10 h-10 rounded-lg bg-indigo-500/20 flex items-center justify-center flex-shrink-0">
                 <span className="text-indigo-300 text-sm font-medium">
-                  {transit.planet === 'Moon Phases' ? '🌙' : transit.planet.charAt(0)}
+                  {transit.planet.includes('Moon') || transit.planet.includes('moon') ? '🌙' : transit.planet.charAt(0)}
                 </span>
               </div>
               <div className="flex-1">

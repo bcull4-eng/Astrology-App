@@ -279,7 +279,7 @@ export default function TarotPage() {
             Upgrade to Pro
           </Link>
           <p className="text-indigo-300/40 text-xs mt-3">
-            From £14.99/month • Cancel anytime
+            Try for just £2/week • Cancel anytime
           </p>
         </div>
       </div>

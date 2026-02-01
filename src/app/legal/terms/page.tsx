@@ -75,12 +75,12 @@ export default function TermsOfServicePage() {
 
               <h3 className="text-lg font-medium text-white mt-4 mb-2">5.1 Subscription Plans</h3>
               <p>
-                We offer monthly, annual, and lifetime subscription plans. Prices are displayed in GBP and are inclusive of VAT where applicable.
+                We offer weekly, annual, and lifetime subscription plans. New users may be eligible for a discounted introductory weekly rate. After the introductory period, the subscription automatically continues at the standard weekly rate. Prices are displayed in GBP and are inclusive of VAT where applicable.
               </p>
 
               <h3 className="text-lg font-medium text-white mt-4 mb-2">5.2 Billing</h3>
               <p>
-                Subscriptions are billed in advance. Monthly and annual subscriptions will automatically renew unless cancelled before the renewal date. Payments are processed securely by Stripe.
+                Subscriptions are billed in advance. Weekly and annual subscriptions will automatically renew unless cancelled before the renewal date. Payments are processed securely by Stripe.
               </p>
 
               <h3 className="text-lg font-medium text-white mt-4 mb-2">5.3 Cancellation</h3>

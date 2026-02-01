@@ -204,7 +204,7 @@ export function DailyInsightsLocked() {
             Unlock Daily Insights
           </Link>
           <p className="text-indigo-300/40 text-xs mt-3">
-            Starting at £14.99/month
+            Try for just £2
           </p>
         </div>
       </div>

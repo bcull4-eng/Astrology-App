@@ -476,11 +476,14 @@ export default function AccountPage() {
                   <div>
                     <p className="text-white font-medium">
                       {subscription.plan === 'lifetime' ? 'Lifetime Pro' :
-                       subscription.plan === 'annual' ? 'Annual Pro' : 'Monthly Pro'}
+                       subscription.plan === 'annual' ? 'Annual Pro' :
+                       (subscription.plan === 'weekly' || subscription.plan === 'weekly_intro') ? 'Weekly Pro' : 'Pro'}
                     </p>
                     <p className="text-indigo-200/50 text-sm">
                       {subscription.plan === 'lifetime' ? 'One-time purchase - Never expires' :
-                       subscription.plan === 'annual' ? '£99/year' : '£14.99/month'}
+                       subscription.plan === 'annual' ? '£99/year' :
+                       subscription.plan === 'weekly_intro' ? '£2 intro week, then £4.99/week' :
+                       subscription.plan === 'weekly' ? '£4.99/week' : ''}
                     </p>
                     {subscription.expiresAt && subscription.plan !== 'lifetime' && (
                       <p className={`text-sm mt-1 ${subscription.cancelAtPeriodEnd ? 'text-amber-400/70' : 'text-indigo-300/70'}`}>

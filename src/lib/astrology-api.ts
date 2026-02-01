@@ -1,8 +1,11 @@
 /**
- * AstrologyAPI.com Client
+ * Astrology-API.io Client
  *
  * Western astrology API integration for natal charts, transits, and synastry.
- * Uses Basic Auth with user_id:api_key
+ * Uses Bearer token authentication with a single API key.
+ *
+ * Endpoint schemas based on OpenAPI spec at:
+ * https://api.astrology-api.io/api/v3/openapi.json
  */
 
 import type {
@@ -20,138 +23,286 @@ import type {
   AspectNature,
 } from '@/types'
 import type { AstrologyProvider } from '@/providers/astrology'
-import { getTimezoneOffset } from './geocoding'
 
-// API Response Types (from AstrologyAPI.com - actual response format)
-interface APIPlanetData {
-  name: string
-  fullDegree: number
-  normDegree: number
-  speed: number
-  isRetro: string
-  sign: string
-  house: number
+// ---------- API Response Types (astrology-api.io v3 OpenAPI spec) ----------
+
+// Shared chart data structure (natal, transit, synastry responses all use this)
+interface APIChartData {
+  planetary_positions: APIPlanetPosition[]
+  house_cusps: APIHouseCusp[]
+  aspects: APIAspect[]
+  fixed_stars?: Record<string, unknown> | null
 }
 
-interface APIHouseData {
-  house: number
-  sign: string
+interface APIPlanetPosition {
+  name: string                // e.g. "Sun", "Moon", "Sun_transit", "Venus_1"
+  sign: string                // 3-letter code: "Ari", "Tau", etc.
+  degree: number              // degree within sign (0-29.99)
+  absolute_longitude: number  // absolute degree (0-360)
+  house: number | null        // 1-12 or null (heliocentric)
+  is_retrograde: boolean
+  speed: number | null        // degrees/day
+}
+
+interface APIHouseCusp {
+  house: number               // 1-12
+  sign: string                // 3-letter or full name
   degree: number
+  absolute_longitude: number
+  retrograde?: null
 }
 
-interface APIHousesResponse {
-  houses: APIHouseData[]
-  ascendant: number
-  midheaven: number
-  vertex: number
+interface APIAspect {
+  point1: string              // e.g. "Sun", "Sun_transit", "Venus_1"
+  point2: string              // e.g. "Moon", "Moon_natal", "Mars_2"
+  aspect_type: string         // "conjunction", "trine", "square", "opposition", "sextile"
+  orb: number                 // deviation in degrees
+  peak_activations?: unknown[] | null
 }
 
-interface APIAspectData {
-  aspecting_planet: string
-  aspected_planet: string
-  type: string
-  orb: number
+// Natal response
+interface APINatalResponse {
+  subject_data: Record<string, unknown>
+  chart_data: APIChartData
 }
 
+// Transit response
 interface APITransitResponse {
-  transit_relation: Array<{
-    transit_planet: string
-    natal_planet: string
-    aspect: string
-    orb: number
-  }>
+  subject_data: {
+    natal_subject: Record<string, unknown>
+    transit_subject: Record<string, unknown>
+  }
+  chart_data: APIChartData
 }
 
+// Synastry response
 interface APISynastryResponse {
-  aspects: APIAspectData[]
+  subject_data: {
+    subject1: Record<string, unknown>
+    subject2: Record<string, unknown>
+  }
+  chart_data: APIChartData
 }
+
+// Global positions response (flat, no wrapper)
+export interface APIGlobalPositionsResponse {
+  datetime_utc: string
+  zodiac_type: string
+  positions: APIPlanetPosition[]
+}
+
+// Lunar metrics response (flat, no wrapper)
+export interface APILunarMetricsResponse {
+  date: string
+  within_perigee_range: boolean
+  distance: number
+  within_apogee_range: boolean
+  apogee_distance: number
+  moon_sign: string           // 3-letter code
+  moon_phase: string          // e.g. "Waxing Crescent", "Full Moon"
+  moon_age_in_days: number
+  moon_day: number
+  moon_illumination: number   // percentage 0-100
+}
+
+// ---------- Public data types for consumption ----------
+
+export interface GlobalPlanetPosition {
+  planet: Planet
+  sign: ZodiacSign
+  degree: number
+  retrograde: boolean
+}
+
+export interface MoonPhaseData {
+  name: string
+  illumination: number
+}
+
+export interface VoidOfCourseData {
+  isVoid: boolean
+  startsAt: string | null
+  endsAt: string | null
+}
+
+export interface DailySkyData {
+  date: string
+  planets: GlobalPlanetPosition[]
+  moonPhase: MoonPhaseData
+  retrogrades: Planet[]
+  voidOfCourse: VoidOfCourseData
+  nextFullMoon: string | null
+  nextNewMoon: string | null
+}
+
+export interface TransitAspect {
+  transitingPlanet: Planet
+  natalPlanet: Planet
+  aspect: AspectType
+  orb: number
+  isApplying: boolean
+  nature: AspectNature
+}
+
+export interface UserTransitData {
+  date: string
+  transits: TransitAspect[]
+}
+
+// ---------- Sign code mapping ----------
+
+const SIGN_CODE_MAP: Record<string, ZodiacSign> = {
+  'Ari': 'aries',
+  'Tau': 'taurus',
+  'Gem': 'gemini',
+  'Can': 'cancer',
+  'Leo': 'leo',
+  'Vir': 'virgo',
+  'Lib': 'libra',
+  'Sco': 'scorpio',
+  'Sag': 'sagittarius',
+  'Cap': 'capricorn',
+  'Aqu': 'aquarius',
+  'Pis': 'pisces',
+  // Also accept full names (for flexibility)
+  'Aries': 'aries',
+  'Taurus': 'taurus',
+  'Gemini': 'gemini',
+  'Cancer': 'cancer',
+  // 'Leo' already mapped above (3-letter code == full name)
+  'Virgo': 'virgo',
+  'Libra': 'libra',
+  'Scorpio': 'scorpio',
+  'Sagittarius': 'sagittarius',
+  'Capricorn': 'capricorn',
+  'Aquarius': 'aquarius',
+  'Pisces': 'pisces',
+}
+
+const PLANET_NAME_MAP: Record<string, Planet> = {
+  'Sun': 'sun',
+  'Moon': 'moon',
+  'Mercury': 'mercury',
+  'Venus': 'venus',
+  'Mars': 'mars',
+  'Jupiter': 'jupiter',
+  'Saturn': 'saturn',
+  'Uranus': 'uranus',
+  'Neptune': 'neptune',
+  'Pluto': 'pluto',
+  'North Node': 'north_node',
+  'True_Node': 'north_node',
+  'True Node': 'north_node',
+  'Mean_Node': 'north_node',
+  'Node': 'north_node',
+  'Chiron': 'chiron',
+}
+
+// ---------- Client ----------
 
 export class AstrologyAPIClient implements AstrologyProvider {
-  private baseUrl: string
-  private authHeader: string
+  private baseUrl = 'https://api.astrology-api.io'
+  private apiKey: string
 
   constructor() {
-    const userId = process.env.ASTROLOGY_API_USER_ID
-    const apiKey = process.env.ASTROLOGY_API_KEY
-    const baseUrl = process.env.ASTROLOGY_API_BASE_URL
+    const apiKey = process.env.ASTROLOGY_IO_API_KEY
 
-    if (!userId || !apiKey || !baseUrl) {
-      throw new Error('Astrology API credentials not configured')
+    if (!apiKey) {
+      throw new Error(
+        'ASTROLOGY_IO_API_KEY is not configured. ' +
+        'Set it in your environment variables.'
+      )
     }
 
-    this.baseUrl = baseUrl
-    // Basic Auth: base64(userId:apiKey)
-    this.authHeader = 'Basic ' + Buffer.from(`${userId}:${apiKey}`).toString('base64')
+    this.apiKey = apiKey
   }
 
   private async request<T>(endpoint: string, body: Record<string, unknown>): Promise<T> {
     const response = await fetch(`${this.baseUrl}${endpoint}`, {
       method: 'POST',
       headers: {
-        'Authorization': this.authHeader,
+        'Authorization': `Bearer ${this.apiKey}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(body),
     })
 
     if (!response.ok) {
-      throw new Error(`AstrologyAPI error: ${response.status} ${response.statusText}`)
+      const text = await response.text().catch(() => '')
+      throw new Error(
+        `Astrology API error: ${response.status} ${response.statusText}${text ? ` - ${text}` : ''}`
+      )
     }
 
-    return response.json()
+    // All API responses are wrapped in {success, data, metadata} envelope
+    const envelope = await response.json() as {
+      success: boolean
+      data: T | null
+      error?: { message?: string; error_code?: string; code?: string }
+    }
+
+    if (!envelope.success || !envelope.data) {
+      const errorMsg = envelope.error?.message ?? 'Unknown API error'
+      throw new Error(`Astrology API error: ${errorMsg}`)
+    }
+
+    return envelope.data
   }
 
-  private birthDataToParams(birthData: BirthData): Record<string, number> {
+  private buildSubject(birthData: BirthData): Record<string, unknown> {
     const date = new Date(birthData.birth_date)
     const [hours, minutes] = birthData.birth_time
       ? birthData.birth_time.split(':').map(Number)
       : [12, 0] // Default to noon if unknown
 
     return {
-      day: date.getDate(),
-      month: date.getMonth() + 1,
-      year: date.getFullYear(),
-      hour: hours,
-      min: minutes,
-      lat: birthData.birth_place.latitude,
-      lon: birthData.birth_place.longitude,
-      tzone: this.getTimezoneOffsetValue(birthData.birth_place.timezone),
+      birth_data: {
+        year: date.getFullYear(),
+        month: date.getMonth() + 1,
+        day: date.getDate(),
+        hour: hours,
+        minute: minutes,
+        latitude: birthData.birth_place.latitude,
+        longitude: birthData.birth_place.longitude,
+        timezone: birthData.birth_place.timezone,
+      },
     }
   }
 
-  private getTimezoneOffsetValue(timezone: string): number {
-    return getTimezoneOffset(timezone)
-  }
+  // ---------- Natal Chart ----------
 
   async getNatalChart(birthData: BirthData): Promise<NatalChart> {
-    const params = this.birthDataToParams(birthData)
+    const subject = this.buildSubject(birthData)
 
-    // Fetch planets and houses
-    const [planetsResponse, housesResponse] = await Promise.all([
-      this.request<APIPlanetData[]>('/planets/tropical', params),
-      this.request<APIHousesResponse>('/house_cusps/tropical', params),
-    ])
+    const response = await this.request<APINatalResponse>('/api/v3/charts/natal', {
+      subject,
+      options: {
+        house_system: 'P',      // Placidus
+        zodiac_type: 'Tropic',  // Tropical
+      },
+    })
 
-    // Map API response to our types (API uses camelCase)
-    const placements: NatalPlacement[] = planetsResponse
+    const { chart_data } = response
+
+    const placements: NatalPlacement[] = chart_data.planetary_positions
       .filter(p => this.mapPlanetName(p.name) !== null)
       .map(p => ({
         planet: this.mapPlanetName(p.name)!,
-        sign: this.mapSignName(p.sign),
-        degree: p.normDegree,
-        house: p.house,
-        is_retrograde: p.isRetro === 'true',
+        sign: this.mapSignCode(p.sign),
+        degree: p.degree,
+        house: p.house ?? 1,
+        is_retrograde: p.is_retrograde,
       }))
 
-    const houses: HouseCusp[] = housesResponse.houses.map(h => ({
+    const houses: HouseCusp[] = chart_data.house_cusps.map(h => ({
       house: h.house,
-      sign: this.mapSignName(h.sign),
-      degree: h.degree % 30, // Normalize to 0-30 within sign
+      sign: this.mapSignCode(h.sign),
+      degree: h.degree,
     }))
 
-    // Get ascendant and midheaven signs from houses
-    const ascendantHouse = houses.find(h => h.house === 1)
-    const midheavenHouse = houses.find(h => h.house === 10)
+    // Ascendant = house cusp 1, Midheaven (MC) = house cusp 10
+    const ascCusp = chart_data.house_cusps.find(h => h.house === 1)
+    const mcCusp = chart_data.house_cusps.find(h => h.house === 10)
 
     return {
       user_id: birthData.user_id,
@@ -159,143 +310,261 @@ export class AstrologyAPIClient implements AstrologyProvider {
       placements,
       houses,
       ascendant: {
-        sign: ascendantHouse?.sign ?? 'aries',
-        degree: housesResponse.ascendant % 30,
+        sign: this.mapSignCode(ascCusp?.sign ?? 'Ari'),
+        degree: ascCusp?.degree ?? 0,
       },
       midheaven: {
-        sign: midheavenHouse?.sign ?? 'aries',
-        degree: housesResponse.midheaven % 30,
+        sign: this.mapSignCode(mcCusp?.sign ?? 'Ari'),
+        degree: mcCusp?.degree ?? 0,
       },
     }
   }
 
-  async getTransits(natalChart: NatalChart, dateRange: DateRange): Promise<TransitSignal[]> {
-    // Get birth data params from natal chart placements
-    // For transits, we need the natal chart info plus the transit date
-    const transitDate = dateRange.start
+  // ---------- Transits ----------
 
-    // Build transit params
-    const params = {
-      day: transitDate.getDate(),
-      month: transitDate.getMonth() + 1,
-      year: transitDate.getFullYear(),
-      // We need natal data too - the API should have this from the original chart
-      // For now, we'll use daily transits endpoint
-    }
-
-    const response = await this.request<APITransitResponse>('/tropical_transits/daily', params)
-
-    // Map to our transit signal format
-    const transits: TransitSignal[] = response.transit_relation?.map((t, index) => ({
-      id: `transit-${index}-${Date.now()}`,
-      transiting_planet: this.mapPlanetName(t.transit_planet) ?? 'sun',
-      natal_target: {
-        type: 'planet' as const,
-        planet: this.mapPlanetName(t.natal_planet) ?? 'sun',
-      },
-      aspect: this.mapAspectType(t.aspect),
-      orb: t.orb,
-      start_date: dateRange.start,
-      peak_date: new Date((dateRange.start.getTime() + dateRange.end.getTime()) / 2),
-      end_date: dateRange.end,
-    })) ?? []
-
-    return transits
+  async getTransits(_natalChart: NatalChart, _dateRange: DateRange): Promise<TransitSignal[]> {
+    // The transit endpoint requires full birth data (not just a chart).
+    // This method exists to satisfy the AstrologyProvider interface.
+    // Use getTransitAspects() with birthData directly instead.
+    return []
   }
 
-  async getSynastry(chartA: NatalChart, chartB: NatalChart): Promise<SynastryData> {
-    // Note: The synastry endpoint needs birth data for both people
-    // For now, we'll return the aspects between the two charts
-    // In production, we'd call the synastry_horoscope endpoint
+  /**
+   * Get transit aspects for a user's natal chart on a specific date.
+   * This is the preferred method for personalized transit data.
+   */
+  async getTransitAspects(birthData: BirthData, transitDate: Date = new Date()): Promise<UserTransitData> {
+    const subject = this.buildSubject(birthData)
 
-    const response = await this.request<APISynastryResponse>('/synastry_horoscope', {
-      // Person A birth data would go here
-      // Person B birth data would go here
-      // We need to store birth data with the chart
+    const response = await this.request<APITransitResponse>('/api/v3/charts/transit', {
+      subject,
+      transit_time: {
+        datetime: {
+          year: transitDate.getFullYear(),
+          month: transitDate.getMonth() + 1,
+          day: transitDate.getDate(),
+          hour: transitDate.getHours(),
+          minute: transitDate.getMinutes(),
+          latitude: birthData.birth_place.latitude,
+          longitude: birthData.birth_place.longitude,
+          timezone: birthData.birth_place.timezone,
+        },
+      },
     })
 
-    const aspects: SynastryAspect[] = response.aspects?.map((a, index) => ({
-      id: `synastry-${index}`,
-      planet_a: this.mapPlanetName(a.aspecting_planet) ?? 'sun',
-      planet_b: this.mapPlanetName(a.aspected_planet) ?? 'sun',
-      aspect: this.mapAspectType(a.type),
-      orb: a.orb,
-      nature: this.getAspectNature(a.type),
-    })) ?? []
+    // Filter to cross-aspects only (transit planet -> natal planet)
+    const transits: TransitAspect[] = response.chart_data.aspects
+      .filter(a => {
+        const p1Transit = a.point1.endsWith('_transit')
+        const p2Natal = a.point2.endsWith('_natal')
+        if (!p1Transit || !p2Natal) return false
+        const transitName = this.stripPlanetSuffix(a.point1)
+        const natalName = this.stripPlanetSuffix(a.point2)
+        return this.mapPlanetName(transitName) !== null && this.mapPlanetName(natalName) !== null
+      })
+      .map(a => {
+        const transitName = this.stripPlanetSuffix(a.point1)
+        const natalName = this.stripPlanetSuffix(a.point2)
+        return {
+          transitingPlanet: this.mapPlanetName(transitName)!,
+          natalPlanet: this.mapPlanetName(natalName)!,
+          aspect: this.mapAspectType(a.aspect_type),
+          orb: a.orb,
+          isApplying: a.orb < 1, // Tight orb approximates applying aspect
+          nature: this.getAspectNature(a.aspect_type),
+        }
+      })
 
+    return {
+      date: transitDate.toISOString().split('T')[0],
+      transits,
+    }
+  }
+
+  // ---------- Global Daily Data ----------
+
+  /**
+   * Fetch current planetary positions (shared for all users).
+   * Uses flat request body per OpenAPI spec (no subject wrapper).
+   */
+  async getGlobalPositions(date: Date = new Date()): Promise<APIGlobalPositionsResponse> {
+    return this.request<APIGlobalPositionsResponse>('/api/v3/data/global-positions', {
+      year: date.getFullYear(),
+      month: date.getMonth() + 1,
+      day: date.getDate(),
+      hour: date.getHours(),
+      minute: date.getMinutes(),
+      second: 0,
+      options: {
+        zodiac_type: 'Tropic',
+        active_points: [
+          'Sun', 'Moon', 'Mercury', 'Venus', 'Mars',
+          'Jupiter', 'Saturn', 'Uranus', 'Neptune', 'Pluto',
+          'True_Node', 'Chiron',
+        ],
+      },
+    })
+  }
+
+  /**
+   * Fetch lunar metrics (moon phase, illumination, sign, etc.).
+   * Uses subject wrapper per OpenAPI spec.
+   */
+  async getLunarMetrics(date: Date = new Date()): Promise<APILunarMetricsResponse> {
+    return this.request<APILunarMetricsResponse>('/api/v3/data/lunar-metrics', {
+      subject: {
+        birth_data: {
+          year: date.getFullYear(),
+          month: date.getMonth() + 1,
+          day: date.getDate(),
+          hour: date.getHours(),
+          minute: date.getMinutes(),
+          second: 0,
+          latitude: 51.5074,
+          longitude: -0.1278,
+        },
+      },
+    })
+  }
+
+  /**
+   * Convenience method: fetch both global positions and lunar metrics,
+   * then combine into a DailySkyData object.
+   */
+  async getDailySkyData(date: Date = new Date()): Promise<DailySkyData> {
+    const [positionsRes, lunarRes] = await Promise.all([
+      this.getGlobalPositions(date),
+      this.getLunarMetrics(date),
+    ])
+
+    const planets: GlobalPlanetPosition[] = positionsRes.positions
+      .filter(p => this.mapPlanetName(p.name) !== null)
+      .map(p => ({
+        planet: this.mapPlanetName(p.name)!,
+        sign: this.mapSignCode(p.sign),
+        degree: p.degree,
+        retrograde: p.is_retrograde,
+      }))
+
+    const retrogrades = planets.filter(p => p.retrograde).map(p => p.planet)
+
+    return {
+      date: date.toISOString().split('T')[0],
+      planets,
+      moonPhase: {
+        name: lunarRes.moon_phase,
+        illumination: lunarRes.moon_illumination,
+      },
+      retrogrades,
+      // Void-of-course and next moon dates not available from lunar-metrics endpoint
+      voidOfCourse: {
+        isVoid: false,
+        startsAt: null,
+        endsAt: null,
+      },
+      nextFullMoon: null,
+      nextNewMoon: null,
+    }
+  }
+
+  // ---------- Synastry ----------
+
+  async getSynastry(chartA: NatalChart, chartB: NatalChart): Promise<SynastryData> {
+    // The synastry endpoint requires full birth data for both subjects.
+    // Since we only have NatalChart objects, use getSynastryFromBirthData() instead.
     return {
       user_a_id: chartA.user_id,
       user_b_id: chartB.user_id,
+      calculated_at: new Date(),
+      aspects: [],
+    }
+  }
+
+  /**
+   * Get synastry aspects between two people using their birth data.
+   * This is the preferred method when birth data is available.
+   */
+  async getSynastryFromBirthData(birthDataA: BirthData, birthDataB: BirthData): Promise<SynastryData> {
+    const subject1 = this.buildSubject(birthDataA)
+    const subject2 = this.buildSubject(birthDataB)
+
+    const response = await this.request<APISynastryResponse>('/api/v3/charts/synastry', {
+      subject1,
+      subject2,
+      options: {
+        house_system: 'P',
+        zodiac_type: 'Tropic',
+      },
+    })
+
+    const aspects: SynastryAspect[] = response.chart_data.aspects
+      .filter(a => {
+        const p1Is1 = a.point1.endsWith('_1')
+        const p2Is2 = a.point2.endsWith('_2')
+        if (!p1Is1 || !p2Is2) return false
+        const name1 = this.stripPlanetSuffix(a.point1)
+        const name2 = this.stripPlanetSuffix(a.point2)
+        return this.mapPlanetName(name1) !== null && this.mapPlanetName(name2) !== null
+      })
+      .map((a, index) => {
+        const name1 = this.stripPlanetSuffix(a.point1)
+        const name2 = this.stripPlanetSuffix(a.point2)
+        return {
+          id: `synastry-${index}`,
+          planet_a: this.mapPlanetName(name1)!,
+          planet_b: this.mapPlanetName(name2)!,
+          aspect: this.mapAspectType(a.aspect_type),
+          orb: a.orb,
+          nature: this.getAspectNature(a.aspect_type),
+        }
+      })
+
+    return {
+      user_a_id: birthDataA.user_id,
+      user_b_id: birthDataB.user_id,
       calculated_at: new Date(),
       aspects,
     }
   }
 
+  // ---------- Mapping helpers ----------
+
   private mapPlanetName(name: string): Planet | null {
-    const mapping: Record<string, Planet> = {
-      'Sun': 'sun',
-      'Moon': 'moon',
-      'Mercury': 'mercury',
-      'Venus': 'venus',
-      'Mars': 'mars',
-      'Jupiter': 'jupiter',
-      'Saturn': 'saturn',
-      'Uranus': 'uranus',
-      'Neptune': 'neptune',
-      'Pluto': 'pluto',
-      'Node': 'north_node',
-      'North Node': 'north_node',
-      'Chiron': 'chiron',
-    }
-    return mapping[name] ?? null
+    return PLANET_NAME_MAP[name] ?? null
   }
 
-  private mapSignName(sign: string): ZodiacSign {
-    const mapping: Record<string, ZodiacSign> = {
-      'Aries': 'aries',
-      'Taurus': 'taurus',
-      'Gemini': 'gemini',
-      'Cancer': 'cancer',
-      'Leo': 'leo',
-      'Virgo': 'virgo',
-      'Libra': 'libra',
-      'Scorpio': 'scorpio',
-      'Sagittarius': 'sagittarius',
-      'Capricorn': 'capricorn',
-      'Aquarius': 'aquarius',
-      'Pisces': 'pisces',
-    }
-    return mapping[sign] ?? 'aries'
+  private mapSignCode(code: string): ZodiacSign {
+    return SIGN_CODE_MAP[code] ?? 'aries'
+  }
+
+  private stripPlanetSuffix(name: string): string {
+    return name.replace(/_(transit|natal|1|2)$/, '')
   }
 
   private mapAspectType(type: string): AspectType {
+    const normalized = type.toLowerCase()
     const mapping: Record<string, AspectType> = {
-      'Conjunction': 'conjunction',
-      'Opposition': 'opposition',
-      'Trine': 'trine',
-      'Square': 'square',
-      'Sextile': 'sextile',
-      'Quincunx': 'quincunx',
       'conjunction': 'conjunction',
       'opposition': 'opposition',
       'trine': 'trine',
       'square': 'square',
       'sextile': 'sextile',
+      'quincunx': 'quincunx',
+      'inconjunct': 'quincunx',
     }
-    return mapping[type] ?? 'conjunction'
+    return mapping[normalized] ?? 'conjunction'
   }
 
   private getAspectNature(type: string): AspectNature {
-    const harmonious = ['Trine', 'Sextile', 'trine', 'sextile']
-    const challenging = ['Square', 'Opposition', 'square', 'opposition']
-
-    if (harmonious.includes(type)) return 'harmonious'
-    if (challenging.includes(type)) return 'challenging'
+    const normalized = type.toLowerCase()
+    if (['trine', 'sextile'].includes(normalized)) return 'harmonious'
+    if (['square', 'opposition'].includes(normalized)) return 'challenging'
     return 'neutral'
   }
 }
 
-// Singleton instance
+// ---------- Singleton ----------
+
 let astrologyClient: AstrologyAPIClient | null = null
 
 export function getAstrologyClient(): AstrologyAPIClient {

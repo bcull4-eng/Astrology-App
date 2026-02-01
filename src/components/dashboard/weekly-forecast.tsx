@@ -66,9 +66,9 @@ function generateWeekEnergy(chart: NatalChart, dailySky?: DailySkyData | null): 
       const retroCount = dailySky.retrogrades.length
       baseEnergy -= retroCount * 3
 
-      if (dailySky.voidOfCourse.isVoid) baseEnergy -= 8
+      if (dailySky.voidOfCourse?.isVoid) baseEnergy -= 8
 
-      const phase = dailySky.moonPhase.name.toLowerCase()
+      const phase = (dailySky.moonPhase?.name ?? 'Waxing Crescent').toLowerCase()
       if (phase.includes('full')) baseEnergy += 10
       else if (phase.includes('new')) baseEnergy -= 3
       else if (phase.includes('waxing')) baseEnergy += 5
@@ -90,7 +90,7 @@ function generateWeekEnergy(chart: NatalChart, dailySky?: DailySkyData | null): 
     // Enhanced description for today with real data
     let description = descriptions[dayOfWeek]
     if (i === 0 && dailySky) {
-      const phase = dailySky.moonPhase.name
+      const phase = (dailySky.moonPhase?.name ?? 'Waxing Crescent')
       description = `${phase} energy • ${dailySky.retrogrades.length > 0 ? `${dailySky.retrogrades.length} planets Rx` : 'Direct planetary flow'}`
     }
 
@@ -124,7 +124,7 @@ function generateWeeklyOverview(chart: NatalChart, dailySky?: DailySkyData | nul
 
   // Build transit-aware content if real data is available
   if (dailySky) {
-    const moonPhase = dailySky.moonPhase.name
+    const moonPhase = (dailySky.moonPhase?.name ?? 'Waxing Crescent')
     const retroList = dailySky.retrogrades
     const retroNote = retroList.length > 0
       ? ` With ${retroList.map(p => p.charAt(0).toUpperCase() + p.slice(1)).join(', ')} in retrograde motion, the week has a reflective quality that invites review and revision.`
@@ -239,9 +239,9 @@ function generateWeeklyTransits(chart: NatalChart, dailySky?: DailySkyData | nul
     }
 
     transits.push({
-      planet: dailySky.moonPhase.name,
+      planet: (dailySky.moonPhase?.name ?? 'Waxing Crescent'),
       aspect: `colouring the week's emotional tone`,
-      meaning: dailySky.moonPhase.name.toLowerCase().includes('waxing') || dailySky.moonPhase.name.toLowerCase().includes('full')
+      meaning: (dailySky.moonPhase?.name ?? 'Waxing Crescent').toLowerCase().includes('waxing') || (dailySky.moonPhase?.name ?? 'Waxing Crescent').toLowerCase().includes('full')
         ? 'Building energy supports manifestation and action'
         : 'Releasing energy supports letting go and reflection',
       bestUse: 'Follow lunar rhythms for emotional processing and timing',
@@ -361,7 +361,7 @@ export function WeeklyForecast({ chart, dailySky: initialDailySky }: WeeklyForec
           <h2 className="text-2xl font-bold text-white">Your Week Ahead</h2>
           <p className="text-indigo-200/50 text-sm">
             {weekRange} • {sunSign} Sun, {moonSign} Moon
-            {dailySky && ` • ${dailySky.moonPhase.name}`}
+            {dailySky && ` • ${(dailySky.moonPhase?.name ?? 'Waxing Crescent')}`}
           </p>
         </div>
         {powerDays.length > 0 && (

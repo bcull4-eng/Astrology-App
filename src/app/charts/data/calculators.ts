@@ -1198,6 +1198,38 @@ export const calculators: Calculator[] = [
         }
       ]
     }
+  },
+  {
+    slug: 'lunar-return-calculator',
+    title: 'Lunar Return Calculator',
+    metaTitle: 'Lunar Return Calculator - Your Monthly Moon Forecast | Free',
+    metaDescription: 'Calculate your Lunar Return chart to see the emotional themes for your current lunar month. Free Lunar Return calculator with monthly insights.',
+    h1: 'Lunar Return Calculator: Your Monthly Moon Chart',
+    description: 'Generate your Lunar Return chart to understand the emotional themes and focus areas for your current lunar month. Each month, the Moon returns to the exact position it held at your birth.',
+    inputType: 'single',
+    requiresTime: true,
+    outputType: 'chart',
+    placements: ['sun', 'moon', 'mercury', 'venus', 'mars', 'jupiter', 'saturn'],
+    includeAscendant: true,
+    tier: 4,
+    relatedCalculators: ['moon-sign-calculator', 'moon-phase-calculator', 'solar-return-calculator'],
+    seoContent: {
+      intro: 'Your Lunar Return occurs approximately every 27.3 days, when the transiting Moon returns to the exact zodiac position it occupied at your birth. This chart provides a snapshot of your emotional landscape for the coming month.',
+      sections: [
+        {
+          title: 'What Is a Lunar Return?',
+          content: 'A Lunar Return chart is cast for the exact moment the Moon returns to the same sign and degree as your natal Moon. This happens roughly once a month and sets the emotional tone until the next Lunar Return.'
+        },
+        {
+          title: 'Reading Your Lunar Return',
+          content: 'The Lunar Return Ascendant shows the overall emotional atmosphere for the month. The Moon\'s house placement indicates where emotional energy will focus, and aspects to other planets reveal opportunities and challenges.'
+        },
+        {
+          title: 'Using Lunar Returns',
+          content: 'Professional astrologers use Lunar Returns for short-term forecasting. They\'re especially useful for tracking emotional cycles, planning important conversations, and understanding monthly moods and motivations.'
+        }
+      ]
+    }
   }
 ]
 

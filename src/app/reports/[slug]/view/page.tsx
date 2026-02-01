@@ -189,7 +189,39 @@ export default function ReportViewPage() {
           // In production, this would be calculated from actual birth data
           const partnerChart: NatalChart = createPartnerChart(partnerData as { name: string; birthDate: string; birthTime?: string; birthPlace: string })
 
-          generatedReport = generateReportV2(slug, chart, userName, partnerChart, partnerData.name as string)
+          // Try to fetch real composite chart for partner/relationship compatibility reports
+          let compositeChart: NatalChart | undefined
+          if (slug === 'partner-compatibility' || slug === 'relationship-compatibility') {
+            try {
+              const userBirthDataRes = await fetch('/api/user/birth-data')
+              const userBirthDataJson = await userBirthDataRes.json()
+              const userBirthRecord = userBirthDataJson.birthData
+              if (userBirthRecord && partnerData.birthPlace) {
+                const compositeRes = await fetch('/api/composite-chart', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({
+                    userBirthDate: userBirthRecord.birth_date,
+                    userBirthTime: userBirthRecord.birth_time,
+                    userBirthTimeConfidence: userBirthRecord.birth_time_confidence || 'unknown',
+                    userBirthPlace: `${userBirthRecord.birth_city}, ${userBirthRecord.birth_country}`,
+                    partnerBirthDate: partnerData.birthDate,
+                    partnerBirthTime: partnerData.birthTime || null,
+                    partnerBirthTimeConfidence: 'unknown',
+                    partnerBirthPlace: partnerData.birthPlace,
+                  }),
+                })
+                if (compositeRes.ok) {
+                  const compositeData = await compositeRes.json()
+                  compositeChart = compositeData.compositeChart
+                }
+              }
+            } catch (compositeError) {
+              console.error('Could not fetch composite chart, using midpoint fallback:', compositeError)
+            }
+          }
+
+          generatedReport = generateReportV2(slug, chart, userName, partnerChart, partnerData.name as string, compositeChart)
         } else {
           generatedReport = generateReportV2(slug, chart, userName)
         }

@@ -13,6 +13,7 @@
 
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
+import { adminLimiter } from '@/lib/rate-limit'
 
 const supabaseAdmin = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -20,6 +21,9 @@ const supabaseAdmin = createClient(
 )
 
 export async function POST(request: NextRequest) {
+  const limited = adminLimiter(request)
+  if (limited) return limited
+
   try {
     // Verify admin secret
     const authHeader = request.headers.get('authorization')

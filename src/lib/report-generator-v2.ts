@@ -6157,7 +6157,8 @@ export function generatePartnerCompatibilityReportV2(
   chart: NatalChart,
   userName: string,
   partnerChart: NatalChart,
-  partnerName: string
+  partnerName: string,
+  compositeChart?: NatalChart
 ): GeneratedReportV2 {
   // Get both people's placements
   const userSun = getPlacement(chart, 'sun')
@@ -6194,10 +6195,17 @@ export function generatePartnerCompatibilityReportV2(
   const userElements = getElementBalance(chart)
   const partnerElements = getElementBalance(partnerChart)
 
-  // Calculate composite midpoints (simplified)
-  const compositeSunSign = getMidpointSign(userSunSign, partnerSunSign)
-  const compositeMoonSign = getMidpointSign(userMoonSign, partnerMoonSign)
-  const compositeVenusSign = getMidpointSign(userVenusSign, partnerVenusSign)
+  // Use real composite chart placements when available, fall back to midpoint averaging
+  const getCompositeSign = (planet: string, fallbackSign1: Sign, fallbackSign2: Sign): Sign => {
+    if (compositeChart) {
+      const placement = compositeChart.placements.find(p => p.planet === planet)
+      if (placement) return capitalizeSign(placement.sign) as Sign
+    }
+    return getMidpointSign(fallbackSign1, fallbackSign2)
+  }
+  const compositeSunSign = getCompositeSign('sun', userSunSign, partnerSunSign)
+  const compositeMoonSign = getCompositeSign('moon', userMoonSign, partnerMoonSign)
+  const compositeVenusSign = getCompositeSign('venus', userVenusSign, partnerVenusSign)
 
   // Aspect compatibility scores (simplified)
   const sunMoonCompatibility = getSignCompatibilityScore(userSunSign, partnerMoonSign)
@@ -6511,7 +6519,8 @@ export function generateReportV2(
   chart: NatalChart,
   userName: string,
   partnerChart?: NatalChart,
-  partnerName?: string
+  partnerName?: string,
+  compositeChart?: NatalChart
 ): GeneratedReportV2 {
   switch (slug) {
     case 'personality-deep-dive':
@@ -6532,7 +6541,7 @@ export function generateReportV2(
       return generateFinancialPotentialReportV2(chart, userName)
     case 'partner-compatibility':
       if (partnerChart && partnerName) {
-        return generatePartnerCompatibilityReportV2(chart, userName, partnerChart, partnerName)
+        return generatePartnerCompatibilityReportV2(chart, userName, partnerChart, partnerName, compositeChart)
       }
       // Fallback if no partner data
       return generatePersonalityReportV2(chart, userName)

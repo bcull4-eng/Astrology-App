@@ -48,7 +48,7 @@ function generateMonthlyOverview(chart: NatalChart, dailySky?: DailySkyData | nu
 
   // Build transit-aware content if real data is available
   if (dailySky) {
-    const moonPhase = dailySky.moonPhase.name
+    const moonPhase = (dailySky.moonPhase?.name ?? 'Waxing Crescent')
     const retroList = dailySky.retrogrades
     const retroNames = retroList.map(p => p.charAt(0).toUpperCase() + p.slice(1))
 
@@ -291,7 +291,7 @@ export function MonthlyForecast({ chart, dailySky: initialDailySky }: MonthlyFor
           <h2 className="text-2xl font-bold text-white">{currentMonth} {currentYear}</h2>
           <p className="text-indigo-200/50 text-sm">
             {sunSign} Sun, {moonSign} Moon
-            {dailySky && ` • ${dailySky.moonPhase.name}`}
+            {dailySky && ` • ${(dailySky.moonPhase?.name ?? 'Waxing Crescent')}`}
           </p>
         </div>
         <div className="text-right bg-fuchsia-500/10 rounded-lg p-3">

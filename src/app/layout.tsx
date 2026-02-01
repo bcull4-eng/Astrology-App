@@ -4,6 +4,7 @@ import Script from "next/script";
 import "./globals.css";
 import { AIAssistantProvider } from "@/components/ai-assistant";
 import { CookieBanner } from "@/components/cookie-banner";
+import { FeedbackWidget } from "@/components/feedback-widget";
 
 const GA_MEASUREMENT_ID = "G-Z9M696VKJT";
 
@@ -108,6 +109,7 @@ export default function RootLayout({
         <AIAssistantProvider>
           {children}
         </AIAssistantProvider>
+        <FeedbackWidget />
         <CookieBanner />
       </body>
     </html>

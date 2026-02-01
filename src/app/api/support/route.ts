@@ -6,8 +6,12 @@
 
 import { NextRequest, NextResponse } from 'next/server'
 import { Resend } from 'resend'
+import { strictLimiter } from '@/lib/rate-limit'
 
 export async function POST(request: NextRequest) {
+  const limited = strictLimiter(request)
+  if (limited) return limited
+
   const apiKey = process.env.RESEND_API_KEY
   if (!apiKey) {
     console.error('RESEND_API_KEY not configured')
@@ -17,7 +21,7 @@ export async function POST(request: NextRequest) {
   const resend = new Resend(apiKey)
   try {
     const body = await request.json()
-    const { name, email, message } = body
+    const { name, email, message, type } = body
 
     if (!name || !email || !message) {
       return NextResponse.json(
@@ -35,15 +39,19 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    // Build subject line based on feedback type
+    const typeLabel = type === 'issue' ? 'Bug Report' : type === 'idea' ? 'Feature Idea' : type === 'other' ? 'Feedback' : 'Support Request'
+    const subject = `[${typeLabel}] from ${name}`
+
     // Send email via Resend
     const { error } = await resend.emails.send({
       from: 'Orbli Support <support@orbli.app>',
       to: ['orblingai@gmail.com'],
       replyTo: email,
-      subject: `Support Request from ${name}`,
-      text: `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`,
+      subject,
+      text: `Type: ${typeLabel}\nName: ${name}\nEmail: ${email}\n\nMessage:\n${message}`,
       html: `
-        <h2>Support Request</h2>
+        <h2>${typeLabel}</h2>
         <p><strong>Name:</strong> ${name}</p>
         <p><strong>Email:</strong> ${email}</p>
         <h3>Message:</h3>

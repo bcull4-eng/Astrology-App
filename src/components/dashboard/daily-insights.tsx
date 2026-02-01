@@ -45,7 +45,7 @@ function generateCosmicScore(chart: NatalChart, dailySky?: DailySkyData | null):
   // Enhance with real sky data
   if (dailySky) {
     // Moon phase influence
-    const phase = dailySky.moonPhase.name.toLowerCase()
+    const phase = (dailySky.moonPhase?.name ?? '').toLowerCase()
     if (phase.includes('full')) baseScore += 8
     else if (phase.includes('new')) baseScore -= 3
     else if (phase.includes('waxing')) baseScore += 4
@@ -54,7 +54,7 @@ function generateCosmicScore(chart: NatalChart, dailySky?: DailySkyData | null):
     baseScore -= dailySky.retrogrades.length * 2
 
     // Void of course dampens energy
-    if (dailySky.voidOfCourse.isVoid) baseScore -= 5
+    if (dailySky.voidOfCourse?.isVoid) baseScore -= 5
   }
 
   return Math.min(95, Math.max(55, baseScore))
@@ -80,13 +80,13 @@ function generateDailyInsight(chart: NatalChart, dailySky?: DailySkyData | null)
 
   // Build transit-aware overview if real data available
   if (dailySky) {
-    const moonPhase = dailySky.moonPhase.name
+    const moonPhase = (dailySky.moonPhase?.name ?? 'Waxing Crescent')
     const retroList = dailySky.retrogrades
     const retroNote = retroList.length > 0
       ? ` With ${retroList.map(p => p.charAt(0).toUpperCase() + p.slice(1)).join(' and ')} retrograde, a reflective quality underpins the day's energy.`
       : ''
 
-    const voidNote = dailySky.voidOfCourse.isVoid
+    const voidNote = dailySky.voidOfCourse?.isVoid
       ? ' The Moon is currently void-of-course, suggesting a pause before initiating anything significant.'
       : ''
 
@@ -220,14 +220,14 @@ function generateActionItems(chart: NatalChart, dailySky?: DailySkyData | null):
 
   // Add transit-aware items
   if (dailySky) {
-    if (dailySky.voidOfCourse.isVoid) {
+    if (dailySky.voidOfCourse?.isVoid) {
       avoidItems.push('Starting important new ventures (Moon is void-of-course)')
     }
     if (dailySky.retrogrades.includes('mercury')) {
       avoidItems.push('Sending important messages without re-reading (Mercury retrograde)')
       doItems.push('Review and revise existing plans and communications')
     }
-    const phase = dailySky.moonPhase.name.toLowerCase()
+    const phase = (dailySky.moonPhase?.name ?? '').toLowerCase()
     if (phase.includes('new')) {
       doItems.push('Set intentions for the new lunar cycle')
     } else if (phase.includes('full')) {
@@ -258,12 +258,12 @@ function generateLifeAreaScores(chart: NatalChart, dailySky?: DailySkyData | nul
     careerScore -= retroCount * 2
     if (dailySky.retrogrades.includes('venus')) loveScore -= 5
     if (dailySky.retrogrades.includes('jupiter')) moneyScore -= 5
-    if (dailySky.voidOfCourse.isVoid) {
+    if (dailySky.voidOfCourse?.isVoid) {
       careerScore -= 3
       moneyScore -= 3
     }
     // Full moon boosts emotional/relationship scores
-    if (dailySky.moonPhase.name.toLowerCase().includes('full')) {
+    if ((dailySky.moonPhase?.name ?? '').toLowerCase().includes('full')) {
       loveScore += 5
       healthScore += 3
     }
@@ -354,7 +354,7 @@ export function DailyInsights({ chart, dailySky: initialDailySky }: DailyInsight
           <h2 className="text-2xl font-bold text-white">Your Daily Cosmic Insights</h2>
           <p className="text-indigo-200/50 text-sm">
             {today} • {sunSign} Sun, {moonSign} Moon
-            {dailySky && ` • ${dailySky.moonPhase.name}`}
+            {dailySky && ` • ${(dailySky.moonPhase?.name ?? 'Waxing Crescent')}`}
           </p>
         </div>
         <div className="text-right">
@@ -367,20 +367,20 @@ export function DailyInsights({ chart, dailySky: initialDailySky }: DailyInsight
       </div>
 
       {/* Real-time sky alerts */}
-      {dailySky && (dailySky.retrogrades.length > 0 || dailySky.voidOfCourse.isVoid) && (
+      {dailySky && (dailySky.retrogrades.length > 0 || dailySky.voidOfCourse?.isVoid) && (
         <div className="flex flex-wrap gap-2 mb-4">
           {dailySky.retrogrades.map(planet => (
             <span key={planet} className="px-2 py-1 bg-amber-500/10 text-amber-400 text-xs rounded-full">
               {planet.charAt(0).toUpperCase() + planet.slice(1)} Rx
             </span>
           ))}
-          {dailySky.voidOfCourse.isVoid && (
+          {dailySky.voidOfCourse?.isVoid && (
             <span className="px-2 py-1 bg-slate-500/10 text-slate-400 text-xs rounded-full">
               Moon Void-of-Course
             </span>
           )}
           <span className="px-2 py-1 bg-indigo-500/10 text-indigo-400 text-xs rounded-full">
-            {dailySky.moonPhase.name}
+            {(dailySky.moonPhase?.name ?? 'Waxing Crescent')}
           </span>
         </div>
       )}

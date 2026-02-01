@@ -149,6 +149,42 @@ export default function CalculatorPage() {
         }
       }
 
+      if (calculator.slug === 'solar-return-calculator') {
+        const solarReturnResponse = await fetch('/api/solar-return', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            birthDate: data.birthDate,
+            birthTime: data.birthTime || null,
+            birthTimeConfidence: data.birthTimeConfidence,
+            birthPlace: data.birthPlace,
+          }),
+        })
+
+        if (solarReturnResponse.ok) {
+          const solarReturnData = await solarReturnResponse.json()
+          calculatorResult.solarReturn = solarReturnData.solarReturn
+        }
+      }
+
+      if (calculator.slug === 'lunar-return-calculator') {
+        const lunarReturnResponse = await fetch('/api/lunar-return', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            birthDate: data.birthDate,
+            birthTime: data.birthTime || null,
+            birthTimeConfidence: data.birthTimeConfidence,
+            birthPlace: data.birthPlace,
+          }),
+        })
+
+        if (lunarReturnResponse.ok) {
+          const lunarReturnData = await lunarReturnResponse.json()
+          calculatorResult.lunarReturn = lunarReturnData.lunarReturn
+        }
+      }
+
       if (calculator.slug === 'moon-phase-calculator') {
         const sunPlacement = chart.placements.find(p => p.planet === 'sun')
         const moonPlacement = chart.placements.find(p => p.planet === 'moon')
@@ -329,6 +365,7 @@ function getCalculatorEmoji(slug: string): string {
     'personal-planets-calculator': '\u{1f31f}',
     'moon-phase-calculator': '\u{1f315}',
     'solar-return-calculator': '\u{1f382}',
+    'lunar-return-calculator': '\u{1f319}',
   }
   return emojis[slug] || '\u2728'
 }

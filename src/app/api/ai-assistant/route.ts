@@ -8,6 +8,7 @@
 
 import { NextRequest } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
+import { standardLimiter } from '@/lib/rate-limit'
 import type { AIContext, AIMessage } from '@/types/ai-assistant'
 import type { SubscriptionStatus } from '@/types/user'
 
@@ -72,6 +73,9 @@ Current context:
 }
 
 export async function POST(request: NextRequest) {
+  const limited = standardLimiter(request)
+  if (limited) return limited
+
   try {
     // Check subscription status first
     const isPro = await checkSubscription()

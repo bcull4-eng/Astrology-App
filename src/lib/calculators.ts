@@ -16,6 +16,8 @@ import type {
   SignResult,
   SignInterpretation,
   SaturnReturnResult,
+  SolarReturnResult,
+  LunarReturnResult,
   MoonPhaseResult,
   MoonPhase,
   PartOfFortuneResult,
@@ -23,6 +25,8 @@ import type {
   CompatibilityResult,
   CompatibilityAspect
 } from '@/types/calculators'
+import type { BirthData } from '@/types'
+import { getAstrologyClient } from './astrology-api'
 
 // Sign interpretations database
 const signInterpretations: Record<Planet | 'ascendant' | 'midheaven' | 'part_of_fortune' | 'lilith', Record<ZodiacSign, SignInterpretation>> = {
@@ -1182,4 +1186,155 @@ function generateCompatibilityAdvice(score: number): string {
   if (score >= 65) return 'You have good compatibility with some areas for growth. Communication and understanding differences will strengthen your bond.'
   if (score >= 50) return 'You have moderate compatibility that requires conscious effort. Focus on your strengths and be patient with differences.'
   return 'Your charts present challenges that can become opportunities for profound growth. Patience, communication, and mutual respect are key.'
+}
+
+// ---------- Solar Return ----------
+
+/**
+ * Calculate Solar Return chart and derive year theme from returned chart.
+ */
+export async function calculateSolarReturnFromAPI(
+  birthData: BirthData,
+  year?: number
+): Promise<SolarReturnResult> {
+  const client = getAstrologyClient()
+  const chart = await client.getSolarReturn(birthData, year)
+
+  const ascSign = chart.ascendant?.sign ?? 'aries'
+  const sunPlacement = chart.placements.find(p => p.planet === 'sun')
+  const sunHouse = sunPlacement?.house ?? 1
+
+  // Derive year theme from ascendant sign
+  const signThemes: Record<ZodiacSign, string> = {
+    aries: 'new beginnings, independence, and personal initiative',
+    taurus: 'financial growth, stability, and sensual pleasures',
+    gemini: 'communication, learning, and social connections',
+    cancer: 'home, family, and emotional security',
+    leo: 'creativity, self-expression, and recognition',
+    virgo: 'health, service, and self-improvement',
+    libra: 'relationships, balance, and partnerships',
+    scorpio: 'transformation, depth, and shared resources',
+    sagittarius: 'adventure, education, and expanding horizons',
+    capricorn: 'career, ambition, and building lasting structures',
+    aquarius: 'innovation, community, and breaking free of limits',
+    pisces: 'spirituality, creativity, and compassionate growth',
+  }
+
+  // Key areas from sun house placement
+  const houseAreas: Record<number, string> = {
+    1: 'personal identity and new directions',
+    2: 'finances and self-worth',
+    3: 'communication and local community',
+    4: 'home and family foundations',
+    5: 'romance, creativity, and joy',
+    6: 'daily routines and health',
+    7: 'partnerships and one-on-one relationships',
+    8: 'shared resources and transformation',
+    9: 'travel, higher learning, and philosophy',
+    10: 'career and public reputation',
+    11: 'friendships, groups, and future goals',
+    12: 'solitude, spirituality, and inner work',
+  }
+
+  // Find stellium signs (3+ placements in one sign)
+  const signCounts: Partial<Record<ZodiacSign, number>> = {}
+  for (const p of chart.placements) {
+    signCounts[p.sign] = (signCounts[p.sign] ?? 0) + 1
+  }
+  const stelliums = Object.entries(signCounts)
+    .filter(([, count]) => count >= 3)
+    .map(([sign]) => `stellium in ${sign}`)
+
+  const keyAreas = [
+    `Year theme set by ${ascSign} rising: ${signThemes[ascSign]}`,
+    `Sun in the ${ordinal(sunHouse)} house emphasizes ${houseAreas[sunHouse] ?? 'personal growth'}`,
+    ...stelliums,
+  ]
+
+  // Approximate solar return date (birthday in target year)
+  const targetYear = year ?? new Date().getFullYear()
+  const birthDate = new Date(birthData.birth_date)
+  const solarReturnDate = new Date(targetYear, birthDate.getMonth(), birthDate.getDate())
+
+  return {
+    solarReturnDate,
+    solarReturnChart: chart,
+    yearTheme: `A year of ${signThemes[ascSign]}`,
+    keyAreas,
+  }
+}
+
+function ordinal(n: number): string {
+  const s = ['th', 'st', 'nd', 'rd']
+  const v = n % 100
+  return n + (s[(v - 20) % 10] || s[v] || s[0])
+}
+
+// ---------- Lunar Return ----------
+
+/**
+ * Calculate Lunar Return chart and derive month theme from returned chart.
+ */
+export async function calculateLunarReturnFromAPI(
+  birthData: BirthData,
+  date?: Date
+): Promise<LunarReturnResult> {
+  const client = getAstrologyClient()
+  const chart = await client.getLunarReturn(birthData, date)
+
+  const moonPlacement = chart.placements.find(p => p.planet === 'moon')
+  const moonSign = moonPlacement?.sign ?? 'aries'
+  const ascSign = chart.ascendant?.sign ?? 'aries'
+
+  const signThemes: Record<ZodiacSign, string> = {
+    aries: 'asserting needs and taking bold action',
+    taurus: 'comfort, security, and grounding',
+    gemini: 'communication, curiosity, and mental stimulation',
+    cancer: 'nurturing, home life, and emotional processing',
+    leo: 'self-expression, creativity, and confidence',
+    virgo: 'organization, health, and practical improvements',
+    libra: 'relationships, harmony, and social balance',
+    scorpio: 'emotional depth, intimacy, and letting go',
+    sagittarius: 'optimism, exploration, and seeking meaning',
+    capricorn: 'discipline, responsibility, and long-term goals',
+    aquarius: 'independence, innovation, and community',
+    pisces: 'intuition, compassion, and spiritual reflection',
+  }
+
+  const houseAreas: Record<number, string> = {
+    1: 'personal needs and self-care',
+    2: 'financial matters and values',
+    3: 'learning and local connections',
+    4: 'home and emotional foundations',
+    5: 'creative pursuits and pleasure',
+    6: 'daily habits and wellness',
+    7: 'partnerships and collaboration',
+    8: 'deep emotional processing',
+    9: 'broadening perspectives',
+    10: 'career focus and public image',
+    11: 'social circles and aspirations',
+    12: 'rest, retreat, and reflection',
+  }
+
+  const moonHouse = moonPlacement?.house ?? 1
+  const focusAreas = [
+    `Moon in ${moonSign}: emotional focus on ${signThemes[moonSign]}`,
+    `${capitalize(ascSign)} rising sets the tone for the month`,
+    `Moon in the ${ordinal(moonHouse)} house highlights ${houseAreas[moonHouse] ?? 'personal growth'}`,
+  ]
+
+  // Approximate lunar return date (close to target date)
+  const lunarReturnDate = date ?? new Date()
+
+  return {
+    lunarReturnDate,
+    lunarReturnChart: chart,
+    moonSign,
+    monthTheme: `A month of ${signThemes[moonSign]}`,
+    focusAreas,
+  }
+}
+
+function capitalize(str: string): string {
+  return str.charAt(0).toUpperCase() + str.slice(1)
 }

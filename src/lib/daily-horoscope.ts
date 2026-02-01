@@ -468,14 +468,14 @@ function calculateEnergyFromTransits(
   score -= retroCount * 5
 
   // Factor in moon phase (full moon = high energy, new moon = low)
-  const phaseName = dailySky.moonPhase.name.toLowerCase()
+  const phaseName = (dailySky.moonPhase?.name ?? '').toLowerCase()
   if (phaseName.includes('full')) score += 15
   else if (phaseName.includes('new')) score -= 5
   else if (phaseName.includes('waxing')) score += 8
   else if (phaseName.includes('waning')) score -= 3
 
   // Void-of-course moon reduces productive energy
-  if (dailySky.voidOfCourse.isVoid) score -= 10
+  if (dailySky.voidOfCourse?.isVoid) score -= 10
 
   // Factor in personal transits if available
   if (transits && transits.length > 0) {
@@ -537,7 +537,7 @@ export function generateDailyHoroscope(
 
   // Moon phase: use real data if available, otherwise approximate
   let moonPhase: string
-  if (dailySky) {
+  if (dailySky?.moonPhase?.name) {
     moonPhase = dailySky.moonPhase.name
   } else {
     const lunarCycle = 29.5
@@ -596,7 +596,7 @@ export function generateDailyHoroscope(
     luckyColor: COLORS[colorIndex],
     affirmation: AFFIRMATIONS[sunSign][affirmationIndex],
     retrogrades,
-    voidOfCourse: dailySky?.voidOfCourse.isVoid,
+    voidOfCourse: dailySky?.voidOfCourse?.isVoid,
     transitHighlights,
   }
 }

@@ -91,18 +91,26 @@ export interface APIGlobalPositionsResponse {
   positions: APIPlanetPosition[]
 }
 
-// Lunar metrics response (flat, no wrapper)
+// Lunar metrics enhanced response (unwrapped from {success, data} envelope)
 export interface APILunarMetricsResponse {
-  date: string
-  within_perigee_range: boolean
-  distance: number
-  within_apogee_range: boolean
-  apogee_distance: number
-  moon_sign: string           // 3-letter code
-  moon_phase: string          // e.g. "Waxing Crescent", "Full Moon"
-  moon_age_in_days: number
-  moon_day: number
-  moon_illumination: number   // percentage 0-100
+  moon_sign: string           // Full name: "Leo", "Pisces", etc.
+  phase_info: {
+    phase_name: string        // e.g. "Full Moon", "Waxing Crescent"
+    illumination_percent: number
+    moon_age_days: number
+    elongation_deg: number
+    increasing_light: boolean
+    void_of_course: boolean
+  }
+  void_of_course: boolean
+  void_until: string | null
+  traditional_phase_meaning: string
+  lunar_dignities: Record<string, unknown>
+  next_sign_change: {
+    hours_until: number
+    next_sign: string
+    dignity_change: unknown
+  } | null
 }
 
 // ---------- Public data types for consumption ----------
@@ -234,19 +242,19 @@ export class AstrologyAPIClient implements AstrologyProvider {
       )
     }
 
-    // All API responses are wrapped in {success, data, metadata} envelope
-    const envelope = await response.json() as {
-      success: boolean
-      data: T | null
-      error?: { message?: string; error_code?: string; code?: string }
+    const json = await response.json()
+
+    // /api/v3/data/* endpoints use {success, data, metadata} envelope
+    // /api/v3/charts/* endpoints return raw {subject_data, chart_data}
+    if ('success' in json && 'data' in json) {
+      if (!json.success || !json.data) {
+        const errorMsg = json.error?.message ?? 'Unknown API error'
+        throw new Error(`Astrology API error: ${errorMsg}`)
+      }
+      return json.data as T
     }
 
-    if (!envelope.success || !envelope.data) {
-      const errorMsg = envelope.error?.message ?? 'Unknown API error'
-      throw new Error(`Astrology API error: ${errorMsg}`)
-    }
-
-    return envelope.data
+    return json as T
   }
 
   private buildSubject(birthData: BirthData): Record<string, unknown> {
@@ -411,7 +419,7 @@ export class AstrologyAPIClient implements AstrologyProvider {
    * Uses subject wrapper per OpenAPI spec.
    */
   async getLunarMetrics(date: Date = new Date()): Promise<APILunarMetricsResponse> {
-    return this.request<APILunarMetricsResponse>('/api/v3/data/lunar-metrics', {
+    return this.request<APILunarMetricsResponse>('/api/v3/data/lunar-metrics/enhanced', {
       subject: {
         birth_data: {
           year: date.getFullYear(),
@@ -452,18 +460,189 @@ export class AstrologyAPIClient implements AstrologyProvider {
       date: date.toISOString().split('T')[0],
       planets,
       moonPhase: {
-        name: lunarRes.moon_phase,
-        illumination: lunarRes.moon_illumination,
+        name: lunarRes.phase_info?.phase_name ?? 'Waxing Crescent',
+        illumination: lunarRes.phase_info?.illumination_percent ?? 50,
       },
       retrogrades,
-      // Void-of-course and next moon dates not available from lunar-metrics endpoint
       voidOfCourse: {
-        isVoid: false,
+        isVoid: lunarRes.void_of_course ?? false,
         startsAt: null,
-        endsAt: null,
+        endsAt: lunarRes.void_until ?? null,
       },
       nextFullMoon: null,
       nextNewMoon: null,
+    }
+  }
+
+  // ---------- Solar Return ----------
+
+  /**
+   * Get Solar Return chart for a given birth data and year.
+   * Defaults to the current year if no year is specified.
+   */
+  async getSolarReturn(birthData: BirthData, year?: number): Promise<NatalChart> {
+    const subject = this.buildSubject(birthData)
+    const targetYear = year ?? new Date().getFullYear()
+
+    const response = await this.request<APINatalResponse>('/api/v3/charts/solar-return', {
+      subject,
+      solar_return_year: targetYear,
+      options: {
+        house_system: 'P',
+        zodiac_type: 'Tropic',
+      },
+    })
+
+    const { chart_data } = response
+
+    const placements: NatalPlacement[] = chart_data.planetary_positions
+      .filter(p => this.mapPlanetName(p.name) !== null)
+      .map(p => ({
+        planet: this.mapPlanetName(p.name)!,
+        sign: this.mapSignCode(p.sign),
+        degree: p.degree,
+        house: p.house ?? 1,
+        is_retrograde: p.is_retrograde,
+      }))
+
+    const houses: HouseCusp[] = chart_data.house_cusps.map(h => ({
+      house: h.house,
+      sign: this.mapSignCode(h.sign),
+      degree: h.degree,
+    }))
+
+    const ascCusp = chart_data.house_cusps.find(h => h.house === 1)
+    const mcCusp = chart_data.house_cusps.find(h => h.house === 10)
+
+    return {
+      user_id: birthData.user_id,
+      calculated_at: new Date(),
+      placements,
+      houses,
+      ascendant: {
+        sign: this.mapSignCode(ascCusp?.sign ?? 'Ari'),
+        degree: ascCusp?.degree ?? 0,
+      },
+      midheaven: {
+        sign: this.mapSignCode(mcCusp?.sign ?? 'Ari'),
+        degree: mcCusp?.degree ?? 0,
+      },
+    }
+  }
+
+  // ---------- Lunar Return ----------
+
+  /**
+   * Get Lunar Return chart for a given birth data and target date.
+   * Defaults to the current date if none is specified.
+   */
+  async getLunarReturn(birthData: BirthData, date?: Date): Promise<NatalChart> {
+    const subject = this.buildSubject(birthData)
+    const targetDate = date ?? new Date()
+
+    const response = await this.request<APINatalResponse>('/api/v3/charts/lunar-return', {
+      subject,
+      lunar_return_date: {
+        year: targetDate.getFullYear(),
+        month: targetDate.getMonth() + 1,
+        day: targetDate.getDate(),
+      },
+      options: {
+        house_system: 'P',
+        zodiac_type: 'Tropic',
+      },
+    })
+
+    const { chart_data } = response
+
+    const placements: NatalPlacement[] = chart_data.planetary_positions
+      .filter(p => this.mapPlanetName(p.name) !== null)
+      .map(p => ({
+        planet: this.mapPlanetName(p.name)!,
+        sign: this.mapSignCode(p.sign),
+        degree: p.degree,
+        house: p.house ?? 1,
+        is_retrograde: p.is_retrograde,
+      }))
+
+    const houses: HouseCusp[] = chart_data.house_cusps.map(h => ({
+      house: h.house,
+      sign: this.mapSignCode(h.sign),
+      degree: h.degree,
+    }))
+
+    const ascCusp = chart_data.house_cusps.find(h => h.house === 1)
+    const mcCusp = chart_data.house_cusps.find(h => h.house === 10)
+
+    return {
+      user_id: birthData.user_id,
+      calculated_at: new Date(),
+      placements,
+      houses,
+      ascendant: {
+        sign: this.mapSignCode(ascCusp?.sign ?? 'Ari'),
+        degree: ascCusp?.degree ?? 0,
+      },
+      midheaven: {
+        sign: this.mapSignCode(mcCusp?.sign ?? 'Ari'),
+        degree: mcCusp?.degree ?? 0,
+      },
+    }
+  }
+
+  // ---------- Composite Chart ----------
+
+  /**
+   * Get composite chart between two people using their birth data.
+   * Uses real Swiss Ephemeris calculation via the API.
+   */
+  async getCompositeChart(birthDataA: BirthData, birthDataB: BirthData): Promise<NatalChart> {
+    const subject1 = this.buildSubject(birthDataA)
+    const subject2 = this.buildSubject(birthDataB)
+
+    const response = await this.request<APISynastryResponse>('/api/v3/charts/composite', {
+      subject1,
+      subject2,
+      options: {
+        house_system: 'P',
+        zodiac_type: 'Tropic',
+      },
+    })
+
+    const { chart_data } = response
+
+    const placements: NatalPlacement[] = chart_data.planetary_positions
+      .filter(p => this.mapPlanetName(p.name) !== null)
+      .map(p => ({
+        planet: this.mapPlanetName(p.name)!,
+        sign: this.mapSignCode(p.sign),
+        degree: p.degree,
+        house: p.house ?? 1,
+        is_retrograde: p.is_retrograde,
+      }))
+
+    const houses: HouseCusp[] = chart_data.house_cusps.map(h => ({
+      house: h.house,
+      sign: this.mapSignCode(h.sign),
+      degree: h.degree,
+    }))
+
+    const ascCusp = chart_data.house_cusps.find(h => h.house === 1)
+    const mcCusp = chart_data.house_cusps.find(h => h.house === 10)
+
+    return {
+      user_id: `composite-${birthDataA.user_id}-${birthDataB.user_id}`,
+      calculated_at: new Date(),
+      placements,
+      houses,
+      ascendant: {
+        sign: this.mapSignCode(ascCusp?.sign ?? 'Ari'),
+        degree: ascCusp?.degree ?? 0,
+      },
+      midheaven: {
+        sign: this.mapSignCode(mcCusp?.sign ?? 'Ari'),
+        degree: mcCusp?.degree ?? 0,
+      },
     }
   }
 

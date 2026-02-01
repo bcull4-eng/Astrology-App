@@ -7,6 +7,7 @@
 
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
+import { checkoutLimiter } from '@/lib/rate-limit'
 import { createClient as createAdminClient } from '@supabase/supabase-js'
 import {
   createCheckoutSession,
@@ -28,6 +29,9 @@ const supabaseAdmin = createAdminClient(
 )
 
 export async function POST(request: NextRequest) {
+  const limited = checkoutLimiter(request)
+  if (limited) return limited
+
   try {
     const supabase = await createClient()
 

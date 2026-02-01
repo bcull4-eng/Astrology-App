@@ -199,6 +199,132 @@ export function CalculatorResultDisplay({ calculator, result }: CalculatorResult
     )
   }
 
+  // Solar Return result
+  if (result.solarReturn) {
+    const sr = result.solarReturn
+    const formatDate = (date: Date) => new Date(date).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    })
+
+    return (
+      <div className="space-y-6">
+        <div className="bg-gradient-to-br from-amber-900/30 to-orange-900/30 border border-amber-500/30 rounded-xl p-6 space-y-6">
+          {/* Solar Return Date */}
+          <div className="text-center pb-4 border-b border-slate-700">
+            <p className="text-slate-400 text-sm">Solar Return Date</p>
+            <p className="text-2xl font-bold text-white mt-1">{formatDate(sr.solarReturnDate)}</p>
+          </div>
+
+          {/* Year Theme */}
+          <div className="text-center">
+            <p className="text-slate-400 text-sm">Year Theme</p>
+            <p className="text-xl font-semibold text-amber-300 mt-1">{sr.yearTheme}</p>
+          </div>
+
+          {/* Key Areas */}
+          <div className="space-y-3">
+            <h4 className="font-semibold text-white">Key Areas for the Year</h4>
+            <ul className="space-y-2">
+              {sr.keyAreas.map((area: string, i: number) => (
+                <li key={i} className="text-sm text-slate-300 flex items-start gap-2">
+                  <span className="text-amber-400 mt-0.5">*</span>
+                  {area}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Chart Placements */}
+          {sr.solarReturnChart && (
+            <div className="pt-4 border-t border-slate-700">
+              <h4 className="font-semibold text-white mb-3">Solar Return Chart Placements</h4>
+              <div className="grid grid-cols-2 gap-2">
+                {sr.solarReturnChart.placements.slice(0, 10).map((p: { planet: string; sign: string; house: number; is_retrograde: boolean }, i: number) => (
+                  <div key={i} className="bg-slate-800/50 rounded-lg p-2 text-sm">
+                    <span className="text-slate-400 capitalize">{p.planet.replace('_', ' ')}</span>
+                    <span className="text-white ml-1 capitalize">{p.sign}</span>
+                    <span className="text-slate-500 ml-1">H{p.house}</span>
+                    {p.is_retrograde && <span className="text-red-400 ml-1">R</span>}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+
+        <UpgradePrompt calculator={calculator} />
+      </div>
+    )
+  }
+
+  // Lunar Return result
+  if (result.lunarReturn) {
+    const lr = result.lunarReturn
+    const formatDate = (date: Date) => new Date(date).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    })
+
+    return (
+      <div className="space-y-6">
+        <div className="bg-gradient-to-br from-indigo-900/30 to-blue-900/30 border border-indigo-500/30 rounded-xl p-6 space-y-6">
+          {/* Lunar Return Date */}
+          <div className="text-center pb-4 border-b border-slate-700">
+            <p className="text-slate-400 text-sm">Lunar Return Date</p>
+            <p className="text-2xl font-bold text-white mt-1">{formatDate(lr.lunarReturnDate)}</p>
+          </div>
+
+          {/* Moon Sign */}
+          <div className="text-center">
+            <p className="text-slate-400 text-sm">Lunar Return Moon Sign</p>
+            <p className="text-xl font-semibold text-indigo-300 mt-1 capitalize">{lr.moonSign}</p>
+          </div>
+
+          {/* Month Theme */}
+          <div className="text-center">
+            <p className="text-slate-400 text-sm">Month Theme</p>
+            <p className="text-lg font-medium text-white mt-1">{lr.monthTheme}</p>
+          </div>
+
+          {/* Focus Areas */}
+          <div className="space-y-3">
+            <h4 className="font-semibold text-white">Focus Areas This Month</h4>
+            <ul className="space-y-2">
+              {lr.focusAreas.map((area: string, i: number) => (
+                <li key={i} className="text-sm text-slate-300 flex items-start gap-2">
+                  <span className="text-indigo-400 mt-0.5">*</span>
+                  {area}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Chart Placements */}
+          {lr.lunarReturnChart && (
+            <div className="pt-4 border-t border-slate-700">
+              <h4 className="font-semibold text-white mb-3">Lunar Return Chart Placements</h4>
+              <div className="grid grid-cols-2 gap-2">
+                {lr.lunarReturnChart.placements.slice(0, 10).map((p: { planet: string; sign: string; house: number; is_retrograde: boolean }, i: number) => (
+                  <div key={i} className="bg-slate-800/50 rounded-lg p-2 text-sm">
+                    <span className="text-slate-400 capitalize">{p.planet.replace('_', ' ')}</span>
+                    <span className="text-white ml-1 capitalize">{p.sign}</span>
+                    <span className="text-slate-500 ml-1">H{p.house}</span>
+                    {p.is_retrograde && <span className="text-red-400 ml-1">R</span>}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+
+        <UpgradePrompt calculator={calculator} />
+      </div>
+    )
+  }
+
   // Moon Phase result
   if (calculator.outputType === 'moon-phase' && result.moonPhase) {
     const mp = result.moonPhase

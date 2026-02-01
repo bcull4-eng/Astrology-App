@@ -13,7 +13,7 @@
 
 import { getAstrologyClient } from './astrology-api'
 import type { DailySkyData, UserTransitData } from './astrology-api'
-import type { BirthData } from '@/types'
+import type { BirthData, NatalChart } from '@/types'
 
 // ---------- Cache entry ----------
 
@@ -35,6 +35,7 @@ const TTL = {
 
 const dailySkyCache = new Map<string, CacheEntry<DailySkyData>>()
 const userTransitCache = new Map<string, CacheEntry<UserTransitData>>()
+const lunarReturnCache = new Map<string, CacheEntry<NatalChart>>()
 
 // ---------- Cache key helpers ----------
 
@@ -79,6 +80,10 @@ function cleanExpiredEntries(): void {
   for (const [key, entry] of userTransitCache) {
     if (now > entry.expiresAt) userTransitCache.delete(key)
   }
+
+  for (const [key, entry] of lunarReturnCache) {
+    if (now > entry.expiresAt) lunarReturnCache.delete(key)
+  }
 }
 
 // Run cleanup every hour
@@ -122,6 +127,26 @@ export async function getCachedUserTransits(
   const data = await client.getTransitAspects(birthData, date)
 
   setInCache(userTransitCache, key, data, TTL.USER_TRANSITS)
+  return data
+}
+
+/**
+ * Get cached Lunar Return chart for a user.
+ * Cached for 30 days per user.
+ */
+export async function getCachedLunarReturn(
+  birthData: BirthData,
+  date: Date = new Date()
+): Promise<NatalChart> {
+  const key = `lunar-return:${birthData.user_id}`
+
+  const cached = getFromCache(lunarReturnCache, key)
+  if (cached) return cached
+
+  const client = getAstrologyClient()
+  const data = await client.getLunarReturn(birthData, date)
+
+  setInCache(lunarReturnCache, key, data, TTL.LUNAR_RETURN)
   return data
 }
 

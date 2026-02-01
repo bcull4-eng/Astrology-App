@@ -8,6 +8,7 @@
 
 import { NextRequest } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
+import { standardLimiter } from '@/lib/rate-limit'
 import { getCharacter } from '@/lib/astrologist/characters'
 import type { CharacterId, NatalChart, NatalPlacement, SubscriptionStatus } from '@/types'
 
@@ -64,6 +65,9 @@ function formatNatalChartContext(chart: NatalChart): string {
 }
 
 export async function POST(request: NextRequest) {
+  const limited = standardLimiter(request)
+  if (limited) return limited
+
   try {
     const body: ChatRequest = await request.json()
 

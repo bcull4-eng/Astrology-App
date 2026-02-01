@@ -486,7 +486,7 @@ function getToneFromSign(sign: ZodiacSign): GuidanceTone {
 
 function getToneFromTransits(dailySky: DailySkyData, transits: TransitAspect[]): GuidanceTone {
   // Void of course moon = restorative
-  if (dailySky.voidOfCourse.isVoid) return 'restorative'
+  if (dailySky.voidOfCourse?.isVoid) return 'restorative'
 
   // Count harmonious vs challenging transits
   const harmonious = transits.filter(t => t.nature === 'harmonious').length
@@ -545,7 +545,7 @@ function generateDoList(
 
   // Add moon-phase advice
   if (dailySky) {
-    const phase = dailySky.moonPhase.name.toLowerCase()
+    const phase = (dailySky.moonPhase?.name ?? 'Waxing Crescent').toLowerCase()
     if (phase.includes('new')) doList.push('Set intentions and plant seeds for new beginnings')
     else if (phase.includes('full')) doList.push('Celebrate progress and release what no longer serves you')
     else if (phase.includes('waxing')) doList.push('Build momentum on projects already in motion')
@@ -576,7 +576,7 @@ function generateAvoidList(
 
   // Add real sky data warnings
   if (dailySky) {
-    if (dailySky.voidOfCourse.isVoid) {
+    if (dailySky.voidOfCourse?.isVoid) {
       baseAvoids.push('Starting important new projects (Moon is void-of-course)')
     }
 
@@ -620,7 +620,7 @@ function generateShortAdvice(
 
   // Add moon phase context
   if (dailySky) {
-    const phase = dailySky.moonPhase.name
+    const phase = (dailySky.moonPhase?.name ?? 'Waxing Crescent')
     advice += ` The ${phase} supports ${phase.toLowerCase().includes('waxing') ? 'building and growing' : phase.toLowerCase().includes('waning') ? 'releasing and reflecting' : phase.toLowerCase().includes('full') ? 'culmination and celebration' : 'new beginnings and intention-setting'}.`
   }
 

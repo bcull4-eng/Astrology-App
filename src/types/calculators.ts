@@ -123,6 +123,15 @@ export interface SolarReturnResult {
   keyAreas: string[]
 }
 
+// Lunar Return specific result
+export interface LunarReturnResult {
+  lunarReturnDate: Date
+  lunarReturnChart: NatalChart
+  moonSign: ZodiacSign
+  monthTheme: string
+  focusAreas: string[]
+}
+
 // Moon Phase result
 export interface MoonPhaseResult {
   phase: MoonPhase
@@ -192,6 +201,7 @@ export type CalculatorResult = {
   signResults?: SignResult[]
   saturnReturn?: SaturnReturnResult
   solarReturn?: SolarReturnResult
+  lunarReturn?: LunarReturnResult
   moonPhase?: MoonPhaseResult
   partOfFortune?: PartOfFortuneResult
   lilith?: LilithResult

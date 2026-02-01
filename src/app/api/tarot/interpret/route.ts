@@ -8,6 +8,7 @@
 
 import { NextRequest } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
+import { standardLimiter } from '@/lib/rate-limit'
 import { buildInterpretationPrompt } from '@/lib/tarot/prompts'
 import type { ReadingType, DrawnCard } from '@/types/tarot'
 import type { NatalChart, SubscriptionStatus } from '@/types'
@@ -91,6 +92,9 @@ async function saveReading(
 }
 
 export async function POST(request: NextRequest) {
+  const limited = standardLimiter(request)
+  if (limited) return limited
+
   try {
     const body: InterpretRequest = await request.json()
 

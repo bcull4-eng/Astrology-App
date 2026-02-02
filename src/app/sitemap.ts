@@ -36,6 +36,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: '/synastry', priority: 0.8, changeFrequency: 'weekly' as const },
     { url: '/astrologist', priority: 0.8, changeFrequency: 'weekly' as const },
     { url: '/tarot', priority: 0.8, changeFrequency: 'weekly' as const },
+    { url: '/blog', priority: 0.8, changeFrequency: 'weekly' as const },
     { url: '/legal/privacy', priority: 0.3, changeFrequency: 'yearly' as const },
     { url: '/legal/terms', priority: 0.3, changeFrequency: 'yearly' as const },
     { url: '/legal/cookies', priority: 0.3, changeFrequency: 'yearly' as const },

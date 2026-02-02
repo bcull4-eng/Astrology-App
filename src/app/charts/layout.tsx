@@ -83,6 +83,7 @@ export default function ChartsLayout({
                 <li><Link href="/learn" className="text-slate-400 hover:text-white">Learn Astrology</Link></li>
                 <li><Link href="/astrologist" className="text-slate-400 hover:text-white">AI Astrologist</Link></li>
                 <li><Link href="/tarot" className="text-slate-400 hover:text-white">Tarot Readings</Link></li>
+                <li><Link href="/blog" className="text-slate-400 hover:text-white">Blog</Link></li>
               </ul>
             </div>
           </div>

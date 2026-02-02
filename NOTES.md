@@ -36,11 +36,13 @@ src/
     astrologist/        # AI chat interface
     tarot/              # Tarot reading interface
     learn/              # Courses, lessons, quizzes
+    blog/               # SEObot-powered blog (listing, articles, categories, tags, sitemap)
     reports/            # Report catalog, viewer, bundles
     settings/           # User settings
     synastry/           # Compatibility input + results
     legal/              # Privacy, terms, cookies
   components/           # React components organized by feature
+    blog/               # ArticleCard, Pagination
     dashboard/          # daily-insights, weekly-forecast, monthly-forecast
     feedback-widget.tsx # Floating support/feedback popup (logged-in users only)
   lib/                  # Core business logic & utilities
@@ -201,3 +203,6 @@ Expired entries cleaned hourly via `cleanExpiredEntries()` in `transit-cache.ts`
 8. **Rate limiting** — Created `src/lib/rate-limit.ts` with 4 tiers. Applied to 7 API routes (support, AI chat x2, tarot, checkout, admin x2).
 9. **Fixed API response format handling** — The `request()` method in `astrology-api.ts` assumed all endpoints use `{success, data, metadata}` envelope. Chart endpoints (`/api/v3/charts/*`) return raw `{subject_data, chart_data}` without envelope. Fixed to detect format dynamically. Also corrected `APILunarMetricsResponse` type to match actual enhanced endpoint response (`phase_info.phase_name`, `phase_info.illumination_percent`, boolean `void_of_course`).
 10. **Fixed Google Search Console redirect errors** — 5 layouts (`learn`, `tarot`, `reports`, `astrologist`, `synastry`) used `requireUser()` which 307-redirected unauthenticated visitors (Googlebot) to `/birth-details`. Changed all to `getUser()` with conditional birth-data checks. Also removed `/synastry` from middleware protected routes. Pages now render for Googlebot; auth gating handled by page components.
+
+### Session 2 (Feb 2026)
+11. **Blog integration (SEObot)** — Added `/blog` route powered by SEObot API (`seobot` npm package). New files: `src/app/blog/layout.tsx` (cosmic-themed layout with Blog nav link + "new" badge), `src/app/blog/page.tsx` (paginated article listing), `src/app/blog/[slug]/page.tsx` (full article with SEO metadata, JSON-LD, breadcrumbs, related posts), `src/app/blog/category/[slug]/page.tsx` (category filter), `src/app/blog/tag/[slug]/page.tsx` (tag filter), `src/app/blog/blog.css` (dark theme article styles), `src/app/blog/sitemap.xml/route.ts` (dynamic XML sitemap), `src/components/blog/ArticleCard.tsx`, `src/components/blog/Pagination.tsx`. Added `/blog` to main `sitemap.ts`. Uses `getUser()` (not `requireUser()`) so pages are accessible to Googlebot. API key via `SEOBOTAI_API_KEY` env var.

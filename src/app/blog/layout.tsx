@@ -6,16 +6,16 @@ import { createClient } from '@/lib/supabase/server'
 import { StaticStarfield } from '@/components/ui/starfield-background'
 
 export const metadata: Metadata = {
-  title: 'AI Astrologer Chat | Ask About Your Birth Chart | Orbli',
-  description: 'Chat with our AI astrologer about your birth chart, transits, and cosmic influences. Get personalized astrological guidance and answers instantly.',
+  title: 'Astrology Blog | Orbli',
+  description: 'Explore astrology articles, birth chart guides, horoscope insights, and cosmic wisdom. Learn about zodiac signs, planetary transits, and more.',
   openGraph: {
-    title: 'AI Astrologer Chat | Orbli',
-    description: 'Chat with our AI astrologer about your birth chart and get personalized guidance.',
+    title: 'Astrology Blog | Orbli',
+    description: 'Explore astrology articles, birth chart guides, horoscope insights, and cosmic wisdom.',
     type: 'website',
   },
 }
 
-export default async function AstrologistLayout({
+export default async function BlogLayout({
   children,
 }: {
   children: React.ReactNode
@@ -51,21 +51,24 @@ export default async function AstrologistLayout({
                 Dashboard
               </Link>
               <Link href="/learn" className="text-indigo-200/50 hover:text-white transition-colors text-sm">
-                Learn              </Link>
+                Learn
+              </Link>
               <Link href="/reports" className="text-indigo-200/50 hover:text-white transition-colors text-sm">
-                Reports              </Link>
+                Reports
+              </Link>
               <Link href="/charts" className="text-indigo-200/50 hover:text-white transition-colors text-sm">
                 Calculators
               </Link>
               <Link href="/synastry" className="text-indigo-200/50 hover:text-white transition-colors text-sm">
                 Synastry
               </Link>
-              <Link href="/astrologist" className="text-white transition-colors text-sm">
+              <Link href="/astrologist" className="text-indigo-200/50 hover:text-white transition-colors text-sm">
                 AI Astrologist
               </Link>
               <Link href="/tarot" className="text-indigo-200/50 hover:text-white transition-colors text-sm">
-                Tarot              </Link>
-              <Link href="/blog" className="text-indigo-200/50 hover:text-white transition-colors text-sm">
+                Tarot
+              </Link>
+              <Link href="/blog" className="text-white transition-colors text-sm">
                 Blog              </Link>
               {!hasBirthData && (
                 <Link href="/birth-details" className="text-amber-400 hover:text-amber-300 transition-colors text-sm font-medium">
@@ -97,20 +100,25 @@ export default async function AstrologistLayout({
               Dashboard
             </Link>
             <Link href="/learn" className="text-indigo-200/50 hover:text-white transition-colors text-sm">
-              Learn            </Link>
+              Learn
+            </Link>
             <Link href="/reports" className="text-indigo-200/50 hover:text-white transition-colors text-sm">
-              Reports            </Link>
+              Reports
+            </Link>
             <Link href="/charts" className="text-indigo-200/50 hover:text-white transition-colors text-sm">
               Calculators
             </Link>
             <Link href="/synastry" className="text-indigo-200/50 hover:text-white transition-colors text-sm">
               Synastry
             </Link>
-            <Link href="/astrologist" className="text-white transition-colors text-sm">
+            <Link href="/astrologist" className="text-indigo-200/50 hover:text-white transition-colors text-sm">
               AI Astrologist
             </Link>
             <Link href="/tarot" className="text-indigo-200/50 hover:text-white transition-colors text-sm">
-              Tarot            </Link>
+              Tarot
+            </Link>
+            <Link href="/blog" className="text-white transition-colors text-sm">
+              Blog            </Link>
             {!hasBirthData && (
               <Link href="/birth-details" className="text-amber-400 hover:text-amber-300 transition-colors text-sm font-medium">
                 Add Birth Details
@@ -123,8 +131,8 @@ export default async function AstrologistLayout({
         </div>
       </header>
 
-      {/* Main content - full height for chat */}
-      <main className="h-[calc(100vh-65px)] relative z-10">{children}</main>
+      {/* Main content */}
+      <main className="relative z-10">{children}</main>
     </div>
   )
 }

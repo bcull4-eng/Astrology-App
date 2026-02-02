@@ -51,11 +51,9 @@ export default async function TarotLayout({
                 Dashboard
               </Link>
               <Link href="/learn" className="text-indigo-200/50 hover:text-white transition-colors text-sm">
-                Learn <span className="text-emerald-400 text-[10px]">new</span>
-              </Link>
+                Learn              </Link>
               <Link href="/reports" className="text-indigo-200/50 hover:text-white transition-colors text-sm">
-                Reports <span className="text-emerald-400 text-[10px]">new</span>
-              </Link>
+                Reports              </Link>
               <Link href="/charts" className="text-indigo-200/50 hover:text-white transition-colors text-sm">
                 Calculators
               </Link>
@@ -66,8 +64,9 @@ export default async function TarotLayout({
                 AI Astrologist
               </Link>
               <Link href="/tarot" className="text-white transition-colors text-sm">
-                Tarot <span className="text-emerald-400 text-[10px]">new</span>
-              </Link>
+                Tarot              </Link>
+              <Link href="/blog" className="text-indigo-200/50 hover:text-white transition-colors text-sm">
+                Blog              </Link>
               {!hasBirthData && (
                 <Link href="/birth-details" className="text-amber-400 hover:text-amber-300 transition-colors text-sm font-medium">
                   Add Birth Details
@@ -98,11 +97,9 @@ export default async function TarotLayout({
               Dashboard
             </Link>
             <Link href="/learn" className="text-indigo-200/50 hover:text-white transition-colors text-sm">
-              Learn <span className="text-emerald-400 text-[10px]">new</span>
-            </Link>
+              Learn            </Link>
             <Link href="/reports" className="text-indigo-200/50 hover:text-white transition-colors text-sm">
-              Reports <span className="text-emerald-400 text-[10px]">new</span>
-            </Link>
+              Reports            </Link>
             <Link href="/charts" className="text-indigo-200/50 hover:text-white transition-colors text-sm">
               Calculators
             </Link>
@@ -113,8 +110,7 @@ export default async function TarotLayout({
               AI Astrologist
             </Link>
             <Link href="/tarot" className="text-white transition-colors text-sm">
-              Tarot <span className="text-emerald-400 text-[10px]">new</span>
-            </Link>
+              Tarot            </Link>
             {!hasBirthData && (
               <Link href="/birth-details" className="text-amber-400 hover:text-amber-300 transition-colors text-sm font-medium">
                 Add Birth Details

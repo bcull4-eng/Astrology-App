@@ -48,3 +48,11 @@ Additionally, the `APILunarMetricsResponse` type was wrong. The enhanced endpoin
 2. Build types from the real response, not from documentation or assumptions
 3. Different endpoint families (charts vs data) may use completely different response formats
 4. Test with real data before assuming a shared response wrapper works for all endpoints
+
+---
+
+## 5. Pages in the sitemap must be accessible to unauthenticated visitors (Googlebot)
+
+**What happened:** Five layout files (`learn`, `tarot`, `reports`, `astrologist`, `synastry`) used `requireUser()` which server-side 307-redirected unauthenticated visitors to `/birth-details`. These pages were all listed in `sitemap.ts`. Google Search Console reported "Redirect error" for all of them because Googlebot couldn't access the actual content.
+
+**Rule:** Any page listed in the sitemap must return a 200 to unauthenticated visitors. Use `getUser()` (returns null) instead of `requireUser()` (redirects) in layouts of public-facing pages. Handle auth gating in the page component (client-side paywall/prompt), not in the server-side layout. Only use `requireUser()` for truly private pages that should NOT be in the sitemap (dashboard, settings).

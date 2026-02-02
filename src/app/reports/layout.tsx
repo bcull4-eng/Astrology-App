@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import type { Metadata } from 'next'
-import { requireUser } from '@/lib/auth'
+import { getUser } from '@/lib/auth'
 import { createClient } from '@/lib/supabase/server'
 import { StaticStarfield } from '@/components/ui/starfield-background'
 
@@ -20,20 +20,22 @@ export default async function ReportsLayout({
 }: {
   children: React.ReactNode
 }) {
-  const user = await requireUser()
+  const user = await getUser()
 
   // Check if user has birth data
   let hasBirthData = false
-  try {
-    const supabase = await createClient()
-    const { data } = await supabase
-      .from('user_birth_data')
-      .select('id')
-      .eq('user_id', user.id)
-      .single()
-    hasBirthData = !!data
-  } catch {
-    // No birth data found
+  if (user) {
+    try {
+      const supabase = await createClient()
+      const { data } = await supabase
+        .from('user_birth_data')
+        .select('id')
+        .eq('user_id', user.id)
+        .single()
+      hasBirthData = !!data
+    } catch {
+      // No birth data found
+    }
   }
 
   return (

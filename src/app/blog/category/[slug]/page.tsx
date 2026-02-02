@@ -57,7 +57,7 @@ export default async function CategoryPage({
   let total = 0
 
   try {
-    const result = await client.getCategoryArticles(slug, page, ARTICLES_PER_PAGE)
+    const result = await client.getCategoryArticles(slug, page - 1, ARTICLES_PER_PAGE)
     articles = result.articles
     total = result.total
   } catch {

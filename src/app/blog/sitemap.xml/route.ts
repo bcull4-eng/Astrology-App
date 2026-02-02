@@ -15,7 +15,7 @@ export async function GET() {
   const baseUrl = 'https://www.orbli.app'
 
   const allArticles: { slug: string; updatedAt: string }[] = []
-  let page = 1
+  let page = 0
   const limit = 100
 
   try {

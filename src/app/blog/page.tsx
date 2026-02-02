@@ -39,7 +39,7 @@ export default async function BlogPage({
   let total = 0
 
   try {
-    const result = await client.getArticles(page, ARTICLES_PER_PAGE)
+    const result = await client.getArticles(page - 1, ARTICLES_PER_PAGE)
     articles = result.articles
     total = result.total
   } catch {

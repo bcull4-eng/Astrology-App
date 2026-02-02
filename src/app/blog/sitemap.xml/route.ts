@@ -1,5 +1,7 @@
 import { BlogClient } from 'seobot'
 
+export const dynamic = 'force-dynamic'
+
 export async function GET() {
   const apiKey = process.env.SEOBOTAI_API_KEY
   if (!apiKey) {

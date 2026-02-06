@@ -7,16 +7,48 @@
  * Email is stored but not verified - user continues immediately.
  */
 
+import { useState } from 'react'
 import { Mail, Lock, Sparkles, Users, Shield } from 'lucide-react'
-import { useOnboardingV2Store } from '@/store/onboarding-v2'
+import { useOnboardingV2Store, getFormattedBirthDate, getFormattedBirthTime } from '@/store/onboarding-v2'
 
 export function EmailCaptureStep() {
-  const { email, setEmail, goToNextStep } = useOnboardingV2Store()
+  const store = useOnboardingV2Store()
+  const { email, setEmail, goToNextStep } = store
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!email || !email.includes('@')) return
-    // Just save email and continue - no verification needed
+
+    setIsSubmitting(true)
+
+    // Save lead data to database
+    try {
+      await fetch('/api/leads/capture', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email,
+          gender: store.gender,
+          birthDate: getFormattedBirthDate(store.birthMonth, store.birthDay, store.birthYear),
+          birthTime: getFormattedBirthTime(store.birthHour, store.birthMinute, store.birthAmPm),
+          birthTimeKnown: store.birthTimeKnown,
+          birthPlace: store.birthPlace,
+          relationshipStatus: store.relationshipStatus,
+          futureGoals: store.futureGoals,
+          colorPreference: store.colorPreference,
+          elementPreference: store.elementPreference,
+          palmReadingData: store.palmReadingData,
+          natalChartData: store.natalChartData,
+          profileData: store.profileData,
+        }),
+      })
+    } catch (error) {
+      console.error('Failed to save lead:', error)
+      // Continue anyway - data is in localStorage as backup
+    }
+
+    setIsSubmitting(false)
     goToNextStep()
   }
 
@@ -69,18 +101,18 @@ export function EmailCaptureStep() {
 
         <button
           type="submit"
-          disabled={!email}
+          disabled={!email || isSubmitting}
           className={`
             w-full py-4 rounded-xl font-semibold text-lg transition-all flex items-center justify-center gap-2
             ${
-              email
+              email && !isSubmitting
                 ? 'bg-gradient-to-r from-indigo-500 to-purple-500 text-white hover:opacity-90'
                 : 'bg-white/10 text-white/40 cursor-not-allowed'
             }
           `}
         >
           <Sparkles className="w-5 h-5" />
-          Reveal My Report
+          {isSubmitting ? 'Saving...' : 'Reveal My Report'}
         </button>
       </form>
 

@@ -111,26 +111,45 @@ export function PaymentStep() {
           </p>
         </div>
 
-        <ul className="space-y-2">
+        {/* What you get today */}
+        <p className="text-white/50 text-xs uppercase tracking-wider mb-2">Included today for £1:</p>
+        <ul className="space-y-1.5 mb-4">
           <li className="flex items-center gap-2 text-white/80 text-sm">
-            <Check className="w-4 h-4 text-indigo-400 flex-shrink-0" />
-            Complete birth chart analysis
+            <Check className="w-4 h-4 text-emerald-400 flex-shrink-0" />
+            Your complete birth chart analysis
           </li>
           <li className="flex items-center gap-2 text-white/80 text-sm">
-            <Check className="w-4 h-4 text-indigo-400 flex-shrink-0" />
+            <Check className="w-4 h-4 text-emerald-400 flex-shrink-0" />
             Personality & destiny insights
           </li>
+          <li className="flex items-center gap-2 text-white/80 text-sm">
+            <Check className="w-4 h-4 text-emerald-400 flex-shrink-0" />
+            Palm reading analysis
+          </li>
+        </ul>
+
+        {/* What's included in subscription */}
+        <p className="text-white/50 text-xs uppercase tracking-wider mb-2">Plus with your subscription:</p>
+        <ul className="space-y-1.5">
           <li className="flex items-center gap-2 text-white/80 text-sm">
             <Check className="w-4 h-4 text-indigo-400 flex-shrink-0" />
             Daily personalized horoscopes
           </li>
           <li className="flex items-center gap-2 text-white/80 text-sm">
             <Check className="w-4 h-4 text-indigo-400 flex-shrink-0" />
-            Palm reading analysis
+            Weekly & monthly forecasts
           </li>
           <li className="flex items-center gap-2 text-white/80 text-sm">
             <Check className="w-4 h-4 text-indigo-400 flex-shrink-0" />
             Love & compatibility reports
+          </li>
+          <li className="flex items-center gap-2 text-white/80 text-sm">
+            <Check className="w-4 h-4 text-indigo-400 flex-shrink-0" />
+            AI astrologer chat (unlimited)
+          </li>
+          <li className="flex items-center gap-2 text-white/80 text-sm">
+            <Check className="w-4 h-4 text-indigo-400 flex-shrink-0" />
+            Transit alerts & cosmic updates
           </li>
         </ul>
       </div>

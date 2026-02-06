@@ -8,8 +8,9 @@
  */
 
 import { useState } from 'react'
-import { Check, CreditCard, Shield, Star, Users, Sparkles } from 'lucide-react'
+import { Check, CreditCard, Shield, Star, Users, Sparkles, Clock } from 'lucide-react'
 import { useOnboardingV2Store } from '@/store/onboarding-v2'
+import { CountdownTimer } from '../CountdownTimer'
 
 const TESTIMONIALS = [
   { name: 'Sarah M.', text: 'Scarily accurate! The report knew things about me I barely admit to myself.', rating: 5 },
@@ -66,6 +67,15 @@ export function PaymentStep() {
         </p>
       </div>
 
+      {/* Countdown timer */}
+      <div className="bg-gradient-to-r from-red-500/20 to-orange-500/20 border border-red-500/30 rounded-xl p-4 mb-6">
+        <div className="flex items-center justify-center gap-2 mb-2">
+          <Clock className="w-4 h-4 text-red-400" />
+          <span className="text-red-400 text-sm font-medium">Special offer expires in:</span>
+        </div>
+        <CountdownTimer initialMinutes={15} />
+      </div>
+
       {/* Social proof stats */}
       <div className="flex items-center justify-center gap-6 mb-6">
         <div className="flex items-center gap-2 text-white/70 text-sm">
@@ -88,9 +98,13 @@ export function PaymentStep() {
         <div className="mb-4">
           <p className="text-white font-semibold text-lg">Complete Cosmic Report</p>
           <div className="flex items-baseline gap-2 mt-1">
+            <span className="text-white/40 text-lg line-through">£19.99</span>
             <span className="text-3xl font-bold text-white">£1</span>
-            <span className="text-white/60 text-sm">today</span>
+            <span className="text-white/60 text-sm">today only</span>
           </div>
+          <p className="text-emerald-400 text-sm font-medium mt-1">
+            You save £18.99 (95% off)
+          </p>
           <p className="text-white/50 text-xs mt-1">
             Then £14.99/month after 3 days • Cancel anytime
           </p>

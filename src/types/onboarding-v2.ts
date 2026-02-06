@@ -37,7 +37,7 @@ export const ONBOARDING_STEPS: OnboardingStep[] = [
   'gender', 'birthday', 'birth-time', 'birth-place', 'chart-mapping',
   'forecast-34', 'relationship', 'future-goals', 'color-preference', 'element',
   'profile-reveal', 'forecast-67', 'palm-reading', 'forecast-100',
-  'email-capture', 'loading-screens', 'results-ready', 'payment', 'results-reveal', 'forecast-upsell',
+  'email-capture', 'loading-screens', 'payment', 'results-reveal', 'forecast-upsell',
 ]
 
 export const QUIZ_STEP_COUNT = 14

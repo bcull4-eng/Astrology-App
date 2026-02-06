@@ -82,26 +82,61 @@ export function ChartMappingStep() {
         }
 
         const data = await response.json()
-        console.log('Natal chart API response:', JSON.stringify(data, null, 2))
 
         // The API returns { success, chart, location }
         const chart = data.chart || data
-        console.log('Chart data:', JSON.stringify(chart, null, 2))
 
-        // Extract key placements
-        const sunSign = chart.planets?.sun?.sign || 'Aries'
-        const moonSign = chart.planets?.moon?.sign || 'Aries'
-        const ascendant = chart.ascendant?.sign || sunSign
-        console.log('Extracted signs:', { sunSign, moonSign, ascendant })
+        // Extract key placements - handle both array format (placements) and object format (planets)
+        let sunSign = 'Aries'
+        let moonSign = 'Aries'
+        let ascendant = 'Aries'
+
+        if (chart.placements && Array.isArray(chart.placements)) {
+          // New format: placements is an array
+          const sunPlacement = chart.placements.find((p: { planet: string }) => p.planet === 'sun')
+          const moonPlacement = chart.placements.find((p: { planet: string }) => p.planet === 'moon')
+
+          if (sunPlacement?.sign) {
+            sunSign = sunPlacement.sign.charAt(0).toUpperCase() + sunPlacement.sign.slice(1)
+          }
+          if (moonPlacement?.sign) {
+            moonSign = moonPlacement.sign.charAt(0).toUpperCase() + moonPlacement.sign.slice(1)
+          }
+        } else if (chart.planets) {
+          // Old format: planets is an object
+          sunSign = chart.planets.sun?.sign || 'Aries'
+          moonSign = chart.planets.moon?.sign || 'Aries'
+        }
+
+        // Get ascendant
+        if (chart.ascendant?.sign) {
+          ascendant = chart.ascendant.sign.charAt(0).toUpperCase() + chart.ascendant.sign.slice(1)
+        } else {
+          ascendant = sunSign
+        }
 
         setChartData({ sunSign, moonSign, ascendant })
+
+        // Convert placements array to planets object if needed
+        let planetsObj = chart.planets || {}
+        if (chart.placements && Array.isArray(chart.placements)) {
+          planetsObj = {}
+          for (const placement of chart.placements) {
+            planetsObj[placement.planet] = {
+              sign: placement.sign.charAt(0).toUpperCase() + placement.sign.slice(1),
+              degree: placement.degree,
+              house: placement.house,
+              isRetrograde: placement.is_retrograde,
+            }
+          }
+        }
 
         // Store full chart data
         setNatalChartData({
           sunSign,
           moonSign,
           ascendant,
-          planets: chart.planets || {},
+          planets: planetsObj,
           houses: chart.houses || {},
           aspects: chart.aspects || [],
         })

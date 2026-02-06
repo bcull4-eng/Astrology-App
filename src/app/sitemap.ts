@@ -1,4 +1,5 @@
 import { MetadataRoute } from 'next'
+import { getAllCompatibilityPairs } from '@/lib/compatibility-data'
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = 'https://www.orbli.app'
@@ -49,7 +50,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
     changeFrequency: 'monthly' as const,
   }))
 
-  const allPages = [...staticPages, ...calculatorPages]
+  // Compatibility pages (78 unique pairs)
+  const compatibilityPairs = getAllCompatibilityPairs()
+  const compatibilityPages = [
+    { url: '/compatibility', priority: 0.9, changeFrequency: 'monthly' as const },
+    ...compatibilityPairs.map((pair) => ({
+      url: `/compatibility/${pair}`,
+      priority: 0.8,
+      changeFrequency: 'monthly' as const,
+    })),
+  ]
+
+  const allPages = [...staticPages, ...calculatorPages, ...compatibilityPages]
 
   return allPages.map((page) => ({
     url: `${baseUrl}${page.url}`,

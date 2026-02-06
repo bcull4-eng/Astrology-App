@@ -82,14 +82,17 @@ export function ChartMappingStep() {
         }
 
         const data = await response.json()
+        console.log('Natal chart API response:', JSON.stringify(data, null, 2))
 
         // The API returns { success, chart, location }
         const chart = data.chart || data
+        console.log('Chart data:', JSON.stringify(chart, null, 2))
 
         // Extract key placements
         const sunSign = chart.planets?.sun?.sign || 'Aries'
         const moonSign = chart.planets?.moon?.sign || 'Aries'
         const ascendant = chart.ascendant?.sign || sunSign
+        console.log('Extracted signs:', { sunSign, moonSign, ascendant })
 
         setChartData({ sunSign, moonSign, ascendant })
 

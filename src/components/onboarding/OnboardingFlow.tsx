@@ -12,6 +12,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useOnboardingV2Store } from '@/store/onboarding-v2'
 import type { OnboardingStep } from '@/types/onboarding-v2'
 import { OnboardingHeader } from './OnboardingHeader'
+import { SocialProofNotification } from './SocialProofNotification'
 
 // Quiz steps (1-14)
 import { GenderStep } from './steps/GenderStep'
@@ -104,6 +105,7 @@ export function OnboardingFlow() {
 
   return (
     <div className="flex flex-col min-h-screen">
+      <SocialProofNotification />
       <OnboardingHeader />
 
       {/* Step container with transitions */}

@@ -7,7 +7,7 @@
  * Email is stored but not verified - user continues immediately.
  */
 
-import { Mail, Lock, Sparkles } from 'lucide-react'
+import { Mail, Lock, Sparkles, Users, Shield } from 'lucide-react'
 import { useOnboardingV2Store } from '@/store/onboarding-v2'
 
 export function EmailCaptureStep() {
@@ -84,10 +84,22 @@ export function EmailCaptureStep() {
         </button>
       </form>
 
-      {/* Privacy note */}
-      <p className="mt-6 text-white/30 text-xs text-center max-w-sm">
-        We'll never spam you. Your email is used only for your report and account.
-      </p>
+      {/* Social proof + Privacy */}
+      <div className="mt-6 space-y-3 max-w-sm">
+        <div className="flex items-center justify-center gap-4">
+          <div className="flex items-center gap-1.5 text-white/40 text-xs">
+            <Users className="w-3.5 h-3.5" />
+            <span>2,847 reports today</span>
+          </div>
+          <div className="flex items-center gap-1.5 text-white/40 text-xs">
+            <Shield className="w-3.5 h-3.5" />
+            <span>100% private</span>
+          </div>
+        </div>
+        <p className="text-white/30 text-xs text-center">
+          We&apos;ll never spam you. Your email is used only for your report and account.
+        </p>
+      </div>
     </div>
   )
 }

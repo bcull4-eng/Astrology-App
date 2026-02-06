@@ -77,9 +77,18 @@ export function PalmReadingStep() {
       {state === 'capture' && (
         <>
           <PalmCameraCapture onCapture={handleCapture} />
+
+          {/* Social proof testimonial */}
+          <div className="mt-6 p-4 bg-white/5 rounded-xl border border-white/10 max-w-sm">
+            <p className="text-white/70 text-sm italic">
+              &quot;The palm reading was scarily accurate! It knew things about my past I never told anyone.&quot;
+            </p>
+            <p className="text-white/40 text-xs mt-2">— Sarah M., London</p>
+          </div>
+
           <button
             onClick={handleSkip}
-            className="mt-6 text-white/40 text-sm hover:text-white/60 transition-colors"
+            className="mt-4 text-white/40 text-sm hover:text-white/60 transition-colors"
           >
             Skip this step
           </button>

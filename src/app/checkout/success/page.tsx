@@ -19,7 +19,8 @@ function SuccessContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const sessionId = searchParams.get('session_id')
-  const plan = searchParams.get('plan') as 'weekly_intro' | 'weekly' | 'annual' | 'lifetime' | 'report_intro' | null
+  const plan = searchParams.get('plan') as 'weekly_intro' | 'weekly' | 'annual' | 'lifetime' | null
+  const isReportIntro = searchParams.get('plan') === 'report_intro'
   const [countdown, setCountdown] = useState(5)
   const [isNewUser, setIsNewUser] = useState<boolean | null>(null)
   const tracked = useRef(false)
@@ -43,10 +44,13 @@ function SuccessContent() {
 
   useEffect(() => {
     // Track conversion (only once)
-    if (!tracked.current && plan) {
+    if (!tracked.current && (plan || isReportIntro)) {
       tracked.current = true
-      const values = { weekly_intro: 2, weekly: 4.99, annual: 99, lifetime: 199, report_intro: 1 }
-      trackSubscription(plan, values[plan] || 0)
+      if (plan) {
+        const values = { weekly_intro: 2, weekly: 4.99, annual: 99, lifetime: 199 }
+        trackSubscription(plan, values[plan] || 0)
+      }
+      // report_intro tracked separately or skip tracking for now
     }
 
     // Only auto-redirect for existing users

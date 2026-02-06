@@ -8,6 +8,7 @@
 
 import { useOnboardingV2Store } from '@/store/onboarding-v2'
 import { ScrollWheelPicker } from '../shared/ScrollWheelPicker'
+import { TopBanner } from '../shared/TopBanner'
 
 const MONTHS = [
   'January', 'February', 'March', 'April', 'May', 'June',
@@ -37,7 +38,9 @@ export function BirthdayStep() {
   }
 
   return (
-    <div className="flex-1 flex flex-col items-center justify-center px-6 py-8">
+    <div className="flex-1 flex flex-col items-center px-6 py-8">
+      <TopBanner variant="stat" className="mb-6" />
+
       <h1 className="text-2xl font-serif font-semibold text-white text-center mb-2">
         When were you born?
       </h1>

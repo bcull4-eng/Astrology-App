@@ -11,6 +11,7 @@ import { MapPin, Loader2 } from 'lucide-react'
 import { useOnboardingV2Store } from '@/store/onboarding-v2'
 import { geocodeLocation, getTimezoneFromCoords } from '@/lib/geocoding'
 import { useDebounce } from '@/hooks/useDebounce'
+import { TopBanner } from '../shared/TopBanner'
 
 interface LocationSuggestion {
   display_name: string
@@ -92,7 +93,9 @@ export function BirthPlaceStep() {
   }
 
   return (
-    <div className="flex-1 flex flex-col items-center justify-center px-6 py-8">
+    <div className="flex-1 flex flex-col items-center px-6 py-8">
+      <TopBanner variant="feature" className="mb-6" />
+
       <h1 className="text-2xl font-serif font-semibold text-white text-center mb-2">
         Where were you born?
       </h1>

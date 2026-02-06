@@ -75,15 +75,17 @@ export function ProfileCard({ profile }: ProfileCardProps) {
 
         {/* Compatible signs */}
         <div className="text-center">
-          <p className="text-xs text-white/40 uppercase tracking-wider mb-2">Most Compatible With</p>
-          <div className="flex justify-center gap-3">
+          <p className="text-xs text-white/40 uppercase tracking-wider mb-3">Most Compatible With</p>
+          <div className="flex justify-center gap-4">
             {profile.compatibleSigns.slice(0, 4).map((sign) => (
-              <div
-                key={sign}
-                className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center"
-                title={sign}
-              >
-                <span className="text-lg">{ZODIAC_SYMBOLS[sign] || '★'}</span>
+              <div key={sign} className="flex flex-col items-center gap-1">
+                <div
+                  className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center"
+                  title={sign}
+                >
+                  <span className="text-lg">{ZODIAC_SYMBOLS[sign] || '★'}</span>
+                </div>
+                <span className="text-xs text-white/60">{sign}</span>
               </div>
             ))}
           </div>

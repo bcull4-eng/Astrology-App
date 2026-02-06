@@ -9,6 +9,7 @@
 
 import { useOnboardingV2Store } from '@/store/onboarding-v2'
 import { ScrollWheelPicker } from '../shared/ScrollWheelPicker'
+import { TopBanner } from '../shared/TopBanner'
 
 const HOURS = Array.from({ length: 12 }, (_, i) => i + 1)
 const MINUTES = Array.from({ length: 60 }, (_, i) => i)
@@ -44,7 +45,9 @@ export function BirthTimeStep() {
   }
 
   return (
-    <div className="flex-1 flex flex-col items-center justify-center px-6 py-8">
+    <div className="flex-1 flex flex-col items-center px-6 py-8">
+      <TopBanner variant="testimonial" className="mb-6" />
+
       <h1 className="text-2xl font-serif font-semibold text-white text-center mb-2">
         What time were you born?
       </h1>

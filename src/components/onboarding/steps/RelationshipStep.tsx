@@ -9,6 +9,7 @@
 import { useOnboardingV2Store } from '@/store/onboarding-v2'
 import type { RelationshipStatusV2 } from '@/types/onboarding-v2'
 import { RELATIONSHIP_OPTIONS } from '@/types/onboarding-v2'
+import { TopBanner } from '../shared/TopBanner'
 
 export function RelationshipStep() {
   const { relationshipStatus, setRelationshipStatus, goToNextStep } = useOnboardingV2Store()
@@ -19,7 +20,9 @@ export function RelationshipStep() {
   }
 
   return (
-    <div className="flex-1 flex flex-col items-center justify-center px-6 py-8">
+    <div className="flex-1 flex flex-col items-center px-6 py-8">
+      <TopBanner variant="testimonial" className="mb-6" />
+
       <h1 className="text-2xl font-serif font-semibold text-white text-center mb-2">
         What&apos;s your relationship status?
       </h1>

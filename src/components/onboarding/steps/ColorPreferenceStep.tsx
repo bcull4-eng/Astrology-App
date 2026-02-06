@@ -9,6 +9,7 @@
 import { useOnboardingV2Store } from '@/store/onboarding-v2'
 import type { ColorPreference } from '@/types/onboarding-v2'
 import { COLOR_OPTIONS } from '@/types/onboarding-v2'
+import { TopBanner } from '../shared/TopBanner'
 
 export function ColorPreferenceStep() {
   const { colorPreference, setColorPreference, goToNextStep } = useOnboardingV2Store()
@@ -19,7 +20,9 @@ export function ColorPreferenceStep() {
   }
 
   return (
-    <div className="flex-1 flex flex-col items-center justify-center px-6 py-8">
+    <div className="flex-1 flex flex-col items-center px-6 py-8">
+      <TopBanner variant="feature" className="mb-6" />
+
       <h1 className="text-2xl font-serif font-semibold text-white text-center mb-2">
         Which color speaks to your soul?
       </h1>

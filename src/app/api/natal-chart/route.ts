@@ -13,8 +13,14 @@ import type { BirthData, BirthTimeConfidence } from '@/types'
 interface NatalChartRequest {
   birthDate: string // ISO date string
   birthTime: string | null
-  birthTimeConfidence: BirthTimeConfidence
-  birthPlace: string // "City, Country" string
+  birthTimeConfidence?: BirthTimeConfidence
+  birthPlace: string | {
+    city: string
+    country: string
+    latitude: number
+    longitude: number
+    timezone: string
+  }
   userId?: string
 }
 
@@ -30,8 +36,21 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Geocode the birth place
-    const birthPlace = await locationToBirthPlace(body.birthPlace)
+    // Handle birthPlace - either already geocoded object or string to geocode
+    let birthPlace
+    if (typeof body.birthPlace === 'object' && body.birthPlace.latitude && body.birthPlace.longitude) {
+      // Already geocoded from onboarding
+      birthPlace = {
+        city: body.birthPlace.city,
+        country: body.birthPlace.country,
+        latitude: body.birthPlace.latitude,
+        longitude: body.birthPlace.longitude,
+        timezone: body.birthPlace.timezone,
+      }
+    } else {
+      // Geocode the birth place string
+      birthPlace = await locationToBirthPlace(body.birthPlace as string)
+    }
 
     if (!birthPlace) {
       return NextResponse.json(

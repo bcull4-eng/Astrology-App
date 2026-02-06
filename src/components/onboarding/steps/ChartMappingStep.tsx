@@ -83,10 +83,13 @@ export function ChartMappingStep() {
 
         const data = await response.json()
 
+        // The API returns { success, chart, location }
+        const chart = data.chart || data
+
         // Extract key placements
-        const sunSign = data.planets?.sun?.sign || 'Aries'
-        const moonSign = data.planets?.moon?.sign || 'Aries'
-        const ascendant = data.ascendant?.sign || sunSign
+        const sunSign = chart.planets?.sun?.sign || 'Aries'
+        const moonSign = chart.planets?.moon?.sign || 'Aries'
+        const ascendant = chart.ascendant?.sign || sunSign
 
         setChartData({ sunSign, moonSign, ascendant })
 
@@ -95,9 +98,9 @@ export function ChartMappingStep() {
           sunSign,
           moonSign,
           ascendant,
-          planets: data.planets || {},
-          houses: data.houses || {},
-          aspects: data.aspects || [],
+          planets: chart.planets || {},
+          houses: chart.houses || {},
+          aspects: chart.aspects || [],
         })
 
         // Set profile data based on sun sign

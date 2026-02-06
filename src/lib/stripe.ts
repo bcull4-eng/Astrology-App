@@ -18,6 +18,8 @@ export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
 // These need to be created in your Stripe Dashboard
 export const STRIPE_PRICES = {
   // Subscription plans
+  report_intro: process.env.STRIPE_PRICE_REPORT_INTRO || 'price_report_intro_placeholder', // £1 + £14.99/mo after 3 days
+  monthly: process.env.STRIPE_PRICE_MONTHLY || 'price_monthly_placeholder', // £14.99/month
   weekly_intro: process.env.STRIPE_PRICE_WEEKLY_INTRO || 'price_weekly_intro_placeholder',
   weekly: process.env.STRIPE_PRICE_WEEKLY || 'price_weekly_placeholder',
   annual: process.env.STRIPE_PRICE_ANNUAL || 'price_annual_placeholder',
@@ -32,7 +34,7 @@ export const STRIPE_PRICES = {
   course: process.env.STRIPE_PRICE_COURSE || 'price_course_placeholder',
 } as const
 
-export type PlanType = 'weekly_intro' | 'weekly' | 'annual' | 'lifetime'
+export type PlanType = 'report_intro' | 'monthly' | 'weekly_intro' | 'weekly' | 'annual' | 'lifetime'
 export type ProductType = 'report' | 'report_bundle_3' | 'report_bundle_6' | 'course'
 
 interface CreateCheckoutParams {

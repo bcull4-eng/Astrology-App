@@ -94,7 +94,7 @@ export function BirthPlaceStep() {
 
   return (
     <div className="flex-1 flex flex-col items-center px-6 py-8">
-      <TopBanner variant="feature" className="mb-6" />
+      <TopBanner variant="feature" startIndex={0} className="mb-6" />
 
       <h1 className="text-2xl font-serif font-semibold text-white text-center mb-2">
         Where were you born?

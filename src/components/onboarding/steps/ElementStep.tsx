@@ -21,7 +21,7 @@ export function ElementStep() {
 
   return (
     <div className="flex-1 flex flex-col items-center px-6 py-8">
-      <TopBanner variant="testimonial" className="mb-6" />
+      <TopBanner variant="testimonial" startIndex={4} className="mb-6" />
 
       <h1 className="text-2xl font-serif font-semibold text-white text-center mb-2">
         Which element calls to you?

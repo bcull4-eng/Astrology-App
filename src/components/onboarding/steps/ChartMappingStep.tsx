@@ -82,9 +82,11 @@ export function ChartMappingStep() {
         }
 
         const data = await response.json()
+        console.log('[v2] Chart response:', data)
 
         // The API returns { success, chart, location }
         const chart = data.chart || data
+        console.log('[v2] Has placements?', !!chart.placements, Array.isArray(chart.placements))
 
         // Extract key placements - handle both array format (placements) and object format (planets)
         let sunSign = 'Aries'
@@ -95,6 +97,7 @@ export function ChartMappingStep() {
           // New format: placements is an array
           const sunPlacement = chart.placements.find((p: { planet: string }) => p.planet === 'sun')
           const moonPlacement = chart.placements.find((p: { planet: string }) => p.planet === 'moon')
+          console.log('[v2] Sun placement:', sunPlacement)
 
           if (sunPlacement?.sign) {
             sunSign = sunPlacement.sign.charAt(0).toUpperCase() + sunPlacement.sign.slice(1)
@@ -115,6 +118,7 @@ export function ChartMappingStep() {
           ascendant = sunSign
         }
 
+        console.log('[v2] Final signs:', { sunSign, moonSign, ascendant })
         setChartData({ sunSign, moonSign, ascendant })
 
         // Convert placements array to planets object if needed

@@ -1,5 +1,6 @@
 import { MetadataRoute } from 'next'
-import { getAllCompatibilityPairs } from '@/lib/compatibility-data'
+import { getAllCompatibilityPairs, ZODIAC_SIGNS } from '@/lib/compatibility-data'
+import { getAllTarotCardIds } from '@/lib/tarot-data'
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = 'https://www.orbli.app'
@@ -61,7 +62,56 @@ export default function sitemap(): MetadataRoute.Sitemap {
     })),
   ]
 
-  const allPages = [...staticPages, ...calculatorPages, ...compatibilityPages]
+  // Zodiac sign pages (12 pages)
+  const zodiacPages = [
+    { url: '/zodiac', priority: 0.9, changeFrequency: 'monthly' as const },
+    ...ZODIAC_SIGNS.map((sign) => ({
+      url: `/zodiac/${sign}`,
+      priority: 0.8,
+      changeFrequency: 'monthly' as const,
+    })),
+  ]
+
+  // Daily horoscope pages (12 pages)
+  const horoscopePages = [
+    { url: '/horoscope', priority: 0.9, changeFrequency: 'daily' as const },
+    ...ZODIAC_SIGNS.map((sign) => ({
+      url: `/horoscope/${sign}`,
+      priority: 0.8,
+      changeFrequency: 'daily' as const,
+    })),
+  ]
+
+  // Tarot card meanings pages (78 cards)
+  const tarotCardIds = getAllTarotCardIds()
+  const tarotPages = [
+    { url: '/tarot/meanings', priority: 0.9, changeFrequency: 'monthly' as const },
+    ...tarotCardIds.map((cardId) => ({
+      url: `/tarot/meanings/${cardId}`,
+      priority: 0.7,
+      changeFrequency: 'monthly' as const,
+    })),
+  ]
+
+  // Tool pages
+  const toolPages = [
+    { url: '/tools', priority: 0.8, changeFrequency: 'monthly' as const },
+    { url: '/tools/mercury-retrograde', priority: 0.8, changeFrequency: 'monthly' as const },
+    { url: '/tools/moon-calendar', priority: 0.8, changeFrequency: 'monthly' as const },
+    { url: '/tools/chinese-zodiac', priority: 0.8, changeFrequency: 'monthly' as const },
+    { url: '/tools/numerology', priority: 0.8, changeFrequency: 'monthly' as const },
+    { url: '/tools/zodiac-dates', priority: 0.8, changeFrequency: 'monthly' as const },
+  ]
+
+  const allPages = [
+    ...staticPages,
+    ...calculatorPages,
+    ...compatibilityPages,
+    ...zodiacPages,
+    ...horoscopePages,
+    ...tarotPages,
+    ...toolPages,
+  ]
 
   return allPages.map((page) => ({
     url: `${baseUrl}${page.url}`,

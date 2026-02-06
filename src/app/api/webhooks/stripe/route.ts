@@ -574,12 +574,15 @@ async function createAccountForGuest(email: string, stripeCustomerId: string) {
  */
 async function linkLeadDataToUser(email: string, userId: string) {
   try {
-    // Update lead record with user_id
+    // Update lead record with converted_user_id (column name from migration)
     const { error } = await supabaseAdmin
       .from('leads')
-      .update({ user_id: userId, converted_at: new Date().toISOString() })
-      .eq('email', email)
-      .is('user_id', null)
+      .update({
+        converted_user_id: userId,
+        converted_at: new Date().toISOString()
+      })
+      .eq('email', email.toLowerCase().trim())
+      .is('converted_user_id', null)
 
     if (error) {
       console.log('[Stripe Webhook] No lead data to link or error:', error.message)

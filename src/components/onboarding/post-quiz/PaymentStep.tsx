@@ -19,7 +19,7 @@ const TESTIMONIALS = [
 ]
 
 export function PaymentStep() {
-  const { goToNextStep } = useOnboardingV2Store()
+  const { goToNextStep, email } = useOnboardingV2Store()
 
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -34,6 +34,7 @@ export function PaymentStep() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           planType: 'report_intro', // £1 report with £14.99/month after 3 days
+          email, // Send email for guest checkout
         }),
       })
 

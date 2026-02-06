@@ -20,6 +20,7 @@ interface CheckoutRequest {
   planType?: PlanType
   productType?: ProductType
   productId?: string
+  email?: string // For guest checkout during onboarding
 }
 
 // Service role client for querying subscriptions (bypasses RLS)
@@ -35,24 +36,38 @@ export async function POST(request: NextRequest) {
   try {
     const supabase = await createClient()
 
-    // Get authenticated user
-    const { data: { user }, error: authError } = await supabase.auth.getUser()
+    // Get authenticated user (optional for guest checkout)
+    const { data: { user } } = await supabase.auth.getUser()
 
-    if (authError || !user) {
+    const body: CheckoutRequest = await request.json()
+    let { planType } = body
+    const { productType, productId, email: guestEmail } = body
+
+    // For report_intro (onboarding), allow guest checkout with email
+    // For other plans, require authentication
+    const isGuestCheckout = planType === 'report_intro' && !user && guestEmail
+
+    if (!user && !isGuestCheckout) {
       return NextResponse.json(
         { error: 'Unauthorized' },
         { status: 401 }
       )
     }
 
-    const body: CheckoutRequest = await request.json()
-    let { planType } = body
-    const { productType, productId } = body
+    const userEmail = user?.email || guestEmail
+    const userId = user?.id || `guest_${Date.now()}`
+
+    if (!userEmail) {
+      return NextResponse.json(
+        { error: 'Email required for checkout' },
+        { status: 400 }
+      )
+    }
 
     const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
 
-    // Intro offer eligibility check
-    if (planType === 'weekly_intro') {
+    // Intro offer eligibility check (only for authenticated users)
+    if (planType === 'weekly_intro' && user) {
       const { data: subscription } = await supabaseAdmin
         .from('subscriptions')
         .select('intro_offer_used')
@@ -146,8 +161,8 @@ export async function POST(request: NextRequest) {
 
     // Create checkout session
     const session = await createCheckoutSession({
-      userId: user.id,
-      userEmail: user.email!,
+      userId,
+      userEmail,
       priceId,
       mode,
       planType,

@@ -79,10 +79,11 @@ export async function POST(request: NextRequest) {
  * Handle successful checkout
  */
 async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
-  const userId = session.metadata?.user_id
+  let userId = session.metadata?.user_id
   const planType = session.metadata?.plan_type
   const productType = session.metadata?.product_type
   const productId = session.metadata?.product_id
+  const customerEmail = session.customer_details?.email || session.customer_email
 
   console.log('[Stripe Webhook] Checkout session metadata:', {
     userId,
@@ -91,6 +92,7 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
     productId,
     mode: session.mode,
     sessionId: session.id,
+    customerEmail,
   })
 
   if (!userId) {
@@ -99,6 +101,20 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
   }
 
   const customerId = session.customer as string
+
+  // Handle guest checkout - create account and send password setup email
+  if (userId.startsWith('guest_') && customerEmail) {
+    console.log('[Stripe Webhook] Guest checkout detected, creating account for:', customerEmail)
+
+    const newUser = await createAccountForGuest(customerEmail, customerId)
+    if (newUser) {
+      userId = newUser.id
+      console.log('[Stripe Webhook] Account created with ID:', userId)
+    } else {
+      console.error('[Stripe Webhook] Failed to create account for guest')
+      // Continue with guest ID - user can contact support
+    }
+  }
 
   if (session.mode === 'subscription') {
     // Handle subscription checkout
@@ -486,4 +502,91 @@ async function updateUserMetadata(
       subscribed_at: new Date().toISOString(),
     },
   })
+}
+
+/**
+ * Create account for guest checkout and send password setup email
+ */
+async function createAccountForGuest(email: string, stripeCustomerId: string) {
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://orbli.app'
+
+  try {
+    // Check if user already exists with this email
+    const { data: existingUsers } = await supabaseAdmin.auth.admin.listUsers()
+    const existingUser = existingUsers?.users?.find(u => u.email === email)
+
+    if (existingUser) {
+      console.log('[Stripe Webhook] User already exists with email:', email)
+      return existingUser
+    }
+
+    // Create new user with a random temporary password
+    const tempPassword = crypto.randomUUID() + crypto.randomUUID()
+
+    const { data: newUser, error: createError } = await supabaseAdmin.auth.admin.createUser({
+      email,
+      password: tempPassword,
+      email_confirm: true, // Auto-confirm since they just paid
+      user_metadata: {
+        stripe_customer_id: stripeCustomerId,
+        created_via: 'guest_checkout',
+      },
+    })
+
+    if (createError || !newUser?.user) {
+      console.error('[Stripe Webhook] Failed to create user:', createError)
+      return null
+    }
+
+    console.log('[Stripe Webhook] User created, sending password setup email')
+
+    // Send password reset email so they can set their own password
+    // Using the client-side auth for this since admin doesn't have resetPasswordForEmail
+    const { createClient } = await import('@supabase/supabase-js')
+    const supabaseClient = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    )
+
+    const { error: resetError } = await supabaseClient.auth.resetPasswordForEmail(email, {
+      redirectTo: `${appUrl}/auth/set-password`,
+    })
+
+    if (resetError) {
+      console.error('[Stripe Webhook] Failed to send password setup email:', resetError)
+      // Still return the user - they can use "forgot password" later
+    } else {
+      console.log('[Stripe Webhook] Password setup email sent to:', email)
+    }
+
+    // Also link any lead data to this new user
+    await linkLeadDataToUser(email, newUser.user.id)
+
+    return newUser.user
+  } catch (error) {
+    console.error('[Stripe Webhook] Error creating guest account:', error)
+    return null
+  }
+}
+
+/**
+ * Link lead capture data to the newly created user account
+ */
+async function linkLeadDataToUser(email: string, userId: string) {
+  try {
+    // Update lead record with user_id
+    const { error } = await supabaseAdmin
+      .from('leads')
+      .update({ user_id: userId, converted_at: new Date().toISOString() })
+      .eq('email', email)
+      .is('user_id', null)
+
+    if (error) {
+      console.log('[Stripe Webhook] No lead data to link or error:', error.message)
+    } else {
+      console.log('[Stripe Webhook] Linked lead data to user:', userId)
+    }
+  } catch (error) {
+    console.log('[Stripe Webhook] Error linking lead data:', error)
+  }
 }

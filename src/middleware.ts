@@ -10,8 +10,11 @@ import { NextResponse, type NextRequest } from 'next/server'
 // Routes that require authentication
 const protectedRoutes = ['/dashboard', '/settings']
 
-// Routes that should redirect to dashboard if already authenticated
-const authRoutes = ['/birth-details', '/focus-areas', '/calculating', '/free-insight', '/paywall']
+// Old onboarding routes that should redirect to new onboarding
+const legacyOnboardingRoutes = ['/birth-details', '/focus-areas', '/calculating', '/free-insight', '/paywall']
+
+// New onboarding route (no auth required)
+const newOnboardingRoute = '/onboarding'
 
 export async function middleware(request: NextRequest) {
   let supabaseResponse = NextResponse.next({
@@ -48,6 +51,19 @@ export async function middleware(request: NextRequest) {
 
   const pathname = request.nextUrl.pathname
 
+  // Redirect root to onboarding for non-authenticated users
+  if (pathname === '/') {
+    if (user) {
+      const url = request.nextUrl.clone()
+      url.pathname = '/dashboard'
+      return NextResponse.redirect(url)
+    } else {
+      const url = request.nextUrl.clone()
+      url.pathname = '/onboarding'
+      return NextResponse.redirect(url)
+    }
+  }
+
   // Check if route is protected
   const isProtectedRoute = protectedRoutes.some((route) =>
     pathname.startsWith(route)
@@ -56,7 +72,17 @@ export async function middleware(request: NextRequest) {
   // Redirect to onboarding if not authenticated and accessing protected route
   if (isProtectedRoute && !user) {
     const url = request.nextUrl.clone()
-    url.pathname = '/birth-details'
+    url.pathname = '/onboarding'
+    return NextResponse.redirect(url)
+  }
+
+  // Redirect legacy onboarding routes to new onboarding
+  const isLegacyOnboardingRoute = legacyOnboardingRoutes.some((route) =>
+    pathname.startsWith(route)
+  )
+  if (isLegacyOnboardingRoute) {
+    const url = request.nextUrl.clone()
+    url.pathname = '/onboarding'
     return NextResponse.redirect(url)
   }
 

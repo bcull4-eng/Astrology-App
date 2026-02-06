@@ -68,17 +68,44 @@ export async function POST(request: NextRequest) {
     // Determine checkout mode and price
     let priceId: string
     let mode: 'subscription' | 'payment'
+    let trialDays: number | undefined
+    let additionalLineItems: { price: string; quantity: number }[] | undefined
 
     if (planType) {
-      // Subscription checkout
-      mode = planType === 'lifetime' ? 'payment' : 'subscription'
-      priceId = STRIPE_PRICES[planType]
+      // Special handling for report_intro: £1 one-time + £14.99/month after 3 days
+      if (planType === 'report_intro') {
+        const reportPrice = STRIPE_PRICES.report_intro
+        const monthlyPrice = STRIPE_PRICES.monthly
 
-      if (!priceId || priceId.includes('placeholder')) {
-        return NextResponse.json(
-          { error: `Price not configured for plan: ${planType}. Please set up Stripe prices.` },
-          { status: 400 }
-        )
+        if (!reportPrice || reportPrice.includes('placeholder')) {
+          return NextResponse.json(
+            { error: 'Report intro price not configured. Please set STRIPE_PRICE_REPORT_INTRO.' },
+            { status: 400 }
+          )
+        }
+        if (!monthlyPrice || monthlyPrice.includes('placeholder')) {
+          return NextResponse.json(
+            { error: 'Monthly price not configured. Please set STRIPE_PRICE_MONTHLY.' },
+            { status: 400 }
+          )
+        }
+
+        // Primary item is the subscription, with the report as an additional one-time charge
+        mode = 'subscription'
+        priceId = monthlyPrice
+        trialDays = 3
+        additionalLineItems = [{ price: reportPrice, quantity: 1 }]
+      } else {
+        // Standard subscription checkout
+        mode = planType === 'lifetime' ? 'payment' : 'subscription'
+        priceId = STRIPE_PRICES[planType]
+
+        if (!priceId || priceId.includes('placeholder')) {
+          return NextResponse.json(
+            { error: `Price not configured for plan: ${planType}. Please set up Stripe prices.` },
+            { status: 400 }
+          )
+        }
       }
     } else if (productType && productId) {
       // One-time purchase checkout
@@ -128,6 +155,8 @@ export async function POST(request: NextRequest) {
       productId,
       successUrl,
       cancelUrl: `${appUrl}/checkout/cancel`,
+      trialDays,
+      additionalLineItems,
     })
 
     return NextResponse.json({ url: session.url })

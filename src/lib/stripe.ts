@@ -47,6 +47,8 @@ interface CreateCheckoutParams {
   productId?: string
   successUrl: string
   cancelUrl: string
+  trialDays?: number
+  additionalLineItems?: { price: string; quantity: number }[]
 }
 
 /**
@@ -62,6 +64,8 @@ export async function createCheckoutSession({
   productId,
   successUrl,
   cancelUrl,
+  trialDays,
+  additionalLineItems,
 }: CreateCheckoutParams): Promise<Stripe.Checkout.Session> {
   // Check if customer already exists
   const existingCustomers = await stripe.customers.list({
@@ -84,16 +88,29 @@ export async function createCheckoutSession({
     customerId = customer.id
   }
 
+  // Build line items - primary price plus any additional items
+  const lineItems: Stripe.Checkout.SessionCreateParams.LineItem[] = [
+    {
+      price: priceId,
+      quantity: 1,
+    },
+  ]
+
+  // Add additional line items (e.g., one-time report charge with subscription)
+  if (additionalLineItems) {
+    for (const item of additionalLineItems) {
+      lineItems.push({
+        price: item.price,
+        quantity: item.quantity,
+      })
+    }
+  }
+
   // Build checkout session params
   const sessionParams: Stripe.Checkout.SessionCreateParams = {
     customer: customerId,
     mode,
-    line_items: [
-      {
-        price: priceId,
-        quantity: 1,
-      },
-    ],
+    line_items: lineItems,
     success_url: successUrl,
     cancel_url: cancelUrl,
     metadata: {
@@ -112,6 +129,11 @@ export async function createCheckoutSession({
         user_id: userId,
         plan_type: planType || '',
       },
+    }
+
+    // Add trial period if specified (e.g., 3 days for report_intro)
+    if (trialDays && trialDays > 0) {
+      sessionParams.subscription_data.trial_period_days = trialDays
     }
   }
 

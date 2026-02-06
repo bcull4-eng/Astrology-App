@@ -88,9 +88,9 @@ export function PalmReadingStep() {
 
           <button
             onClick={handleSkip}
-            className="mt-4 text-white/40 text-sm hover:text-white/60 transition-colors"
+            className="mt-6 px-6 py-2 text-white/60 text-sm border border-white/20 rounded-xl hover:bg-white/10 hover:text-white transition-all"
           >
-            Skip this step
+            Skip palm reading
           </button>
         </>
       )}

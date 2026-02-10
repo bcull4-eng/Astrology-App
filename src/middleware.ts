@@ -51,17 +51,11 @@ export async function middleware(request: NextRequest) {
 
   const pathname = request.nextUrl.pathname
 
-  // Redirect root to onboarding for non-authenticated users
-  if (pathname === '/') {
-    if (user) {
-      const url = request.nextUrl.clone()
-      url.pathname = '/dashboard'
-      return NextResponse.redirect(url)
-    } else {
-      const url = request.nextUrl.clone()
-      url.pathname = '/onboarding'
-      return NextResponse.redirect(url)
-    }
+  // Redirect root to dashboard for authenticated users (landing page handles this too, but avoids flash)
+  if (pathname === '/' && user) {
+    const url = request.nextUrl.clone()
+    url.pathname = '/dashboard'
+    return NextResponse.redirect(url)
   }
 
   // Check if route is protected
@@ -69,10 +63,10 @@ export async function middleware(request: NextRequest) {
     pathname.startsWith(route)
   )
 
-  // Redirect to onboarding if not authenticated and accessing protected route
+  // Redirect to sign-up if not authenticated and accessing protected route
   if (isProtectedRoute && !user) {
     const url = request.nextUrl.clone()
-    url.pathname = '/onboarding'
+    url.pathname = '/auth/sign-up'
     return NextResponse.redirect(url)
   }
 

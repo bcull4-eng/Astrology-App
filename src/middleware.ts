@@ -10,11 +10,6 @@ import { NextResponse, type NextRequest } from 'next/server'
 // Routes that require authentication
 const protectedRoutes = ['/dashboard', '/settings']
 
-// Old onboarding routes that should redirect to new onboarding
-const legacyOnboardingRoutes = ['/birth-details', '/focus-areas', '/calculating', '/free-insight', '/paywall']
-
-// New onboarding route (no auth required)
-const newOnboardingRoute = '/onboarding'
 
 export async function middleware(request: NextRequest) {
   let supabaseResponse = NextResponse.next({
@@ -70,15 +65,6 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(url)
   }
 
-  // Redirect legacy onboarding routes to new onboarding
-  const isLegacyOnboardingRoute = legacyOnboardingRoutes.some((route) =>
-    pathname.startsWith(route)
-  )
-  if (isLegacyOnboardingRoute) {
-    const url = request.nextUrl.clone()
-    url.pathname = '/onboarding'
-    return NextResponse.redirect(url)
-  }
 
   return supabaseResponse
 }
